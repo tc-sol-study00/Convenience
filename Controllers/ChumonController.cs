@@ -99,7 +99,7 @@ namespace Convenience.Controllers {
             var chumonViewModel = new ChumonViewModel {
                 ChumonJisseki = chumonJisseki,
                 IsNormal = isValid,
-                Remark = errCd == ErrDef.NormalUpdate && entities > 0 || errCd != ErrDef.NormalUpdate ? Message().SetMessage(errCd).MessageText : null
+                Remark = errCd == ErrDef.NormalUpdate && entities > 0 || errCd != ErrDef.NormalUpdate ? new Message().SetMessage(errCd).MessageText : null
             };
             KeepObject();
             return View(chumonViewModel);

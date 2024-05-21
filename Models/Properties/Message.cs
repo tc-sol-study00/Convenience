@@ -38,7 +38,7 @@
             new MessageData { MessageNo=ErrDef.OtherError, MessageText="その他エラー" }
         };
 
-        public static MessageData SetMessage(ErrDef inErrCd) {
+        public MessageData SetMessage(ErrDef inErrCd) {
             messageData = MessageList.FirstOrDefault(m => m.MessageNo == inErrCd) ?? null;
 
             return (messageData);
