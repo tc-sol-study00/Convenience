@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+<Node Id="IModel" Label="ConvenienceContext" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot" PropertyAccessMode="PropertyAccessMode.Default" ProductVersion="7.0.14" Annotations="BaseTypeDiscoveryConvention:DerivedTypes: System.Collections.Generic.Dictionary`2[System.Type,System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.IConventionEntityType]]
+Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:MaxIdentifierLength: 63
+RelationshipDiscoveryConvention:InverseNavigationCandidates: System.Collections.Generic.Dictionary`2[System.Type,System.Collections.Generic.SortedSet`1[System.Type]]" Category="Model" Group="Expanded" />
+<Node Id = "ChumonJisseki" Label="ChumonJisseki" Name="ChumonJisseki" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: chumon_jisseki
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ChumonJissekiMeisai" Label="ChumonJissekiMeisai" Name="ChumonJissekiMeisai" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: chumon_jisseki_meisai
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ChumonJisseki.ChumonId" Label="ChumonId (string)" Name="ChumonId" Category="Property Primary" Type="string" MaxLength="(20)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+Relational:ColumnName: chumon_code" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJisseki.ChumonJissekiMeisais" Label="ChumonJissekiMeisais (*)" Name="ChumonJissekiMeisais" Category="Navigation Collection" Type="IList&lt;ChumonJissekiMeisai&gt;"  Field="" Dependent="ChumonJissekiMeisai" Principal="" Inverse="ChumonJisseki" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ChumonJisseki.ShiireSakiMaster" Label="ShiireSakiMaster (1)" Name="ShiireSakiMaster" Category="Navigation Property" Type="ShiireSakiMaster"  Field="" Dependent="" Principal="ShiireSakiMaster" Inverse="ChumonJissekis" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ChumonJisseki.ChumonDate" Label="ChumonDate (DateOnly)" Name="ChumonDate" Category="Property Required" Type="DateOnly" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: chumon_date" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJisseki.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Foreign" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "KaikeiJisseki" Label="KaikeiJisseki" Name="KaikeiJisseki" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: kaikei_jisseki
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ChumonJissekiMeisai.ChumonId" Label="ChumonId (string)" Name="ChumonId" Category="Property Primary" Type="string" MaxLength="(20)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+Relational:ColumnName: chumon_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJissekiMeisai.ChumonJisseki" Label="ChumonJisseki (1)" Name="ChumonJisseki" Category="Navigation Property" Type="ChumonJisseki"  Field="" Dependent="" Principal="ChumonJisseki" Inverse="ChumonJissekiMeisais" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ChumonJissekiMeisai.ShiireJisseki" Label="ShiireJisseki (*)" Name="ShiireJisseki" Category="Navigation Collection" Type="ICollection&lt;ShiireJisseki&gt;"  Field="" Dependent="ShiireJisseki" Principal="" Inverse="ChumonJissekiMeisaii" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ChumonJissekiMeisai.ShiireMaster" Label="ShiireMaster (1)" Name="ShiireMaster" Category="Navigation Property" Type="ShiireMaster"  Field="" Dependent="" Principal="ShiireMaster" Inverse="ChumonJissekiMeisaiis" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ChumonJissekiMeisai.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJissekiMeisai.ShiirePrdId" Label="ShiirePrdId (string)" Name="ShiirePrdId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_prd_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJissekiMeisai.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJissekiMeisai.ChumonSu" Label="ChumonSu (decimal)" Name="ChumonSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 10
+Relational:ColumnName: chumon_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ChumonJissekiMeisai.ChumonZan" Label="ChumonZan (decimal)" Name="ChumonZan" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 10
+Relational:ColumnName: chumon_zan
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki" Label="ShiireJisseki" Name="ShiireJisseki" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: shiire_jisseki
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "KaikeiJisseki.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "KaikeiJisseki.ShohinMaster" Label="ShohinMaster (1)" Name="ShohinMaster" Category="Navigation Property" Type="ShohinMaster"  Field="" Dependent="" Principal="ShohinMaster" Inverse="" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "KaikeiJisseki.UriageDatetime" Label="UriageDatetime (DateTime)" Name="UriageDatetime" Category="Property Primary" Type="DateTime" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: uriage_datetime" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "KaikeiJisseki.ShohiZeiritsu" Label="ShohiZeiritsu (decimal)" Name="ShohiZeiritsu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 15
+Relational:ColumnName: shohi_zeiritsu
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "KaikeiJisseki.UriageKingakuSu" Label="UriageKingakuSu (decimal)" Name="UriageKingakuSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 15
+Relational:ColumnName: uriage_kingaku
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "KaikeiJisseki.UriageSu" Label="UriageSu (decimal)" Name="UriageSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 10
+Relational:ColumnName: uriage_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "KaikeiJisseki.ZeikomiKingaku" Label="ZeikomiKingaku (decimal)" Name="ZeikomiKingaku" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 15
+Relational:ColumnName: zeikomi_kingaku
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster" Label="ShiireMaster" Name="ShiireMaster" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: shiire_master
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ShiireJisseki.ChumonId" Label="ChumonId (string)" Name="ChumonId" Category="Property Primary" Type="string" MaxLength="(20)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+Relational:ColumnName: chumon_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.ChumonJissekiMeisaii" Label="ChumonJissekiMeisaii (1)" Name="ChumonJissekiMeisaii" Category="Navigation Property" Type="ChumonJissekiMeisai"  Field="" Dependent="" Principal="ChumonJissekiMeisai" Inverse="ShiireJisseki" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireJisseki.ShiireDate" Label="ShiireDate (DateOnly)" Name="ShiireDate" Category="Property Primary" Type="DateOnly" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: shiire_date" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.SeqByShiireDate" Label="SeqByShiireDate (uint)" Name="SeqByShiireDate" Category="Property Primary" Type="uint" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: seq_by_shiiredate" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.ShiirePrdId" Label="ShiirePrdId (string)" Name="ShiirePrdId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_prd_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.NonyuSu" Label="NonyuSu (decimal)" Name="NonyuSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 10
+Relational:ColumnName: nonyu_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.ShiireDateTime" Label="ShiireDateTime (DateTime)" Name="ShiireDateTime" Category="Property Required" Type="DateTime" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: shiire_datetime" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireJisseki.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Foreign" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster" Label="ShiireSakiMaster" Name="ShiireSakiMaster" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: shiire_saki_masnter
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ShiireMaster.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster.ChumonJissekiMeisaiis" Label="ChumonJissekiMeisaiis (*)" Name="ChumonJissekiMeisaiis" Category="Navigation Collection" Type="ICollection&lt;ChumonJissekiMeisai&gt;"  Field="" Dependent="ChumonJissekiMeisai" Principal="" Inverse="ShiireMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireMaster.ShiireSakiMaster" Label="ShiireSakiMaster (1)" Name="ShiireSakiMaster" Category="Navigation Property" Type="ShiireSakiMaster"  Field="" Dependent="" Principal="ShiireSakiMaster" Inverse="ShireMasters" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireMaster.ShohinMaster" Label="ShohinMaster (1)" Name="ShohinMaster" Category="Navigation Property" Type="ShohinMaster"  Field="" Dependent="" Principal="ShohinMaster" Inverse="ShiireMasters" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireMaster.SokoZaikos" Label="SokoZaikos (1)" Name="SokoZaikos" Category="Navigation Property" Type="SokoZaiko"  Field="" Dependent="SokoZaiko" Principal="" Inverse="ShiireMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireMaster.TentoHaraidashiJissekis" Label="TentoHaraidashiJissekis (*)" Name="TentoHaraidashiJissekis" Category="Navigation Collection" Type="ICollection&lt;TentoHaraidashiJisseki&gt;"  Field="" Dependent="TentoHaraidashiJisseki" Principal="" Inverse="ShiireMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireMaster.ShiirePrdId" Label="ShiirePrdId (string)" Name="ShiirePrdId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_prd_code" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster.ShiirePcsPerUnit" Label="ShiirePcsPerUnit (decimal)" Name="ShiirePcsPerUnit" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 7
+Relational:ColumnName: shiire_pcs_unit
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster.ShiirePrdName" Label="ShiirePrdName (string)" Name="ShiirePrdName" Category="Property Required" Type="string" MaxLength="(30)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+Relational:ColumnName: shiire_prd_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster.ShiireUnit" Label="ShiireUnit (string)" Name="ShiireUnit" Category="Property Required" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_unit" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireMaster.ShireTanka" Label="ShireTanka (decimal)" Name="ShireTanka" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 7
+Relational:ColumnName: shiire_tanka
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShohinMaster" Label="ShohinMaster" Name="ShohinMaster" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: shohin_master
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ShiireSakiMaster.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.ChumonJissekis" Label="ChumonJissekis (*)" Name="ChumonJissekis" Category="Navigation Collection" Type="ICollection&lt;ChumonJisseki&gt;"  Field="" Dependent="ChumonJisseki" Principal="" Inverse="ShiireSakiMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireSakiMaster.ShireMasters" Label="ShireMasters (*)" Name="ShireMasters" Category="Navigation Collection" Type="ICollection&lt;ShiireMaster&gt;"  Field="" Dependent="ShiireMaster" Principal="" Inverse="ShiireSakiMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShiireSakiMaster.Banchi" Label="Banchi (string)" Name="Banchi" Category="Property Required" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: banchi" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.ShiireSakiBusho" Label="ShiireSakiBusho (string)" Name="ShiireSakiBusho" Category="Property Required" Type="string" MaxLength="(30)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+Relational:ColumnName: shiire_saki_busho" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.ShiireSakiKaisya" Label="ShiireSakiKaisya (string)" Name="ShiireSakiKaisya" Category="Property Required" Type="string" MaxLength="(30)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+Relational:ColumnName: shiire_saki_kaisya" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.Shikuchoson" Label="Shikuchoson (string)" Name="Shikuchoson" Category="Property Required" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shikuchoson" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.Tatemonomei" Label="Tatemonomei (string)" Name="Tatemonomei" Category="Property Required" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: tatemonomei" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.Todoufuken" Label="Todoufuken (string)" Name="Todoufuken" Category="Property Required" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: todoufuken" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShiireSakiMaster.YubinBango" Label="YubinBango (string)" Name="YubinBango" Category="Property Required" Type="string" MaxLength="(30)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+Relational:ColumnName: yubin_bango" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko" Label="SokoZaiko" Name="SokoZaiko" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: soko_zaiko
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "ShohinMaster.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShohinMaster.ShiireMasters" Label="ShiireMasters (*)" Name="ShiireMasters" Category="Navigation Collection" Type="ICollection&lt;ShiireMaster&gt;"  Field="" Dependent="ShiireMaster" Principal="" Inverse="ShohinMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShohinMaster.TentoZaikos" Label="TentoZaikos (1)" Name="TentoZaikos" Category="Navigation Property" Type="TentoZaiko"  Field="" Dependent="TentoZaiko" Principal="" Inverse="ShohinMaster" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "ShohinMaster.ShohiZeiritsu" Label="ShohiZeiritsu (decimal)" Name="ShohiZeiritsu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 15
+Relational:ColumnName: shohi_zeiritsu
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShohinMaster.ShohiZeiritsuGaishoku" Label="ShohiZeiritsuGaishoku (decimal)" Name="ShohiZeiritsuGaishoku" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 15
+Relational:ColumnName: shohi_zeiritsu_gaisyoku
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ShohinMaster.ShohinName" Label="ShohinName (string)" Name="ShohinName" Category="Property Required" Type="string" MaxLength="(50)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 50
+Relational:ColumnName: shohin_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki" Label="TentoHaraidashiJisseki" Name="TentoHaraidashiJisseki" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: tento_haraidashi_jisseki
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "SokoZaiko.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko.ShiireMaster" Label="ShiireMaster (1)" Name="ShiireMaster" Category="Navigation Property" Type="ShiireMaster"  Field="" Dependent="" Principal="ShiireMaster" Inverse="SokoZaikos" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "SokoZaiko.ShiirePrdId" Label="ShiirePrdId (string)" Name="ShiirePrdId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_prd_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko.LastDeliveryDate" Label="LastDeliveryDate (DateOnly?)" Name="LastDeliveryDate" Category="Property Optional" Type="DateOnly?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: last_delivery_date" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko.LastShiireDate" Label="LastShiireDate (DateOnly)" Name="LastShiireDate" Category="Property Required" Type="DateOnly" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: last_shiire_date" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko.SokoZaikoCaseSu" Label="SokoZaikoCaseSu (decimal)" Name="SokoZaikoCaseSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 10
+Relational:ColumnName: soko_zaiko_case_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SokoZaiko.SokoZaikoSu" Label="SokoZaikoSu (decimal)" Name="SokoZaikoSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 10
+Relational:ColumnName: soko_zaiko_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoZaiko" Label="TentoZaiko" Name="TentoZaiko" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:TableName: tento_zaiko
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "TentoHaraidashiJisseki.ShiireSakiId" Label="ShiireSakiId (string)" Name="ShiireSakiId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_saki_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki.ShiireMaster" Label="ShiireMaster (1)" Name="ShiireMaster" Category="Navigation Property" Type="ShiireMaster"  Field="" Dependent="" Principal="ShiireMaster" Inverse="TentoHaraidashiJissekis" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "TentoHaraidashiJisseki.ShiirePrdId" Label="ShiirePrdId (string)" Name="ShiirePrdId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shiire_prd_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki.HaraidashiDate" Label="HaraidashiDate (DateTime)" Name="HaraidashiDate" Category="Property Primary" Type="DateTime" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: haraidashi_date" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki.HaraidashiCaseSu" Label="HaraidashiCaseSu (int)" Name="HaraidashiCaseSu" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: haraidashi_case_su" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki.HaraidashiSu" Label="HaraidashiSu (decimal)" Name="HaraidashiSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 7
+Relational:ColumnName: haraidashi_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoHaraidashiJisseki.ShireDateTime" Label="ShireDateTime (DateOnly)" Name="ShireDateTime" Category="Property Required" Type="DateOnly" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: shiire_datetime" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoZaiko" Label="TentoZaiko" Name="TentoZaiko" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="" Category="EntityType" Group="Expanded" />
+<Node Id = "TentoZaiko.ShohinId" Label="ShohinId (string)" Name="ShohinId" Category="Property Primary" Type="string" MaxLength="(10)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+Relational:ColumnName: shohin_code" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoZaiko.ShohinMaster" Label="ShohinMaster (1)" Name="ShohinMaster" Category="Navigation Property" Type="ShohinMaster"  Field="" Dependent="" Principal="ShohinMaster" Inverse="TentoZaikos" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "TentoZaiko.LastHaraidashiDate" Label="LastHaraidashiDate (DateTime)" Name="LastHaraidashiDate" Category="Property Required" Type="DateTime" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: last_haraidashi_datetime" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoZaiko.LastShireDateTime" Label="LastShireDateTime (DateOnly)" Name="LastShireDateTime" Category="Property Required" Type="DateOnly" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: last_shiire_datetime" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoZaiko.LastUriageDatetime" Label="LastUriageDatetime (DateTime)" Name="LastUriageDatetime" Category="Property Required" Type="DateTime" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: last_uriage_datetime" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "TentoZaiko.ZaikoSu" Label="ZaikoSu (decimal)" Name="ZaikoSu" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Precision: 7
+Relational:ColumnName: zaiko_su
+Scale: 2" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+  </Nodes>
+  <Links>
+<Link Source = "IModel" Target="ChumonJisseki" Category="Contains" />
+<Link Source = "IModel" Target="ChumonJissekiMeisai" Category="Contains" />
+<Link Source = "ChumonJisseki" Target="ChumonJisseki.ChumonJissekiMeisais" Category="Contains" />
+<Link Source = "ChumonJisseki" Target="ChumonJisseki.ShiireSakiMaster" Category="Contains" />
+<Link Source = "ChumonJisseki" Target="ChumonJisseki.ChumonId" Category="Contains" />
+<Link Source="ChumonJisseki" Target="ShiireSakiMaster" From="ChumonJisseki.ShiireSakiId" To="ShiireSakiMaster.ShiireSakiId" Name="ChumonJisseki -> ShiireSakiMaster" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "ChumonJisseki" Target="ChumonJisseki.ChumonDate" Category="Contains" />
+<Link Source = "ChumonJisseki" Target="ChumonJisseki.ShiireSakiId" Category="Contains" />
+<Link Source = "IModel" Target="KaikeiJisseki" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ChumonJisseki" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ShiireJisseki" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ShiireMaster" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ChumonId" Category="Contains" />
+<Link Source="ChumonJissekiMeisai" Target="ChumonJisseki" From="ChumonJissekiMeisai.ChumonId" To="ChumonJisseki.ChumonId" Name="ChumonJissekiMeisai -> ChumonJisseki" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="ChumonJissekiMeisai" Target="ShiireMaster" From="ChumonJissekiMeisai.ShiireSakiId,ShiirePrdId,ShohinId" To="ShiireMaster.ShiireSakiId,ShiirePrdId,ShohinId" Name="ChumonJissekiMeisai -> ShiireMaster" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ShiireSakiId" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ShiirePrdId" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ShohinId" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ChumonSu" Category="Contains" />
+<Link Source = "ChumonJissekiMeisai" Target="ChumonJissekiMeisai.ChumonZan" Category="Contains" />
+<Link Source = "IModel" Target="ShiireJisseki" Category="Contains" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.ShohinMaster" Category="Contains" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.ShohinId" Category="Contains" />
+<Link Source="KaikeiJisseki" Target="ShohinMaster" From="KaikeiJisseki.ShohinId" To="ShohinMaster.ShohinId" Name="KaikeiJisseki -> ShohinMaster" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.UriageDatetime" Category="Contains" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.ShohiZeiritsu" Category="Contains" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.UriageKingakuSu" Category="Contains" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.UriageSu" Category="Contains" />
+<Link Source = "KaikeiJisseki" Target="KaikeiJisseki.ZeikomiKingaku" Category="Contains" />
+<Link Source = "IModel" Target="ShiireMaster" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ChumonJissekiMeisaii" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ChumonId" Category="Contains" />
+<Link Source="ShiireJisseki" Target="ChumonJissekiMeisai" From="ShiireJisseki.ChumonId,ShiireSakiId,ShiirePrdId,ShohinId" To="ChumonJissekiMeisai.ChumonId,ShiireSakiId,ShiirePrdId,ShohinId" Name="ShiireJisseki -> ChumonJissekiMeisai" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ShiireDate" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.SeqByShiireDate" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ShiireSakiId" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ShiirePrdId" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.NonyuSu" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ShiireDateTime" Category="Contains" />
+<Link Source = "ShiireJisseki" Target="ShiireJisseki.ShohinId" Category="Contains" />
+<Link Source = "IModel" Target="ShiireSakiMaster" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ChumonJissekiMeisaiis" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShiireSakiMaster" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShohinMaster" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.SokoZaikos" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.TentoHaraidashiJissekis" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShiireSakiId" Category="Contains" />
+<Link Source="ShiireMaster" Target="ShiireSakiMaster" From="ShiireMaster.ShiireSakiId" To="ShiireSakiMaster.ShiireSakiId" Name="ShiireMaster -> ShiireSakiMaster" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="ShiireMaster" Target="ShohinMaster" From="ShiireMaster.ShohinId" To="ShohinMaster.ShohinId" Name="ShiireMaster -> ShohinMaster" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShiirePrdId" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShohinId" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShiirePcsPerUnit" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShiirePrdName" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShiireUnit" Category="Contains" />
+<Link Source = "ShiireMaster" Target="ShiireMaster.ShireTanka" Category="Contains" />
+<Link Source = "IModel" Target="ShohinMaster" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.ChumonJissekis" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.ShireMasters" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.ShiireSakiId" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.Banchi" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.ShiireSakiBusho" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.ShiireSakiKaisya" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.Shikuchoson" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.Tatemonomei" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.Todoufuken" Category="Contains" />
+<Link Source = "ShiireSakiMaster" Target="ShiireSakiMaster.YubinBango" Category="Contains" />
+<Link Source = "IModel" Target="SokoZaiko" Category="Contains" />
+<Link Source = "ShohinMaster" Target="ShohinMaster.ShiireMasters" Category="Contains" />
+<Link Source = "ShohinMaster" Target="ShohinMaster.TentoZaikos" Category="Contains" />
+<Link Source = "ShohinMaster" Target="ShohinMaster.ShohinId" Category="Contains" />
+<Link Source = "ShohinMaster" Target="ShohinMaster.ShohiZeiritsu" Category="Contains" />
+<Link Source = "ShohinMaster" Target="ShohinMaster.ShohiZeiritsuGaishoku" Category="Contains" />
+<Link Source = "ShohinMaster" Target="ShohinMaster.ShohinName" Category="Contains" />
+<Link Source = "IModel" Target="TentoHaraidashiJisseki" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.ShiireMaster" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.ShiireSakiId" Category="Contains" />
+<Link Source="SokoZaiko" Target="ShiireMaster" From="SokoZaiko.ShiireSakiId,ShiirePrdId,ShohinId" To="ShiireMaster.ShiireSakiId,ShiirePrdId,ShohinId" Name="SokoZaiko -> ShiireMaster" Annotations="" IsUnique="True" Label="1:1" Category="Foreign Key" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.ShiirePrdId" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.ShohinId" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.LastDeliveryDate" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.LastShiireDate" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.SokoZaikoCaseSu" Category="Contains" />
+<Link Source = "SokoZaiko" Target="SokoZaiko.SokoZaikoSu" Category="Contains" />
+<Link Source = "IModel" Target="TentoZaiko" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.ShiireMaster" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.ShiireSakiId" Category="Contains" />
+<Link Source="TentoHaraidashiJisseki" Target="ShiireMaster" From="TentoHaraidashiJisseki.ShiireSakiId,ShiirePrdId,ShohinId" To="ShiireMaster.ShiireSakiId,ShiirePrdId,ShohinId" Name="TentoHaraidashiJisseki -> ShiireMaster" Annotations="" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.ShiirePrdId" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.ShohinId" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.HaraidashiDate" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.HaraidashiCaseSu" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.HaraidashiSu" Category="Contains" />
+<Link Source = "TentoHaraidashiJisseki" Target="TentoHaraidashiJisseki.ShireDateTime" Category="Contains" />
+<Link Source = "IModel" Target="TentoZaiko" Category="Contains" />
+<Link Source = "TentoZaiko" Target="TentoZaiko.ShohinMaster" Category="Contains" />
+<Link Source = "TentoZaiko" Target="TentoZaiko.ShohinId" Category="Contains" />
+<Link Source="TentoZaiko" Target="ShohinMaster" From="TentoZaiko.ShohinId" To="ShohinMaster.ShohinId" Name="TentoZaiko -> ShohinMaster" Annotations="" IsUnique="True" Label="1:1" Category="Foreign Key" />
+<Link Source = "TentoZaiko" Target="TentoZaiko.LastHaraidashiDate" Category="Contains" />
+<Link Source = "TentoZaiko" Target="TentoZaiko.LastShireDateTime" Category="Contains" />
+<Link Source = "TentoZaiko" Target="TentoZaiko.LastUriageDatetime" Category="Contains" />
+<Link Source = "TentoZaiko" Target="TentoZaiko.ZaikoSu" Category="Contains" />
+  </Links>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="EntityType" ValueLabel="True">
+      <Condition Expression="HasCategory('EntityType')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Primary" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Primary')" />
+      <Setter Property="Background" Value="#FF008000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Optional" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Optional')" />
+      <Setter Property="Background" Value="#FF808040" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Foreign" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Foreign')" />
+      <Setter Property="Background" Value="#FF8080FF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Required" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Required')" />
+      <Setter Property="Background" Value="#FFC0A000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Navigation Property" ValueLabel="True">
+      <Condition Expression="HasCategory('Navigation Property')" />
+      <Setter Property="Background" Value="#FF990000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Navigation Collection" ValueLabel="True">
+      <Condition Expression="HasCategory('Navigation Collection')" />
+      <Setter Property="Background" Value="#FFFF3232" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Model" ValueLabel="True">
+      <Condition Expression="HasCategory('Model')" />
+      <Setter Property="Background" Value="#FFFFFFFF" />
+    </Style>
+  </Styles>
+  <Properties>
+    <Property Id="Name" Group="Model Properties" DataType="System.String" />
+    <Property Id="Field"  Description="Backing field" Group="Model Properties" DataType="System.String" />
+    <Property Id="Type"  Description="CLR data type" Group="Model Properties" DataType="System.String" />
+    <Property Id="To" Description="Source property" Group="Model Properties" DataType="System.String" />
+    <Property Id="From" Description="Target property" Group="Model Properties" DataType="System.String" />
+    <Property Id="Dependent" Description="Dependent entity" Group="Model Properties" DataType="System.String" />
+    <Property Id="Inverse" Description="Inverse entity" Group="Model Properties" DataType="System.String" />
+    <Property Id="Principal" Description="Principal entity" Group="Model Properties" DataType="System.String" />    
+    <Property Id="Annotations" Description="Annotations" Group="Model Properties" DataType="System.String" />
+    <Property Id="BaseClass"  Description="Base class" Group="Model Properties" DataType="System.String" />
+    <Property Id="ChangeTrackingStrategy" Description="Change tracking strategy" Group="Model Properties" DataType="System.String" />
+    <Property Id="IsUnique" Group="Model Properties" DataType="System.Boolean" />
+    <Property Id="IsAbstract" Group="Model Properties" DataType="System.Boolean" />
+    <Property Id="ProductVersion" Label="Product Version" Description="EF Core product version" Group="Model Properties" DataType="System.String" />
+    <Property Id="IsIndexed" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsRequired" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsPrimaryKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsForeignKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsShadow" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsAlternateKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsConcurrencyToken" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsIndexed" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsUnicode" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="ValueGenerated" Group="Property Flags" DataType="System.String" />
+    <Property Id="BeforeSaveBehavior" Group="Property Flags" DataType="System.String" />
+    <Property Id="AfterSaveBehavior" Group="Property Flags" DataType="System.String" />
+    <Property Id="PropertyAccessMode" Group="Property Flags" DataType="System.String" />
+  </Properties>
+</DirectedGraph>

@@ -1,0 +1,26 @@
+﻿@using Convenience.Models.DataModels
+@model Convenience.Models.Menu
+
+@{
+    ViewData["Title"] = "Menu Page";
+}
+
+<div class="row">
+    @foreach (var menuItem in @Model.MenuList) {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">@menuItem.Name</h5>
+                    <p class="card-text">@menuItem.Description</p>
+                    <a href="@menuItem.Url" class="btn btn-primary">@menuItem.Name</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

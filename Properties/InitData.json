@@ -1,0 +1,18 @@
+{
+  //仕入単位
+
+  "ShiireUnit": [
+    {
+      "Unit": "Case"
+      "UnitAlias": "ケース"
+    },
+    {
+      "Unit": "Kg",
+      "UnitAlias": "キログラム"
+    }
+  ]
+
+  "SystemName": {
+    "Name" :  "コンビニ管理システム"
+  }
+}

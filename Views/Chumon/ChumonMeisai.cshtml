@@ -1,0 +1,156 @@
+﻿@using Convenience.Models.DataModels
+@model Convenience.Models.ViewModels.Chumon.ChumonViewModel
+@{
+    ViewData["Index2"] = "Index";
+    var fortitle = Model.ChumonJisseki.ChumonJissekiMeisais.FirstOrDefault();
+}
+
+<div class="form-group">
+    <form asp-action="ChumonMeisai">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="1" />
+
+        <div class="container">
+            <div id="accordion">
+                <div class="accordion-item">
+                    <h5 class="accordion-header" id="headingOne">
+                        <button class="accordion-button bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h3>商品注文</h3>
+                        </button>
+                    </h5>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <b><label asp-for="@Model.ChumonJisseki.ShiireSakiId" class="control-label"></label></b>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input asp-for="@Model.ChumonJisseki.ShiireSakiId" class="form-control custom-disabled" tabindex="-1" />
+                                </div>
+                                <div class="col-sm-1">
+                                    <b><label asp-for="@Model.ChumonJisseki.ChumonId" class="control-label"></label></b>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input asp-for="@Model.ChumonJisseki.ChumonId" class="form-control custom-disabled" tabindex="-1" />
+                                </div>
+                                <div class="col-sm-1">
+                                    <b><label asp-for="@Model.ChumonJisseki.ChumonDate" class="control-label"></label></b>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input asp-for="@Model.ChumonJisseki.ChumonDate" class="form-control custom-disabled" tabindex="-1" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+ 
+        </div>
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <label asp-for="@fortitle.ShiireMaster.ShiirePrdId" class="control-label d-none d-sm-block"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@fortitle.ShiireMaster.ShiirePrdName" class="control-label d-none d-sm-block"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@fortitle.ShiireMaster.ShohinMaster.ShohinName" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@fortitle.ChumonSu" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@fortitle.ChumonZan" class="control-label"></label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.ChumonJisseki.ChumonJissekiMeisais.Count; i++) {
+                        <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ChumonId" type="hidden" />
+                        <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiireSakiId" type="hidden" />
+                        <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiirePrdId" type="hidden" />
+                        <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShohinId" type="hidden" />
+                        <tr>
+                            <td>
+                                <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiirePrdId" class="form-control custom-disabled d-none d-sm-block" tabindex="-1" />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiireMaster.ShiirePrdName" class="form-control custom-disabled d-none d-sm-block" tabindex="-1" disabled />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiireMaster.ShohinMaster.ShohinName" class="form-control custom-disabled" tabindex="-1" 　disabled />
+                            </td>
+                            <td>
+                                <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ChumonSu" class="form-control" />
+                                <span asp-validation-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ChumonSu" class="text-danger"></span>
+                            </td>
+                            <td>
+                                <input data-input-control="nofocus" asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ChumonZan" class="form-control custom-disabled" tabindex="-1" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div">
+            <div class="form-group">
+                <input id="submit_btn" type="submit" value="更新" class="btn btn-primary" />
+            </div>
+    </form>
+    <p>
+        <div id="remark" class="@(Model.IsNormal??true ? "text-primary" : "text-danger")">
+            <b>@Model.Remark</b>
+        </div>
+    </p>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('input').on('focus', function () {
+                $('#remark').empty();
+            });
+
+            $('.custom-disabled').on('focus', function () {
+                $(this).prop('readonly', true);
+            });
+
+            $('.custom-disabled').on('blur', function () {
+                $(this).prop('readonly', false);
+            });
+
+            $('#submit_btn').on('click', function () {
+                $(this).prop("disabled", true);
+                $(this).closest('form').submit();
+            })
+            // JavaScript to close accordion on small screens
+            var accordion = document.getElementById('accordion');
+            var breakpoint = 576; // 閉じるブレークポイント
+
+            function closeAccordionIfSmallScreen() {
+                if (window.innerWidth <= breakpoint) {
+                    var activeCollapse = accordion.querySelector('.accordion-collapse.show');
+                    if (activeCollapse) {
+                        activeCollapse.classList.remove('show');
+                    }
+                }
+                if (window.innerWidth > breakpoint) {
+                    var activeCollapse = accordion.querySelector('.accordion-collapse');
+                    if (activeCollapse) {
+                        activeCollapse.classList.add('show');
+                    }
+                }
+            }
+            //window.addEventListener('load', closeAccordionIfSmallScreen);
+            window.addEventListener('resize', closeAccordionIfSmallScreen);
+        });
+    </script>
+}
+
+

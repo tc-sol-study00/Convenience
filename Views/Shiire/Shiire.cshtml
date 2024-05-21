@@ -1,0 +1,161 @@
+﻿@using Convenience.Models.DataModels
+@model Convenience.Models.ViewModels.Shiire.ShiireViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>仕入入力</h1>
+
+<div class="form-group">
+    <form asp-action="Shiire">
+        @Html.AntiForgeryToken()
+        <table class="table">
+            <tr>
+                <th>
+                    <label asp-for="@Model.ChumonId" class="control-label"></label>
+                </th>
+                <td>
+                    <Input asp-for="@Model.ChumonId" class="form-control custom-disabled" tabindex="-1" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label asp-for="@Model.ChumonDate" class="control-label"></label>
+                </th>
+                <td>
+                    <Input asp-for="@Model.ChumonDate" class="form-control custom-disabled" tabindex="-1" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label asp-for="@Model.ShiireDate" class="control-label"></label>
+                </th>
+                <td>
+                    <Input asp-for="@Model.ShiireDate" class="form-control custom-disabled" tabindex="-1" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label asp-for="@Model.SeqByShiireDate" class="control-label"></label>
+                </th>
+                <td>
+                    <Input asp-for="@Model.SeqByShiireDate" class="form-control custom-disabled" tabindex="-1" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label asp-for="@Model.ShiireSakiId" class="control-label"></label>
+                </th>
+                <td>
+                    <Input asp-for="@Model.ShiireSakiId" class="form-control custom-disabled" tabindex="-1" />
+                </td>
+
+            </tr>
+            <th>
+                <label asp-for="@Model.ShiireSakiKaisya" class="control-label"></label>
+            </th>
+            <td>
+                <Input asp-for="@Model.ShiireSakiKaisya" class="form-control custom-disabled" tabindex="-1" />
+            </td>
+            </tr>
+
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <label asp-for="@Model.ShiireJissekis[0].ShiirePrdId" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.ShiireJissekis[0].ChumonJissekiMeisaii.ShiireMaster.ShiirePrdName" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.ShiireJissekis[0].ChumonJissekiMeisaii.ChumonZan" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.ShiireJissekis[0].NonyuSu" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.ShiireJissekis[0].SokoZaiko.SokoZaikoCaseSu" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.ShiireJissekis[0].ShiireDateTime" class="control-label"></label>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (var i = 0; i < Model.ShiireJissekis.Count; i++) {
+
+                    <input asp-for="@Model.ShiireJissekis[i].ChumonId" type="hidden" />
+                    <input asp-for="@Model.ShiireJissekis[i].ShiireDate" type="hidden" />
+                    <input asp-for="@Model.ShiireJissekis[i].SeqByShiireDate" type="hidden" />
+                    <input asp-for="@Model.ShiireJissekis[i].ShiireDateTime" type="hidden" />
+                    <input asp-for="@Model.ShiireJissekis[i].ShiireSakiId" type="hidden" />
+                    <input asp-for="@Model.ShiireJissekis[i].ShohinId" type="hidden" />
+
+                    <tr>
+                        <td>
+                            <input asp-for="@Model.ShiireJissekis[i].ShiirePrdId" class="control-form custom-disabled" tabindex="-1" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.ShiireJissekis[i].ChumonJissekiMeisaii.ShiireMaster.ShiirePrdName" class="control-form custom-disabled" tabindex="-1" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.ShiireJissekis[i].ChumonJissekiMeisaii.ChumonZan" class="control-form custom-disabled" tabindex="-1" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.ShiireJissekis[i].NonyuSu" class="control-form" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.ShiireJissekis[i].SokoZaiko.SokoZaikoCaseSu" class="control-form custom-disabled" tabindex="-1" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.ShiireJissekis[i].ShiireDateTime" class="control-form custom-disabled" tabindex="-1" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <p>
+        <div id="remark">
+            @Model.Remark
+        </div>
+    </p>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('input').on('focus', function () {
+                $('#remark').empty();
+            });
+
+            $('.custom-disabled').on('focus', function () {
+                $(this).prop('readonly', true);
+            });
+
+            $('.custom-disabled').on('blur', function () {
+                $(this).prop('readonly', false);
+            });
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

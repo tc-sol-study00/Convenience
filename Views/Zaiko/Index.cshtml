@@ -1,0 +1,110 @@
+﻿@using Convenience.Models.DataModels
+@model Convenience.Models.ViewModels.Zaiko.ZaikoViewModel
+@{
+    ViewData["Title"] = "Soko";
+}
+<h2>倉庫在庫検索</h2>
+
+<div class="form-group">
+    <form asp-action="Index">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <table class="table">
+                    <tr>
+                        <th>
+                            <label asp-for="KeyEventData" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="Descending" class="control-label"></label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="KeyEventData" asp-items="@Model.KeyList" class="form-control">
+                                <option value="">-- 選択してください --</option>
+                            </select>
+                            <span asp-validation-for="@Model.KeyEventData" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <input asp-for="Descending" type="checkbox" class="control-label" />
+                            <span asp-validation-for="Descending" class="text-danger"></span>
+                        </td>
+                    </tr>
+            </table>
+        <input type="submit" value="検索" class="btn btn-primary" /></input>
+    </form>
+</div>
+
+<hr class="my-2 bg-primary"></hr>
+
+@if(Model.sokoZaikos != null){
+<div class="list-group">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                <label asp-for="@Model.sokoZaikos.FirstOrDefault().ShiireSakiId" class="control-label"></label>
+                </th>
+                <th>
+                <label asp-for="@Model.sokoZaikos.FirstOrDefault().ShiirePrdId" class="control-label"></label>
+                </th>
+                <th>
+                <label asp-for="@Model.sokoZaikos.FirstOrDefault().ShohinId" class="control-label"></label>
+                </th>
+                    <th>
+                        <label asp-for="@Model.sokoZaikos.FirstOrDefault().ShiireMaster.ShohinMaster.ShohinName" class="control-label"></label>
+                    </th>
+                <th>
+                        <label asp-for="@Model.sokoZaikos.FirstOrDefault().SokoZaikoCaseSu" class="control-label"></label>
+                </th>
+                    <th>
+                        <label asp-for="@Model.sokoZaikos.FirstOrDefault().SokoZaikoSu" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.sokoZaikos.FirstOrDefault().LastShiireDate" class="control-label"></label>
+                    </th>
+                    <th>
+                        <label asp-for="@Model.sokoZaikos.FirstOrDefault().LastDeliveryDate" class="control-label"></label>
+                    </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (var i = 0; i < Model.sokoZaikos.Count; i++)
+            {
+                <tr>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].ShiireSakiId" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].ShiirePrdId" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].ShohinId" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].ShiireMaster.ShohinMaster.ShohinName" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].SokoZaikoCaseSu" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].SokoZaikoSu" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].LastShiireDate" class="control-label"></input>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.sokoZaikos[i].LastDeliveryDate" class="control-label"></input>
+                        </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+}

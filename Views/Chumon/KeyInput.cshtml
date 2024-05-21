@@ -1,0 +1,37 @@
+﻿@model Convenience.Models.ViewModels.Chumon.ChumonKeysViewModel
+@{
+    ViewData["Title"] = "KeyInput";
+}
+<h2>商品注文</h2>
+<h4>キー入力</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="KeyInput">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label asp-for="ShiireSakiId" class="control-label"></label>
+                <select asp-for="ShiireSakiId" asp-items="@Model.ShiireSakiList" class="form-control">
+                    <option value="">-- 選択してください --</option>
+                </select>
+            </div>
+            <span asp-validation-for="ShiireSakiId" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="ChumonDate" class="control-label"></label>
+                <input asp-for="ChumonDate" class="form-control" />
+                <span asp-validation-for="ChumonDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="検索" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
