@@ -25,6 +25,7 @@ namespace Convenience.Controllers {
 
         public async Task<IActionResult> KeyInput() {
             ChumonKeysViewModel keymodel = SetChumonKeysViewModel();
+            ViewData["Title"] = "商品注文２";
             return View("/Views/Chumon/KeyInput.cshtml",keymodel);
         }
 
@@ -57,13 +58,17 @@ namespace Convenience.Controllers {
                 }
             }
 
+            ViewData["Title"] = "商品注文２";
+
             return View("/Views/Chumon/ChumonMeisai.cshtml", new ChumonViewModel() { ChumonJisseki = chumonJisseki });
 
         }
 
         public async Task<IActionResult> ChumonMeisai(ChumonViewModel inChumonViewModel) {
 
-            return View(inChumonViewModel);
+            ViewData["Title"] = "商品注文２";
+
+            return View("/Views/Chumon/ChumonMeisai.cshtml",inChumonViewModel);
         }
 
         [HttpPost]
@@ -97,6 +102,8 @@ namespace Convenience.Controllers {
                 IsNormal = true,
                 Remark = entities!=0 ? "更新しました":string.Empty 
             };
+
+            ViewData["Title"] = "商品注文２";
             return View("/Views/Chumon/ChumonMeisai.cshtml",chumonViewModel);
         }
 

@@ -1,8 +1,7 @@
 ﻿@using Convenience.Models.DataModels
 @model Convenience.Models.ViewModels.Chumon.ChumonViewModel
 @{
-    ViewData["Index2"] = "Index";
-    var fortitle = Model.ChumonJisseki.ChumonJissekiMeisais.FirstOrDefault();
+        var fortitle = Model.ChumonJisseki.ChumonJissekiMeisais.FirstOrDefault();
 }
 
 <div class="form-group">
@@ -15,7 +14,7 @@
                 <div class="accordion-item">
                     <h5 class="accordion-header" id="headingOne">
                         <button class="accordion-button bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <h3>商品注文</h3>
+                            <h3>@(ViewData["Title"] ?? "商品注文")</h3>
                         </button>
                     </h5>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
