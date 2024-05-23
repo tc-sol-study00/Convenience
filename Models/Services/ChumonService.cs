@@ -55,7 +55,7 @@ namespace Convenience.Models.Services {
             ChumonJisseki chumonJisseki;
             //もし、引数の注文日付がない場合（画面入力の注文日付が入力なしだと、1年1月1日になる
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == inChumonDate) {
-                chumonJisseki = chumon.ChumonSakusei(inShiireSakiId);   //注文日付が指定なし→注文作成
+                chumonJisseki = chumon.ChumonSakusei(inShiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
             }
             else {
                 //注文日付指定あり→注文問い合わせ
@@ -63,7 +63,7 @@ namespace Convenience.Models.Services {
 
                 if (chumonJisseki == null) {
                     //注文問い合わせでデータがない場合は、注文作成
-                    chumonJisseki = chumon.ChumonSakusei(inShiireSakiId);
+                    chumonJisseki = chumon.ChumonSakusei(inShiireSakiId, inChumonDate);
                 }
             }
             //注文モデルを設定し戻り値とする

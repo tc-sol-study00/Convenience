@@ -45,7 +45,7 @@ namespace Convenience.Models.Properties {
 
 
         //注文作成
-        public ChumonJisseki ChumonSakusei(string inShireSakiId) {
+        public ChumonJisseki ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
             /*
              * 注文作成（新規）
              *  引数　  仕入先コード
@@ -64,9 +64,9 @@ namespace Convenience.Models.Properties {
             //仕入先より注文実績データ（親）を生成する(a)
 
             ChumonJisseki = new ChumonJisseki {
-                ChumonId = ChumonIdHatsuban(_context),              //注文コード発番
+                ChumonId = ChumonIdHatsuban(inChumonDate,_context),              //注文コード発番
                 ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
-                ChumonDate = DateOnly.FromDateTime(DateTime.Now)    //注文日付＝今日
+                ChumonDate = inChumonDate                           //注文日付
             };
 
             //注文実績明細データ（子）を作るために仕入マスタを読み込む(b)
@@ -124,7 +124,7 @@ namespace Convenience.Models.Properties {
             return (ChumonJisseki);
         }
 
-        private string ChumonIdHatsuban(ConvenienceContext _context) {
+        private string ChumonIdHatsuban(DateOnly InTheDate,ConvenienceContext _context) {
             /*
              * 注文コード発番
              *  引数　  なし
@@ -133,10 +133,9 @@ namespace Convenience.Models.Properties {
              *  注文コード書式例）：20240129-001(yyyyMMdd-001～999）
              */
             uint seqNumber;
-
+            string dateArea;
             //今日の日付
-
-            string dateArea = DateTime.Today.ToString("yyyyMMdd");
+            dateArea = InTheDate == null ? DateTime.Today.ToString("yyyyMMdd"):dateArea = InTheDate.ToString("yyyyMMdd");
 
             //今日の日付からすでに今日の分の注文コードがないか調べる
             var chumonid = _context.ChumonJisseki

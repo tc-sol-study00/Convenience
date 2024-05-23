@@ -6,7 +6,7 @@ namespace Convenience.Models.Interfaces {
     public interface IChumon {
         public ChumonJisseki ChumonJisseki { get; set; }
 
-        public ChumonJisseki ChumonSakusei(string inShireSakiId);
+        public ChumonJisseki ChumonSakusei(string inShireSakiId, DateOnly inChumonDate);
 
         public ChumonJisseki ChumonToiawase(string inShireSakiId, DateOnly inChumonDate);
 
