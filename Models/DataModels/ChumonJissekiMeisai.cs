@@ -61,5 +61,8 @@ namespace Convenience.Models.DataModels {
         public virtual ShiireMaster? ShiireMaster { get; set; }
 
         public virtual ICollection<ShiireJisseki>? ShiireJisseki { get; set; }
+
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }

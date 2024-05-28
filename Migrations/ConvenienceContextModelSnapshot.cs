@@ -39,6 +39,12 @@ namespace Convenience.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_saki_code");
 
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("ChumonId");
 
                     b.HasIndex("ShiireSakiId");
@@ -77,6 +83,12 @@ namespace Convenience.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("chumon_zan");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("ChumonId", "ShiireSakiId", "ShiirePrdId", "ShohinId");
 
@@ -265,7 +277,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("ShiireSakiId");
 
-                    b.ToTable("shiire_saki_masnter");
+                    b.ToTable("shiire_saki_master");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShohinMaster", b =>

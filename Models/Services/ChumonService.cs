@@ -72,7 +72,7 @@ namespace Convenience.Models.Services {
             });
         }
 
-        public (ChumonJisseki, int, bool, ErrDef) ChumonCommit(ChumonJisseki inChumonJisseki) {
+        public async Task<(ChumonJisseki, int, bool, ErrDef)> ChumonCommit(ChumonJisseki inChumonJisseki) {
 
             var chumonJisseki = chumon.ChumonUpdate(inChumonJisseki);
 
@@ -85,7 +85,7 @@ namespace Convenience.Models.Services {
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
                 .Select(e => e.Entity).Count();
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 chumonJisseki = chumon.ChumonToiawase(inChumonJisseki.ShiireSakiId, inChumonJisseki.ChumonDate);
                 return (chumonJisseki, entities, IsValid, ErrDef.NormalUpdate);

@@ -20,6 +20,7 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
                         <div class="accordion-body">
                             <div class="row">
+                                <input type="hidden" asp-for="@Model.ChumonJisseki.Version" />
                                 <div class="col-sm-1">
                                     <b><label asp-for="@Model.ChumonJisseki.ShiireSakiId" class="control-label"></label></b>
                                 </div>
@@ -73,6 +74,7 @@
                         <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiireSakiId" type="hidden" />
                         <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiirePrdId" type="hidden" />
                         <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShohinId" type="hidden" />
+                        <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].Version" type="hidden" />
                         <tr>
                             <td>
                                 <input asp-for="@Model.ChumonJisseki.ChumonJissekiMeisais[i].ShiirePrdId" class="form-control custom-disabled d-none d-sm-block" tabindex="-1" />

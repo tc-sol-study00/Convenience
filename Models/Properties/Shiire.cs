@@ -268,7 +268,8 @@ namespace Convenience.Models.Properties {
                         ChumonZan = group.Sum(c => c.ChumonZan)
                     }).OrderBy( o => o.ChumonId).ToList();
 
-            return (chumonIdList.Count() > 0 ? chumonIdList : null);
+            //return (chumonIdList.Count() > 0 ? chumonIdList : null);
+            return (chumonIdList);
         }
 
         //倉庫在庫を仕入データに接続する（表示前に利用する）　NotMappedは外部キーが使えないから、includeできないため
@@ -281,7 +282,19 @@ namespace Convenience.Models.Properties {
                         z.ShohinId == item.ShohinId)
                     .FirstOrDefault();
 
-                item.SokoZaiko = sokoZaiko;
+                if (sokoZaiko != null) {
+                    item.SokoZaiko = sokoZaiko;
+                }
+                else {
+                    item.SokoZaiko = new SokoZaiko {
+                        ShiireSakiId = item.ShiireSakiId,
+                        ShiirePrdId = item.ShiirePrdId,
+                        ShohinId = item.ShohinId,
+                        SokoZaikoCaseSu = 0,
+                        SokoZaikoSu = 0
+                    };
+
+                }
             }
         }
     }

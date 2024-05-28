@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Convenience.Migrations
 {
     [DbContext(typeof(ConvenienceContext))]
-    [Migration("20231220080954_ShireDateという列は間違い")]
-    partial class ShireDateという列は間違い
+    [Migration("20240527055358_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,15 +36,21 @@ namespace Convenience.Migrations
                         .HasColumnType("date")
                         .HasColumnName("chumon_date");
 
-                    b.Property<string>("ShiireSakiMasterShiireSakiId")
+                    b.Property<string>("ShiireSakiId")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_saki_code");
 
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("ChumonId");
 
-                    b.HasIndex("ShiireSakiMasterShiireSakiId");
+                    b.HasIndex("ShiireSakiId");
 
                     b.ToTable("chumon_jisseki");
                 });
@@ -56,17 +62,17 @@ namespace Convenience.Migrations
                         .HasColumnType("character varying(20)")
                         .HasColumnName("chumon_code");
 
-                    b.Property<string>("ShiireMasterShiireSakiId")
+                    b.Property<string>("ShiireSakiId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_saki_code");
 
-                    b.Property<string>("ShiireMasterShiirePrdId")
+                    b.Property<string>("ShiirePrdId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_prd_code");
 
-                    b.Property<string>("ShiireMasterShohinMasterShohinId")
+                    b.Property<string>("ShohinId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shohin_code");
@@ -81,9 +87,15 @@ namespace Convenience.Migrations
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("chumon_zan");
 
-                    b.HasKey("ChumonId", "ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId");
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
-                    b.HasIndex("ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId");
+                    b.HasKey("ChumonId", "ShiireSakiId", "ShiirePrdId", "ShohinId");
+
+                    b.HasIndex("ShiireSakiId", "ShiirePrdId", "ShohinId");
 
                     b.ToTable("chumon_jisseki_meisai");
                 });
@@ -126,38 +138,47 @@ namespace Convenience.Migrations
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShiireJisseki", b =>
                 {
-                    b.Property<string>("ChumonJissekiMeisaiChumonId")
+                    b.Property<string>("ChumonId")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("chumon_code");
 
-                    b.Property<DateTime>("ShiireDateTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("shiire_datetime");
+                    b.Property<DateOnly>("ShiireDate")
+                        .HasColumnType("date")
+                        .HasColumnName("shiire_date");
 
-                    b.Property<string>("ChumonJissekiMeisaiShiireMasterShiireSakiId")
+                    b.Property<long>("SeqByShiireDate")
+                        .HasColumnType("bigint")
+                        .HasColumnName("seq_by_shiiredate");
+
+                    b.Property<string>("ShiireSakiId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_saki_code");
 
-                    b.Property<string>("ChumonJissekiMeisaiShiireMasterShiirePrdId")
+                    b.Property<string>("ShiirePrdId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_prd_code");
-
-                    b.Property<string>("ChumonJissekiMeisaiShiireMasterShohinMasterShohinId")
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasColumnName("shohin_code");
 
                     b.Property<decimal>("NonyuSu")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("nonyu_su");
 
-                    b.HasKey("ChumonJissekiMeisaiChumonId", "ShiireDateTime", "ChumonJissekiMeisaiShiireMasterShiireSakiId", "ChumonJissekiMeisaiShiireMasterShiirePrdId", "ChumonJissekiMeisaiShiireMasterShohinMasterShohinId");
+                    b.Property<DateTime>("ShiireDateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("shiire_datetime");
 
-                    b.HasIndex("ChumonJissekiMeisaiChumonId", "ChumonJissekiMeisaiShiireMasterShiireSakiId", "ChumonJissekiMeisaiShiireMasterShiirePrdId", "ChumonJissekiMeisaiShiireMasterShohinMasterShohinId");
+                    b.Property<string>("ShohinId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("shohin_code");
+
+                    b.HasKey("ChumonId", "ShiireDate", "SeqByShiireDate", "ShiireSakiId", "ShiirePrdId");
+
+                    b.HasIndex("ChumonId", "ShiireSakiId", "ShiirePrdId", "ShohinId");
 
                     b.ToTable("shiire_jisseki");
                 });
@@ -174,7 +195,7 @@ namespace Convenience.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_prd_code");
 
-                    b.Property<string>("ShohinMasterShohinId")
+                    b.Property<string>("ShohinId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shohin_code");
@@ -201,9 +222,9 @@ namespace Convenience.Migrations
                         .HasColumnType("numeric(7,2)")
                         .HasColumnName("shiire_tanka");
 
-                    b.HasKey("ShiireSakiId", "ShiirePrdId", "ShohinMasterShohinId");
+                    b.HasKey("ShiireSakiId", "ShiirePrdId", "ShohinId");
 
-                    b.HasIndex("ShohinMasterShohinId");
+                    b.HasIndex("ShohinId");
 
                     b.ToTable("shiire_master");
                 });
@@ -259,7 +280,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("ShiireSakiId");
 
-                    b.ToTable("shiire_saki_masnter");
+                    b.ToTable("shiire_saki_master");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShohinMaster", b =>
@@ -292,17 +313,17 @@ namespace Convenience.Migrations
 
             modelBuilder.Entity("Convenience.Models.DataModels.SokoZaiko", b =>
                 {
-                    b.Property<string>("ShiireMasterShiireSakiId")
+                    b.Property<string>("ShiireSakiId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_saki_code");
 
-                    b.Property<string>("ShiireMasterShiirePrdId")
+                    b.Property<string>("ShiirePrdId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_prd_code");
 
-                    b.Property<string>("ShiireMasterShohinMasterShohinId")
+                    b.Property<string>("ShohinId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shohin_code");
@@ -325,24 +346,24 @@ namespace Convenience.Migrations
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("soko_zaiko_su");
 
-                    b.HasKey("ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId");
+                    b.HasKey("ShiireSakiId", "ShiirePrdId", "ShohinId");
 
                     b.ToTable("soko_zaiko");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.TentoHaraidashiJisseki", b =>
                 {
-                    b.Property<string>("ShiireMasterShireSakiId")
+                    b.Property<string>("ShiireSakiId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_saki_code");
 
-                    b.Property<string>("ShiireMasterShirePrdId")
+                    b.Property<string>("ShiirePrdId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shiire_prd_code");
 
-                    b.Property<string>("ShiireMasterShohinMasterShohinId")
+                    b.Property<string>("ShohinId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shohin_code");
@@ -360,26 +381,18 @@ namespace Convenience.Migrations
                         .HasColumnType("numeric(7,2)")
                         .HasColumnName("haraidashi_su");
 
-                    b.Property<string>("ShiireMasterShiirePrdId")
-                        .HasColumnType("character varying(10)");
-
-                    b.Property<string>("ShiireMasterShiireSakiId")
-                        .HasColumnType("character varying(10)");
-
                     b.Property<DateOnly>("ShireDateTime")
                         .HasColumnType("date")
                         .HasColumnName("shiire_datetime");
 
-                    b.HasKey("ShiireMasterShireSakiId", "ShiireMasterShirePrdId", "ShiireMasterShohinMasterShohinId", "HaraidashiDate");
-
-                    b.HasIndex("ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId");
+                    b.HasKey("ShiireSakiId", "ShiirePrdId", "ShohinId", "HaraidashiDate");
 
                     b.ToTable("tento_haraidashi_jisseki");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.TentoZaiko", b =>
                 {
-                    b.Property<string>("ShohinMasterShohinId")
+                    b.Property<string>("ShohinId")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
                         .HasColumnName("shohin_code");
@@ -401,7 +414,7 @@ namespace Convenience.Migrations
                         .HasColumnType("numeric(7,2)")
                         .HasColumnName("zaiko_su");
 
-                    b.HasKey("ShohinMasterShohinId");
+                    b.HasKey("ShohinId");
 
                     b.ToTable("tento_zaiko");
                 });
@@ -410,7 +423,7 @@ namespace Convenience.Migrations
                 {
                     b.HasOne("Convenience.Models.DataModels.ShiireSakiMaster", "ShiireSakiMaster")
                         .WithMany("ChumonJissekis")
-                        .HasForeignKey("ShiireSakiMasterShiireSakiId")
+                        .HasForeignKey("ShiireSakiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -427,7 +440,7 @@ namespace Convenience.Migrations
 
                     b.HasOne("Convenience.Models.DataModels.ShiireMaster", "ShiireMaster")
                         .WithMany("ChumonJissekiMeisaiis")
-                        .HasForeignKey("ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId")
+                        .HasForeignKey("ShiireSakiId", "ShiirePrdId", "ShohinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -451,7 +464,7 @@ namespace Convenience.Migrations
                 {
                     b.HasOne("Convenience.Models.DataModels.ChumonJissekiMeisai", "ChumonJissekiMeisaii")
                         .WithMany("ShiireJisseki")
-                        .HasForeignKey("ChumonJissekiMeisaiChumonId", "ChumonJissekiMeisaiShiireMasterShiireSakiId", "ChumonJissekiMeisaiShiireMasterShiirePrdId", "ChumonJissekiMeisaiShiireMasterShohinMasterShohinId")
+                        .HasForeignKey("ChumonId", "ShiireSakiId", "ShiirePrdId", "ShohinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -468,7 +481,7 @@ namespace Convenience.Migrations
 
                     b.HasOne("Convenience.Models.DataModels.ShohinMaster", "ShohinMaster")
                         .WithMany("ShiireMasters")
-                        .HasForeignKey("ShohinMasterShohinId")
+                        .HasForeignKey("ShohinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,7 +494,7 @@ namespace Convenience.Migrations
                 {
                     b.HasOne("Convenience.Models.DataModels.ShiireMaster", "ShiireMaster")
                         .WithOne("SokoZaikos")
-                        .HasForeignKey("Convenience.Models.DataModels.SokoZaiko", "ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId")
+                        .HasForeignKey("Convenience.Models.DataModels.SokoZaiko", "ShiireSakiId", "ShiirePrdId", "ShohinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -492,7 +505,9 @@ namespace Convenience.Migrations
                 {
                     b.HasOne("Convenience.Models.DataModels.ShiireMaster", "ShiireMaster")
                         .WithMany("TentoHaraidashiJissekis")
-                        .HasForeignKey("ShiireMasterShiireSakiId", "ShiireMasterShiirePrdId", "ShiireMasterShohinMasterShohinId");
+                        .HasForeignKey("ShiireSakiId", "ShiirePrdId", "ShohinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ShiireMaster");
                 });
@@ -501,7 +516,7 @@ namespace Convenience.Migrations
                 {
                     b.HasOne("Convenience.Models.DataModels.ShohinMaster", "ShohinMaster")
                         .WithOne("TentoZaikos")
-                        .HasForeignKey("Convenience.Models.DataModels.TentoZaiko", "ShohinMasterShohinId")
+                        .HasForeignKey("Convenience.Models.DataModels.TentoZaiko", "ShohinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -31,5 +31,8 @@ namespace Convenience.Models.DataModels {
         public virtual ShiireSakiMaster? ShiireSakiMaster { get; set; }
 
         public virtual IList<ChumonJissekiMeisai>? ChumonJissekiMeisais { get; set; } = new List<ChumonJissekiMeisai>() { };
+
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }

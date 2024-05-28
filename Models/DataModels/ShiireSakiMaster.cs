@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
 
-    [Table("shiire_saki_masnter")]
+    [Table("shiire_saki_master")]
     public class ShiireSakiMaster {
 
         [Column("shiire_saki_code")]

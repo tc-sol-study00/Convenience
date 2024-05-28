@@ -16,7 +16,7 @@ namespace Convenience.Models.Interfaces {
         //inChumonDate（注文日付）に何も入っていない場合は、注文作成(ChumonSakusei)を呼ぶ
         //inChumonDate（注文日付）に何かはいっていたら、注文問い合わせ(ChumonToiasase)を呼ぶが、もし注文問い合わせの結果が０件であれば、注文作成(ChumonSakusei)をコールする
 
-        public (ChumonJisseki, int, bool, ErrDef) ChumonCommit(ChumonJisseki inChumonJisseki);
+        public Task<(ChumonJisseki, int, bool, ErrDef)> ChumonCommit(ChumonJisseki inChumonJisseki);
 
         //①chumon.ChumonUpdate(inChumonJisseki)を実行する
         //②注文実績と注文実績明細をSaveChangeする

@@ -94,7 +94,7 @@ namespace Convenience.Controllers {
             }
 
             (ChumonJisseki chumonJisseki, int entities, bool isValid, ErrDef errCd)
-                = chumonService.ChumonCommit(ChumonViewModel.ChumonJisseki);
+                = await chumonService.ChumonCommit(ChumonViewModel.ChumonJisseki);
 
             var chumonViewModel = new ChumonViewModel {
                 ChumonJisseki = chumonJisseki,

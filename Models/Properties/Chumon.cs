@@ -118,8 +118,6 @@ namespace Convenience.Models.Properties {
                      .ThenInclude(shi => shi.ShiireMaster)
                      .ThenInclude(sho => sho.ShohinMaster)
                      .FirstOrDefault();
-
-
             //②戻り値を注文実績＋注文実績明細とする
             return (ChumonJisseki);
         }
@@ -198,7 +196,7 @@ namespace Convenience.Models.Properties {
 
             //注文実績を読む
             existedChumonJisseki = _context.ChumonJisseki
-                .Include(e => e.ChumonJissekiMeisais)
+                .Include(e => e.ChumonJissekiMeisais.OrderBy(x => x.ShiirePrdId))
                 .FirstOrDefault(e => e.ChumonId == ChumonJisseki.ChumonId);
 
             if (existedChumonJisseki != null) {  //注文実績がある場合
