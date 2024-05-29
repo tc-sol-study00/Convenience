@@ -3,6 +3,7 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Models.Properties {
@@ -182,7 +183,7 @@ namespace Convenience.Models.Properties {
             return (ChumonJisseki);
         }
 
-        public ChumonJisseki ChumonUpdate(ChumonJisseki inChumonJisseki) {
+        public ChumonJisseki ChumonUpdate(ChumonJisseki postedChumonJisseki) {
             /*
              * 注文実績＋注文明細更新
              *  引数　  注文実績
@@ -191,11 +192,8 @@ namespace Convenience.Models.Properties {
 
             ChumonJisseki existedChumonJisseki; //DBにすでに登録されている場合の移送先
 
-            //プロパティ注文実績に引数の注文実績をセットする
-            ChumonJisseki = inChumonJisseki;
-
             //注文実績を読む
-            existedChumonJisseki = _context.ChumonJisseki
+            existedChumonJisseki = _context.ChumonJisseki.AsNoTracking()
                 .Include(e => e.ChumonJissekiMeisais.OrderBy(x => x.ShiirePrdId))
                 .FirstOrDefault(e => e.ChumonId == ChumonJisseki.ChumonId);
 
@@ -214,15 +212,17 @@ namespace Convenience.Models.Properties {
                 });
                 //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
                 var mapper = new Mapper(config);
-                mapper.Map(ChumonJisseki, existedChumonJisseki);
+                mapper.Map(postedChumonJisseki, existedChumonJisseki);
 
+                _context.Update(existedChumonJisseki);
                 ChumonJisseki = existedChumonJisseki;
             }
             else {   //注文実績がない場合、引数で渡された注文実績をDBにレコード追加する
-                foreach (var item in ChumonJisseki.ChumonJissekiMeisais) {
+                foreach (var item in postedChumonJisseki.ChumonJissekiMeisais) {
                     item.ChumonZan = item.ChumonSu;
                 }
-                _context.ChumonJisseki.Add(ChumonJisseki);
+                _context.ChumonJisseki.Add(postedChumonJisseki);
+                ChumonJisseki = postedChumonJisseki;
             }
             //注文実績＋注文実績明細を戻り値とする
             return ChumonJisseki;

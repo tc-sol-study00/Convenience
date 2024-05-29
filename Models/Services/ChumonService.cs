@@ -76,7 +76,6 @@ namespace Convenience.Models.Services {
 
             var chumonJisseki = chumon.ChumonUpdate(inChumonJisseki);
 
-
             (bool IsValid, ErrDef errCd) = ChumonJissekiIsValid(chumonJisseki);
 
             if (IsValid) {
@@ -85,11 +84,15 @@ namespace Convenience.Models.Services {
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
                 .Select(e => e.Entity).Count();
 
-                await _context.SaveChangesAsync();
-
+                try {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException ex) {
+                    throw new Exception(ex.Message);
+                }
                 chumonJisseki = chumon.ChumonToiawase(inChumonJisseki.ShiireSakiId, inChumonJisseki.ChumonDate);
                 return (chumonJisseki, entities, IsValid, ErrDef.NormalUpdate);
-            }
+                }
             else {
                 return (chumonJisseki, 0, IsValid, errCd);
             }

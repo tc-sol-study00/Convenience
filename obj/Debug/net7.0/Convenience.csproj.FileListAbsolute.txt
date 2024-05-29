@@ -1,3 +1,4 @@
+C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.pdb
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.csproj.AssemblyReference.cache
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.Properties.Resources.resources
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.csproj.GenerateResource.cache
@@ -9,6 +10,7 @@ C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.MvcA
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.RazorAssemblyInfo.cache
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.RazorAssemblyInfo.cs
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.sourcelink.json
+C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.dll
 C:\Users\s-to\source\repos\study01\Convenience\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\s-to\source\repos\study01\Convenience\bin\Debug\net7.0\appsettings.json
 C:\Users\s-to\source\repos\study01\Convenience\bin\Debug\net7.0\Properties\InitData.json
@@ -245,8 +247,6 @@ C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\scopedcss\Views\
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\scopedcss\bundle\Convenience.styles.css
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\scopedcss\projectbundle\Convenience.bundle.scp.css
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenie.8F94704B.Up2Date
-C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.dll
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\refint\Convenience.dll
-C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.pdb
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\Convenience.genruntimeconfig.cache
 C:\Users\s-to\source\repos\study01\Convenience\obj\Debug\net7.0\ref\Convenience.dll
