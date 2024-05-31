@@ -4,6 +4,7 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Convenience.Models.Properties {
     public class Shiire : IShiire, IDbContext {
@@ -44,7 +45,9 @@ namespace Convenience.Models.Properties {
                 .ForMember(dest => dest.NonyuSu, opt => opt.MapFrom(src => src.NonyuSu))
                 .BeforeMap((src, dest) => dest.NonyuSubalance = src.NonyuSu - dest.NonyuSu)
                 .ForMember(dest => dest.NonyuSubalance, opt => opt.Ignore())
-                .ForMember(dest => dest.ChumonJissekiMeisaii, opt => opt.Ignore());
+                .ForMember(dest => dest.ChumonJissekiMeisaii, opt => opt.Ignore())
+                .AfterMap((src, dest) => _context.Entry(dest).Property(v => v.Version).OriginalValue = src.Version)
+                .AfterMap((src, dest) => _context.Entry(dest.ChumonJissekiMeisaii).Property(v => v.Version).OriginalValue = src.ChumonJissekiMeisaii.Version);
             });
 
             var mapper = config.CreateMapper(); // AutoMapperのインスタンス作成
@@ -125,6 +128,7 @@ namespace Convenience.Models.Properties {
                 .ThenInclude(s => s.ShohinMaster)
                 .ToList();
 
+
             //現在時間
             DateTime nowTime = DateTime.Now;
 
@@ -185,11 +189,23 @@ namespace Convenience.Models.Properties {
 
             IList<SokoZaiko> sokoZaikos = new List<SokoZaiko>();
 
+            foreach (var sokoZaikokey in shiireJissekiGrp) {
+                SokoZaiko? sokoZaiko = _context.SokoZaiko
+               .Where(s => s.ShiireSakiId == sokoZaikokey.ShireSakiId && s.ShiirePrdId == sokoZaikokey.ShiirePrdId && s.ShohinId == sokoZaikokey.ShohinId)
+               .FirstOrDefault();
+
+                if (sokoZaiko != null)sokoZaikos.Add(sokoZaiko);
+            }
+
+
+
+            /* 以下は、.AsEnumerable()を使っていて、全件メモリに貼り付けて危険なので、上記の書き方に変更
             sokoZaikos = _context.SokoZaiko
                 .AsEnumerable() //これ入れないとposgreでエラー
                 .Where(s => shiireJissekiGrp
                   .Any(j => s.ShiireSakiId == j.ShireSakiId && s.ShiirePrdId == j.ShiirePrdId && s.ShohinId == j.ShohinId))
                 .ToList();
+            */
 
             var result = shiireJissekiGrp.GroupJoin(
             sokoZaikos,
@@ -227,6 +243,7 @@ namespace Convenience.Models.Properties {
                     )
                 .ForMember(t => t.ShiireMaster, opt => opt.Ignore())
                 .ForMember(t => t.ShiireJissekis, opt => opt.Ignore())
+                .ForMember(t => t.Version, opt => opt.Ignore()) //TimeStampを上書きしない
                 ;
             });
 
@@ -236,9 +253,7 @@ namespace Convenience.Models.Properties {
                 _context.SokoZaiko.AddRange(result);
             }
             else {
-                var entitiesx = _context.ChangeTracker.Entries();
                 mapper2.Map<IList<SokoZaiko>, IList<SokoZaiko>>(result, sokoZaikos);
-                var entitiesy = _context.ChangeTracker.Entries();
             }
 
             SokoZaikos = sokoZaikos;
@@ -266,8 +281,7 @@ namespace Convenience.Models.Properties {
                     .Where(c => c.ChumonZan > 0).GroupBy(c => c.ChumonId).Select(group => new ChumonList {
                         ChumonId = group.Key,
                         ChumonZan = group.Sum(c => c.ChumonZan)
-                    }).OrderBy( o => o.ChumonId).ToList();
-
+                    }).OrderBy(o => o.ChumonId).ToList();
             //return (chumonIdList.Count() > 0 ? chumonIdList : null);
             return (chumonIdList);
         }

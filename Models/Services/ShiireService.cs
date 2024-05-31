@@ -4,6 +4,7 @@ using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.Shiire;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using static Convenience.Models.Properties.Shiire;
 
 namespace Convenience.Models.Services {
@@ -66,13 +67,46 @@ namespace Convenience.Models.Services {
             //引数の注文実績の内容でプロパティを更新する(postデータ取り込み)
             shiireJissekis = shiire.ShiireUpdate(inShiireJissekis);
 
-            //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
-            //在庫の登録はここで行われる
-            ShiireUkeireReturnSet shiirezaikoset = shiire.ChuumonZanZaikoSuChousei(inChumonId, shiireJissekis);
+            bool loopFlg = true;
+            ShiireUkeireReturnSet shiirezaikoset=null;
+            uint loopCount = 0;
+            int entities = 0;
 
-            //ここにＤＢ保管処理を入れる
+            while (loopFlg) {
 
-            var entities = ShiireUpdate();
+                //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
+                //在庫の登録はここで行われる（１）
+                shiirezaikoset = shiire.ChuumonZanZaikoSuChousei(inChumonId, shiireJissekis);
+
+                try {
+                    //ここにＤＢ保管処理を入れる
+                    entities = ShiireUpdate();
+                    loopFlg = false;
+                }
+                //排他制御エラーの場合
+                catch (DbUpdateConcurrencyException ex) {
+                    if (ex.Entries.Count() ==1 && ex.Entries.First().Entity is SokoZaiko) {
+                        if (loopCount++ > 10) {
+                            throw;  //10回トライしてダメなら例外スロー
+                        }
+                        Thread.Sleep(1000); //１秒待つ
+                        //倉庫在庫をデタッチしないと、キャッシュが生きたままなので
+                        //（１）の処理で同じデータを取得してしまう為の処置
+                        foreach (var item in shiire.SokoZaikos) {
+                            _context.Entry(item).State = EntityState.Detached;
+                        }
+                        //注文残の引き戻し
+                        foreach (var item in shiire.Shiirejissekis) {
+                            item.ChumonJissekiMeisaii.ChumonZan=
+                            _context.Entry(item.ChumonJissekiMeisaii).Property(p => p.ChumonZan).OriginalValue;
+                        }
+                        loopFlg = true;
+                    }
+                    else {      //その他排他制御の場合は例外をスローする
+                        throw;
+                    }
+                }
+            }
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
             shiire.ShiireSokoConnection(shiirezaikoset.ShiireJissekis, shiirezaikoset.SokoZaikos);

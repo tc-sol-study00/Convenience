@@ -64,5 +64,8 @@ namespace Convenience.Models.DataModels {
         [NotMapped]
         [ForeignKey(nameof(ShiireSakiId) + "," + nameof(ShiirePrdId) + "," + nameof(ShohinId))]
         public virtual SokoZaiko? SokoZaiko { get; set; }
+
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }

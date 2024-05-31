@@ -51,5 +51,8 @@ namespace Convenience.Models.DataModels {
 
         [NotMapped]
         public virtual IList<ShiireJisseki>? ShiireJissekis { get; set; }
+
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }
