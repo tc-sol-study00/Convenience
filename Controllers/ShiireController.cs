@@ -1,5 +1,6 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
+using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.Services;
 using Convenience.Models.ViewModels.Shiire;
@@ -11,7 +12,7 @@ namespace Convenience.Controllers {
     public class ShiireController : Controller {
         private readonly ConvenienceContext _context;
 
-        private ShiireService shiireService;
+        private IShiireService shiireService;
 
         public ShiireController(ConvenienceContext context) {
             _context = context;
@@ -19,7 +20,7 @@ namespace Convenience.Controllers {
         }
 
         public async Task<IActionResult> ShiireKeyInput() {
-            ShiireKeysViewModel keymodel = shiireService.SetShiireKeysModel();
+            ShiireKeysViewModel keymodel = await shiireService.SetShiireKeysModel();
             return View(keymodel);
         }
 
@@ -27,7 +28,7 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShiireKeyInput(ShiireKeysViewModel inKeysModel) {
             string inChumonId = inKeysModel.ChumonId;
-            (int, IList<ShiireJisseki>) resultTuple = shiireService.ShiireHandling(inChumonId);
+            (int, IList<ShiireJisseki>) resultTuple = await shiireService.ShiireHandling(inChumonId);
 
             //resultTuple.Item2 = resultTuple.Item2.OrderBy(s => new { s.ShiireSakiId, s.ShiirePrdId, s.ShohinId }).ToList();
 
@@ -54,7 +55,7 @@ namespace Convenience.Controllers {
             uint inSeqByShiireDate = inShiireViewModel.SeqByShiireDate;
             IList<ShiireJisseki> inShiireJissekis = inShiireViewModel.ShiireJissekis;
 
-            var resultTuple = shiireService.ShiireHandling(inChumonId, inShiireDate, inSeqByShiireDate, inShiireJissekis);
+            var resultTuple = await shiireService.ShiireHandling(inChumonId, inShiireDate, inSeqByShiireDate, inShiireJissekis);
 
             List<ShiireJisseki> listdt = (List<ShiireJisseki>)resultTuple.Item2;
 

@@ -1,11 +1,12 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
+using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
 
-    public class Zaiko {
+    public class Zaiko : IZaiko {
         private readonly ConvenienceContext _context;
         public IList<SokoZaiko> SokoZaikos { get; set; }
 

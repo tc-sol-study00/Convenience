@@ -1,5 +1,6 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
+using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.Shiire;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,7 @@ using static Convenience.Models.Properties.Shiire;
 
 namespace Convenience.Models.Services {
 
-    public class ShiireService {
+    public class ShiireService : IShiireService {
         private readonly ConvenienceContext _context;
 
         private Shiire shiire;

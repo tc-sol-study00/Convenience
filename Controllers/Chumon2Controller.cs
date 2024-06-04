@@ -24,7 +24,7 @@ namespace Convenience.Controllers {
         }
 
         public async Task<IActionResult> KeyInput() {
-            ChumonKeysViewModel keymodel = SetChumonKeysViewModel();
+            ChumonKeysViewModel keymodel = await SetChumonKeysViewModel();
             ViewData["Title"] = "商品注文２";
             return View("/Views/Chumon/KeyInput.cshtml",keymodel);
         }
@@ -46,15 +46,15 @@ namespace Convenience.Controllers {
 
             //もし、引数の注文日付がない場合（画面入力の注文日付が入力なしだと、1年1月1日になる
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == inChumonDate) {
-                chumonJisseki = chumon.ChumonSakusei(inShiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
+                chumonJisseki = await chumon.ChumonSakusei(inShiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
             }
             else {
                 //注文日付指定あり→注文問い合わせ
-                chumonJisseki = chumon.ChumonToiawase(inShiireSakiId, inChumonDate);
+                chumonJisseki = await chumon.ChumonToiawase(inShiireSakiId, inChumonDate);
 
                 if (chumonJisseki == null) {
                     //注文問い合わせでデータがない場合は、注文作成
-                    chumonJisseki = chumon.ChumonSakusei(inShiireSakiId,inChumonDate);
+                    chumonJisseki = await chumon.ChumonSakusei(inShiireSakiId,inChumonDate);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace Convenience.Controllers {
             }
 
             //注文実績更新（データ更新・追加共有）
-            var chumonJisseki = chumon.ChumonUpdate(ChumonViewModel.ChumonJisseki);
+            ChumonJisseki chumonJisseki = await chumon.ChumonUpdate(ChumonViewModel.ChumonJisseki);
 
             //データが更新されているかEFから聞く
             var entities = _context.ChangeTracker.Entries()
@@ -91,11 +91,11 @@ namespace Convenience.Controllers {
             .Select(e => e.Entity).Count();
 
             //ＤＢ更新
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             //ＤＢ更新結果をもう一度問い合わせて、再表示させる
 
-            chumonJisseki = chumon.ChumonToiawase(ChumonViewModel.ChumonJisseki.ShiireSakiId, ChumonViewModel.ChumonJisseki.ChumonDate);
+            chumonJisseki = await chumon.ChumonToiawase(ChumonViewModel.ChumonJisseki.ShiireSakiId, ChumonViewModel.ChumonJisseki.ChumonDate);
 
             var chumonViewModel = new ChumonViewModel {
                 ChumonJisseki = chumonJisseki,
@@ -107,8 +107,8 @@ namespace Convenience.Controllers {
             return View("/Views/Chumon/ChumonMeisai.cshtml",chumonViewModel);
         }
 
-        public ChumonKeysViewModel SetChumonKeysViewModel() {
-            var list = _context.ShiireSakiMaster.OrderBy(s => s.ShiireSakiId).Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToList();
+        public async Task<ChumonKeysViewModel> SetChumonKeysViewModel() {
+            var list = await _context.ShiireSakiMaster.OrderBy(s => s.ShiireSakiId).Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToListAsync();
 
             return (new ChumonKeysViewModel() {
                 ShiireSakiId = null,

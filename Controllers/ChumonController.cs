@@ -63,10 +63,10 @@ namespace Convenience.Controllers {
             }
 
             if (inChumonKeysViewModel.ChumonDate == DateOnly.FromDateTime(new DateTime(1, 1, 1))) {
-                chumonViewModel = chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, DateOnly.FromDateTime(DateTime.Now));
+                chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, DateOnly.FromDateTime(DateTime.Now));
             }
             else {
-                chumonViewModel = chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, inChumonKeysViewModel.ChumonDate);
+                chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, inChumonKeysViewModel.ChumonDate);
             }
             KeepObject();
             return View("ChumonMeisai", chumonViewModel);
