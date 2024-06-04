@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
 
@@ -25,18 +26,16 @@ namespace Convenience.Models.Properties {
             _context = context;
         }
 
-        public IOrderedEnumerable<SokoZaiko> CreateSokoZaikoList(Func<SokoZaiko, object> sortKey, bool descending) {
-            IOrderedEnumerable<SokoZaiko> soko;
+        public async Task<IList<SokoZaiko>> CreateSokoZaikoList<TKey>(Expression<Func<SokoZaiko, TKey>> sortKey, bool descending) {
 
-            var sokodata = _context.SokoZaiko.Include(i => i.ShiireMaster).ThenInclude(j => j.ShohinMaster);
-
+            IQueryable<SokoZaiko> sokodata = _context.SokoZaiko.Include(i => i.ShiireMaster).ThenInclude(j => j.ShohinMaster);
             if (descending) {
-                soko = sokodata.OrderByDescending(sortKey);
+                sokodata = sokodata.OrderByDescending(sortKey);
             }
             else {
-                soko = sokodata.OrderBy(sortKey);
+                sokodata = sokodata.OrderBy(sortKey);
             }
-            return (soko);
+            return (await sokodata.ToListAsync());
         }
     }
 }

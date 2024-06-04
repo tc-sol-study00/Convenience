@@ -38,13 +38,13 @@ namespace Convenience.Models.Services {
             shiire = new Shiire(_context);
         }
 
-        public (int, IList<ShiireJisseki>) ShiireHandling(string inChumonId) {
+        public async Task<(int, IList<ShiireJisseki>)> ShiireHandling(string inChumonId) {
             DateOnly inShiireDate = DateOnly.FromDateTime(DateTime.Now);
             //仕入SEQ
-            uint inSeqByShiireDate = shiire.NextSeq(inChumonId, inShiireDate);
+            uint inSeqByShiireDate = await shiire.NextSeq(inChumonId, inShiireDate);
             IList<ShiireJisseki> shiireJissekis;
             //新規の場合
-            shiireJissekis = shiire.ChumonToShiireJisseki(inChumonId, inShiireDate, inSeqByShiireDate);
+            shiireJissekis = await shiire.ChumonToShiireJisseki(inChumonId, inShiireDate, inSeqByShiireDate);
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
             shiire.ShiireSokoConnection(shiireJissekis, _context.SokoZaiko);
@@ -52,15 +52,15 @@ namespace Convenience.Models.Services {
             return (0, shiire.Shiirejissekis);
         }
 
-        public (int, IList<ShiireJisseki>) ShiireHandling(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate, IList<ShiireJisseki> inShiireJissekis) {
+        public async Task<(int, IList<ShiireJisseki>)> ShiireHandling(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate, IList<ShiireJisseki> inShiireJissekis) {
             IList<ShiireJisseki> shiireJissekis;
 
             //既に仕入実績にあるか？
-            if (shiire.ChuumonIdOnShiireJissekiExistingCheck(inChumonId, inShiireDate, inSeqByShiireDate)) {
-                shiireJissekis = shiire.ShiireToShiireJisseki(inChumonId, inShiireDate, inSeqByShiireDate);  //ある場合は仕入実績から仕入実績を作る
+            if (await shiire.ChuumonIdOnShiireJissekiExistingCheck(inChumonId, inShiireDate, inSeqByShiireDate)) {
+                shiireJissekis = await shiire.ShiireToShiireJisseki(inChumonId, inShiireDate, inSeqByShiireDate);  //ある場合は仕入実績から仕入実績を作る
             }
             else {
-                shiireJissekis = shiire.ChumonToShiireJisseki(inChumonId, inShiireDate, inSeqByShiireDate);  //ない場合は注文実績から仕入実績を作る
+                shiireJissekis = await shiire.ChumonToShiireJisseki(inChumonId, inShiireDate, inSeqByShiireDate);  //ない場合は注文実績から仕入実績を作る
             }
             shiireJissekis = shiireJissekis;
 
@@ -76,11 +76,11 @@ namespace Convenience.Models.Services {
 
                 //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
                 //在庫の登録はここで行われる（１）
-                shiirezaikoset = shiire.ChuumonZanZaikoSuChousei(inChumonId, shiireJissekis);
+                shiirezaikoset = await shiire.ChuumonZanZaikoSuChousei(inChumonId, shiireJissekis);
 
                 try {
                     //ここにＤＢ保管処理を入れる
-                    entities = ShiireUpdate();
+                    entities = await ShiireUpdate();
                     loopFlg = false;
                 }
                 //排他制御エラーの場合
@@ -117,10 +117,10 @@ namespace Convenience.Models.Services {
             return (entities, shiire.Shiirejissekis);
         }
 
-        public ShiireKeysViewModel SetShiireKeysModel() {
+        public async Task<ShiireKeysViewModel> SetShiireKeysModel() {
             var shiireKeysModel = new ShiireKeysViewModel {
                 ChumonId = null,
-                ChumonIdList = shiire.ZanAriChumonList()
+                ChumonIdList = (await shiire.ZanAriChumonList())
                 .Select(s => new SelectListItem { Value = s.ChumonId, Text = s.ChumonId + ":" + s.ChumonZan.ToString() })
                 .ToList()
             };
@@ -129,13 +129,13 @@ namespace Convenience.Models.Services {
 
         //更新
 
-        public int ShiireUpdate() {
+        public async Task<int> ShiireUpdate() {
             var entitiesx = _context.ChangeTracker.Entries();
             var entities = _context.ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
             .Select(e => e.Entity).Count();
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return (entities);
         }

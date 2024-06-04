@@ -6,11 +6,11 @@ namespace Convenience.Models.Interfaces {
     public interface IChumon {
         public ChumonJisseki ChumonJisseki { get; set; }
 
-        public ChumonJisseki ChumonSakusei(string inShireSakiId, DateOnly inChumonDate);
+        public Task<ChumonJisseki> ChumonSakusei(string inShireSakiId, DateOnly inChumonDate);
 
-        public ChumonJisseki ChumonToiawase(string inShireSakiId, DateOnly inChumonDate);
+        public Task<ChumonJisseki> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate);
 
-        public ChumonJisseki ChumonUpdate(ChumonJisseki inChumonJisseki);
+        public Task<ChumonJisseki> ChumonUpdate(ChumonJisseki inChumonJisseki);
 
         /*
          * 注文実績＋注文明細更新

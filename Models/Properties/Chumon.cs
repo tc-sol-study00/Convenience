@@ -46,7 +46,7 @@ namespace Convenience.Models.Properties {
 
 
         //注文作成
-        public ChumonJisseki ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
+        public async Task<ChumonJisseki> ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
             /*
              * 注文作成（新規）
              *  引数　  仕入先コード
@@ -59,13 +59,13 @@ namespace Convenience.Models.Properties {
              */
 
             //引数チェック（仕入先コード有無）
-            if (_context.ShiireSakiMaster.Find(inShireSakiId) == null) {
+            if (await _context.ShiireSakiMaster.FindAsync(inShireSakiId) == null) {
                 throw new Exception("仕入先ＩＤエラー");
             }
             //仕入先より注文実績データ（親）を生成する(a)
 
             ChumonJisseki = new ChumonJisseki {
-                ChumonId = ChumonIdHatsuban(inChumonDate,_context),              //注文コード発番
+                ChumonId = await ChumonIdHatsuban(inChumonDate,_context),              //注文コード発番
                 ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
                 ChumonDate = inChumonDate                           //注文日付
             };
@@ -81,7 +81,7 @@ namespace Convenience.Models.Properties {
             ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>() { };
 
             //(b)のデータから注文実績明細を作成する
-            foreach (var shiire in shiireMasters) {
+            foreach (var shiire in await shiireMasters.ToListAsync()) {
 
                 shiire.ShohinMaster.ShiireMasters = null;
                 //shiire.ShiireSakiMaster.ShireMasters = null;
@@ -103,7 +103,7 @@ namespace Convenience.Models.Properties {
             return ChumonJisseki;
         }
 
-        public ChumonJisseki ChumonToiawase(string inShireSakiId, DateOnly inChumonDate) {
+        public async Task<ChumonJisseki> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate) {
             /*
              * 注文更新用問い合わせ
              *  引数　  仕入先コード、注文日
@@ -113,17 +113,17 @@ namespace Convenience.Models.Properties {
              *  ②戻り値を注文実績＋注文実績明細とする
              */
             //①注文実績＋注文実績＋仕入マスタ＋商品マスタ検索
-            ChumonJisseki = _context.ChumonJisseki
+            ChumonJisseki = await _context.ChumonJisseki
                      .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
                      .Include(cm => cm.ChumonJissekiMeisais)
                      .ThenInclude(shi => shi.ShiireMaster)
                      .ThenInclude(sho => sho.ShohinMaster)
-                     .FirstOrDefault();
+                     .FirstOrDefaultAsync();
             //②戻り値を注文実績＋注文実績明細とする
             return (ChumonJisseki);
         }
 
-        private string ChumonIdHatsuban(DateOnly InTheDate,ConvenienceContext _context) {
+        private async Task<string> ChumonIdHatsuban(DateOnly InTheDate,ConvenienceContext _context) {
             /*
              * 注文コード発番
              *  引数　  なし
@@ -137,9 +137,9 @@ namespace Convenience.Models.Properties {
             dateArea = InTheDate == null ? DateTime.Today.ToString("yyyyMMdd"):dateArea = InTheDate.ToString("yyyyMMdd");
 
             //今日の日付からすでに今日の分の注文コードがないか調べる
-            var chumonid = _context.ChumonJisseki
+            var chumonid = await _context.ChumonJisseki
                 .Where(x => x.ChumonId.StartsWith(dateArea))
-                .Max(x => x.ChumonId);
+                .MaxAsync(x => x.ChumonId);
 
             seqNumber = string.IsNullOrEmpty(chumonid) ? 1 //今日、注文コード起こすのが初めての場合
                       : uint.Parse(chumonid.Substring(9, 3)) + 1;
@@ -151,7 +151,7 @@ namespace Convenience.Models.Properties {
             return seqNumber <= 999 ? $"{dateArea}-{seqNumber:000}" : null;  // 999以上はNULLセット
         }
 
-        public ChumonJisseki ChumonUpdate2(ChumonJisseki inChumonJisseki) {
+        public async Task<ChumonJisseki> ChumonUpdate2(ChumonJisseki inChumonJisseki) {
 
             //注文実績明細のpostデータを反映する
             //ベース　メンバーの注文実績内の注文実績明細
@@ -172,8 +172,8 @@ namespace Convenience.Models.Properties {
 
             }
             //注文実績がまだＤＢに登録されてなければＤＢに対して追加
-            if (_context.ChumonJisseki.Where(x => x.ChumonId == inChumonJisseki.ChumonId).FirstOrDefault() == null) {
-                _context.ChumonJisseki.Add(ChumonJisseki);  //注文実績明細は、注文実績にぶら下がっているので同タイミングで挿入される
+            if (await _context.ChumonJisseki.Where(x => x.ChumonId == inChumonJisseki.ChumonId).FirstOrDefaultAsync() == null) {
+                await _context.ChumonJisseki.AddAsync(ChumonJisseki);  //注文実績明細は、注文実績にぶら下がっているので同タイミングで挿入される
             }
             //登録されている場合は、更新なのでそのままで良い
 
@@ -183,7 +183,7 @@ namespace Convenience.Models.Properties {
             return (ChumonJisseki);
         }
 
-        public ChumonJisseki ChumonUpdate(ChumonJisseki postedChumonJisseki) {
+        public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki) {
             /*
              * 注文実績＋注文明細更新
              *  引数　  注文実績
@@ -193,9 +193,9 @@ namespace Convenience.Models.Properties {
             ChumonJisseki existedChumonJisseki; //DBにすでに登録されている場合の移送先
 
             //注文実績を読む
-            existedChumonJisseki = _context.ChumonJisseki.AsNoTracking()
+            existedChumonJisseki = await _context.ChumonJisseki.AsNoTracking()
                 .Include(e => e.ChumonJissekiMeisais.OrderBy(x => x.ShiirePrdId))
-                .FirstOrDefault(e => e.ChumonId == ChumonJisseki.ChumonId);
+                .FirstOrDefaultAsync(e => e.ChumonId == ChumonJisseki.ChumonId);
 
             if (existedChumonJisseki != null) {  //注文実績がある場合
 
@@ -221,7 +221,7 @@ namespace Convenience.Models.Properties {
                 foreach (var item in postedChumonJisseki.ChumonJissekiMeisais) {
                     item.ChumonZan = item.ChumonSu;
                 }
-                _context.ChumonJisseki.Add(postedChumonJisseki);
+                await _context.ChumonJisseki.AddAsync(postedChumonJisseki);
                 ChumonJisseki = postedChumonJisseki;
             }
             //注文実績＋注文実績明細を戻り値とする

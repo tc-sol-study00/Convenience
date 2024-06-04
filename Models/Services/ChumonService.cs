@@ -44,26 +44,31 @@ namespace Convenience.Models.Services {
             chumon = CreateChumonInstance(_context);
         }
 
-        public ChumonViewModel ChumonSetting(string inShiireSakiId, DateOnly inChumonDate) {
+        public async Task<IList<ChumonJisseki>> Test() {
+            IList<ChumonJisseki> listChumonJissekis = await _context.ChumonJisseki.Include(i => i.ChumonJissekiMeisais).ToListAsync();
+            return listChumonJissekis;
+        }
+
+        public async Task<ChumonViewModel> ChumonSetting(string inShiireSakiId, DateOnly inChumonDate) {
             /*
              * 注文セッティング
              * 引数：仕入先コード、注文日付
              * 戻り値：注文viewモデル
              */
-
+            
             //注文実績モデル変数定義
             ChumonJisseki chumonJisseki;
             //もし、引数の注文日付がない場合（画面入力の注文日付が入力なしだと、1年1月1日になる
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == inChumonDate) {
-                chumonJisseki = chumon.ChumonSakusei(inShiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
+                chumonJisseki = await chumon.ChumonSakusei(inShiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
             }
             else {
                 //注文日付指定あり→注文問い合わせ
-                chumonJisseki = chumon.ChumonToiawase(inShiireSakiId, inChumonDate);
+                chumonJisseki = await chumon.ChumonToiawase(inShiireSakiId, inChumonDate);
 
                 if (chumonJisseki == null) {
                     //注文問い合わせでデータがない場合は、注文作成
-                    chumonJisseki = chumon.ChumonSakusei(inShiireSakiId, inChumonDate);
+                    chumonJisseki = await chumon.ChumonSakusei(inShiireSakiId, inChumonDate);
                 }
             }
             //注文モデルを設定し戻り値とする
@@ -74,7 +79,7 @@ namespace Convenience.Models.Services {
 
         public async Task<(ChumonJisseki, int, bool, ErrDef)> ChumonCommit(ChumonJisseki inChumonJisseki) {
 
-            var chumonJisseki = chumon.ChumonUpdate(inChumonJisseki);
+            var chumonJisseki = await chumon.ChumonUpdate(inChumonJisseki);
 
             (bool IsValid, ErrDef errCd) = ChumonJissekiIsValid(chumonJisseki);
 
@@ -86,11 +91,12 @@ namespace Convenience.Models.Services {
 
                 try {
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException ex) {
                     throw new Exception(ex.Message);
                 }
-                chumonJisseki = chumon.ChumonToiawase(inChumonJisseki.ShiireSakiId, inChumonJisseki.ChumonDate);
+                chumonJisseki = await chumon.ChumonToiawase(inChumonJisseki.ShiireSakiId, inChumonJisseki.ChumonDate);
                 return (chumonJisseki, entities, IsValid, ErrDef.NormalUpdate);
                 }
             else {

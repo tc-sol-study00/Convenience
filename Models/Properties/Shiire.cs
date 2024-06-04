@@ -64,9 +64,9 @@ namespace Convenience.Models.Properties {
 
         //仕入実績に既に存在しているかチェック
 
-        public bool ChuumonIdOnShiireJissekiExistingCheck(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
-            var result = _context.ShiireJisseki
-                .FirstOrDefault(
+        public async Task<bool> ChuumonIdOnShiireJissekiExistingCheck(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
+             var result = await _context.ShiireJisseki
+                .FirstOrDefaultAsync(
                     w => w.ChumonId == inChumonId
                     && w.ShiireDate == inShiireDate
                     && w.SeqByShiireDate == inSeqByShiireDate
@@ -75,7 +75,7 @@ namespace Convenience.Models.Properties {
             return (result != null);
         }
 
-        public ShiireUkeireReturnSet ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
+        public async Task<ShiireUkeireReturnSet> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
             /*
                 * 注文残・在庫数量調整
             */
@@ -91,7 +91,7 @@ namespace Convenience.Models.Properties {
 
             //仕入実績を元に倉庫在庫セット
 
-            var sokoZaikos = ZaikoSet(inShiireJissekis);
+            var sokoZaikos = await ZaikoSet(inShiireJissekis);
 
             return (new ShiireUkeireReturnSet {
                 ShiireJissekis = inShiireJissekis,
@@ -99,8 +99,8 @@ namespace Convenience.Models.Properties {
             });
         }
 
-        public IList<ShiireJisseki> ShiireToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
-            IList<ShiireJisseki> shiireJissekis = _context.ShiireJisseki
+        public async Task<IList<ShiireJisseki>> ShiireToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
+            IList<ShiireJisseki> shiireJissekis = await _context.ShiireJisseki
                 .Where(c => c.ChumonId == inChumonId && c.ShiireDate == inShiireDate && c.SeqByShiireDate == inSeqByShiireDate)
                 .Include(cjm => cjm.ChumonJissekiMeisaii)
                 .ThenInclude(cj => cj.ChumonJisseki)
@@ -108,25 +108,25 @@ namespace Convenience.Models.Properties {
                 .Include(cjm => cjm.ChumonJissekiMeisaii)
                 .ThenInclude(a => a.ShiireMaster)
                 .ThenInclude(s => s.ShohinMaster)
-                .ToList();
+                .ToListAsync();
 
             Shiirejissekis = shiireJissekis;
 
             return (Shiirejissekis);
         }
 
-        public IList<ShiireJisseki> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
+        public async Task<IList<ShiireJisseki>> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
             /*
             * 仕入実績作成
             */
             //注文明細取得（キー：注文コード）複数のレコード
-            IList<ChumonJissekiMeisai> chumonJissekiMeisais = _context.ChumonJissekiMeisai
+            IList<ChumonJissekiMeisai> chumonJissekiMeisais = await _context.ChumonJissekiMeisai
                 .Where(c => c.ChumonId == inChumonId)
                 .Include(cj => cj.ChumonJisseki)
                 .ThenInclude(ss => ss.ShiireSakiMaster)
                 .Include(sm => sm.ShiireMaster)
                 .ThenInclude(s => s.ShohinMaster)
-                .ToList();
+                .ToListAsync();
 
 
             //現在時間
@@ -153,14 +153,14 @@ namespace Convenience.Models.Properties {
 
             mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(chumonJissekiMeisais, shiireJissekis);
 
-            _context.ShiireJisseki.AddRange(shiireJissekis);
+            await _context.ShiireJisseki.AddRangeAsync(shiireJissekis);
 
             Shiirejissekis = shiireJissekis;
 
             return (Shiirejissekis);
         }
 
-        private IList<SokoZaiko> ZaikoSet(IList<ShiireJisseki> shiireJissekis) {
+        private async Task<IList<SokoZaiko>> ZaikoSet(IList<ShiireJisseki> shiireJissekis) {
             /*
              * 倉庫在庫登録
              */
@@ -190,9 +190,9 @@ namespace Convenience.Models.Properties {
             IList<SokoZaiko> sokoZaikos = new List<SokoZaiko>();
 
             foreach (var sokoZaikokey in shiireJissekiGrp) {
-                SokoZaiko? sokoZaiko = _context.SokoZaiko
+                SokoZaiko? sokoZaiko = await _context.SokoZaiko
                .Where(s => s.ShiireSakiId == sokoZaikokey.ShireSakiId && s.ShiirePrdId == sokoZaikokey.ShiirePrdId && s.ShohinId == sokoZaikokey.ShohinId)
-               .FirstOrDefault();
+               .FirstOrDefaultAsync();
 
                 if (sokoZaiko != null)sokoZaikos.Add(sokoZaiko);
             }
@@ -250,7 +250,7 @@ namespace Convenience.Models.Properties {
             var mapper2 = new Mapper(config2);
 
             if (sokoZaikos.Count() == 0) {
-                _context.SokoZaiko.AddRange(result);
+                await _context.SokoZaiko.AddRangeAsync(result);
             }
             else {
                 mapper2.Map<IList<SokoZaiko>, IList<SokoZaiko>>(result, sokoZaikos);
@@ -266,22 +266,22 @@ namespace Convenience.Models.Properties {
             public decimal ChumonZan { get; set; }
         }
 
-        public uint NextSeq(string inChumonId, DateOnly inShiireDate) {
-            ShiireJisseki? shiirej = _context.ShiireJisseki
+        public async Task<uint> NextSeq(string inChumonId, DateOnly inShiireDate) {
+            ShiireJisseki? shiirej = await _context.ShiireJisseki
                 .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
                     .OrderByDescending(s => s.SeqByShiireDate)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
             uint seq = shiirej != null ? shiirej.SeqByShiireDate : 0;
             return (++seq);
         }
 
         //注文残がある注文のリスト化
-        public IList<ChumonList> ZanAriChumonList() {
-            IList<ChumonList> chumonIdList = _context.ChumonJissekiMeisai
+        public async Task<IList<ChumonList>> ZanAriChumonList() {
+            IList<ChumonList> chumonIdList = await _context.ChumonJissekiMeisai
                     .Where(c => c.ChumonZan > 0).GroupBy(c => c.ChumonId).Select(group => new ChumonList {
                         ChumonId = group.Key,
                         ChumonZan = group.Sum(c => c.ChumonZan)
-                    }).OrderBy(o => o.ChumonId).ToList();
+                    }).OrderBy(o => o.ChumonId).ToListAsync();
             //return (chumonIdList.Count() > 0 ? chumonIdList : null);
             return (chumonIdList);
         }

@@ -35,43 +35,44 @@ namespace Convenience.Models.Services {
             Zaiko = new Zaiko(_context);
         }
 
-        public IList<SokoZaiko> KeyInput(string key, bool inDescendig) {
-            IOrderedEnumerable<SokoZaiko> sokoZaikos;
+        public async Task<IList<SokoZaiko>> KeyInput(string key, bool inDescendig) {
+            
+            IList<SokoZaiko> sokoZaikos;
 
             switch (key) {
                 case "ShohinId":
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.ShohinId, inDescendig);
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.ShohinId, inDescendig);
                     break;
 
                 case "ShiirePrdId":
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.ShiirePrdId, inDescendig);
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.ShiirePrdId, inDescendig);
                     break;
 
                 case "ShiireSakiId":
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.ShiireSakiId, inDescendig);
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.ShiireSakiId, inDescendig);
                     break;
 
                 case "SokoZaikoCaseSu":
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.SokoZaikoCaseSu, inDescendig);
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.SokoZaikoCaseSu, inDescendig);
                     break;
 
                 case "SokoZaikoSu":
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.SokoZaikoSu, inDescendig);
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.SokoZaikoSu, inDescendig);
                     break;
 
                 case "ShohinName":
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.ShiireMaster.ShohinMaster.ShohinName, inDescendig);
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.ShiireMaster.ShohinMaster.ShohinName, inDescendig);
                     break;
 
                 case null:
-                    sokoZaikos = Zaiko.CreateSokoZaikoList(zaiko => zaiko.ShohinId, inDescendig); //指定なしなら商品Idと同じ
+                    sokoZaikos = await Zaiko.CreateSokoZaikoList(z => z.ShohinId, inDescendig); //指定なしなら商品Idと同じ
                     break;
 
                 default:
                     throw new Exception("ソート項目処理エラー");
             }
 
-            return (sokoZaikos.ToList());
+            return (sokoZaikos);
         }
     }
 }

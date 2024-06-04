@@ -10,7 +10,7 @@ namespace Convenience.Models.Interfaces {
         public IChumon chumon { get; set; }
 
         //注文クラスのオブジェクト変数
-        public ChumonViewModel ChumonSetting(string inShiireSakiId, DateOnly inChumonDate);
+        public Task<ChumonViewModel> ChumonSetting(string inShiireSakiId, DateOnly inChumonDate);
 
         //②注文作成が問い合わせかハンドリングする
         //inChumonDate（注文日付）に何も入っていない場合は、注文作成(ChumonSakusei)を呼ぶ
