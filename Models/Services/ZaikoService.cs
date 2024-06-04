@@ -1,14 +1,15 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
+using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Models.Services {
 
-    public class ZaikoService {
+    public class ZaikoService : IZaikoService {
         private readonly ConvenienceContext _context;
 
-        public Zaiko Zaiko { get; set; }
+        public IZaiko Zaiko { get; set; }
 
         public ZaikoService(ConvenienceContext context) {
             _context = context;
