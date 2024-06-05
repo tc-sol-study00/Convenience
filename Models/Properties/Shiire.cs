@@ -267,12 +267,22 @@ namespace Convenience.Models.Properties {
         }
 
         public async Task<uint> NextSeq(string inChumonId, DateOnly inShiireDate) {
-            ShiireJisseki? shiirej = await _context.ShiireJisseki
+        
+            uint? seq = await _context.ShiireJisseki
                 .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
                     .OrderByDescending(s => s.SeqByShiireDate)
+                    .Select(x => x.SeqByShiireDate)
                     .FirstOrDefaultAsync();
-            uint seq = shiirej != null ? shiirej.SeqByShiireDate : 0;
-            return (++seq);
+        
+        /*
+            uint? seq = await _context.ShiireJisseki
+            .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
+            .MaxAsync(d => d.SeqByShiireDate);
+        */
+            uint rseq = (seq ?? 0) + 1;
+
+            //uint seq = shiirej != null ? shiirej.SeqByShiireDate : 0;
+            return (rseq);
         }
 
         //注文残がある注文のリスト化
