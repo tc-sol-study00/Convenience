@@ -1,6 +1,8 @@
 ﻿using Convenience.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Convenience.Controllers {
 
@@ -12,6 +14,8 @@ namespace Convenience.Controllers {
         }
 
         public IActionResult Index() {
+            //int a = 0;
+            //int b = 1 / a;
             return View(new Menu());
         }
 
@@ -20,8 +24,23 @@ namespace Convenience.Controllers {
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        [IgnoreAntiforgeryToken]
+        public IActionResult Error(int id) {
+
+            IExceptionHandlerPathFeature? exceptionHandlerPathFeature =
+                HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            IStatusCodeReExecuteFeature? statusCodeReExecuteFeature =
+                HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+
+            ErrorViewModel errorViewModel = new ErrorViewModel() {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                StatusCode = id == 0 ? null : id,
+                ExceptionHandlerPathFeature = exceptionHandlerPathFeature,
+                StatusCodeReExecuteFeature = statusCodeReExecuteFeature
+            };
+
+            return View(errorViewModel);
         }
     }
 }
