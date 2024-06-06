@@ -14,8 +14,6 @@ namespace Convenience.Controllers {
         }
 
         public IActionResult Index() {
-            //int a = 0;
-            //int b = 1 / a;
             return View(new Menu());
         }
 
@@ -27,6 +25,8 @@ namespace Convenience.Controllers {
         [IgnoreAntiforgeryToken]
         public IActionResult Error(int id) {
 
+            DateTime dateTime = DateTime.Now;
+
             IExceptionHandlerPathFeature? exceptionHandlerPathFeature =
                 HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
@@ -36,6 +36,7 @@ namespace Convenience.Controllers {
             ErrorViewModel errorViewModel = new ErrorViewModel() {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                 StatusCode = id == 0 ? null : id,
+                EventAt = dateTime,
                 ExceptionHandlerPathFeature = exceptionHandlerPathFeature,
                 StatusCodeReExecuteFeature = statusCodeReExecuteFeature
             };

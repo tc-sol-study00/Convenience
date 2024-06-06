@@ -9,6 +9,8 @@ namespace Convenience.Models
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
         public int? StatusCode { get; set; }
 
+        public DateTime? EventAt { get; set; }
+
         public IExceptionHandlerPathFeature? ExceptionHandlerPathFeature;
 
         public IStatusCodeReExecuteFeature? StatusCodeReExecuteFeature;

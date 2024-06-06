@@ -18,7 +18,7 @@ namespace Convenience.Models.Properties {
          */
 
         //注文実績（データモデル）
-        public ChumonJisseki ChumonJisseki { get; set; }
+        public ChumonJisseki? ChumonJisseki { get; set; }
 
         /*
          * 共通変数
@@ -190,7 +190,7 @@ namespace Convenience.Models.Properties {
              *  戻り値　注文実績
              */
 
-            ChumonJisseki existedChumonJisseki; //DBにすでに登録されている場合の移送先
+            ChumonJisseki? existedChumonJisseki; //DBにすでに登録されている場合の移送先
 
             //注文実績を読む
             existedChumonJisseki = await _context.ChumonJisseki.AsNoTracking()
