@@ -3,3 +3,8 @@
 ################################################################################
 
 /appsettings.json
+bin/
+obj/
+/.gitignore
+/.gitignore
+/.gitignore
