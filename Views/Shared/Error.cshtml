@@ -28,7 +28,7 @@
 
 <h1 class="text-danger">
 
-    @if (Model.StatusCode != null) {
+    @if (Model.StatusCode != null && Model.StatusCode != 1){
         @:Error. @Model.StatusCode
     }
     else {
@@ -44,6 +44,11 @@
         </strong>
     </tr>
     <p></p>
+
+    @if (Model.EventAt != null) {
+        <td><strong>EventAt</strong></td>
+        <td><strong>@Model.EventAt?.ToString("yyyy-MM-dd HH:mm:ss")</strong></td>
+    }
 
     @if (Model.ShowRequestId) {
         <tr>
