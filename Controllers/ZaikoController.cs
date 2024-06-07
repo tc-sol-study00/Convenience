@@ -27,7 +27,7 @@ namespace Convenience.Controllers {
             var inDesc = inZaikoModel.Descending;
 
             ZaikoViewModel zaikoViewModel = new ZaikoViewModel {
-                sokoZaikos = await zaikoService.KeyInput(key, inDesc)
+                zaikoListLine = await zaikoService.KeyInput(key, inDesc)
             };
             return View(zaikoViewModel);
         }
