@@ -5,8 +5,9 @@ using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 namespace Convenience.Models.Interfaces {
     public interface IZaiko {
 
-        public IList<SokoZaiko> SokoZaikos { get; set; }
+        public IQueryable<ZaikoListLine>? SoKoZaikoQueryable { get; set; }
 
-        public Task<IList<ZaikoListLine>> CreateSokoZaikoList<TSource,TKey>(Expression<Func<TSource, TKey>> sortKey, bool descending);
-    }
+        public IQueryable<ZaikoListLine> CreateSokoZaikoList(string searchKey);
+        public IQueryable<ZaikoListLine> AddOrderby(string sortKey, bool descending);
+        }
 }

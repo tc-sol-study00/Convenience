@@ -1,18 +1,28 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 
 namespace Convenience.Models.Properties {
+    
+    //  機能：注文実績明細検索＆倉庫在庫（遅延実行）
 
     public class Zaiko : IZaiko {
-        private readonly ConvenienceContext _context;
-        public IList<SokoZaiko> SokoZaikos { get; set; }
 
+        //DBコンテキスト
+        private readonly ConvenienceContext _context;
+        //生成される問い合わせ（遅延実行用）
+        public IQueryable<ZaikoListLine>? SoKoZaikoQueryable { get; set; } = null;
+        //OrderByかThenByか切り替えるフラグ
+        bool isFirstCalled = true;  //true->Orderby false->ThenBy
+
+        //コンストラクター（コンソール実行＝デバッグ用）
         public Zaiko() {
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -26,74 +36,105 @@ namespace Convenience.Models.Properties {
             _context = new ConvenienceContext(contextOptions);
         }
 
+        //ＤＢコンテキスト設定（ＡＳＰ実行用）
         public Zaiko(ConvenienceContext context) {
             _context = context;
         }
 
-        public async Task<IList<ZaikoListLine>> CreateSokoZaikoList<TSource, TKey>(Expression<Func<TSource, TKey>> sortKey, bool descending) {
+        //  機能：注文実績明細検索＆倉庫在庫（遅延実行）
+        //  入力：倉庫在庫　＆　注文実績明細（ＤＢ）
+        //　　　：検索キー（引数）
+        //  出力：倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) Where指示付き　ISoKoZaikoQueryable型にして遅延実行化
+        public IQueryable<ZaikoListLine> CreateSokoZaikoList(string inSearchKey) {
 
-            //倉庫在庫検索
-            IQueryable<SokoZaiko> sokodata = _context.SokoZaiko.AsNoTracking().Include(i => i.ShiireMaster).ThenInclude(j => j.ShohinMaster);
+            //検索処理初回か？　nullの場合初回
+            //Whereが複数セットされるが、セットのたびにこのメソッドはコールされるため、初回判断が必要
+            if (SoKoZaikoQueryable == null) {
 
-            //ソートキーのラムダ式の変換（倉庫在庫用）
-            var convertedSortKey = sortKey as Expression<Func<SokoZaiko, TKey>>;
+                //初回の場合は、注文実績と倉庫在庫を結合するLinq実行
+                //注文実績検索（遅延実行）
+                IQueryable<ChumonJissekiMeisai> chumonJissekiQueryable = _context.ChumonJissekiMeisai.AsNoTracking()
+                .Where(x => x.ChumonZan > 0)
+                .GroupBy(gr => new { gr.ShiireSakiId, gr.ShiirePrdId, gr.ShohinId })
+                .Select(s => new ChumonJissekiMeisai { ShiireSakiId = s.Key.ShiireSakiId, ShiirePrdId = s.Key.ShiirePrdId, ShohinId = s.Key.ShohinId, ChumonSu = s.Sum(item => item.ChumonSu), ChumonZan = s.Sum(item => item.ChumonZan) })
+                .AsQueryable();
 
-            //ソートキーの昇順・降順設定（倉庫在庫用）
-            if (typeof(TSource) == typeof(SokoZaiko)) {
-                if (descending) {
-                    sokodata = sokodata.OrderByDescending(convertedSortKey);
+                //倉庫在庫検索（遅延実行）
+                SoKoZaikoQueryable = _context.SokoZaiko.AsNoTracking()
+                    .Include(i => i.ShiireMaster).ThenInclude(j => j.ShohinMaster)
+                    .GroupJoin(chumonJissekiQueryable,
+                            soko => new { soko.ShiireSakiId, soko.ShiirePrdId, soko.ShohinId },
+                            cjm => new { cjm.ShiireSakiId, cjm.ShiirePrdId, cjm.ShohinId },
+                            (soko, cjm) => new { soko, cjm })
+                    .SelectMany(
+                            soko => soko.cjm.DefaultIfEmpty(),
+                            (soko, cjm) => new ZaikoListLine {
+                                ShiireSakiId = soko.soko.ShiireSakiId,
+                                ShiirePrdId = soko.soko.ShiirePrdId,
+                                ShohinId = soko.soko.ShohinId,
+                                ShohinName = soko.soko.ShiireMaster.ShohinMaster.ShohinName,
+                                SokoZaikoCaseSu = soko.soko.SokoZaikoCaseSu,
+                                SokoZaikoSu = soko.soko.SokoZaikoSu,
+                                LastShiireDate = soko.soko.LastShiireDate,
+                                LastDeliveryDate = soko.soko.LastDeliveryDate,
+                                ChumonZan = cjm.ChumonZan
+                            })
+                    .AsQueryable();
+            }
+
+            //inSearchKeyによるwhereの設定
+            //初回のみならず、メソッド実行のたびに、whereが追加される
+            SoKoZaikoQueryable = inSearchKey != null ?
+                SoKoZaikoQueryable = SoKoZaikoQueryable.Where(inSearchKey).AsQueryable() : SoKoZaikoQueryable;
+
+            //Linqの結果返却（まだ、EFは実行されていない）
+            //倉庫在庫　＆　注文実績明細(Where指示付き）
+            return SoKoZaikoQueryable;
+        }
+
+        //  機能：注文実績明細検索＆倉庫在庫（遅延実行）＋Where内容の状態から、ソート順の追加セットを行う
+        //  入力：倉庫在庫　＆　注文実績明細（ＤＢ）＋Whereの内容追加されたもの（上記メソッド）
+        //　　　：ソートキー（引数）、降順・昇順区分（引数）
+        //  出力：倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) ソート指示付き　ISoKoZaikoQueryable型にして遅延実行化
+        public IQueryable<ZaikoListLine> AddOrderby(string sortKey, bool descending) {
+
+            //倉庫在庫の検索指示があるかどうか。あればオーダー設定を追加する   
+            if (SoKoZaikoQueryable != null) {
+
+                //ソートキーの昇順・降順設定（遅延実行）
+                IQueryable<ZaikoListLine>? orderQueryable = SoKoZaikoQueryable;
+                
+                if (isFirstCalled) {
+                    //初回であれば、OrderBy
+                    if (descending) {
+                        //降順
+                        orderQueryable=SoKoZaikoQueryable.OrderBy(sortKey + " descending");
+                    }
+                    else {
+                        //昇順
+                        orderQueryable=SoKoZaikoQueryable.OrderBy(sortKey);
+                    }
                 }
                 else {
-                    sokodata = sokodata.OrderBy(convertedSortKey);
+                    //２回目以降、ThenBy
+                    if (descending) {
+                        //降順
+                        orderQueryable=((IOrderedQueryable<ZaikoListLine>)SoKoZaikoQueryable).ThenBy(sortKey + " descending");
+                    }
+                    else {
+                        //昇順
+                        orderQueryable=((IOrderedQueryable<ZaikoListLine>)SoKoZaikoQueryable).ThenBy(sortKey);
+                    }
                 }
+
+                //ソート指示追加(まだ実行されない）
+                SoKoZaikoQueryable = orderQueryable?.AsQueryable();
+
+                //１回処理されれば、次回はThenByになるように
+                isFirstCalled = false;
             }
-
-            //Postgeが外部結合できないから、倉庫在庫をリスト化してメモリに持っておく
-
-            IList<SokoZaiko> enumSokodata = sokodata.ToList();
-
-            //以下、注文実績明細と上記倉庫在庫の結合処理となる
-            //Postgeが外部結合できないから、注文実績明細をリスト化してメモリに持っておく
-
-            IList<ChumonJissekiMeisai> chumonJ =
-                _context.ChumonJissekiMeisai.AsNoTracking().Where(x => x.ChumonZan > 0).ToList();
-
-            //倉庫在庫の主キー粒度にあわせ、注文実績をグループ化した上で結合する
-            //ZaikoListLineは、ビューモデル内にある表示用
-
-            IQueryable<ZaikoListLine> joinresult = enumSokodata.GroupJoin(chumonJ,
-                soko => new { soko.ShiireSakiId, soko.ShiirePrdId, soko.ShohinId },
-                cjm => new { cjm.ShiireSakiId, cjm.ShiirePrdId, cjm.ShohinId },
-                 (soko, cjm) => new ZaikoListLine {
-                     SokoZaiko = soko,
-                     ChumonJissekiMeisai = cjm.FirstOrDefault()
-                 }).AsQueryable();
-
-            //ソートキーの変換（メモリ上の結合結果用）
-            var convertedSortKeyToCjm = sortKey as Expression<Func<ZaikoListLine, TKey>>;
-
-            //ソート順の設定をする（メモリ上の結合結果用）
-            if (typeof(TSource) == typeof(ZaikoListLine)) {
-                if (descending) {
-                    joinresult = joinresult.OrderByDescending(convertedSortKeyToCjm);
-                }
-                else {
-                    joinresult = joinresult.OrderBy(convertedSortKeyToCjm);
-                }
-            }
-
-            //検索画面に出すために、ビューモデル内のオブジェクトに検索データ一覧を反映
-            //
-            IList<ZaikoListLine> returnValue = new List<ZaikoListLine>() { };
-
-            foreach (var item in joinresult.ToList()) {
-                returnValue.Add(new ZaikoListLine() {
-                    SokoZaiko = item.SokoZaiko,
-                    ChumonJissekiMeisai = item.ChumonJissekiMeisai
-                });
-            }
-
-            return (returnValue);
+            //倉庫在庫　＆　注文実績明細　ソート指示付き
+            return SoKoZaikoQueryable;
         }
     }
 }

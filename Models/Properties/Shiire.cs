@@ -65,12 +65,12 @@ namespace Convenience.Models.Properties {
         //仕入実績に既に存在しているかチェック
 
         public async Task<bool> ChuumonIdOnShiireJissekiExistingCheck(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
-             var result = await _context.ShiireJisseki
-                .FirstOrDefaultAsync(
-                    w => w.ChumonId == inChumonId
-                    && w.ShiireDate == inShiireDate
-                    && w.SeqByShiireDate == inSeqByShiireDate
-                 );
+            var result = await _context.ShiireJisseki
+               .FirstOrDefaultAsync(
+                   w => w.ChumonId == inChumonId
+                   && w.ShiireDate == inShiireDate
+                   && w.SeqByShiireDate == inSeqByShiireDate
+                );
 
             return (result != null);
         }
@@ -194,7 +194,7 @@ namespace Convenience.Models.Properties {
                .Where(s => s.ShiireSakiId == sokoZaikokey.ShireSakiId && s.ShiirePrdId == sokoZaikokey.ShiirePrdId && s.ShohinId == sokoZaikokey.ShohinId)
                .FirstOrDefaultAsync();
 
-                if (sokoZaiko != null)sokoZaikos.Add(sokoZaiko);
+                if (sokoZaiko != null) sokoZaikos.Add(sokoZaiko);
             }
 
 
@@ -267,18 +267,18 @@ namespace Convenience.Models.Properties {
         }
 
         public async Task<uint> NextSeq(string inChumonId, DateOnly inShiireDate) {
-        
+
             uint? seq = await _context.ShiireJisseki
                 .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
                     .OrderByDescending(s => s.SeqByShiireDate)
                     .Select(x => x.SeqByShiireDate)
                     .FirstOrDefaultAsync();
-        
-        /*
-            uint? seq = await _context.ShiireJisseki
-            .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
-            .MaxAsync(d => d.SeqByShiireDate);
-        */
+
+            /*
+                uint? seq = await _context.ShiireJisseki
+                .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
+                .MaxAsync(d => d.SeqByShiireDate);
+            */
             uint rseq = (seq ?? 0) + 1;
 
             //uint seq = shiirej != null ? shiirej.SeqByShiireDate : 0;
@@ -298,6 +298,7 @@ namespace Convenience.Models.Properties {
 
         //倉庫在庫を仕入データに接続する（表示前に利用する）　NotMappedは外部キーが使えないから、includeできないため
         public void ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> indata) {
+            //
             foreach (var item in inShiireJissekis) {
                 SokoZaiko? sokoZaiko = indata
                     .Where(z =>
@@ -305,11 +306,13 @@ namespace Convenience.Models.Properties {
                         z.ShiirePrdId == item.ShiirePrdId &&
                         z.ShohinId == item.ShohinId)
                     .FirstOrDefault();
-
+                //
                 if (sokoZaiko != null) {
+                    //
                     item.SokoZaiko = sokoZaiko;
                 }
                 else {
+                    //
                     item.SokoZaiko = new SokoZaiko {
                         ShiireSakiId = item.ShiireSakiId,
                         ShiirePrdId = item.ShiirePrdId,

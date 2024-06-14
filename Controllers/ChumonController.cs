@@ -81,14 +81,17 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChumonMeisai(int id, ChumonViewModel ChumonViewModel) {
 
-            //Thread.Sleep(10000);
-            GetObject();
             if (!ModelState.IsValid) {
                 throw new Exception("Postデータエラー");
             };
 
+            GetObject();
+
             ModelState.Clear();
 
+            if (ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais == null) {
+                throw new Exception("Postデータなし");
+            }
             foreach (var item in ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais) {
                 item.ShiireMaster = null;
             }

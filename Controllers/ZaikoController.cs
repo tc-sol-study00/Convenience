@@ -23,11 +23,11 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ZaikoViewModel inZaikoModel) {
-            var key = inZaikoModel.KeyEventData;
-            var inDesc = inZaikoModel.Descending;
+            var keydata = inZaikoModel.KeyEventList;
+            var selecteWhereItemArray = inZaikoModel.SelecteWhereItemArray;
 
             ZaikoViewModel zaikoViewModel = new ZaikoViewModel {
-                zaikoListLine = await zaikoService.KeyInput(key, inDesc)
+                zaikoListLine = await zaikoService.KeyInput(keydata, selecteWhereItemArray)
             };
             return View(zaikoViewModel);
         }
