@@ -1,11 +1,1 @@
-﻿################################################################################
-# この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
-################################################################################
-
-/appsettings.json
-bin/
-obj/
-/.gitignore
-/.gitignore
-/.gitignore
-/appsettings.json
+bin

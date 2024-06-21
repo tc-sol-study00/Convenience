@@ -3,60 +3,54 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Models.Properties {
 
+    /// <summary>
+    /// * 注文クラス
+    /// </summary>
     public class Chumon : IChumon, IDbContext {
-        /*
-         * 注文クラス
-         */
 
-        /*
-         * プロパティ
-         */
+        /// <summary>
+        /// 注文実績プロパティ
+        /// </summary>
+        public ChumonJisseki ChumonJisseki { get; set; }
 
-        //注文実績（データモデル）
-        public ChumonJisseki? ChumonJisseki { get; set; }
-
-        /*
-         * 共通変数
-         */
-
-        //DBコンテキスト
+        /// <summary>
+        /// DBコンテキスト
+        /// </summary>
         private readonly ConvenienceContext _context;
 
-        /*
-         * コンストラクタ
-         */
-
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="context">DBコンテキスト</param>
         public Chumon(ConvenienceContext context) {
             _context = context;
         }
 
-        //注文クラスデバッグ用
+        /// <summary>
+        /// 注文クラスデバッグ用
+        /// </summary>
         public Chumon() {
             _context = IDbContext.DbOpen();
         }
 
-        public void Chumon2() {
-            //_context = IDbContext.DbOpen();
-        }
-
-
-        //注文作成
+        /// <summary>
+        /// 注文作成
+        /// </summary>
+        /// <remarks>
+        /// 仕入先より注文実績データ（親）を生成する
+        /// 注文実績明細データ（子）を仕入マスタを元に作成する
+        /// 注文実績データ（親）と注文実績明細データ（子）を連結する
+        /// 注文実績（プラス注文実績明細）を戻り値とする
+        /// </remarks>
+        /// <param name="inShireSakiId">仕入先コード</param>
+        /// <param name="inChumonDate">注文日</param>
+        /// <returns>新規作成された注文実績</returns>
+        /// <exception cref="Exception"></exception>
         public async Task<ChumonJisseki> ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
-            /*
-             * 注文作成（新規）
-             *  引数　  仕入先コード
-             *  戻り値　注文実績
-             *
-             *  仕入先より注文実績データ（親）を生成する
-             *  注文実績明細データ（子）を仕入マスタを元に作成する
-             *  注文実績データ（親）と注文実績明細データ（子）を連結する
-             *  注文実績（プラス注文実績明細）を戻り値とする
-             */
 
             //引数チェック（仕入先コード有無）
             if (await _context.ShiireSakiMaster.FindAsync(inShireSakiId) == null) {
@@ -65,7 +59,7 @@ namespace Convenience.Models.Properties {
             //仕入先より注文実績データ（親）を生成する(a)
 
             ChumonJisseki = new ChumonJisseki {
-                ChumonId = await ChumonIdHatsuban(inChumonDate,_context),              //注文コード発番
+                ChumonId = await ChumonIdHatsuban(inChumonDate, _context),              //注文コード発番
                 ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
                 ChumonDate = inChumonDate                           //注文日付
             };
@@ -83,8 +77,9 @@ namespace Convenience.Models.Properties {
             //(b)のデータから注文実績明細を作成する
             foreach (var shiire in await shiireMasters.ToListAsync()) {
 
+                if (shiire == null || shiire.ShohinMaster == null) continue;
+
                 shiire.ShohinMaster.ShiireMasters = null;
-                //shiire.ShiireSakiMaster.ShireMasters = null;
 
                 var meisai = new ChumonJissekiMeisai {
                     ChumonId = ChumonJisseki.ChumonId,
@@ -98,97 +93,70 @@ namespace Convenience.Models.Properties {
                 ChumonJisseki.ChumonJissekiMeisais.Add(meisai);
             }
 
-            //_context.ChumonJisseki.Attach(ChumonJisseki);
             //注文実績（プラス注文実績明細）を戻り値とする
             return ChumonJisseki;
         }
 
-        public async Task<ChumonJisseki> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate) {
-            /*
-             * 注文更新用問い合わせ
-             *  引数　  仕入先コード、注文日
-             *  戻り値　注文実績
-             *
-             *  ①注文実績＋注文実績＋仕入マスタ＋商品マスタ検索
-             *  ②戻り値を注文実績＋注文実績明細とする
-             */
+        /// <summary>
+        /// 注文更新用問い合わせ
+        /// </summary>
+        /// <remarks>
+        /// ①注文実績＋注文実績＋仕入マスタ＋商品マスタ検索
+        /// ②戻り値を注文実績＋注文実績明細とする
+        /// </remarks>
+        /// <param name="inShireSakiId">仕入先コード</param>
+        /// <param name="inChumonDate">注文日</param>
+        /// <returns>既存の注文実績</returns>
+        public async Task<ChumonJisseki?> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate) {
             //①注文実績＋注文実績＋仕入マスタ＋商品マスタ検索
-            ChumonJisseki = await _context.ChumonJisseki
-                     .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
-                     .Include(cm => cm.ChumonJissekiMeisais)
-                     .ThenInclude(shi => shi.ShiireMaster)
-                     .ThenInclude(sho => sho.ShohinMaster)
-                     .FirstOrDefaultAsync();
+
+            var chumonJisseki = await _context.ChumonJisseki
+                        .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
+                        .Include(cm => cm.ChumonJissekiMeisais)
+                        .ThenInclude(shi => shi.ShiireMaster)
+                        .ThenInclude(sho => sho.ShohinMaster)
+                        .FirstOrDefaultAsync();
+
             //②戻り値を注文実績＋注文実績明細とする
+            ChumonJisseki = chumonJisseki;
             return (ChumonJisseki);
         }
 
-        private async Task<string> ChumonIdHatsuban(DateOnly InTheDate,ConvenienceContext _context) {
-            /*
-             * 注文コード発番
-             *  引数　  なし
-             *  戻り値　注文コード
-             *
-             *  注文コード書式例）：20240129-001(yyyyMMdd-001～999）
-             */
+        /// <summary>
+        /// 注文コード発番
+        /// </summary>
+        /// <remarks>
+        ///  注文コード書式例）：20240129-001(yyyyMMdd-001～999）
+        /// </remarks>
+        /// <param name="InTheDate">注文日付</param>
+        /// <param name="_context">ＤＢコンテキスト</param>
+        /// <returns>発番された注文コード</returns>
+        private async Task<string> ChumonIdHatsuban(DateOnly InTheDate, ConvenienceContext _context) {
             uint seqNumber;
             string dateArea;
             //今日の日付
-            dateArea = InTheDate == null ? DateTime.Today.ToString("yyyyMMdd"):dateArea = InTheDate.ToString("yyyyMMdd");
+            dateArea = InTheDate.ToString("yyyyMMdd");
 
             //今日の日付からすでに今日の分の注文コードがないか調べる
             var chumonid = await _context.ChumonJisseki
                 .Where(x => x.ChumonId.StartsWith(dateArea))
                 .MaxAsync(x => x.ChumonId);
 
+            // 上記以外の場合、 //注文コードの右３桁の数値を求め＋１にする
             seqNumber = string.IsNullOrEmpty(chumonid) ? 1 //今日、注文コード起こすのが初めての場合
                       : uint.Parse(chumonid.Substring(9, 3)) + 1;
-            // 上記以外の場合、 //注文コードの右３桁の数値を求め＋１にする
 
             ////３桁の数値が999以内（ＯＫ） それを超過するとnull
-            ///
 
             return seqNumber <= 999 ? $"{dateArea}-{seqNumber:000}" : null;  // 999以上はNULLセット
         }
 
-        public async Task<ChumonJisseki> ChumonUpdate2(ChumonJisseki inChumonJisseki) {
-
-            //注文実績明細のpostデータを反映する
-            //ベース　メンバーの注文実績内の注文実績明細
-            //postデータで注文実績データは更新かけない仕様だから、反映処理不要
-
-            foreach (ChumonJissekiMeisai existedChumonJissekiMeisai in ChumonJisseki.ChumonJissekiMeisais) {
-
-                //メンバーの内容と、引数の内容（Postされた内容）を照合して、注文数と注文残を上乗せしている処理
-                ChumonJissekiMeisai? postedChumonJissekiMeisais = inChumonJisseki.ChumonJissekiMeisais
-                    .Where(x => x.ChumonId == existedChumonJissekiMeisai.ChumonId && x.ShiireSakiId == existedChumonJissekiMeisai.ShiireSakiId &&
-                    x.ShiirePrdId == existedChumonJissekiMeisai.ShiirePrdId && x.ShohinId == existedChumonJissekiMeisai.ShohinId).FirstOrDefault();
-
-                if (postedChumonJissekiMeisais != null) {　//←念為
-                    existedChumonJissekiMeisai.ChumonSu = postedChumonJissekiMeisais.ChumonSu;
-                    //以下は、注文数を調整された時に注文残をバランスをとるため時、ごちゃごちゃ書いた
-                    existedChumonJissekiMeisai.ChumonZan += postedChumonJissekiMeisais.ChumonSu - existedChumonJissekiMeisai.ChumonSu;
-                }
-
-            }
-            //注文実績がまだＤＢに登録されてなければＤＢに対して追加
-            if (await _context.ChumonJisseki.Where(x => x.ChumonId == inChumonJisseki.ChumonId).FirstOrDefaultAsync() == null) {
-                await _context.ChumonJisseki.AddAsync(ChumonJisseki);  //注文実績明細は、注文実績にぶら下がっているので同タイミングで挿入される
-            }
-            //登録されている場合は、更新なのでそのままで良い
-
-            //注文実績の中の注文実績明細の中身を変更しているので、そのまま注文実績を戻り値としている
-
-            //ここではsavechangesは実行せず、サービスで書けるがデバッグのときはかけてよい（そうしないと、ＤＢ更新の確認ができないから）
-            return (ChumonJisseki);
-        }
-
+        /// <summary>
+        /// 注文実績＋注文明細更新
+        /// </summary>
+        /// <param name="postedChumonJisseki">postされた注文実績</param>
+        /// <returns>postされた注文実績を上書きされた注文実績</returns>
         public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki) {
-            /*
-             * 注文実績＋注文明細更新
-             *  引数　  注文実績
-             *  戻り値　注文実績
-             */
 
             ChumonJisseki? existedChumonJisseki; //DBにすでに登録されている場合の移送先
 

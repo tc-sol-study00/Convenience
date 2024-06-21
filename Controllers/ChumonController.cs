@@ -69,6 +69,7 @@ namespace Convenience.Controllers {
                 chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, inChumonKeysViewModel.ChumonDate);
             }
             KeepObject();
+            ViewBag.HandlingFlg = "FirstDisplay";
             return View("ChumonMeisai", chumonViewModel);
         }
 
@@ -105,6 +106,7 @@ namespace Convenience.Controllers {
                 Remark = errCd == ErrDef.NormalUpdate && entities > 0 || errCd != ErrDef.NormalUpdate ? new Message().SetMessage(errCd).MessageText : null
             };
             KeepObject();
+            ViewBag.HandlingFlg = "SecondDisplay";
             return View(chumonViewModel);
         }
 

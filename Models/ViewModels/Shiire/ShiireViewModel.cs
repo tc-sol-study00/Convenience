@@ -28,7 +28,7 @@ namespace Convenience.Models.ViewModels.Shiire {
         public string ShiireSakiKaisya { get; set; }
 
         public IList<ShiireJisseki> ShiireJissekis { get; set; }
-
+        public bool? IsNormal { get; set; }
         public string Remark { get; set; }
     }
 }

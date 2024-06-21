@@ -1,12 +1,33 @@
 ﻿namespace Convenience.Models.Properties {
 
+    /// <summary>
+    /// 正常・エラーメッセージ用クラス
+    /// </summary>
     public class Message {
-
+        /// <summary>
+        /// メッセ―ジ表示用データクラス
+        /// </summary>
         public class MessageData {
+            /// <summary>
+            /// メッセージ番号
+            /// </summary>
             public ErrDef MessageNo { get; set; }
+            /// <summary>
+            /// 表示メッセージ
+            /// </summary>
             public string? MessageText { get; set; }
         }
+        /// <summary>
+        /// メッセ―ジ表示用データクラスのオブジェクト変数
+        /// </summary>
+        /// <remarks>
+        /// NULL許容
+        /// </remarks>
+        public static MessageData? messageData { get; set; }
 
+        /// <summary>
+        /// エラーコードenum設定（0から付与）
+        /// </summary>
         public enum ErrDef {
             DataValid=0,
             NormalUpdate,
@@ -21,8 +42,9 @@
             OtherError
         }
 
-        public static MessageData messageData { get; set; }
-
+        /// <summary>
+        /// エラー番号とメッセージ表示のリンク
+        /// </summary>
         private static readonly ICollection<MessageData> MessageList = new List<MessageData>
         {
             new MessageData { MessageNo=ErrDef.DataValid, MessageText="データチェックＯＫ" },
@@ -38,9 +60,16 @@
             new MessageData { MessageNo=ErrDef.OtherError, MessageText="その他エラー" }
         };
 
-        public MessageData SetMessage(ErrDef inErrCd) {
+        /// <summary>
+        /// エラーメッセージのセット
+        /// </summary>
+        /// <remarks>
+        /// NULL返却あり
+        /// </remarks>
+        /// <param name="inErrCd">表示したいメッセージ内容に対応したエラーコード</param>
+        /// <returns>メッセ―ジ表示用データクラスがセットされたオブジェクト変数</returns>
+        public MessageData? SetMessage(ErrDef inErrCd) {
             messageData = MessageList.FirstOrDefault(m => m.MessageNo == inErrCd) ?? null;
-
             return (messageData);
         }
     }

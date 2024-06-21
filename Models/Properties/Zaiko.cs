@@ -10,19 +10,28 @@ using System.Linq.Dynamic.Core;
 using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 
 namespace Convenience.Models.Properties {
-    
-    //  機能：注文実績明細検索＆倉庫在庫（遅延実行）
 
+    /// <summary>
+    /// 注文実績明細検索＆倉庫在庫（遅延実行）
+    /// </summary>
     public class Zaiko : IZaiko {
 
-        //DBコンテキスト
+        /// <summary>
+        /// DBコンテキスト
+        /// </summary>
         private readonly ConvenienceContext _context;
-        //生成される問い合わせ（遅延実行用）
+        /// <summary>
+        /// 生成される問い合わせ（遅延実行用）
+        /// </summary>
         public IQueryable<ZaikoListLine>? SoKoZaikoQueryable { get; set; } = null;
-        //OrderByかThenByか切り替えるフラグ
+        /// <summary>
+        /// OrderByかThenByか切り替えるフラグ
+        /// </summary>
         bool isFirstCalled = true;  //true->Orderby false->ThenBy
 
-        //コンストラクター（コンソール実行＝デバッグ用）
+        /// <summary>
+        /// コンストラクター（コンソール実行＝デバッグ用）
+        /// </summary>
         public Zaiko() {
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -36,15 +45,19 @@ namespace Convenience.Models.Properties {
             _context = new ConvenienceContext(contextOptions);
         }
 
-        //ＤＢコンテキスト設定（ＡＳＰ実行用）
+        /// <summary>
+        /// ＤＢコンテキスト設定（ＡＳＰ実行用）
+        /// </summary>
+        /// <param name="context"></param>
         public Zaiko(ConvenienceContext context) {
             _context = context;
         }
 
-        //  機能：注文実績明細検索＆倉庫在庫（遅延実行）
-        //  入力：倉庫在庫　＆　注文実績明細（ＤＢ）
-        //　　　：検索キー（引数）
-        //  出力：倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) Where指示付き　ISoKoZaikoQueryable型にして遅延実行化
+        /// <summary>
+        /// 注文実績明細検索＆倉庫在庫（遅延実行）
+        /// </summary>
+        /// <param name="inSearchKey">検索キー</param>
+        /// <returns>倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) Where指示付き　ISoKoZaikoQueryable型にして遅延実行化</returns>
         public IQueryable<ZaikoListLine> CreateSokoZaikoList(string inSearchKey) {
 
             //検索処理初回か？　nullの場合初回
@@ -92,10 +105,12 @@ namespace Convenience.Models.Properties {
             return SoKoZaikoQueryable;
         }
 
-        //  機能：注文実績明細検索＆倉庫在庫（遅延実行）＋Where内容の状態から、ソート順の追加セットを行う
-        //  入力：倉庫在庫　＆　注文実績明細（ＤＢ）＋Whereの内容追加されたもの（上記メソッド）
-        //　　　：ソートキー（引数）、降順・昇順区分（引数）
-        //  出力：倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) ソート指示付き　ISoKoZaikoQueryable型にして遅延実行化
+        /// <summary>
+        ///  機能：注文実績明細検索＆倉庫在庫（遅延実行）＋Where内容の状態から、ソート順の追加セットを行う
+        /// </summary>
+        /// <param name="sortKey">ソートキー</param>
+        /// <param name="descending">降順・昇順区分</param>
+        /// <returns>倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) ソート指示付き　ISoKoZaikoQueryable型にして遅延実行化</returns>
         public IQueryable<ZaikoListLine> AddOrderby(string sortKey, bool descending) {
 
             //倉庫在庫の検索指示があるかどうか。あればオーダー設定を追加する   

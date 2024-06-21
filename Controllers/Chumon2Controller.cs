@@ -5,14 +5,13 @@ using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.Chumon;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Convenience.Controllers {
     public class Chumon2Controller : Controller {
         private readonly ConvenienceContext _context;
-
-        private static readonly string IndexName = "ChumonJisseki";
 
         //private IChumonService chumonService;
 
@@ -32,7 +31,6 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> KeyInput(ChumonKeysViewModel inChumonKeysViewModel) {
-            ChumonViewModel chumonViewModel;
 
             if (!ModelState.IsValid) {
                 throw new InvalidOperationException("Postデータエラー");
@@ -78,8 +76,10 @@ namespace Convenience.Controllers {
             ModelState.Clear(); //←これ入れておかないと再表示後のPostではまるよ？
 
             //仕入マスタより先はループっているので、更新前に縁をきる
-            foreach (var item in ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais) {
-                item.ShiireMaster = null;
+            if (ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais != null) {
+                foreach (var item in ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais) {
+                    item.ShiireMaster = null;
+                }
             }
 
             //注文実績更新（データ更新・追加共有）

@@ -7,36 +7,49 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Convenience.Models.Properties {
+    /// <summary>
+    /// 仕入クラス
+    /// </summary>
     public class Shiire : IShiire, IDbContext {
-        /*
-         * 仕入クラス
-         */
 
-        //DBコンテキスト
+        /// <summary>
+        /// DBコンテキスト
+        /// </summary>
         private readonly ConvenienceContext _context;
 
-        /*
-         * プロパティ
-         */
-        //仕入実績
-        public IList<ShiireJisseki> Shiirejissekis { get; set; } //Include ChuumonJissekiMeisai
-        //倉庫在庫     
+        /// <summary>
+        /// 仕入実績プロパティ
+        /// Include ChuumonJissekiMeisai
+        /// </summary>
+        public IList<ShiireJisseki> Shiirejissekis { get; set; } 
+        /// <summary>
+        /// 倉庫在庫プロパティ
+        /// </summary>
         public IList<SokoZaiko> SokoZaikos { get; set; }
 
-        //コンストラクタ
-        //通常の場合はＤＢコンテキストを引き継ぐ
+        /// <summary>
+        /// コンストラクタ
+        /// 通常の場合はＤＢコンテキストを引き継ぐ
+        /// </summary>
+        /// <param name="context">ASPから引き継ぐDBコンテキスト</param>
         public Shiire(ConvenienceContext context) {
             _context = context;
         }
-        //仕入クラスデバッグ用
+        /// <summary>
+        /// 仕入クラスデバッグ用
+        /// </summary>
         public Shiire() {
             _context = IDbContext.DbOpen();
         }
 
-        // 仕入データPost内容の反映
-
+        /// <summary>
+        /// 仕入データPost内容の反映 
+        /// </summary>
+        /// <param name="inShiireJissekis">Postされた仕入実績</param>
+        /// <returns>Postされた注仕入実績がオーバライドされた仕入実績プロパティ</returns>
         public IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis) {
             // AutoMapperの初期設定
+           
             var config = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
                 cfg.CreateMap<ShiireJisseki, ShiireJisseki>()
@@ -51,19 +64,20 @@ namespace Convenience.Models.Properties {
             });
 
             var mapper = config.CreateMapper(); // AutoMapperのインスタンス作成
-
             mapper.Map<IList<ShiireJisseki>, IList<ShiireJisseki>>(inShiireJissekis, Shiirejissekis);
 
             return (Shiirejissekis);
         }
 
-        public class ShiireUkeireReturnSet {
-            public IList<ShiireJisseki> ShiireJissekis { get; set; }
-            public IList<SokoZaiko> SokoZaikos { get; set; }
-        }
 
-        //仕入実績に既に存在しているかチェック
 
+        /// <summary>
+        /// 仕入実績に既に存在しているかチェック
+        /// </summary>
+        /// <param name="inChumonId">注文コード（仕入実績に対する検索キー）</param>
+        /// <param name="inShiireDate">仕入日付（仕入実績に対する検索キー）</param>
+        /// <param name="inSeqByShiireDate">仕入SEQ（仕入実績に対する検索キー）</param>
+        /// <returns>データがあればtrueなければfalse/returns>
         public async Task<bool> ChuumonIdOnShiireJissekiExistingCheck(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
             var result = await _context.ShiireJisseki
                .FirstOrDefaultAsync(
@@ -75,10 +89,28 @@ namespace Convenience.Models.Properties {
             return (result != null);
         }
 
+        /// <summary>
+        /// 注文残・倉庫在庫調整用モデル
+        /// </summary>
+        public class ShiireUkeireReturnSet {
+            /// <summary>
+            /// 仕入実績
+            /// Include注文実績
+            /// </summary>
+            public IList<ShiireJisseki> ShiireJissekis { get; set; }
+            /// <summary>
+            /// 倉庫在庫
+            /// </summary>
+            public IList<SokoZaiko> SokoZaikos { get; set; }
+        }
+
+        /// <summary>
+        /// 注文残・在庫数量調整
+        /// </summary>
+        /// <param name="inChumonId">注文コード</param>
+        /// <param name="inShiireJissekis">仕入実績（注文実績がインクルードされていること）</param>
+        /// <returns>注文残・倉庫在庫が調整された注文残・倉庫在庫調整用モデル</returns>
         public async Task<ShiireUkeireReturnSet> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
-            /*
-                * 注文残・在庫数量調整
-            */
 
             //注文残を設定・注文実績明細にセット
 
@@ -98,9 +130,16 @@ namespace Convenience.Models.Properties {
                 SokoZaikos = sokoZaikos
             });
         }
-
+        /// <summary>
+        /// 仕入実績から仕入実績プロパティに反映
+        /// </summary>
+        /// <param name="inChumonId">注文コード</param>
+        /// <param name="inShiireDate">仕入日付</param>
+        /// <param name="inSeqByShiireDate">仕入SEQ</param>
+        /// <returns></returns>
         public async Task<IList<ShiireJisseki>> ShiireToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
-            IList<ShiireJisseki> shiireJissekis = await _context.ShiireJisseki
+            //仕入実績のセット
+            IList<ShiireJisseki> queriedShiireJissekis = await _context.ShiireJisseki
                 .Where(c => c.ChumonId == inChumonId && c.ShiireDate == inShiireDate && c.SeqByShiireDate == inSeqByShiireDate)
                 .Include(cjm => cjm.ChumonJissekiMeisaii)
                 .ThenInclude(cj => cj.ChumonJisseki)
@@ -109,25 +148,29 @@ namespace Convenience.Models.Properties {
                 .ThenInclude(a => a.ShiireMaster)
                 .ThenInclude(s => s.ShohinMaster)
                 .ToListAsync();
-
-            Shiirejissekis = shiireJissekis;
+            //プロパティに設定
+            Shiirejissekis = queriedShiireJissekis;
 
             return (Shiirejissekis);
         }
 
+        /// <summary>
+        /// 仕入実績作成
+        /// </summary>
+        /// <param name="inChumonId">注文コード（注文実績問い合わせキー）</param>
+        /// <param name="inShiireDate">仕入日付（仕入実績にセットされる）</param>
+        /// <param name="inSeqByShiireDate">仕入日付内のシーケンス（仕入実績にセットされる）</param>
+        /// <returns>注文実績から新規作成された仕入実績</returns>
         public async Task<IList<ShiireJisseki>> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
-            /*
-            * 仕入実績作成
-            */
+
             //注文明細取得（キー：注文コード）複数のレコード
-            IList<ChumonJissekiMeisai> chumonJissekiMeisais = await _context.ChumonJissekiMeisai
+            IList<ChumonJissekiMeisai> queriedChumonJissekiMeisais = await _context.ChumonJissekiMeisai
                 .Where(c => c.ChumonId == inChumonId)
                 .Include(cj => cj.ChumonJisseki)
                 .ThenInclude(ss => ss.ShiireSakiMaster)
                 .Include(sm => sm.ShiireMaster)
                 .ThenInclude(s => s.ShohinMaster)
                 .ToListAsync();
-
 
             //現在時間
             DateTime nowTime = DateTime.Now;
@@ -147,28 +190,29 @@ namespace Convenience.Models.Properties {
                     .ForMember(dest => dest.ChumonJissekiMeisaii, opt => opt.MapFrom(src => src)); //ChuumonJissekiMeisai Set
             });
 
+            //AutoMapperの処理
             var mapper = new Mapper(config);
+            IList<ShiireJisseki> createdShiireJissekis = new List<ShiireJisseki>();
+            mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(queriedChumonJissekiMeisais, createdShiireJissekis);
 
-            IList<ShiireJisseki> shiireJissekis = new List<ShiireJisseki>();
-
-            mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(chumonJissekiMeisais, shiireJissekis);
-
-            await _context.ShiireJisseki.AddRangeAsync(shiireJissekis);
-
-            Shiirejissekis = shiireJissekis;
-
+            //仕入実績に対し、EFに新規（Add）の指示
+            await _context.ShiireJisseki.AddRangeAsync(createdShiireJissekis);
+            //仕入実績プロパティに反映
+            Shiirejissekis = createdShiireJissekis;
+            //注文実績から新規作成された仕入実績
             return (Shiirejissekis);
         }
+        /// <summary>
+        /// 倉庫在庫登録
+        /// </summary>
+        /// <param name="shiireJissekis">Postされたデータでオーバーライドされた仕入実績</param>
+        /// <returns>仕入実績から仕入差を使って在庫数を調整された倉庫在庫</returns>
 
-        private async Task<IList<SokoZaiko>> ZaikoSet(IList<ShiireJisseki> shiireJissekis) {
-            /*
-             * 倉庫在庫登録
-             */
+        private async Task<IList<SokoZaiko>> ZaikoSet(IEnumerable<ShiireJisseki> shiireJissekis) {
 
-            //仕入実績（Ａ）　より倉庫在庫主キー単位にレコードを起こす（倉庫在庫と粒度をあわせるため）
+            //仕入実績より倉庫在庫主キー単位にレコードを起こす（倉庫在庫と粒度をあわせるため）
             //主キー   ：仕入先、仕入商品コード、商品コード
-            //集計         :納品数（ケース）、実数量（納品ケース数×ケースあたりの数量）
-
+            //集計      :納品数（ケース）、実数量（納品ケース数×ケースあたりの数量）
             var shiireJissekiGrp = shiireJissekis
                 .GroupBy(g => new {
                     g.ShiireSakiId,
@@ -179,33 +223,25 @@ namespace Convenience.Models.Properties {
                     ShireSakiId = gr.Key.ShiireSakiId,
                     ShiirePrdId = gr.Key.ShiirePrdId,
                     ShohinId = gr.Key.ShohinId,
-                    CaseSu = gr.Sum(i => i.NonyuSubalance),
-                    Su = gr.Sum(j => j.ChumonJissekiMeisaii.ShiireMaster.ShiirePcsPerUnit * j.NonyuSubalance ?? 0),
+                    NonyuSubalance = gr.Sum(i => i.NonyuSubalance),
+                    SokoZaikoSu = gr.Sum(j => j.ChumonJissekiMeisaii.ShiireMaster.ShiirePcsPerUnit * j.NonyuSubalance ?? 0),
                     ShireDateTime = gr.Max(k => k.ShiireDateTime)
                 }).ToList()
                 ;
 
-            //現在の倉庫在庫を読み込む
+            //現在の倉庫在庫を読み込む準備
 
             IList<SokoZaiko> sokoZaikos = new List<SokoZaiko>();
+            var shiireSakiIds = shiireJissekiGrp.Select(s => s.ShireSakiId).ToList();
+            var shiirePrdIds = shiireJissekiGrp.Select(s => s.ShiirePrdId).ToList();
+            var shohinIds = shiireJissekiGrp.Select(s => s.ShohinId).ToList();
 
-            foreach (var sokoZaikokey in shiireJissekiGrp) {
-                SokoZaiko? sokoZaiko = await _context.SokoZaiko
-               .Where(s => s.ShiireSakiId == sokoZaikokey.ShireSakiId && s.ShiirePrdId == sokoZaikokey.ShiirePrdId && s.ShohinId == sokoZaikokey.ShohinId)
-               .FirstOrDefaultAsync();
-
-                if (sokoZaiko != null) sokoZaikos.Add(sokoZaiko);
-            }
-
-
-
-            /* 以下は、.AsEnumerable()を使っていて、全件メモリに貼り付けて危険なので、上記の書き方に変更
-            sokoZaikos = _context.SokoZaiko
-                .AsEnumerable() //これ入れないとposgreでエラー
-                .Where(s => shiireJissekiGrp
-                  .Any(j => s.ShiireSakiId == j.ShireSakiId && s.ShiirePrdId == j.ShiirePrdId && s.ShohinId == j.ShohinId))
-                .ToList();
-            */
+            // 倉庫在庫を一括で取得
+            sokoZaikos = await _context.SokoZaiko
+                .Where(s => shiireSakiIds.Contains(s.ShiireSakiId) &&
+                            shiirePrdIds.Contains(s.ShiirePrdId) &&
+                            shohinIds.Contains(s.ShohinId))
+                .ToListAsync();
 
             var result = shiireJissekiGrp.GroupJoin(
             sokoZaikos,
@@ -215,8 +251,8 @@ namespace Convenience.Models.Properties {
                 ShiireSakiId = sjg.ShireSakiId,
                 ShiirePrdId = sjg.ShiirePrdId,
                 ShohinId = sjg.ShohinId,
-                SokoZaikoCaseSu = sjg.CaseSu + sz.Sum(sz => sz.SokoZaikoCaseSu),
-                SokoZaikoSu = sjg.Su + sz.Sum(sz => sz.SokoZaikoSu),
+                SokoZaikoCaseSu = sjg.NonyuSubalance + sz.Sum(sz => sz.SokoZaikoCaseSu),
+                SokoZaikoSu = sjg.SokoZaikoSu + sz.Sum(sz => sz.SokoZaikoSu),
                 LastShiireDate = DateOnly.FromDateTime(sjg.ShireDateTime),
                 SokoZaiko = sz.FirstOrDefault()
             }).Select(s => new SokoZaiko {
@@ -234,7 +270,6 @@ namespace Convenience.Models.Properties {
 
             var config2 = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
-                //cfg.SetGeneratePropertyMaps<GenerateEntityFrameworkPrimaryKeyPropertyMaps<ConvenienceContext>>();
                 cfg.CreateMap<SokoZaiko, SokoZaiko>()
                 .EqualityComparison((s, t)
                     => s.ShiireSakiId == t.ShiireSakiId &&
@@ -250,9 +285,11 @@ namespace Convenience.Models.Properties {
             var mapper2 = new Mapper(config2);
 
             if (sokoZaikos.Count() == 0) {
+                //新規倉庫在庫登録
                 await _context.SokoZaiko.AddRangeAsync(result);
             }
             else {
+                //既に倉庫在庫がある場合は上書き
                 mapper2.Map<IList<SokoZaiko>, IList<SokoZaiko>>(result, sokoZaikos);
             }
 
@@ -261,12 +298,19 @@ namespace Convenience.Models.Properties {
             return (SokoZaikos);
         }
 
-        public class ChumonList {
-            public string ChumonId { get; set; }
-            public decimal ChumonZan { get; set; }
-        }
 
+        /// <summary>
+        /// 注文コード、仕入日を元に、次の仕入SEQを求める
+        /// 仕入実績の主キーは注文コード、仕入日、仕入SEQなので、仕入日に数回仕入れる場合は、
+        /// 仕入SEQをインクリメントして利用する
+        /// </summary>
+        /// <param name="inChumonId">仕入実績検索キー：注文コード</param>
+        /// <param name="inShiireDate">仕入実績検索キー：仕入日</param>
+        /// <returns>次の仕入SEQ（次に仕入実績を登録する仕入SEQ）</returns>
         public async Task<uint> NextSeq(string inChumonId, DateOnly inShiireDate) {
+
+            //仕入実績を注文コードと仕入日を元に検索、もしあれば最大の仕入SEQを求める
+            //注文コードと仕入日でレコードが起きてなければ、仕入SEQは1とする
 
             uint? seq = await _context.ShiireJisseki
                 .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
@@ -274,18 +318,20 @@ namespace Convenience.Models.Properties {
                     .Select(x => x.SeqByShiireDate)
                     .FirstOrDefaultAsync();
 
-            /*
-                uint? seq = await _context.ShiireJisseki
-                .Where(d => d.ChumonId == inChumonId && d.ShiireDate == inShiireDate)
-                .MaxAsync(d => d.SeqByShiireDate);
-            */
-            uint rseq = (seq ?? 0) + 1;
-
-            //uint seq = shiirej != null ? shiirej.SeqByShiireDate : 0;
-            return (rseq);
+            return ((seq ?? 0) + 1);
         }
 
-        //注文残がある注文のリスト化
+        /// <summary>
+        /// 仕入画面のキー入力の注文コード一覧用
+        /// </summary>
+        public class ChumonList {
+            public string ChumonId { get; set; }
+            public decimal ChumonZan { get; set; }
+        }
+        /// <summary>
+        /// 注文残がある注文のリスト化
+        /// </summary>
+        /// <returns>注文残のある注文コード一覧</returns>
         public async Task<IList<ChumonList>> ZanAriChumonList() {
             IList<ChumonList> chumonIdList = await _context.ChumonJissekiMeisai
                     .Where(c => c.ChumonZan > 0).GroupBy(c => c.ChumonId).Select(group => new ChumonList {
@@ -296,23 +342,30 @@ namespace Convenience.Models.Properties {
             return (chumonIdList);
         }
 
-        //倉庫在庫を仕入データに接続する（表示前に利用する）　NotMappedは外部キーが使えないから、includeできないため
-        public void ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> indata) {
-            //
+        /// <summary>
+        /// 倉庫在庫を仕入データに接続する（表示前に利用する）　
+        /// NotMappedは外部キーが使えないから、includeできないため
+        /// </summary>
+        /// <param name="inShiireJissekis">仕入実績</param>
+        /// <param name="indata">仕入実績に結合する倉庫在庫</param>
+        /// <return>倉庫在庫が接続された仕入実績</return>
+        public IList<ShiireJisseki> ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> inSokoZaiko ){
+            //引数で渡された仕入実績を一行づつ取り出す
             foreach (var item in inShiireJissekis) {
-                SokoZaiko? sokoZaiko = indata
+                //仕入実績とマッチする倉庫在庫を取得
+                SokoZaiko? sokoZaiko = inSokoZaiko
                     .Where(z =>
                         z.ShiireSakiId == item.ShiireSakiId &&
                         z.ShiirePrdId == item.ShiirePrdId &&
                         z.ShohinId == item.ShohinId)
                     .FirstOrDefault();
-                //
-                if (sokoZaiko != null) {
-                    //
+                //マッチする倉庫在庫の有無チェック
+                if (sokoZaiko != null) {    
+                    //ありの場合、取得した倉庫在庫を仕入実績に接続
                     item.SokoZaiko = sokoZaiko;
                 }
                 else {
-                    //
+                    //なしの場合、倉庫在庫を新規に作成し仕入実績に接続
                     item.SokoZaiko = new SokoZaiko {
                         ShiireSakiId = item.ShiireSakiId,
                         ShiirePrdId = item.ShiirePrdId,
@@ -320,9 +373,10 @@ namespace Convenience.Models.Properties {
                         SokoZaikoCaseSu = 0,
                         SokoZaikoSu = 0
                     };
-
                 }
             }
+            //倉庫在庫が接続された仕入実績
+            return inShiireJissekis;
         }
     }
 }

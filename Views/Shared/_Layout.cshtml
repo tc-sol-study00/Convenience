@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,21 +40,24 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer headerbg-color text-muted">
-        <div class="container">
-            &copy; 2023-2024 - Techno Creative Inc.
+    <footer class="border-top footer headerbg-color text-muted fixed-bottom" style="background: linear-gradient(to right, #001F3F, #005F9E); border: 1px solid #005F9E;">
+        <div class="row">
+            <div class="col text-white text-end pe-5">
+                &copy; 2023-2024 - Techno Creative Inc.
+            </div>
         </div>
     </footer>
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.cookie.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

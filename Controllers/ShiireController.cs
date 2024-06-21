@@ -42,6 +42,7 @@ namespace Convenience.Controllers {
 
             ShiireViewModel shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
 
+            ViewBag.HandlingFlg = "FirstDisplay";
             return View("Shiire", shiireViewModel);
         }
 
@@ -66,8 +67,6 @@ namespace Convenience.Controllers {
                 return result;
             });
 
-            //resultTuple.Item2 = resultTuple.Item2.OrderBy(s => new { s.ShiireSakiId, s.ShiirePrdId, s.ShohinId }).ToList();
-
             ShiireViewModel shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
 
             return View("Shiire", shiireViewModel);
@@ -91,8 +90,11 @@ namespace Convenience.Controllers {
                 ,
                 ShiireJissekis = inshiireJissekis
                 ,
+                IsNormal = true //正常終了
+                ,
                 Remark = entities != 0 ? new Message().SetMessage(ErrDef.NormalUpdate).MessageText : null
             };
+            ViewBag.HandlingFlg = "SecondDisplay";
             return (shiireViewModel);
         }
     }
