@@ -97,7 +97,7 @@ namespace Convenience.Models.Properties {
 
             //inSearchKeyによるwhereの設定
             //初回のみならず、メソッド実行のたびに、whereが追加される
-            SoKoZaikoQueryable = inSearchKey != null ?
+            SoKoZaikoQueryable = !string.IsNullOrEmpty(inSearchKey) ?
                 SoKoZaikoQueryable = SoKoZaikoQueryable.Where(inSearchKey).AsQueryable() : SoKoZaikoQueryable;
 
             //Linqの結果返却（まだ、EFは実行されていない）
