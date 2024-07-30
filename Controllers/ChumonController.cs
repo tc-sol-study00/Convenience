@@ -20,13 +20,17 @@ namespace Convenience.Controllers {
 
         private static readonly string IndexName = "ChumonJisseki";
 
-        //private IChumonService chumonService;
+        private readonly IChumonService chumonService;
 
-        private IChumonService chumonService;
-
-        public ChumonController(ConvenienceContext context) {
-            _context = context;
-            chumonService = new ChumonService(_context);
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="context">DBコンテキスト</param>
+        /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
+        public ChumonController(ConvenienceContext context,IChumonService chumonService) {
+            this._context = context;
+            this.chumonService = chumonService;
+            //chumonService = new ChumonService(_context);
         }
 
         private void KeepObject() {

@@ -59,7 +59,7 @@ namespace Convenience.Models.Properties {
             //仕入先より注文実績データ（親）を生成する(a)
 
             ChumonJisseki = new ChumonJisseki {
-                ChumonId = await ChumonIdHatsuban(inChumonDate, _context),              //注文コード発番
+                ChumonId = await ChumonIdHatsuban(inChumonDate),              //注文コード発番
                 ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
                 ChumonDate = inChumonDate                           //注文日付
             };
@@ -131,7 +131,7 @@ namespace Convenience.Models.Properties {
         /// <param name="InTheDate">注文日付</param>
         /// <param name="_context">ＤＢコンテキスト</param>
         /// <returns>発番された注文コード</returns>
-        private async Task<string> ChumonIdHatsuban(DateOnly InTheDate, ConvenienceContext _context) {
+        private async Task<string> ChumonIdHatsuban(DateOnly InTheDate) {
             uint seqNumber;
             string dateArea;
             //今日の日付

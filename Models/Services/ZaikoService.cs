@@ -17,14 +17,19 @@ namespace Convenience.Models.Services {
         //DBコンテキスト
         private readonly ConvenienceContext _context;
         //在庫クラス（プロパティレイヤ）用変数
-        public IZaiko Zaiko { get; set; }
+        private readonly IZaiko Zaiko;
 
-        //コンストラクター（ＡＳＰ用）
-        public ZaikoService(ConvenienceContext context) {
+        /// <summary>
+        /// コンストラクター（ＡＳＰ用） 
+        /// </summary>
+        /// <param name="context">DBコンテキスト</param>
+        /// <param name="zaiko">在庫クラスＤＩ注入用</param>
+        public ZaikoService(ConvenienceContext context,IZaiko zaiko) {
             //DBコンテキストセット
-            _context = context;
+            this._context = context;
             //在庫クラスインスタンス化
-            Zaiko = new Zaiko(_context);
+            this.Zaiko = zaiko;
+            //Zaiko = new Zaiko(_context);
         }
 
         //コンストラクター（デバッグ用）

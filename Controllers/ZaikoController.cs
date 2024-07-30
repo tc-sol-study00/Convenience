@@ -1,4 +1,5 @@
 ﻿using Convenience.Data;
+using Convenience.Models.Interfaces;
 using Convenience.Models.Services;
 using Convenience.Models.ViewModels.Zaiko;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,17 @@ namespace Convenience.Controllers {
     public class ZaikoController : Controller {
         private readonly ConvenienceContext _context;
 
-        private ZaikoService zaikoService;
+        private readonly IZaikoService zaikoService;
 
-        public ZaikoController(ConvenienceContext context) {
-            _context = context;
-            zaikoService = new ZaikoService(_context);
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="context">DBコンテキスト</param>
+        /// <param name="zaikoService">在庫サービスクラスＤＩ注入用</param>
+        public ZaikoController(ConvenienceContext context,IZaikoService zaikoService) {
+            this._context = context;
+            this.zaikoService = zaikoService;
+            //zaikoService = new ZaikoService(_context);
         }
 
         public async Task<IActionResult> Index() {

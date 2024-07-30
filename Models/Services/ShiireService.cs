@@ -13,13 +13,20 @@ namespace Convenience.Models.Services {
     public class ShiireService : IShiireService {
         private readonly ConvenienceContext _context;
 
-        private Shiire shiire;
+        private readonly IShiire shiire;
 
-        public ShiireService(ConvenienceContext context) {
-            _context = context;
-            ShiireClassCreate();
+        /// <summary>
+        /// コンストラクター　通常用
+        /// </summary>
+        /// <param name="context">DBコンテキスト</param>
+        /// <param name="shiire">仕入クラスＤＩ注入用</param>
+        public ShiireService(ConvenienceContext context,IShiire shiire) {
+            this._context = context;
+            this.shiire = shiire; 
+            //ShiireClassCreate();
         }
 
+        /*
         public ShiireService() {
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -38,6 +45,8 @@ namespace Convenience.Models.Services {
         private void ShiireClassCreate() {
             shiire = new Shiire(_context);
         }
+        */
+
         /*
          * 機能：仕入ハンドリング（新規用）
          *     ：仕入実績データの画面初期表示用（DB更新後の再表示も含む）

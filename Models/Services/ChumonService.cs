@@ -33,9 +33,11 @@ namespace Convenience.Models.Services {
         /// コンストラクター　通常用
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
-        public ChumonService(ConvenienceContext context) {
-            _context = context;
-            chumon = CreateChumonInstance(_context);
+        /// <param name="chumon">注文クラスＤＩ注入用</param>
+        public ChumonService(ConvenienceContext context,IChumon chumon) {
+            this._context = context;
+            this.chumon = chumon;
+            //chumon = CreateChumonInstance(_context);
         }
         /// <summary>
         /// デバッグ用

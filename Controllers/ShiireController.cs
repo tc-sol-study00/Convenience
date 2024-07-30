@@ -12,11 +12,17 @@ namespace Convenience.Controllers {
     public class ShiireController : Controller {
         private readonly ConvenienceContext _context;
 
-        private IShiireService shiireService;
+        private readonly IShiireService shiireService;
 
-        public ShiireController(ConvenienceContext context) {
-            _context = context;
-            shiireService = new ShiireService(_context);
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="context">DBコンテキスト</param>
+        /// <param name="shiireService">仕入サービスクラスＤＩ注入用</param>
+        public ShiireController(ConvenienceContext context,IShiireService shiireService) {
+            this._context = context;
+            this.shiireService = shiireService;
+            //shiireService = new ShiireService(_context);
         }
 
         public async Task<IActionResult> ShiireKeyInput() {

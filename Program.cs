@@ -1,4 +1,7 @@
 ﻿using Convenience.Data;
+using Convenience.Models.Services;
+using Convenience.Models.Properties;
+using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,14 @@ builder.Services.AddDbContext<ConvenienceContext>(options =>
 // Add services to the container.
 //builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
+
+//DIコンテナのサービス登録
+builder.Services.AddScoped<IChumonService,ChumonService>();
+builder.Services.AddScoped<IShiireService,ShiireService>();
+builder.Services.AddScoped<IZaikoService, ZaikoService>();
+builder.Services.AddScoped<IChumon,Chumon>();
+builder.Services.AddScoped<IShiire,Shiire>();
+builder.Services.AddScoped<IZaiko, Zaiko>();
 
 //builder.Services.AddRazorPages()
 //                    .AddSessionStateTempDataProvider();
