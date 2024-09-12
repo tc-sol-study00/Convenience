@@ -163,7 +163,7 @@ namespace Convenience.Models.Properties {
             //注文実績を読む
             existedChumonJisseki = await _context.ChumonJisseki.AsNoTracking()
                 .Include(e => e.ChumonJissekiMeisais.OrderBy(x => x.ShiirePrdId))
-                .FirstOrDefaultAsync(e => e.ChumonId == ChumonJisseki.ChumonId);
+                .FirstOrDefaultAsync(e => e.ChumonId == postedChumonJisseki.ChumonId);
 
             if (existedChumonJisseki != null) {  //注文実績がある場合
 
