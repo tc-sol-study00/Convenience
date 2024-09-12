@@ -23,7 +23,7 @@ namespace Convenience.Controllers {
         }
 
         public async Task<IActionResult> Index() {
-            ZaikoViewModel zaikoViewModel = new ZaikoViewModel { };
+            ZaikoViewModel zaikoViewModel = new ZaikoViewModel() { };
             return View(zaikoViewModel);
         }
 
@@ -33,7 +33,7 @@ namespace Convenience.Controllers {
             var keydata = inZaikoModel.KeyEventList;
             var selecteWhereItemArray = inZaikoModel.SelecteWhereItemArray;
 
-            ZaikoViewModel zaikoViewModel = new ZaikoViewModel {
+            ZaikoViewModel zaikoViewModel = new ZaikoViewModel() {
                 zaikoListLine = await zaikoService.KeyInput(keydata, selecteWhereItemArray)
             };
             return View(zaikoViewModel);
