@@ -3,16 +3,22 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.Services;
+using Convenience.Models.ViewModels.Chumon;
 using Convenience.Models.ViewModels.Shiire;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.Properties.Message;
 
 namespace Convenience.Controllers {
 
-    public class ShiireController : Controller {
+    public class ShiireController : Controller, ISharedTools {
         private readonly ConvenienceContext _context;
 
         private readonly IShiireService shiireService;
+
+        private static readonly string IndexName = "ShiireViewModel";
+
+        private ShiireViewModel shiireViewModel;
+
 
         /// <summary>
         /// コンストラクター
@@ -46,7 +52,7 @@ namespace Convenience.Controllers {
                 return result;
             });
 
-            ShiireViewModel shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
+            shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
 
             ViewBag.HandlingFlg = "FirstDisplay";
             return View("Shiire", shiireViewModel);
@@ -73,15 +79,30 @@ namespace Convenience.Controllers {
                 return result;
             });
 
-            ShiireViewModel shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
+            shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
 
-            return View("Shiire", shiireViewModel);
+            TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
+            //return View("Shiire", shiireViewModel);
+            return RedirectToAction("Result");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Result() {
+            ViewBag.HandlingFlg = "SecondDisplay";
+            if (TempData.Peek(IndexName) != null) {
+                shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName] as string);
+                TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
+                return View("Shiire", shiireViewModel);
+            }
+            else {
+                return RedirectToAction("Shiire");
+            }
         }
 
         public ShiireViewModel SetShiireModel(int entities, IList<ShiireJisseki> inshiireJissekis) {
             ShiireJisseki shiireJisseki = inshiireJissekis.FirstOrDefault();
 
-            ShiireViewModel shiireViewModel = new ShiireViewModel {
+            shiireViewModel = new ShiireViewModel {
                 ChumonId = shiireJisseki.ChumonId
                 ,
                 ChumonDate = shiireJisseki.ChumonJissekiMeisaii.ChumonJisseki.ChumonDate

@@ -15,12 +15,14 @@ using static Convenience.Models.Properties.Message;
 
 
 namespace Convenience.Controllers {
-    public class ChumonController : Controller {
+    public class ChumonController : Controller, ISharedTools {
         private readonly ConvenienceContext _context;
 
-        private static readonly string IndexName = "ChumonJisseki";
+        private static readonly string IndexName = "ChumonViewModel";
 
         private readonly IChumonService chumonService;
+
+        private ChumonViewModel chumonViewModel;
 
         /// <summary>
         /// コンストラクター
@@ -33,25 +35,6 @@ namespace Convenience.Controllers {
             //chumonService = new ChumonService(_context);
         }
 
-        private void KeepObject() {
-            JsonSerializerOptions options = new() {
-                //Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
-                //DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                WriteIndented = true,
-            };
-            TempData[IndexName] = JsonSerializer.Serialize(chumonService.chumon.ChumonJisseki,options);
-        }
-
-        private void GetObject() {
-            if (TempData.Peek(IndexName) != null) {
-                chumonService.chumon.ChumonJisseki = JsonSerializer.Deserialize<ChumonJisseki>((string)TempData[IndexName]);
-            }
-            else if (chumonService == null) {
-                KeepObject();
-            }
-        }
-
         public async Task<IActionResult> KeyInput() {
             ChumonKeysViewModel keymodel = SetChumonKeysViewModel();
             return View(keymodel);
@@ -60,7 +43,6 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> KeyInput(ChumonKeysViewModel inChumonKeysViewModel) {
-            ChumonViewModel chumonViewModel;
 
             if (!ModelState.IsValid) {
                 throw new InvalidOperationException("Postデータエラー");
@@ -72,7 +54,7 @@ namespace Convenience.Controllers {
             else {
                 chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, inChumonKeysViewModel.ChumonDate);
             }
-            KeepObject();
+            //KeepObject();
             ViewBag.HandlingFlg = "FirstDisplay";
             return View("ChumonMeisai", chumonViewModel);
         }
@@ -90,7 +72,7 @@ namespace Convenience.Controllers {
                 throw new Exception("Postデータエラー");
             };
 
-            GetObject();
+            //GetObject();
 
             ModelState.Clear();
 
@@ -104,14 +86,27 @@ namespace Convenience.Controllers {
             (ChumonJisseki chumonJisseki, int entities, bool isValid, ErrDef errCd)
                 = await chumonService.ChumonCommit(ChumonViewModel.ChumonJisseki);
 
-            var chumonViewModel = new ChumonViewModel {
+            chumonViewModel = new ChumonViewModel {
                 ChumonJisseki = chumonJisseki,
                 IsNormal = isValid,
                 Remark = errCd == ErrDef.NormalUpdate && entities > 0 || errCd != ErrDef.NormalUpdate ? new Message().SetMessage(errCd).MessageText : null
             };
-            KeepObject();
+
+            TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
+            return RedirectToAction("Result");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Result() {
             ViewBag.HandlingFlg = "SecondDisplay";
-            return View(chumonViewModel);
+            if (TempData.Peek(IndexName) != null) {
+                chumonViewModel= ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName] as string);
+                TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
+                return View("ChumonMeisai", chumonViewModel);
+            }
+            else {
+                return RedirectToAction("ChumonMeisai");
+            }
         }
 
         public ChumonKeysViewModel SetChumonKeysViewModel() {
