@@ -24,16 +24,22 @@
                         </div>
                     </div>
 
-                    @for (int i = 0; i < Model.KeyEventList.Length; i++) {
+                    @for (int i = 0; i < @Model.KeyEventList.Length; i++) {
                         <div class="row mb-1">
                             <div class="col-2 text-center">
                                 @(i + 1)
                             </div>
+                                @{
+                                    var a = @Model.KeyEventList[i];
+                                }
                             <div class="col-4">
                                 <select asp-for="@Model.KeyEventList[i].KeyEventData" asp-items="@Model.KeyList" class="form-control">
                                     <option value="">-- 選択してください --</option>
                                 </select>
                             </div>
+                            @{
+                                var b = @Model.KeyEventList[i];
+                            }
                             <div class="col-2 form-check form-switch text-center">
                                 <input asp-for="@Model.KeyEventList[i].Descending" type="checkbox" class="form-check-input" />
                                 <label asp-for="@Model.KeyEventList[i].Descending"  class="form-check-label">降順</label>

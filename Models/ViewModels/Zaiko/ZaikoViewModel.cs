@@ -12,6 +12,10 @@ namespace Convenience.Models.ViewModels.Zaiko {
 
     public class ZaikoViewModel {
 
+        public ZaikoViewModel() {
+
+        }
+
         //ソートキー選択結果セット用
         [DisplayName("ソートキー")]
 
@@ -22,8 +26,8 @@ namespace Convenience.Models.ViewModels.Zaiko {
             public bool Descending { get; set; } = false;
         }
 
-        const uint LineCountForSelectorOfOderBy = 3;    //ソート用３つまで入力ＯＫ
-        public KeyEventRec[] KeyEventList { get; set; } = new KeyEventRec[LineCountForSelectorOfOderBy];
+        const int LineCountForSelectorOfOderBy = 3;    //ソート用３つまで入力ＯＫ
+        public KeyEventRec[] KeyEventList { get; set; } = Enumerable.Range(0, LineCountForSelectorOfOderBy).Select(_ => new KeyEventRec()).ToArray();
 
         //ソート指示選択用一覧（画面表示と選択用）
         public SelectList KeyList = new SelectList(
@@ -64,13 +68,13 @@ namespace Convenience.Models.ViewModels.Zaiko {
             new SelectListItem { Value = "<", Text = "<" },
         }, "Value", "Text");
 
-        const uint LineCountForSelectorOfWhere = 6; //Where入力６行
-        public SelecteWhereItem[] SelecteWhereItemArray { get; set; } = new SelecteWhereItem[LineCountForSelectorOfWhere];
+        const int LineCountForSelectorOfWhere = 6; //Where入力６行
+        public SelecteWhereItem[] SelecteWhereItemArray { get; set; } = Enumerable.Range(0, LineCountForSelectorOfWhere).Select(_ => new SelecteWhereItem()).ToArray();
 
         //Where左辺用カラムセット用
         public SelectList SelectWhereLeftSideList = new SelectList(
-            new List<SelectListItem>
-                {
+                new List<SelectListItem>
+                    {
                     new SelectListItem { Value = nameof(ZaikoListLine.ShiireSakiId), Text = "仕入先コード" },
                     new SelectListItem { Value = nameof(ZaikoListLine.ShiirePrdId), Text = "仕入商品コード" },
                     new SelectListItem { Value = nameof(ZaikoListLine.ShohinId), Text = "商品コード" },
@@ -80,7 +84,7 @@ namespace Convenience.Models.ViewModels.Zaiko {
                     new SelectListItem { Value = nameof(ZaikoListLine.LastShiireDate), Text = "直近仕入日" },
                     new SelectListItem { Value = nameof(ZaikoListLine.LastDeliveryDate), Text = "直近払出日" },
                     new SelectListItem { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
-                }, "Value", "Text");
+                    }, "Value", "Text");
 
         //倉庫在庫・注文実績明細変策用レコード
         public class ZaikoListLine {
