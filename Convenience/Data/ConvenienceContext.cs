@@ -6,6 +6,10 @@ namespace Convenience.Data {
     /// </summary>
     public class ConvenienceContext : DbContext {
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="options"></param>
         public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
             : base(options) {
         }
