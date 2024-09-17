@@ -2,7 +2,7 @@
 
 namespace Convenience.Data {
     /// <summary>
-    /// DBコンテキストd
+    /// DBコンテキスト
     /// </summary>
     public class ConvenienceContext : DbContext {
 
