@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "src": "../Convenience",
+          "src": "../../Convenience",
           "files": [
             "**/*.csproj"
           ]
