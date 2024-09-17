@@ -362,6 +362,7 @@
   <ItemGroup>
     <Folder Include="Docfx\_site\.git\objects\info\" />
     <Folder Include="Docfx\_site\.git\refs\tags\" />
+    <Folder Include="Docfx\_site\新しいフォルダー\" />
   </ItemGroup>
 
 </Project>
