@@ -24,7 +24,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: TentoZaiko
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -75,7 +75,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinId
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 11
   assemblies:
   - Convenience
@@ -139,7 +139,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoSu
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 18
   assemblies:
   - Convenience
@@ -191,7 +191,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LastShireDateTime
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 23
   assemblies:
   - Convenience
@@ -248,7 +248,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LastHaraidashiDate
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 29
   assemblies:
   - Convenience
@@ -305,7 +305,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LastUriageDatetime
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 35
   assemblies:
   - Convenience
@@ -362,7 +362,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinMaster
-    path: ../Convenience/Models/DataModels/TentoZaiko.cs
+    path: ../Models/DataModels/TentoZaiko.cs
     startLine: 41
   assemblies:
   - Convenience

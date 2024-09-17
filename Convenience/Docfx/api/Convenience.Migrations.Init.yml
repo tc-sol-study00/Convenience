@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Init
-    path: ../Convenience/Migrations/20240527055358_Init.Designer.cs
+    path: ../Migrations/20240527055358_Init.Designer.cs
     startLine: 13
   assemblies:
   - Convenience
@@ -86,7 +86,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Up
-    path: ../Convenience/Migrations/20240527055358_Init.cs
+    path: ../Migrations/20240527055358_Init.cs
     startLine: 11
   assemblies:
   - Convenience
@@ -130,7 +130,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Down
-    path: ../Convenience/Migrations/20240527055358_Init.cs
+    path: ../Migrations/20240527055358_Init.cs
     startLine: 258
   assemblies:
   - Convenience
@@ -176,7 +176,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: BuildTargetModel
-    path: ../Convenience/Migrations/20240527055358_Init.Designer.cs
+    path: ../Migrations/20240527055358_Init.Designer.cs
     startLine: 18
   assemblies:
   - Convenience

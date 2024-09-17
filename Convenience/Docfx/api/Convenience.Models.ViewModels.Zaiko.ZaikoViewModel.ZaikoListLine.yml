@@ -27,7 +27,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoListLine
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 89
   assemblies:
   - Convenience
@@ -62,7 +62,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiId
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 90
   assemblies:
   - Convenience
@@ -91,7 +91,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiirePrdId
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 92
   assemblies:
   - Convenience
@@ -120,7 +120,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinId
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 94
   assemblies:
   - Convenience
@@ -149,7 +149,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinName
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 96
   assemblies:
   - Convenience
@@ -178,7 +178,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SokoZaikoCaseSu
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 98
   assemblies:
   - Convenience
@@ -207,7 +207,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SokoZaikoSu
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 100
   assemblies:
   - Convenience
@@ -236,7 +236,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LastShiireDate
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 102
   assemblies:
   - Convenience
@@ -265,7 +265,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LastDeliveryDate
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 104
   assemblies:
   - Convenience
@@ -294,7 +294,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonZan
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 106
   assemblies:
   - Convenience

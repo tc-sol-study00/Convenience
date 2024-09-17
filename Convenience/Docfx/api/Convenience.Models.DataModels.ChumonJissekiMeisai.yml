@@ -29,7 +29,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJissekiMeisai
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 9
   assemblies:
   - Convenience
@@ -80,7 +80,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonId
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 13
   assemblies:
   - Convenience
@@ -137,7 +137,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiId
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 19
   assemblies:
   - Convenience
@@ -194,7 +194,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiirePrdId
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 25
   assemblies:
   - Convenience
@@ -251,7 +251,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinId
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 31
   assemblies:
   - Convenience
@@ -308,7 +308,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonSu
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 37
   assemblies:
   - Convenience
@@ -399,7 +399,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonZan
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 46
   assemblies:
   - Convenience
@@ -451,7 +451,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LastChumonSu
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 51
   assemblies:
   - Convenience
@@ -501,7 +501,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJisseki
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 56
   assemblies:
   - Convenience
@@ -542,7 +542,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireMaster
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 59
   assemblies:
   - Convenience
@@ -583,7 +583,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireJisseki
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 62
   assemblies:
   - Convenience
@@ -612,7 +612,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Version
-    path: ../Convenience/Models/DataModels/ChumonJissekiMeisai.cs
+    path: ../Models/DataModels/ChumonJissekiMeisai.cs
     startLine: 64
   assemblies:
   - Convenience

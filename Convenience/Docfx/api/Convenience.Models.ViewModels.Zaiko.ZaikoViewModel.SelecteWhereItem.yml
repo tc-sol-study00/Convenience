@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SelecteWhereItem
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 48
   assemblies:
   - Convenience
@@ -56,7 +56,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LeftSide
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 49
   assemblies:
   - Convenience
@@ -85,7 +85,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ComparisonOperator
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 52
   assemblies:
   - Convenience
@@ -126,7 +126,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: RightSide
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 55
   assemblies:
   - Convenience

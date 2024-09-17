@@ -29,7 +29,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ErrDef
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 30
   assemblies:
   - Convenience
@@ -56,7 +56,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: DataValid
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 31
   assemblies:
   - Convenience
@@ -82,7 +82,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: NormalUpdate
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 32
   assemblies:
   - Convenience
@@ -108,7 +108,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: CanNotlUpdate
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 33
   assemblies:
   - Convenience
@@ -134,7 +134,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonIdError
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 34
   assemblies:
   - Convenience
@@ -160,7 +160,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonDateError
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 35
   assemblies:
   - Convenience
@@ -186,7 +186,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonIdRelationError
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 36
   assemblies:
   - Convenience
@@ -212,7 +212,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonSuIsNull
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 37
   assemblies:
   - Convenience
@@ -238,7 +238,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonSuBadRange
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 38
   assemblies:
   - Convenience
@@ -264,7 +264,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonZanIsNull
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 39
   assemblies:
   - Convenience
@@ -290,7 +290,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SuErrorBetChumonSuAndZan
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 40
   assemblies:
   - Convenience
@@ -316,7 +316,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: OtherError
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 41
   assemblies:
   - Convenience

@@ -20,7 +20,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyEventRec
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 19
   assemblies:
   - Convenience
@@ -55,7 +55,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyEventData
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 22
   assemblies:
   - Convenience
@@ -84,7 +84,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Descending
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 24
   assemblies:
   - Convenience

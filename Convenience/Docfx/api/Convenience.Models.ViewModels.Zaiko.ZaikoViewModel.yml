@@ -27,7 +27,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoViewModel
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 12
   assemblies:
   - Convenience
@@ -62,7 +62,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 14
   assemblies:
   - Convenience
@@ -91,7 +91,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LineCountForSelectorOfOderBy
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 28
   assemblies:
   - Convenience
@@ -118,7 +118,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyEventList
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 29
   assemblies:
   - Convenience
@@ -147,7 +147,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyList
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 32
   assemblies:
   - Convenience
@@ -174,7 +174,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ComparisonOperatorList
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 60
   assemblies:
   - Convenience
@@ -201,7 +201,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: LineCountForSelectorOfWhere
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 70
   assemblies:
   - Convenience
@@ -228,7 +228,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SelecteWhereItemArray
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 71
   assemblies:
   - Convenience
@@ -257,7 +257,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SelectWhereLeftSideList
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 74
   assemblies:
   - Convenience
@@ -284,7 +284,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: zaikoListLine
-    path: ../Convenience/Models/ViewModels/Zaiko/ZaikoViewModel.cs
+    path: ../Models/ViewModels/Zaiko/ZaikoViewModel.cs
     startLine: 110
   assemblies:
   - Convenience

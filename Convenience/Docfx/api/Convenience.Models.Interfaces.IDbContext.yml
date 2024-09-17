@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: IDbContext
-    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    path: ../Models/Interfaces/IDbContext.cs
     startLine: 4
   assemblies:
   - Convenience
@@ -46,7 +46,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ConfigrationFileName
-    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    path: ../Models/Interfaces/IDbContext.cs
     startLine: 5
   assemblies:
   - Convenience
@@ -73,7 +73,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyWordInAppConfig
-    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    path: ../Models/Interfaces/IDbContext.cs
     startLine: 6
   assemblies:
   - Convenience
@@ -100,7 +100,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: DbOpen
-    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    path: ../Models/Interfaces/IDbContext.cs
     startLine: 8
   assemblies:
   - Convenience

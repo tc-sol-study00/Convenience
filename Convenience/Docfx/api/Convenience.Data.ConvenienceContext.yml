@@ -29,11 +29,13 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ConvenienceContext
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 4
+    path: ../Data/ConvenienceContext.cs
+    startLine: 6
   assemblies:
   - Convenience
   namespace: Convenience.Data
+  summary: DBコンテキスト
+  example: []
   syntax:
     content: 'public class ConvenienceContext : DbContext, IInfrastructure<IServiceProvider>, IDbContextDependencies, IDbSetCache, IDbContextPoolable, IResettableService, IDisposable, IAsyncDisposable'
     content.vb: Public Class ConvenienceContext Inherits DbContext Implements IInfrastructure(Of IServiceProvider), IDbContextDependencies, IDbSetCache, IDbContextPoolable, IResettableService, IDisposable, IAsyncDisposable
@@ -139,16 +141,19 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 6
+    path: ../Data/ConvenienceContext.cs
+    startLine: 12
   assemblies:
   - Convenience
   namespace: Convenience.Data
+  summary: コンストラクタ2
+  example: []
   syntax:
     content: public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
     parameters:
     - id: options
       type: Microsoft.EntityFrameworkCore.DbContextOptions{Convenience.Data.ConvenienceContext}
+      description: ''
     content.vb: Public Sub New(options As DbContextOptions(Of ConvenienceContext))
   overload: Convenience.Data.ConvenienceContext.#ctor*
   nameWithType.vb: ConvenienceContext.New(DbContextOptions(Of ConvenienceContext))
@@ -171,8 +176,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJissekiMeisai
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 10
+    path: ../Data/ConvenienceContext.cs
+    startLine: 16
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -200,8 +205,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJisseki
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 11
+    path: ../Data/ConvenienceContext.cs
+    startLine: 17
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -229,8 +234,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireJisseki
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 12
+    path: ../Data/ConvenienceContext.cs
+    startLine: 18
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -258,8 +263,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShireMaster
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 13
+    path: ../Data/ConvenienceContext.cs
+    startLine: 19
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -287,8 +292,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiMaster
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 14
+    path: ../Data/ConvenienceContext.cs
+    startLine: 20
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -316,8 +321,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinMaster
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 15
+    path: ../Data/ConvenienceContext.cs
+    startLine: 21
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -345,8 +350,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SokoZaiko
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 16
+    path: ../Data/ConvenienceContext.cs
+    startLine: 22
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -374,8 +379,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: TentoZaiko
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 17
+    path: ../Data/ConvenienceContext.cs
+    startLine: 23
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -403,8 +408,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: TentoHaraidashiJisseki
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 18
+    path: ../Data/ConvenienceContext.cs
+    startLine: 24
   assemblies:
   - Convenience
   namespace: Convenience.Data
@@ -432,8 +437,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KaikeiJisseki
-    path: ../Convenience/Data/ConvenienceContext.cs
-    startLine: 19
+    path: ../Data/ConvenienceContext.cs
+    startLine: 25
   assemblies:
   - Convenience
   namespace: Convenience.Data

@@ -25,7 +25,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireService
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 12
   assemblies:
   - Convenience
@@ -62,7 +62,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 13
   assemblies:
   - Convenience
@@ -89,7 +89,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: shiire
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 15
   assemblies:
   - Convenience
@@ -116,7 +116,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 22
   assemblies:
   - Convenience
@@ -154,7 +154,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireHandling
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 59
   assemblies:
   - Convenience
@@ -191,7 +191,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireHandling
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 85
   assemblies:
   - Convenience
@@ -234,7 +234,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SetShiireKeysModel
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 165
   assemblies:
   - Convenience
@@ -265,7 +265,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireUpdate
-    path: ../Convenience/Models/Services/ShiireService.cs
+    path: ../Models/Services/ShiireService.cs
     startLine: 184
   assemblies:
   - Convenience

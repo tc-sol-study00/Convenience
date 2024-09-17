@@ -23,7 +23,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Resources
-    path: ../Convenience/Properties/Resources.Designer.cs
+    path: ../Properties/Resources.Designer.cs
     startLine: 21
   assemblies:
   - Convenience
@@ -60,7 +60,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: resourceMan
-    path: ../Convenience/Properties/Resources.Designer.cs
+    path: ../Properties/Resources.Designer.cs
     startLine: 26
   assemblies:
   - Convenience
@@ -87,7 +87,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: resourceCulture
-    path: ../Convenience/Properties/Resources.Designer.cs
+    path: ../Properties/Resources.Designer.cs
     startLine: 28
   assemblies:
   - Convenience
@@ -114,7 +114,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Properties/Resources.Designer.cs
+    path: ../Properties/Resources.Designer.cs
     startLine: 30
   assemblies:
   - Convenience
@@ -143,7 +143,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ResourceManager
-    path: ../Convenience/Properties/Resources.Designer.cs
+    path: ../Properties/Resources.Designer.cs
     startLine: 37
   assemblies:
   - Convenience
@@ -174,7 +174,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Culture
-    path: ../Convenience/Properties/Resources.Designer.cs
+    path: ../Properties/Resources.Designer.cs
     startLine: 52
   assemblies:
   - Convenience

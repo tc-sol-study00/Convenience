@@ -32,7 +32,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Shiire
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 12
   assemblies:
   - Convenience
@@ -72,7 +72,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 17
   assemblies:
   - Convenience
@@ -101,7 +101,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Shiirejissekis
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 23
   assemblies:
   - Convenience
@@ -137,7 +137,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SokoZaikos
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 27
   assemblies:
   - Convenience
@@ -170,7 +170,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 34
   assemblies:
   - Convenience
@@ -208,7 +208,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 40
   assemblies:
   - Convenience
@@ -239,7 +239,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireUpdate
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 49
   assemblies:
   - Convenience
@@ -279,7 +279,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChuumonIdOnShiireJissekiExistingCheck
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 80
   assemblies:
   - Convenience
@@ -319,7 +319,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChuumonZanZaikoSuChousei
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 112
   assemblies:
   - Convenience
@@ -362,7 +362,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireToShiireJisseki
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 139
   assemblies:
   - Convenience
@@ -408,7 +408,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonToShiireJisseki
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 163
   assemblies:
   - Convenience
@@ -454,7 +454,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoSet
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 210
   assemblies:
   - Convenience
@@ -492,7 +492,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: NextSeq
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 309
   assemblies:
   - Convenience
@@ -540,7 +540,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZanAriChumonList
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 334
   assemblies:
   - Convenience
@@ -573,7 +573,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSokoConnection
-    path: ../Convenience/Models/Properties/Shiire.cs
+    path: ../Models/Properties/Shiire.cs
     startLine: 351
   assemblies:
   - Convenience

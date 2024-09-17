@@ -20,7 +20,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireKeysViewModel
-    path: ../Convenience/Models/ViewModels/Shiire/ShiireKeysViewModel.cs
+    path: ../Models/ViewModels/Shiire/ShiireKeysViewModel.cs
     startLine: 6
   assemblies:
   - Convenience
@@ -55,7 +55,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonId
-    path: ../Convenience/Models/ViewModels/Shiire/ShiireKeysViewModel.cs
+    path: ../Models/ViewModels/Shiire/ShiireKeysViewModel.cs
     startLine: 8
   assemblies:
   - Convenience
@@ -103,7 +103,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonIdList
-    path: ../Convenience/Models/ViewModels/Shiire/ShiireKeysViewModel.cs
+    path: ../Models/ViewModels/Shiire/ShiireKeysViewModel.cs
     startLine: 13
   assemblies:
   - Convenience

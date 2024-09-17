@@ -24,7 +24,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinMaster
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -71,7 +71,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinId
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 10
   assemblies:
   - Convenience
@@ -135,7 +135,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinName
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 17
   assemblies:
   - Convenience
@@ -192,7 +192,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohiZeiritsu
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 23
   assemblies:
   - Convenience
@@ -251,7 +251,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohiZeiritsuGaishoku
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 29
   assemblies:
   - Convenience
@@ -310,7 +310,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireMasters
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 35
   assemblies:
   - Convenience
@@ -339,7 +339,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: TentoZaikos
-    path: ../Convenience/Models/DataModels/ShohinMaster.cs
+    path: ../Models/DataModels/ShohinMaster.cs
     startLine: 37
   assemblies:
   - Convenience

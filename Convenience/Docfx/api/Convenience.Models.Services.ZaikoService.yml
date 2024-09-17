@@ -23,7 +23,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoService
-    path: ../Convenience/Models/Services/ZaikoService.cs
+    path: ../Models/Services/ZaikoService.cs
     startLine: 15
   assemblies:
   - Convenience
@@ -60,7 +60,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
-    path: ../Convenience/Models/Services/ZaikoService.cs
+    path: ../Models/Services/ZaikoService.cs
     startLine: 17
   assemblies:
   - Convenience
@@ -87,7 +87,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Zaiko
-    path: ../Convenience/Models/Services/ZaikoService.cs
+    path: ../Models/Services/ZaikoService.cs
     startLine: 19
   assemblies:
   - Convenience
@@ -114,7 +114,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Services/ZaikoService.cs
+    path: ../Models/Services/ZaikoService.cs
     startLine: 26
   assemblies:
   - Convenience
@@ -152,7 +152,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Services/ZaikoService.cs
+    path: ../Models/Services/ZaikoService.cs
     startLine: 35
   assemblies:
   - Convenience
@@ -181,7 +181,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyInput
-    path: ../Convenience/Models/Services/ZaikoService.cs
+    path: ../Models/Services/ZaikoService.cs
     startLine: 51
   assemblies:
   - Convenience

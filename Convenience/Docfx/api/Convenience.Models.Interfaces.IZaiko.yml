@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: IZaiko
-    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    path: ../Models/Interfaces/IZaiko.cs
     startLine: 5
   assemblies:
   - Convenience
@@ -46,7 +46,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SoKoZaikoQueryable
-    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    path: ../Models/Interfaces/IZaiko.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -75,7 +75,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: CreateSokoZaikoList
-    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    path: ../Models/Interfaces/IZaiko.cs
     startLine: 9
   assemblies:
   - Convenience
@@ -109,7 +109,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: AddOrderby
-    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    path: ../Models/Interfaces/IZaiko.cs
     startLine: 10
   assemblies:
   - Convenience

@@ -24,7 +24,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJisseki
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 8
   assemblies:
   - Convenience
@@ -75,7 +75,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonId
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 12
   assemblies:
   - Convenience
@@ -132,7 +132,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiId
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 18
   assemblies:
   - Convenience
@@ -189,7 +189,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonDate
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 24
   assemblies:
   - Convenience
@@ -237,7 +237,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiMaster
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 29
   assemblies:
   - Convenience
@@ -278,7 +278,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJissekiMeisais
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 32
   assemblies:
   - Convenience
@@ -307,7 +307,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Version
-    path: ../Convenience/Models/DataModels/ChumonJisseki.cs
+    path: ../Models/DataModels/ChumonJisseki.cs
     startLine: 34
   assemblies:
   - Convenience

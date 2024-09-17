@@ -19,7 +19,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Menu
-    path: ../Convenience/Models/Menu.cs
+    path: ../Models/Menu.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -54,7 +54,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: MenuList
-    path: ../Convenience/Models/Menu.cs
+    path: ../Models/Menu.cs
     startLine: 8
   assemblies:
   - Convenience

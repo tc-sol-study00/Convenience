@@ -25,7 +25,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KaikeiJisseki
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -76,7 +76,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinId
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 11
   assemblies:
   - Convenience
@@ -133,7 +133,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: UriageDatetime
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 17
   assemblies:
   - Convenience
@@ -190,7 +190,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: UriageSu
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 23
   assemblies:
   - Convenience
@@ -249,7 +249,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: UriageKingakuSu
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 29
   assemblies:
   - Convenience
@@ -308,7 +308,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZeikomiKingaku
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 35
   assemblies:
   - Convenience
@@ -367,7 +367,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohiZeiritsu
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 41
   assemblies:
   - Convenience
@@ -426,7 +426,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinMaster
-    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    path: ../Models/DataModels/KaikeiJisseki.cs
     startLine: 47
   assemblies:
   - Convenience

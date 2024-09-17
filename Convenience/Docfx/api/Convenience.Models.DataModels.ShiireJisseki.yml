@@ -30,7 +30,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireJisseki
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -81,7 +81,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonId
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 11
   assemblies:
   - Convenience
@@ -138,7 +138,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireDate
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 17
   assemblies:
   - Convenience
@@ -186,7 +186,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SeqByShiireDate
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 22
   assemblies:
   - Convenience
@@ -234,7 +234,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireDateTime
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 27
   assemblies:
   - Convenience
@@ -282,7 +282,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiId
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 32
   assemblies:
   - Convenience
@@ -339,7 +339,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiirePrdId
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 38
   assemblies:
   - Convenience
@@ -396,7 +396,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShohinId
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 44
   assemblies:
   - Convenience
@@ -453,7 +453,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: NonyuSu
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 50
   assemblies:
   - Convenience
@@ -505,7 +505,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: NonyuSubalance
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 55
   assemblies:
   - Convenience
@@ -555,7 +555,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJissekiMeisaii
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 60
   assemblies:
   - Convenience
@@ -596,7 +596,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SokoZaiko
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 63
   assemblies:
   - Convenience
@@ -644,7 +644,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Version
-    path: ../Convenience/Models/DataModels/ShiireJisseki.cs
+    path: ../Models/DataModels/ShiireJisseki.cs
     startLine: 67
   assemblies:
   - Convenience

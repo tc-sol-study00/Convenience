@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: shiireTimeStamp
-    path: ../Convenience/Migrations/20240530005521_shiireTimeStamp.Designer.cs
+    path: ../Migrations/20240530005521_shiireTimeStamp.Designer.cs
     startLine: 13
   assemblies:
   - Convenience
@@ -86,7 +86,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Up
-    path: ../Convenience/Migrations/20240530005521_shiireTimeStamp.cs
+    path: ../Migrations/20240530005521_shiireTimeStamp.cs
     startLine: 10
   assemblies:
   - Convenience
@@ -130,7 +130,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Down
-    path: ../Convenience/Migrations/20240530005521_shiireTimeStamp.cs
+    path: ../Migrations/20240530005521_shiireTimeStamp.cs
     startLine: 30
   assemblies:
   - Convenience
@@ -176,7 +176,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: BuildTargetModel
-    path: ../Convenience/Migrations/20240530005521_shiireTimeStamp.Designer.cs
+    path: ../Migrations/20240530005521_shiireTimeStamp.Designer.cs
     startLine: 18
   assemblies:
   - Convenience

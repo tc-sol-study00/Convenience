@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonKeysViewModel
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonKeysViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonKeysViewModel.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -56,7 +56,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiId
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonKeysViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonKeysViewModel.cs
     startLine: 9
   assemblies:
   - Convenience
@@ -113,7 +113,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonDate
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonKeysViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonKeysViewModel.cs
     startLine: 15
   assemblies:
   - Convenience
@@ -154,7 +154,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSakiList
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonKeysViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonKeysViewModel.cs
     startLine: 19
   assemblies:
   - Convenience

@@ -19,7 +19,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ConvenienceContextModelSnapshot
-    path: ../Convenience/Migrations/ConvenienceContextModelSnapshot.cs
+    path: ../Migrations/ConvenienceContextModelSnapshot.cs
     startLine: 12
   assemblies:
   - Convenience
@@ -68,7 +68,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: BuildModel
-    path: ../Convenience/Migrations/ConvenienceContextModelSnapshot.cs
+    path: ../Migrations/ConvenienceContextModelSnapshot.cs
     startLine: 15
   assemblies:
   - Convenience

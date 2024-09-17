@@ -25,7 +25,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Zaiko
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 16
   assemblies:
   - Convenience
@@ -64,7 +64,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 21
   assemblies:
   - Convenience
@@ -93,7 +93,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SoKoZaikoQueryable
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 25
   assemblies:
   - Convenience
@@ -126,7 +126,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: isFirstCalled
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 29
   assemblies:
   - Convenience
@@ -155,7 +155,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 34
   assemblies:
   - Convenience
@@ -186,7 +186,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 51
   assemblies:
   - Convenience
@@ -221,7 +221,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: CreateSokoZaikoList
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 60
   assemblies:
   - Convenience
@@ -261,7 +261,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: AddOrderby
-    path: ../Convenience/Models/Properties/Zaiko.cs
+    path: ../Models/Properties/Zaiko.cs
     startLine: 113
   assemblies:
   - Convenience

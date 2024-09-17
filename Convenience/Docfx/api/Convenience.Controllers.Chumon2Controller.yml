@@ -26,11 +26,13 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Chumon2Controller
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 12
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 16
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
+  summary: サービスを使わない注文コントローラ（演習対象外ｘｘ）
+  example: []
   syntax:
     content: 'public class Chumon2Controller : Controller, IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable'
     content.vb: Public Class Chumon2Controller Inherits Controller Implements IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable
@@ -262,8 +264,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 13
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 17
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -289,8 +291,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: chumon
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 17
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 21
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -316,8 +318,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 19
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 23
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -348,8 +350,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyInput
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 24
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 28
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -376,8 +378,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyInput
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 30
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 34
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -424,8 +426,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonMeisai
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 64
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 68
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -455,8 +457,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonMeisai
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 71
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 75
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -508,8 +510,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SetChumonKeysViewModel
-    path: ../Convenience/Controllers/Chumon2Controller.cs
-    startLine: 109
+    path: ../Controllers/Chumon2Controller.cs
+    startLine: 113
   assemblies:
   - Convenience
   namespace: Convenience.Controllers

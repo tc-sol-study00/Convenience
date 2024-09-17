@@ -20,7 +20,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: MessageData
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 9
   assemblies:
   - Convenience
@@ -57,7 +57,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: MessageNo
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 13
   assemblies:
   - Convenience
@@ -88,7 +88,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: MessageText
-    path: ../Convenience/Models/Properties/Message.cs
+    path: ../Models/Properties/Message.cs
     startLine: 17
   assemblies:
   - Convenience

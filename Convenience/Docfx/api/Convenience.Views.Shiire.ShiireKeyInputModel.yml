@@ -19,7 +19,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireKeyInputModel
-    path: ../Convenience/Views/Shiire/ShiireKeyInput.cshtml.cs
+    path: ../Views/Shiire/ShiireKeyInput.cshtml.cs
     startLine: 4
   assemblies:
   - Convenience
@@ -176,7 +176,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: OnGet
-    path: ../Convenience/Views/Shiire/ShiireKeyInput.cshtml.cs
+    path: ../Views/Shiire/ShiireKeyInput.cshtml.cs
     startLine: 6
   assemblies:
   - Convenience

@@ -21,7 +21,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonViewModel
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonViewModel.cs
     startLine: 4
   assemblies:
   - Convenience
@@ -56,7 +56,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJisseki
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonViewModel.cs
     startLine: 5
   assemblies:
   - Convenience
@@ -85,7 +85,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: IsNormal
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonViewModel.cs
     startLine: 6
   assemblies:
   - Convenience
@@ -114,7 +114,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Remark
-    path: ../Convenience/Models/ViewModels/Chumon/ChumonViewModel.cs
+    path: ../Models/ViewModels/Chumon/ChumonViewModel.cs
     startLine: 7
   assemblies:
   - Convenience

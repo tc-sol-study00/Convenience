@@ -23,11 +23,13 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoController
-    path: ../Convenience/Controllers/ZaikoController.cs
-    startLine: 8
+    path: ../Controllers/ZaikoController.cs
+    startLine: 11
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
+  summary: 倉庫在庫検索コントローラ
+  example: []
   syntax:
     content: 'public class ZaikoController : Controller, IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable'
     content.vb: Public Class ZaikoController Inherits Controller Implements IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable
@@ -259,8 +261,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
-    path: ../Convenience/Controllers/ZaikoController.cs
-    startLine: 9
+    path: ../Controllers/ZaikoController.cs
+    startLine: 12
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -286,8 +288,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: zaikoService
-    path: ../Convenience/Controllers/ZaikoController.cs
-    startLine: 11
+    path: ../Controllers/ZaikoController.cs
+    startLine: 14
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -313,8 +315,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Controllers/ZaikoController.cs
-    startLine: 18
+    path: ../Controllers/ZaikoController.cs
+    startLine: 21
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -351,8 +353,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Index
-    path: ../Convenience/Controllers/ZaikoController.cs
-    startLine: 24
+    path: ../Controllers/ZaikoController.cs
+    startLine: 27
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -379,8 +381,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Index
-    path: ../Convenience/Controllers/ZaikoController.cs
-    startLine: 29
+    path: ../Controllers/ZaikoController.cs
+    startLine: 32
   assemblies:
   - Convenience
   namespace: Convenience.Controllers

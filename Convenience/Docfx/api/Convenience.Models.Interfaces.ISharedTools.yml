@@ -20,7 +20,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ISharedTools
-    path: ../Convenience/Models/Interfaces/ISharedTools.cs
+    path: ../Models/Interfaces/ISharedTools.cs
     startLine: 5
   assemblies:
   - Convenience
@@ -45,7 +45,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ConvertToSerial
-    path: ../Convenience/Models/Interfaces/ISharedTools.cs
+    path: ../Models/Interfaces/ISharedTools.cs
     startLine: 8
   assemblies:
   - Convenience
@@ -81,7 +81,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ConvertFromSerial
-    path: ../Convenience/Models/Interfaces/ISharedTools.cs
+    path: ../Models/Interfaces/ISharedTools.cs
     startLine: 15
   assemblies:
   - Convenience

@@ -23,11 +23,13 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: HomeController
-    path: ../Convenience/Controllers/HomeController.cs
-    startLine: 8
+    path: ../Controllers/HomeController.cs
+    startLine: 11
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
+  summary: Homeコントローラ（メニュー表示用）
+  example: []
   syntax:
     content: 'public class HomeController : Controller, IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable'
     content.vb: Public Class HomeController Inherits Controller Implements IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable
@@ -259,8 +261,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _logger
-    path: ../Convenience/Controllers/HomeController.cs
-    startLine: 9
+    path: ../Controllers/HomeController.cs
+    startLine: 12
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -286,8 +288,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
-    path: ../Convenience/Controllers/HomeController.cs
-    startLine: 11
+    path: ../Controllers/HomeController.cs
+    startLine: 14
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -318,8 +320,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Index
-    path: ../Convenience/Controllers/HomeController.cs
-    startLine: 15
+    path: ../Controllers/HomeController.cs
+    startLine: 18
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -346,8 +348,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Privacy
-    path: ../Convenience/Controllers/HomeController.cs
-    startLine: 19
+    path: ../Controllers/HomeController.cs
+    startLine: 22
   assemblies:
   - Convenience
   namespace: Convenience.Controllers
@@ -374,8 +376,8 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Error
-    path: ../Convenience/Controllers/HomeController.cs
-    startLine: 23
+    path: ../Controllers/HomeController.cs
+    startLine: 26
   assemblies:
   - Convenience
   namespace: Convenience.Controllers

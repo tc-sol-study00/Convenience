@@ -28,7 +28,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: IShiire
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 4
   assemblies:
   - Convenience
@@ -53,7 +53,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Shiirejissekis
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 11
   assemblies:
   - Convenience
@@ -82,7 +82,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: SokoZaikos
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 13
   assemblies:
   - Convenience
@@ -111,7 +111,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChuumonIdOnShiireJissekiExistingCheck
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 20
   assemblies:
   - Convenience
@@ -149,7 +149,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: NextSeq
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 27
   assemblies:
   - Convenience
@@ -185,7 +185,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonToShiireJisseki
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 31
   assemblies:
   - Convenience
@@ -223,7 +223,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireToShiireJisseki
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 34
   assemblies:
   - Convenience
@@ -261,7 +261,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireSokoConnection
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 37
   assemblies:
   - Convenience
@@ -297,7 +297,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChuumonZanZaikoSuChousei
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 40
   assemblies:
   - Convenience
@@ -333,7 +333,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ShiireUpdate
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 47
   assemblies:
   - Convenience
@@ -367,7 +367,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZanAriChumonList
-    path: ../Convenience/Models/Interfaces/IShiire.cs
+    path: ../Models/Interfaces/IShiire.cs
     startLine: 54
   assemblies:
   - Convenience

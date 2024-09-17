@@ -22,7 +22,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: IChumon
-    path: ../Convenience/Models/Interfaces/IChumon.cs
+    path: ../Models/Interfaces/IChumon.cs
     startLine: 7
   assemblies:
   - Convenience
@@ -49,7 +49,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonJisseki
-    path: ../Convenience/Models/Interfaces/IChumon.cs
+    path: ../Models/Interfaces/IChumon.cs
     startLine: 11
   assemblies:
   - Convenience
@@ -80,7 +80,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonSakusei
-    path: ../Convenience/Models/Interfaces/IChumon.cs
+    path: ../Models/Interfaces/IChumon.cs
     startLine: 26
   assemblies:
   - Convenience
@@ -133,7 +133,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonToiawase
-    path: ../Convenience/Models/Interfaces/IChumon.cs
+    path: ../Models/Interfaces/IChumon.cs
     startLine: 38
   assemblies:
   - Convenience
@@ -178,7 +178,7 @@ items:
       branch: main
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ChumonUpdate
-    path: ../Convenience/Models/Interfaces/IChumon.cs
+    path: ../Models/Interfaces/IChumon.cs
     startLine: 45
   assemblies:
   - Convenience
