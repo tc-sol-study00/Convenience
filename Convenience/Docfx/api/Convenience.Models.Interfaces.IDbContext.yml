@@ -1,0 +1,197 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Interfaces.IDbContext
+  commentId: T:Convenience.Models.Interfaces.IDbContext
+  id: IDbContext
+  parent: Convenience.Models.Interfaces
+  children:
+  - Convenience.Models.Interfaces.IDbContext.ConfigrationFileName
+  - Convenience.Models.Interfaces.IDbContext.DbOpen
+  - Convenience.Models.Interfaces.IDbContext.KeyWordInAppConfig
+  langs:
+  - csharp
+  - vb
+  name: IDbContext
+  nameWithType: IDbContext
+  fullName: Convenience.Models.Interfaces.IDbContext
+  type: Interface
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IDbContext.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: IDbContext
+    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    startLine: 4
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: public interface IDbContext
+    content.vb: Public Interface IDbContext
+- uid: Convenience.Models.Interfaces.IDbContext.ConfigrationFileName
+  commentId: F:Convenience.Models.Interfaces.IDbContext.ConfigrationFileName
+  id: ConfigrationFileName
+  parent: Convenience.Models.Interfaces.IDbContext
+  langs:
+  - csharp
+  - vb
+  name: ConfigrationFileName
+  nameWithType: IDbContext.ConfigrationFileName
+  fullName: Convenience.Models.Interfaces.IDbContext.ConfigrationFileName
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IDbContext.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ConfigrationFileName
+    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    startLine: 5
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: private const string ConfigrationFileName = "appsettings.json"
+    return:
+      type: System.String
+    content.vb: Private Const ConfigrationFileName As String = "appsettings.json"
+- uid: Convenience.Models.Interfaces.IDbContext.KeyWordInAppConfig
+  commentId: F:Convenience.Models.Interfaces.IDbContext.KeyWordInAppConfig
+  id: KeyWordInAppConfig
+  parent: Convenience.Models.Interfaces.IDbContext
+  langs:
+  - csharp
+  - vb
+  name: KeyWordInAppConfig
+  nameWithType: IDbContext.KeyWordInAppConfig
+  fullName: Convenience.Models.Interfaces.IDbContext.KeyWordInAppConfig
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IDbContext.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: KeyWordInAppConfig
+    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    startLine: 6
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: private const string KeyWordInAppConfig = "ConvenienceContext"
+    return:
+      type: System.String
+    content.vb: Private Const KeyWordInAppConfig As String = "ConvenienceContext"
+- uid: Convenience.Models.Interfaces.IDbContext.DbOpen
+  commentId: M:Convenience.Models.Interfaces.IDbContext.DbOpen
+  id: DbOpen
+  parent: Convenience.Models.Interfaces.IDbContext
+  langs:
+  - csharp
+  - vb
+  name: DbOpen()
+  nameWithType: IDbContext.DbOpen()
+  fullName: Convenience.Models.Interfaces.IDbContext.DbOpen()
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IDbContext.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: DbOpen
+    path: ../Convenience/Models/Interfaces/IDbContext.cs
+    startLine: 8
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: protected static ConvenienceContext DbOpen()
+    return:
+      type: Convenience.Data.ConvenienceContext
+    content.vb: Protected Shared Function DbOpen() As ConvenienceContext
+  overload: Convenience.Models.Interfaces.IDbContext.DbOpen*
+references:
+- uid: Convenience.Models.Interfaces
+  commentId: N:Convenience.Models.Interfaces
+  href: Convenience.html
+  name: Convenience.Models.Interfaces
+  nameWithType: Convenience.Models.Interfaces
+  fullName: Convenience.Models.Interfaces
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Convenience.Models.Interfaces.IDbContext.DbOpen*
+  commentId: Overload:Convenience.Models.Interfaces.IDbContext.DbOpen
+  href: Convenience.Models.Interfaces.IDbContext.html#Convenience_Models_Interfaces_IDbContext_DbOpen
+  name: DbOpen
+  nameWithType: IDbContext.DbOpen
+  fullName: Convenience.Models.Interfaces.IDbContext.DbOpen
+- uid: Convenience.Data.ConvenienceContext
+  commentId: T:Convenience.Data.ConvenienceContext
+  parent: Convenience.Data
+  href: Convenience.Data.ConvenienceContext.html
+  name: ConvenienceContext
+  nameWithType: ConvenienceContext
+  fullName: Convenience.Data.ConvenienceContext
+- uid: Convenience.Data
+  commentId: N:Convenience.Data
+  href: Convenience.html
+  name: Convenience.Data
+  nameWithType: Convenience.Data
+  fullName: Convenience.Data
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Data
+    name: Data
+    href: Convenience.Data.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Data
+    name: Data
+    href: Convenience.Data.html

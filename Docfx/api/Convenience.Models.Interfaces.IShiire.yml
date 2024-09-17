@@ -1,0 +1,978 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Interfaces.IShiire
+  commentId: T:Convenience.Models.Interfaces.IShiire
+  id: IShiire
+  parent: Convenience.Models.Interfaces
+  children:
+  - Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  - Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck(System.String,System.DateOnly,System.UInt32)
+  - Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei(System.String,System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  - Convenience.Models.Interfaces.IShiire.NextSeq(System.String,System.DateOnly)
+  - Convenience.Models.Interfaces.IShiire.ShiireSokoConnection(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki},System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko})
+  - Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  - Convenience.Models.Interfaces.IShiire.ShiireUpdate(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  - Convenience.Models.Interfaces.IShiire.Shiirejissekis
+  - Convenience.Models.Interfaces.IShiire.SokoZaikos
+  - Convenience.Models.Interfaces.IShiire.ZanAriChumonList
+  langs:
+  - csharp
+  - vb
+  name: IShiire
+  nameWithType: IShiire
+  fullName: Convenience.Models.Interfaces.IShiire
+  type: Interface
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: IShiire
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 4
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: public interface IShiire
+    content.vb: Public Interface IShiire
+- uid: Convenience.Models.Interfaces.IShiire.Shiirejissekis
+  commentId: P:Convenience.Models.Interfaces.IShiire.Shiirejissekis
+  id: Shiirejissekis
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: Shiirejissekis
+  nameWithType: IShiire.Shiirejissekis
+  fullName: Convenience.Models.Interfaces.IShiire.Shiirejissekis
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: Shiirejissekis
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 11
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IList<ShiireJisseki> Shiirejissekis { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+    content.vb: Property Shiirejissekis As IList(Of ShiireJisseki)
+  overload: Convenience.Models.Interfaces.IShiire.Shiirejissekis*
+- uid: Convenience.Models.Interfaces.IShiire.SokoZaikos
+  commentId: P:Convenience.Models.Interfaces.IShiire.SokoZaikos
+  id: SokoZaikos
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: SokoZaikos
+  nameWithType: IShiire.SokoZaikos
+  fullName: Convenience.Models.Interfaces.IShiire.SokoZaikos
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: SokoZaikos
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 13
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IList<SokoZaiko> SokoZaikos { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.SokoZaiko}
+    content.vb: Property SokoZaikos As IList(Of SokoZaiko)
+  overload: Convenience.Models.Interfaces.IShiire.SokoZaikos*
+- uid: Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck(System.String,System.DateOnly,System.UInt32)
+  commentId: M:Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck(System.String,System.DateOnly,System.UInt32)
+  id: ChuumonIdOnShiireJissekiExistingCheck(System.String,System.DateOnly,System.UInt32)
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ChuumonIdOnShiireJissekiExistingCheck(string, DateOnly, uint)
+  nameWithType: IShiire.ChuumonIdOnShiireJissekiExistingCheck(string, DateOnly, uint)
+  fullName: Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck(string, System.DateOnly, uint)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChuumonIdOnShiireJissekiExistingCheck
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 20
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: Task<bool> ChuumonIdOnShiireJissekiExistingCheck(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate)
+    parameters:
+    - id: inChumonId
+      type: System.String
+    - id: inShiireDate
+      type: System.DateOnly
+    - id: inSeqByShiireDate
+      type: System.UInt32
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function ChuumonIdOnShiireJissekiExistingCheck(inChumonId As String, inShiireDate As DateOnly, inSeqByShiireDate As UInteger) As Task(Of Boolean)
+  overload: Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck*
+  nameWithType.vb: IShiire.ChuumonIdOnShiireJissekiExistingCheck(String, DateOnly, UInteger)
+  fullName.vb: Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck(String, System.DateOnly, UInteger)
+  name.vb: ChuumonIdOnShiireJissekiExistingCheck(String, DateOnly, UInteger)
+- uid: Convenience.Models.Interfaces.IShiire.NextSeq(System.String,System.DateOnly)
+  commentId: M:Convenience.Models.Interfaces.IShiire.NextSeq(System.String,System.DateOnly)
+  id: NextSeq(System.String,System.DateOnly)
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: NextSeq(string, DateOnly)
+  nameWithType: IShiire.NextSeq(string, DateOnly)
+  fullName: Convenience.Models.Interfaces.IShiire.NextSeq(string, System.DateOnly)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: NextSeq
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 27
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: Task<uint> NextSeq(string inChumonId, DateOnly inShiireDate)
+    parameters:
+    - id: inChumonId
+      type: System.String
+    - id: inShiireDate
+      type: System.DateOnly
+    return:
+      type: System.Threading.Tasks.Task{System.UInt32}
+    content.vb: Function NextSeq(inChumonId As String, inShiireDate As DateOnly) As Task(Of UInteger)
+  overload: Convenience.Models.Interfaces.IShiire.NextSeq*
+  nameWithType.vb: IShiire.NextSeq(String, DateOnly)
+  fullName.vb: Convenience.Models.Interfaces.IShiire.NextSeq(String, System.DateOnly)
+  name.vb: NextSeq(String, DateOnly)
+- uid: Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  commentId: M:Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  id: ChumonToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ChumonToShiireJisseki(string, DateOnly, uint)
+  nameWithType: IShiire.ChumonToShiireJisseki(string, DateOnly, uint)
+  fullName: Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki(string, System.DateOnly, uint)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonToShiireJisseki
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 31
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: Task<IList<ShiireJisseki>> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate)
+    parameters:
+    - id: inChumonId
+      type: System.String
+    - id: inShiireDate
+      type: System.DateOnly
+    - id: inSeqByShiireDate
+      type: System.UInt32
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}}
+    content.vb: Function ChumonToShiireJisseki(inChumonId As String, inShiireDate As DateOnly, inSeqByShiireDate As UInteger) As Task(Of IList(Of ShiireJisseki))
+  overload: Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki*
+  nameWithType.vb: IShiire.ChumonToShiireJisseki(String, DateOnly, UInteger)
+  fullName.vb: Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki(String, System.DateOnly, UInteger)
+  name.vb: ChumonToShiireJisseki(String, DateOnly, UInteger)
+- uid: Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  commentId: M:Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  id: ShiireToShiireJisseki(System.String,System.DateOnly,System.UInt32)
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ShiireToShiireJisseki(string, DateOnly, uint)
+  nameWithType: IShiire.ShiireToShiireJisseki(string, DateOnly, uint)
+  fullName: Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki(string, System.DateOnly, uint)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ShiireToShiireJisseki
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 34
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: Task<IList<ShiireJisseki>> ShiireToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate)
+    parameters:
+    - id: inChumonId
+      type: System.String
+    - id: inShiireDate
+      type: System.DateOnly
+    - id: inSeqByShiireDate
+      type: System.UInt32
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}}
+    content.vb: Function ShiireToShiireJisseki(inChumonId As String, inShiireDate As DateOnly, inSeqByShiireDate As UInteger) As Task(Of IList(Of ShiireJisseki))
+  overload: Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki*
+  nameWithType.vb: IShiire.ShiireToShiireJisseki(String, DateOnly, UInteger)
+  fullName.vb: Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki(String, System.DateOnly, UInteger)
+  name.vb: ShiireToShiireJisseki(String, DateOnly, UInteger)
+- uid: Convenience.Models.Interfaces.IShiire.ShiireSokoConnection(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki},System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko})
+  commentId: M:Convenience.Models.Interfaces.IShiire.ShiireSokoConnection(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki},System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko})
+  id: ShiireSokoConnection(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki},System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko})
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ShiireSokoConnection(IList<ShiireJisseki>, IEnumerable<SokoZaiko>)
+  nameWithType: IShiire.ShiireSokoConnection(IList<ShiireJisseki>, IEnumerable<SokoZaiko>)
+  fullName: Convenience.Models.Interfaces.IShiire.ShiireSokoConnection(System.Collections.Generic.IList<Convenience.Models.DataModels.ShiireJisseki>, System.Collections.Generic.IEnumerable<Convenience.Models.DataModels.SokoZaiko>)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ShiireSokoConnection
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 37
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IList<ShiireJisseki> ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> indata)
+    parameters:
+    - id: inShiireJissekis
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+    - id: indata
+      type: System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko}
+    return:
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+    content.vb: Function ShiireSokoConnection(inShiireJissekis As IList(Of ShiireJisseki), indata As IEnumerable(Of SokoZaiko)) As IList(Of ShiireJisseki)
+  overload: Convenience.Models.Interfaces.IShiire.ShiireSokoConnection*
+  nameWithType.vb: IShiire.ShiireSokoConnection(IList(Of ShiireJisseki), IEnumerable(Of SokoZaiko))
+  fullName.vb: Convenience.Models.Interfaces.IShiire.ShiireSokoConnection(System.Collections.Generic.IList(Of Convenience.Models.DataModels.ShiireJisseki), System.Collections.Generic.IEnumerable(Of Convenience.Models.DataModels.SokoZaiko))
+  name.vb: ShiireSokoConnection(IList(Of ShiireJisseki), IEnumerable(Of SokoZaiko))
+- uid: Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei(System.String,System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  commentId: M:Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei(System.String,System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  id: ChuumonZanZaikoSuChousei(System.String,System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ChuumonZanZaikoSuChousei(string, IList<ShiireJisseki>)
+  nameWithType: IShiire.ChuumonZanZaikoSuChousei(string, IList<ShiireJisseki>)
+  fullName: Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei(string, System.Collections.Generic.IList<Convenience.Models.DataModels.ShiireJisseki>)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChuumonZanZaikoSuChousei
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 40
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: Task<Shiire.ShiireUkeireReturnSet> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis)
+    parameters:
+    - id: inChumonId
+      type: System.String
+    - id: inShiireJissekis
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+    return:
+      type: System.Threading.Tasks.Task{Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet}
+    content.vb: Function ChuumonZanZaikoSuChousei(inChumonId As String, inShiireJissekis As IList(Of ShiireJisseki)) As Task(Of Shiire.ShiireUkeireReturnSet)
+  overload: Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei*
+  nameWithType.vb: IShiire.ChuumonZanZaikoSuChousei(String, IList(Of ShiireJisseki))
+  fullName.vb: Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei(String, System.Collections.Generic.IList(Of Convenience.Models.DataModels.ShiireJisseki))
+  name.vb: ChuumonZanZaikoSuChousei(String, IList(Of ShiireJisseki))
+- uid: Convenience.Models.Interfaces.IShiire.ShiireUpdate(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  commentId: M:Convenience.Models.Interfaces.IShiire.ShiireUpdate(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  id: ShiireUpdate(System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki})
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ShiireUpdate(IList<ShiireJisseki>)
+  nameWithType: IShiire.ShiireUpdate(IList<ShiireJisseki>)
+  fullName: Convenience.Models.Interfaces.IShiire.ShiireUpdate(System.Collections.Generic.IList<Convenience.Models.DataModels.ShiireJisseki>)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ShiireUpdate
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 47
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis)
+    parameters:
+    - id: inShiireJissekis
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+    return:
+      type: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+    content.vb: Function ShiireUpdate(inShiireJissekis As IList(Of ShiireJisseki)) As IList(Of ShiireJisseki)
+  overload: Convenience.Models.Interfaces.IShiire.ShiireUpdate*
+  nameWithType.vb: IShiire.ShiireUpdate(IList(Of ShiireJisseki))
+  fullName.vb: Convenience.Models.Interfaces.IShiire.ShiireUpdate(System.Collections.Generic.IList(Of Convenience.Models.DataModels.ShiireJisseki))
+  name.vb: ShiireUpdate(IList(Of ShiireJisseki))
+- uid: Convenience.Models.Interfaces.IShiire.ZanAriChumonList
+  commentId: M:Convenience.Models.Interfaces.IShiire.ZanAriChumonList
+  id: ZanAriChumonList
+  parent: Convenience.Models.Interfaces.IShiire
+  langs:
+  - csharp
+  - vb
+  name: ZanAriChumonList()
+  nameWithType: IShiire.ZanAriChumonList()
+  fullName: Convenience.Models.Interfaces.IShiire.ZanAriChumonList()
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IShiire.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ZanAriChumonList
+    path: ../Convenience/Models/Interfaces/IShiire.cs
+    startLine: 54
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: Task<IList<Shiire.ChumonList>> ZanAriChumonList()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.Properties.Shiire.ChumonList}}
+    content.vb: Function ZanAriChumonList() As Task(Of IList(Of Shiire.ChumonList))
+  overload: Convenience.Models.Interfaces.IShiire.ZanAriChumonList*
+references:
+- uid: Convenience.Models.Interfaces
+  commentId: N:Convenience.Models.Interfaces
+  href: Convenience.html
+  name: Convenience.Models.Interfaces
+  nameWithType: Convenience.Models.Interfaces
+  fullName: Convenience.Models.Interfaces
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+- uid: Convenience.Models.Interfaces.IShiire.Shiirejissekis*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.Shiirejissekis
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_Shiirejissekis
+  name: Shiirejissekis
+  nameWithType: IShiire.Shiirejissekis
+  fullName: Convenience.Models.Interfaces.IShiire.Shiirejissekis
+- uid: System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+  commentId: T:System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<ShiireJisseki>
+  nameWithType: IList<ShiireJisseki>
+  fullName: System.Collections.Generic.IList<Convenience.Models.DataModels.ShiireJisseki>
+  nameWithType.vb: IList(Of ShiireJisseki)
+  fullName.vb: System.Collections.Generic.IList(Of Convenience.Models.DataModels.ShiireJisseki)
+  name.vb: IList(Of ShiireJisseki)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - uid: Convenience.Models.DataModels.ShiireJisseki
+    name: ShiireJisseki
+    href: Convenience.Models.DataModels.ShiireJisseki.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.DataModels.ShiireJisseki
+    name: ShiireJisseki
+    href: Convenience.Models.DataModels.ShiireJisseki.html
+  - name: )
+- uid: System.Collections.Generic.IList`1
+  commentId: T:System.Collections.Generic.IList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<T>
+  nameWithType: IList<T>
+  fullName: System.Collections.Generic.IList<T>
+  nameWithType.vb: IList(Of T)
+  fullName.vb: System.Collections.Generic.IList(Of T)
+  name.vb: IList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Convenience.Models.Interfaces.IShiire.SokoZaikos*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.SokoZaikos
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_SokoZaikos
+  name: SokoZaikos
+  nameWithType: IShiire.SokoZaikos
+  fullName: Convenience.Models.Interfaces.IShiire.SokoZaikos
+- uid: System.Collections.Generic.IList{Convenience.Models.DataModels.SokoZaiko}
+  commentId: T:System.Collections.Generic.IList{Convenience.Models.DataModels.SokoZaiko}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<SokoZaiko>
+  nameWithType: IList<SokoZaiko>
+  fullName: System.Collections.Generic.IList<Convenience.Models.DataModels.SokoZaiko>
+  nameWithType.vb: IList(Of SokoZaiko)
+  fullName.vb: System.Collections.Generic.IList(Of Convenience.Models.DataModels.SokoZaiko)
+  name.vb: IList(Of SokoZaiko)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - uid: Convenience.Models.DataModels.SokoZaiko
+    name: SokoZaiko
+    href: Convenience.Models.DataModels.SokoZaiko.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.DataModels.SokoZaiko
+    name: SokoZaiko
+    href: Convenience.Models.DataModels.SokoZaiko.html
+  - name: )
+- uid: Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ChuumonIdOnShiireJissekiExistingCheck_System_String_System_DateOnly_System_UInt32_
+  name: ChuumonIdOnShiireJissekiExistingCheck
+  nameWithType: IShiire.ChuumonIdOnShiireJissekiExistingCheck
+  fullName: Convenience.Models.Interfaces.IShiire.ChuumonIdOnShiireJissekiExistingCheck
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateOnly
+  commentId: T:System.DateOnly
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.dateonly
+  name: DateOnly
+  nameWithType: DateOnly
+  fullName: System.DateOnly
+- uid: System.UInt32
+  commentId: T:System.UInt32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint32
+  name: uint
+  nameWithType: uint
+  fullName: uint
+  nameWithType.vb: UInteger
+  fullName.vb: UInteger
+  name.vb: UInteger
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Convenience.Models.Interfaces.IShiire.NextSeq*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.NextSeq
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_NextSeq_System_String_System_DateOnly_
+  name: NextSeq
+  nameWithType: IShiire.NextSeq
+  fullName: Convenience.Models.Interfaces.IShiire.NextSeq
+- uid: System.Threading.Tasks.Task{System.UInt32}
+  commentId: T:System.Threading.Tasks.Task{System.UInt32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<uint>
+  nameWithType: Task<uint>
+  fullName: System.Threading.Tasks.Task<uint>
+  nameWithType.vb: Task(Of UInteger)
+  fullName.vb: System.Threading.Tasks.Task(Of UInteger)
+  name.vb: Task(Of UInteger)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+- uid: Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ChumonToShiireJisseki_System_String_System_DateOnly_System_UInt32_
+  name: ChumonToShiireJisseki
+  nameWithType: IShiire.ChumonToShiireJisseki
+  fullName: Convenience.Models.Interfaces.IShiire.ChumonToShiireJisseki
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.DataModels.ShiireJisseki}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IList<ShiireJisseki>>
+  nameWithType: Task<IList<ShiireJisseki>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IList<Convenience.Models.DataModels.ShiireJisseki>>
+  nameWithType.vb: Task(Of IList(Of ShiireJisseki))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IList(Of Convenience.Models.DataModels.ShiireJisseki))
+  name.vb: Task(Of IList(Of ShiireJisseki))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - uid: Convenience.Models.DataModels.ShiireJisseki
+    name: ShiireJisseki
+    href: Convenience.Models.DataModels.ShiireJisseki.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.DataModels.ShiireJisseki
+    name: ShiireJisseki
+    href: Convenience.Models.DataModels.ShiireJisseki.html
+  - name: )
+  - name: )
+- uid: Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ShiireToShiireJisseki_System_String_System_DateOnly_System_UInt32_
+  name: ShiireToShiireJisseki
+  nameWithType: IShiire.ShiireToShiireJisseki
+  fullName: Convenience.Models.Interfaces.IShiire.ShiireToShiireJisseki
+- uid: Convenience.Models.Interfaces.IShiire.ShiireSokoConnection*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ShiireSokoConnection
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ShiireSokoConnection_System_Collections_Generic_IList_Convenience_Models_DataModels_ShiireJisseki__System_Collections_Generic_IEnumerable_Convenience_Models_DataModels_SokoZaiko__
+  name: ShiireSokoConnection
+  nameWithType: IShiire.ShiireSokoConnection
+  fullName: Convenience.Models.Interfaces.IShiire.ShiireSokoConnection
+- uid: System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko}
+  commentId: T:System.Collections.Generic.IEnumerable{Convenience.Models.DataModels.SokoZaiko}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<SokoZaiko>
+  nameWithType: IEnumerable<SokoZaiko>
+  fullName: System.Collections.Generic.IEnumerable<Convenience.Models.DataModels.SokoZaiko>
+  nameWithType.vb: IEnumerable(Of SokoZaiko)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Convenience.Models.DataModels.SokoZaiko)
+  name.vb: IEnumerable(Of SokoZaiko)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Convenience.Models.DataModels.SokoZaiko
+    name: SokoZaiko
+    href: Convenience.Models.DataModels.SokoZaiko.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.DataModels.SokoZaiko
+    name: SokoZaiko
+    href: Convenience.Models.DataModels.SokoZaiko.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ChuumonZanZaikoSuChousei_System_String_System_Collections_Generic_IList_Convenience_Models_DataModels_ShiireJisseki__
+  name: ChuumonZanZaikoSuChousei
+  nameWithType: IShiire.ChuumonZanZaikoSuChousei
+  fullName: Convenience.Models.Interfaces.IShiire.ChuumonZanZaikoSuChousei
+- uid: System.Threading.Tasks.Task{Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet}
+  commentId: T:System.Threading.Tasks.Task{Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Shiire.ShiireUkeireReturnSet>
+  nameWithType: Task<Shiire.ShiireUkeireReturnSet>
+  fullName: System.Threading.Tasks.Task<Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet>
+  nameWithType.vb: Task(Of Shiire.ShiireUkeireReturnSet)
+  fullName.vb: System.Threading.Tasks.Task(Of Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet)
+  name.vb: Task(Of Shiire.ShiireUkeireReturnSet)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Convenience.Models.Properties.Shiire
+    name: Shiire
+    href: Convenience.Models.Properties.Shiire.html
+  - name: .
+  - uid: Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet
+    name: ShiireUkeireReturnSet
+    href: Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.Properties.Shiire
+    name: Shiire
+    href: Convenience.Models.Properties.Shiire.html
+  - name: .
+  - uid: Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet
+    name: ShiireUkeireReturnSet
+    href: Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet.html
+  - name: )
+- uid: Convenience.Models.Interfaces.IShiire.ShiireUpdate*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ShiireUpdate
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ShiireUpdate_System_Collections_Generic_IList_Convenience_Models_DataModels_ShiireJisseki__
+  name: ShiireUpdate
+  nameWithType: IShiire.ShiireUpdate
+  fullName: Convenience.Models.Interfaces.IShiire.ShiireUpdate
+- uid: Convenience.Models.Interfaces.IShiire.ZanAriChumonList*
+  commentId: Overload:Convenience.Models.Interfaces.IShiire.ZanAriChumonList
+  href: Convenience.Models.Interfaces.IShiire.html#Convenience_Models_Interfaces_IShiire_ZanAriChumonList
+  name: ZanAriChumonList
+  nameWithType: IShiire.ZanAriChumonList
+  fullName: Convenience.Models.Interfaces.IShiire.ZanAriChumonList
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.Properties.Shiire.ChumonList}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.Properties.Shiire.ChumonList}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IList<Shiire.ChumonList>>
+  nameWithType: Task<IList<Shiire.ChumonList>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IList<Convenience.Models.Properties.Shiire.ChumonList>>
+  nameWithType.vb: Task(Of IList(Of Shiire.ChumonList))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IList(Of Convenience.Models.Properties.Shiire.ChumonList))
+  name.vb: Task(Of IList(Of Shiire.ChumonList))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - uid: Convenience.Models.Properties.Shiire
+    name: Shiire
+    href: Convenience.Models.Properties.Shiire.html
+  - name: .
+  - uid: Convenience.Models.Properties.Shiire.ChumonList
+    name: ChumonList
+    href: Convenience.Models.Properties.Shiire.ChumonList.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.Properties.Shiire
+    name: Shiire
+    href: Convenience.Models.Properties.Shiire.html
+  - name: .
+  - uid: Convenience.Models.Properties.Shiire.ChumonList
+    name: ChumonList
+    href: Convenience.Models.Properties.Shiire.ChumonList.html
+  - name: )
+  - name: )

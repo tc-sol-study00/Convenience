@@ -10,6 +10,10 @@ using Microsoft.EntityFrameworkCore;
 
 
 namespace Convenience.Controllers {
+
+    /// <summary>
+    /// サービスを使わない注文コントローラ（演習対象外）
+    /// </summary>
     public class Chumon2Controller : Controller {
         private readonly ConvenienceContext _context;
 

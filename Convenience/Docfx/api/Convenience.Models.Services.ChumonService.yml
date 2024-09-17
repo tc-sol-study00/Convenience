@@ -1,0 +1,1165 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Services.ChumonService
+  commentId: T:Convenience.Models.Services.ChumonService
+  id: ChumonService
+  parent: Convenience.Models.Services
+  children:
+  - Convenience.Models.Services.ChumonService.#ctor
+  - Convenience.Models.Services.ChumonService.#ctor(Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon)
+  - Convenience.Models.Services.ChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  - Convenience.Models.Services.ChumonService.ChumonJissekiIsValid(Convenience.Models.DataModels.ChumonJisseki)
+  - Convenience.Models.Services.ChumonService.ChumonSetting(System.String,System.DateOnly)
+  - Convenience.Models.Services.ChumonService.CreateChumonInstance
+  - Convenience.Models.Services.ChumonService._context
+  - Convenience.Models.Services.ChumonService.chumon
+  langs:
+  - csharp
+  - vb
+  name: ChumonService
+  nameWithType: ChumonService
+  fullName: Convenience.Models.Services.ChumonService
+  type: Class
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonService
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 14
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: 注文サービスクラス
+  example: []
+  syntax:
+    content: 'public class ChumonService : IChumonService, IDbContext'
+    content.vb: Public Class ChumonService Implements IChumonService, IDbContext
+  inheritance:
+  - System.Object
+  implements:
+  - Convenience.Models.Interfaces.IChumonService
+  - Convenience.Models.Interfaces.IDbContext
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Convenience.Models.Services.ChumonService._context
+  commentId: F:Convenience.Models.Services.ChumonService._context
+  id: _context
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: _context
+  nameWithType: ChumonService._context
+  fullName: Convenience.Models.Services.ChumonService._context
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: _context
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 19
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: DBコンテクスト
+  example: []
+  syntax:
+    content: private readonly ConvenienceContext _context
+    return:
+      type: Convenience.Data.ConvenienceContext
+    content.vb: Private ReadOnly _context As ConvenienceContext
+- uid: Convenience.Models.Services.ChumonService.chumon
+  commentId: P:Convenience.Models.Services.ChumonService.chumon
+  id: chumon
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: chumon
+  nameWithType: ChumonService.chumon
+  fullName: Convenience.Models.Services.ChumonService.chumon
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: chumon
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 24
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: 注文オブジェクト用
+  example: []
+  syntax:
+    content: public IChumon chumon { get; set; }
+    parameters: []
+    return:
+      type: Convenience.Models.Interfaces.IChumon
+    content.vb: Public Property chumon As IChumon
+  overload: Convenience.Models.Services.ChumonService.chumon*
+  implements:
+  - Convenience.Models.Interfaces.IChumonService.chumon
+- uid: Convenience.Models.Services.ChumonService.CreateChumonInstance
+  commentId: F:Convenience.Models.Services.ChumonService.CreateChumonInstance
+  id: CreateChumonInstance
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: CreateChumonInstance
+  nameWithType: ChumonService.CreateChumonInstance
+  fullName: Convenience.Models.Services.ChumonService.CreateChumonInstance
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: CreateChumonInstance
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 29
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: コンストラクタ 注文オブジェクト用記述
+  example: []
+  syntax:
+    content: private Func<ConvenienceContext, IChumon> CreateChumonInstance
+    return:
+      type: System.Func{Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon}
+    content.vb: Private CreateChumonInstance As Func(Of ConvenienceContext, IChumon)
+- uid: Convenience.Models.Services.ChumonService.#ctor(Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon)
+  commentId: M:Convenience.Models.Services.ChumonService.#ctor(Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon)
+  id: '#ctor(Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon)'
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: ChumonService(ConvenienceContext, IChumon)
+  nameWithType: ChumonService.ChumonService(ConvenienceContext, IChumon)
+  fullName: Convenience.Models.Services.ChumonService.ChumonService(Convenience.Data.ConvenienceContext, Convenience.Models.Interfaces.IChumon)
+  type: Constructor
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: .ctor
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 36
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: コンストラクター　通常用
+  example: []
+  syntax:
+    content: public ChumonService(ConvenienceContext context, IChumon chumon)
+    parameters:
+    - id: context
+      type: Convenience.Data.ConvenienceContext
+      description: DBコンテキスト
+    - id: chumon
+      type: Convenience.Models.Interfaces.IChumon
+      description: 注文クラスＤＩ注入用
+    content.vb: Public Sub New(context As ConvenienceContext, chumon As IChumon)
+  overload: Convenience.Models.Services.ChumonService.#ctor*
+  nameWithType.vb: ChumonService.New(ConvenienceContext, IChumon)
+  fullName.vb: Convenience.Models.Services.ChumonService.New(Convenience.Data.ConvenienceContext, Convenience.Models.Interfaces.IChumon)
+  name.vb: New(ConvenienceContext, IChumon)
+- uid: Convenience.Models.Services.ChumonService.#ctor
+  commentId: M:Convenience.Models.Services.ChumonService.#ctor
+  id: '#ctor'
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: ChumonService()
+  nameWithType: ChumonService.ChumonService()
+  fullName: Convenience.Models.Services.ChumonService.ChumonService()
+  type: Constructor
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: .ctor
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 44
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: デバッグ用
+  example: []
+  syntax:
+    content: public ChumonService()
+    content.vb: Public Sub New()
+  overload: Convenience.Models.Services.ChumonService.#ctor*
+  nameWithType.vb: ChumonService.New()
+  fullName.vb: Convenience.Models.Services.ChumonService.New()
+  name.vb: New()
+- uid: Convenience.Models.Services.ChumonService.ChumonSetting(System.String,System.DateOnly)
+  commentId: M:Convenience.Models.Services.ChumonService.ChumonSetting(System.String,System.DateOnly)
+  id: ChumonSetting(System.String,System.DateOnly)
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: ChumonSetting(string, DateOnly)
+  nameWithType: ChumonService.ChumonSetting(string, DateOnly)
+  fullName: Convenience.Models.Services.ChumonService.ChumonSetting(string, System.DateOnly)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonSetting
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 55
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: 注文セッティング
+  example: []
+  syntax:
+    content: public Task<ChumonViewModel> ChumonSetting(string inShiireSakiId, DateOnly inChumonDate)
+    parameters:
+    - id: inShiireSakiId
+      type: System.String
+      description: 仕入先コード（画面より）
+    - id: inChumonDate
+      type: System.DateOnly
+      description: 注文日付（画面より）
+    return:
+      type: System.Threading.Tasks.Task{Convenience.Models.ViewModels.Chumon.ChumonViewModel}
+      description: 注文viewモデル
+    content.vb: Public Function ChumonSetting(inShiireSakiId As String, inChumonDate As DateOnly) As Task(Of ChumonViewModel)
+  overload: Convenience.Models.Services.ChumonService.ChumonSetting*
+  implements:
+  - Convenience.Models.Interfaces.IChumonService.ChumonSetting(System.String,System.DateOnly)
+  nameWithType.vb: ChumonService.ChumonSetting(String, DateOnly)
+  fullName.vb: Convenience.Models.Services.ChumonService.ChumonSetting(String, System.DateOnly)
+  name.vb: ChumonSetting(String, DateOnly)
+- uid: Convenience.Models.Services.ChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  commentId: M:Convenience.Models.Services.ChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  id: ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: ChumonCommit(ChumonJisseki)
+  nameWithType: ChumonService.ChumonCommit(ChumonJisseki)
+  fullName: Convenience.Models.Services.ChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonCommit
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 86
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: 注文データをDBに書き込む
+  example: []
+  syntax:
+    content: public Task<(ChumonJisseki, int, bool, Message.ErrDef)> ChumonCommit(ChumonJisseki inChumonJisseki)
+    parameters:
+    - id: inChumonJisseki
+      type: Convenience.Models.DataModels.ChumonJisseki
+      description: Postされた注文実績
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{Convenience.Models.DataModels.ChumonJisseki,System.Int32,System.Boolean,Convenience.Models.Properties.Message.ErrDef}}
+      description: ''
+    content.vb: Public Function ChumonCommit(inChumonJisseki As ChumonJisseki) As Task(Of (ChumonJisseki, Integer, Boolean, Message.ErrDef))
+  overload: Convenience.Models.Services.ChumonService.ChumonCommit*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: 排他制御の例外が起きたらスローする
+  implements:
+  - Convenience.Models.Interfaces.IChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+- uid: Convenience.Models.Services.ChumonService.ChumonJissekiIsValid(Convenience.Models.DataModels.ChumonJisseki)
+  commentId: M:Convenience.Models.Services.ChumonService.ChumonJissekiIsValid(Convenience.Models.DataModels.ChumonJisseki)
+  id: ChumonJissekiIsValid(Convenience.Models.DataModels.ChumonJisseki)
+  parent: Convenience.Models.Services.ChumonService
+  langs:
+  - csharp
+  - vb
+  name: ChumonJissekiIsValid(ChumonJisseki)
+  nameWithType: ChumonService.ChumonJissekiIsValid(ChumonJisseki)
+  fullName: Convenience.Models.Services.ChumonService.ChumonJissekiIsValid(Convenience.Models.DataModels.ChumonJisseki)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Services/ChumonService.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonJissekiIsValid
+    path: ../Convenience/Models/Services/ChumonService.cs
+    startLine: 119
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Services
+  summary: Postされた注文実績のデータチェック
+  example: []
+  syntax:
+    content: private (bool, Message.ErrDef) ChumonJissekiIsValid(ChumonJisseki inChumonJisseki)
+    parameters:
+    - id: inChumonJisseki
+      type: Convenience.Models.DataModels.ChumonJisseki
+      description: postされた注文実績
+    return:
+      type: System.ValueTuple{System.Boolean,Convenience.Models.Properties.Message.ErrDef}
+      description: 正常=true、異常=false、エラーコード
+    content.vb: Private Function ChumonJissekiIsValid(inChumonJisseki As ChumonJisseki) As (Boolean, Message.ErrDef)
+  overload: Convenience.Models.Services.ChumonService.ChumonJissekiIsValid*
+references:
+- uid: Convenience.Models.Services
+  commentId: N:Convenience.Models.Services
+  href: Convenience.html
+  name: Convenience.Models.Services
+  nameWithType: Convenience.Models.Services
+  fullName: Convenience.Models.Services
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Services
+    name: Services
+    href: Convenience.Models.Services.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Services
+    name: Services
+    href: Convenience.Models.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Convenience.Models.Interfaces.IChumonService
+  commentId: T:Convenience.Models.Interfaces.IChumonService
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IChumonService.html
+  name: IChumonService
+  nameWithType: IChumonService
+  fullName: Convenience.Models.Interfaces.IChumonService
+- uid: Convenience.Models.Interfaces.IDbContext
+  commentId: T:Convenience.Models.Interfaces.IDbContext
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IDbContext.html
+  name: IDbContext
+  nameWithType: IDbContext
+  fullName: Convenience.Models.Interfaces.IDbContext
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Convenience.Models.Interfaces
+  commentId: N:Convenience.Models.Interfaces
+  href: Convenience.html
+  name: Convenience.Models.Interfaces
+  nameWithType: Convenience.Models.Interfaces
+  fullName: Convenience.Models.Interfaces
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+- uid: Convenience.Data.ConvenienceContext
+  commentId: T:Convenience.Data.ConvenienceContext
+  parent: Convenience.Data
+  href: Convenience.Data.ConvenienceContext.html
+  name: ConvenienceContext
+  nameWithType: ConvenienceContext
+  fullName: Convenience.Data.ConvenienceContext
+- uid: Convenience.Data
+  commentId: N:Convenience.Data
+  href: Convenience.html
+  name: Convenience.Data
+  nameWithType: Convenience.Data
+  fullName: Convenience.Data
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Data
+    name: Data
+    href: Convenience.Data.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Data
+    name: Data
+    href: Convenience.Data.html
+- uid: Convenience.Models.Services.ChumonService.chumon*
+  commentId: Overload:Convenience.Models.Services.ChumonService.chumon
+  href: Convenience.Models.Services.ChumonService.html#Convenience_Models_Services_ChumonService_chumon
+  name: chumon
+  nameWithType: ChumonService.chumon
+  fullName: Convenience.Models.Services.ChumonService.chumon
+- uid: Convenience.Models.Interfaces.IChumonService.chumon
+  commentId: P:Convenience.Models.Interfaces.IChumonService.chumon
+  parent: Convenience.Models.Interfaces.IChumonService
+  href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_chumon
+  name: chumon
+  nameWithType: IChumonService.chumon
+  fullName: Convenience.Models.Interfaces.IChumonService.chumon
+- uid: Convenience.Models.Interfaces.IChumon
+  commentId: T:Convenience.Models.Interfaces.IChumon
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IChumon.html
+  name: IChumon
+  nameWithType: IChumon
+  fullName: Convenience.Models.Interfaces.IChumon
+- uid: System.Func{Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon}
+  commentId: T:System.Func{Convenience.Data.ConvenienceContext,Convenience.Models.Interfaces.IChumon}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<ConvenienceContext, IChumon>
+  nameWithType: Func<ConvenienceContext, IChumon>
+  fullName: System.Func<Convenience.Data.ConvenienceContext, Convenience.Models.Interfaces.IChumon>
+  nameWithType.vb: Func(Of ConvenienceContext, IChumon)
+  fullName.vb: System.Func(Of Convenience.Data.ConvenienceContext, Convenience.Models.Interfaces.IChumon)
+  name.vb: Func(Of ConvenienceContext, IChumon)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: Convenience.Data.ConvenienceContext
+    name: ConvenienceContext
+    href: Convenience.Data.ConvenienceContext.html
+  - name: ','
+  - name: " "
+  - uid: Convenience.Models.Interfaces.IChumon
+    name: IChumon
+    href: Convenience.Models.Interfaces.IChumon.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Data.ConvenienceContext
+    name: ConvenienceContext
+    href: Convenience.Data.ConvenienceContext.html
+  - name: ','
+  - name: " "
+  - uid: Convenience.Models.Interfaces.IChumon
+    name: IChumon
+    href: Convenience.Models.Interfaces.IChumon.html
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Convenience.Models.Services.ChumonService.#ctor*
+  commentId: Overload:Convenience.Models.Services.ChumonService.#ctor
+  href: Convenience.Models.Services.ChumonService.html#Convenience_Models_Services_ChumonService__ctor_Convenience_Data_ConvenienceContext_Convenience_Models_Interfaces_IChumon_
+  name: ChumonService
+  nameWithType: ChumonService.ChumonService
+  fullName: Convenience.Models.Services.ChumonService.ChumonService
+  nameWithType.vb: ChumonService.New
+  fullName.vb: Convenience.Models.Services.ChumonService.New
+  name.vb: New
+- uid: Convenience.Models.Services.ChumonService.ChumonSetting*
+  commentId: Overload:Convenience.Models.Services.ChumonService.ChumonSetting
+  href: Convenience.Models.Services.ChumonService.html#Convenience_Models_Services_ChumonService_ChumonSetting_System_String_System_DateOnly_
+  name: ChumonSetting
+  nameWithType: ChumonService.ChumonSetting
+  fullName: Convenience.Models.Services.ChumonService.ChumonSetting
+- uid: Convenience.Models.Interfaces.IChumonService.ChumonSetting(System.String,System.DateOnly)
+  commentId: M:Convenience.Models.Interfaces.IChumonService.ChumonSetting(System.String,System.DateOnly)
+  parent: Convenience.Models.Interfaces.IChumonService
+  isExternal: true
+  href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_ChumonSetting_System_String_System_DateOnly_
+  name: ChumonSetting(string, DateOnly)
+  nameWithType: IChumonService.ChumonSetting(string, DateOnly)
+  fullName: Convenience.Models.Interfaces.IChumonService.ChumonSetting(string, System.DateOnly)
+  nameWithType.vb: IChumonService.ChumonSetting(String, DateOnly)
+  fullName.vb: Convenience.Models.Interfaces.IChumonService.ChumonSetting(String, System.DateOnly)
+  name.vb: ChumonSetting(String, DateOnly)
+  spec.csharp:
+  - uid: Convenience.Models.Interfaces.IChumonService.ChumonSetting(System.String,System.DateOnly)
+    name: ChumonSetting
+    href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_ChumonSetting_System_String_System_DateOnly_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.DateOnly
+    name: DateOnly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.dateonly
+  - name: )
+  spec.vb:
+  - uid: Convenience.Models.Interfaces.IChumonService.ChumonSetting(System.String,System.DateOnly)
+    name: ChumonSetting
+    href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_ChumonSetting_System_String_System_DateOnly_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.DateOnly
+    name: DateOnly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.dateonly
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateOnly
+  commentId: T:System.DateOnly
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.dateonly
+  name: DateOnly
+  nameWithType: DateOnly
+  fullName: System.DateOnly
+- uid: System.Threading.Tasks.Task{Convenience.Models.ViewModels.Chumon.ChumonViewModel}
+  commentId: T:System.Threading.Tasks.Task{Convenience.Models.ViewModels.Chumon.ChumonViewModel}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ChumonViewModel>
+  nameWithType: Task<ChumonViewModel>
+  fullName: System.Threading.Tasks.Task<Convenience.Models.ViewModels.Chumon.ChumonViewModel>
+  nameWithType.vb: Task(Of ChumonViewModel)
+  fullName.vb: System.Threading.Tasks.Task(Of Convenience.Models.ViewModels.Chumon.ChumonViewModel)
+  name.vb: Task(Of ChumonViewModel)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Convenience.Models.ViewModels.Chumon.ChumonViewModel
+    name: ChumonViewModel
+    href: Convenience.Models.ViewModels.Chumon.ChumonViewModel.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.ViewModels.Chumon.ChumonViewModel
+    name: ChumonViewModel
+    href: Convenience.Models.ViewModels.Chumon.ChumonViewModel.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.Exception
+  commentId: T:System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Convenience.Models.Services.ChumonService.ChumonCommit*
+  commentId: Overload:Convenience.Models.Services.ChumonService.ChumonCommit
+  href: Convenience.Models.Services.ChumonService.html#Convenience_Models_Services_ChumonService_ChumonCommit_Convenience_Models_DataModels_ChumonJisseki_
+  name: ChumonCommit
+  nameWithType: ChumonService.ChumonCommit
+  fullName: Convenience.Models.Services.ChumonService.ChumonCommit
+- uid: Convenience.Models.Interfaces.IChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  commentId: M:Convenience.Models.Interfaces.IChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  parent: Convenience.Models.Interfaces.IChumonService
+  href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_ChumonCommit_Convenience_Models_DataModels_ChumonJisseki_
+  name: ChumonCommit(ChumonJisseki)
+  nameWithType: IChumonService.ChumonCommit(ChumonJisseki)
+  fullName: Convenience.Models.Interfaces.IChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+  spec.csharp:
+  - uid: Convenience.Models.Interfaces.IChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+    name: ChumonCommit
+    href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_ChumonCommit_Convenience_Models_DataModels_ChumonJisseki_
+  - name: (
+  - uid: Convenience.Models.DataModels.ChumonJisseki
+    name: ChumonJisseki
+    href: Convenience.Models.DataModels.ChumonJisseki.html
+  - name: )
+  spec.vb:
+  - uid: Convenience.Models.Interfaces.IChumonService.ChumonCommit(Convenience.Models.DataModels.ChumonJisseki)
+    name: ChumonCommit
+    href: Convenience.Models.Interfaces.IChumonService.html#Convenience_Models_Interfaces_IChumonService_ChumonCommit_Convenience_Models_DataModels_ChumonJisseki_
+  - name: (
+  - uid: Convenience.Models.DataModels.ChumonJisseki
+    name: ChumonJisseki
+    href: Convenience.Models.DataModels.ChumonJisseki.html
+  - name: )
+- uid: Convenience.Models.DataModels.ChumonJisseki
+  commentId: T:Convenience.Models.DataModels.ChumonJisseki
+  parent: Convenience.Models.DataModels
+  href: Convenience.Models.DataModels.ChumonJisseki.html
+  name: ChumonJisseki
+  nameWithType: ChumonJisseki
+  fullName: Convenience.Models.DataModels.ChumonJisseki
+- uid: System.Threading.Tasks.Task{System.ValueTuple{Convenience.Models.DataModels.ChumonJisseki,System.Int32,System.Boolean,Convenience.Models.Properties.Message.ErrDef}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{Convenience.Models.DataModels.ChumonJisseki,System.Int32,System.Boolean,Convenience.Models.Properties.Message.ErrDef}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(ChumonJisseki, int, bool, Message.ErrDef)>
+  nameWithType: Task<(ChumonJisseki, int, bool, Message.ErrDef)>
+  fullName: System.Threading.Tasks.Task<(Convenience.Models.DataModels.ChumonJisseki, int, bool, Convenience.Models.Properties.Message.ErrDef)>
+  nameWithType.vb: Task(Of (ChumonJisseki, Integer, Boolean, Message.ErrDef))
+  fullName.vb: System.Threading.Tasks.Task(Of (Convenience.Models.DataModels.ChumonJisseki, Integer, Boolean, Convenience.Models.Properties.Message.ErrDef))
+  name.vb: Task(Of (ChumonJisseki, Integer, Boolean, Message.ErrDef))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - uid: Convenience.Models.DataModels.ChumonJisseki
+    name: ChumonJisseki
+    href: Convenience.Models.DataModels.ChumonJisseki.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: Convenience.Models.DataModels.ChumonJisseki
+    name: ChumonJisseki
+    href: Convenience.Models.DataModels.ChumonJisseki.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+  - name: )
+  - name: )
+- uid: Convenience.Models.DataModels
+  commentId: N:Convenience.Models.DataModels
+  href: Convenience.html
+  name: Convenience.Models.DataModels
+  nameWithType: Convenience.Models.DataModels
+  fullName: Convenience.Models.DataModels
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.DataModels
+    name: DataModels
+    href: Convenience.Models.DataModels.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.DataModels
+    name: DataModels
+    href: Convenience.Models.DataModels.html
+- uid: Convenience.Models.Services.ChumonService.ChumonJissekiIsValid*
+  commentId: Overload:Convenience.Models.Services.ChumonService.ChumonJissekiIsValid
+  href: Convenience.Models.Services.ChumonService.html#Convenience_Models_Services_ChumonService_ChumonJissekiIsValid_Convenience_Models_DataModels_ChumonJisseki_
+  name: ChumonJissekiIsValid
+  nameWithType: ChumonService.ChumonJissekiIsValid
+  fullName: Convenience.Models.Services.ChumonService.ChumonJissekiIsValid
+- uid: System.ValueTuple{System.Boolean,Convenience.Models.Properties.Message.ErrDef}
+  commentId: T:System.ValueTuple{System.Boolean,Convenience.Models.Properties.Message.ErrDef}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: (bool, Message.ErrDef)
+  nameWithType: (bool, Message.ErrDef)
+  fullName: (bool, Convenience.Models.Properties.Message.ErrDef)
+  nameWithType.vb: (Boolean, Message.ErrDef)
+  fullName.vb: (Boolean, Convenience.Models.Properties.Message.ErrDef)
+  name.vb: (Boolean, Message.ErrDef)
+  spec.csharp:
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )

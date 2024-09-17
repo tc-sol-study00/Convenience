@@ -1,0 +1,802 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.DataModels.KaikeiJisseki
+  commentId: T:Convenience.Models.DataModels.KaikeiJisseki
+  id: KaikeiJisseki
+  parent: Convenience.Models.DataModels
+  children:
+  - Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu
+  - Convenience.Models.DataModels.KaikeiJisseki.ShohinId
+  - Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster
+  - Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime
+  - Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu
+  - Convenience.Models.DataModels.KaikeiJisseki.UriageSu
+  - Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku
+  langs:
+  - csharp
+  - vb
+  name: KaikeiJisseki
+  nameWithType: KaikeiJisseki
+  fullName: Convenience.Models.DataModels.KaikeiJisseki
+  type: Class
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: KaikeiJisseki
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 7
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Table("kaikei_jisseki")]
+
+      [PrimaryKey("ShohinId", new string[] { "UriageDatetime" })]
+
+      public class KaikeiJisseki
+    content.vb: >-
+      <Table("kaikei_jisseki")>
+
+      <PrimaryKey("ShohinId", New String() { "UriageDatetime" })>
+
+      Public Class KaikeiJisseki
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.TableAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.TableAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: kaikei_jisseki
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ShohinId
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.ShohinId
+  id: ShohinId
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: ShohinId
+  nameWithType: KaikeiJisseki.ShohinId
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ShohinId
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ShohinId
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 11
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Column("shohin_code")]
+
+      [MaxLength(10)]
+
+      [Required]
+
+      public string ShohinId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <Column("shohin_code")>
+
+      <MaxLength(10)>
+
+      <Required>
+
+      Public Property ShohinId As String
+  overload: Convenience.Models.DataModels.KaikeiJisseki.ShohinId*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: shohin_code
+  - type: System.ComponentModel.DataAnnotations.MaxLengthAttribute
+    ctor: System.ComponentModel.DataAnnotations.MaxLengthAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 10
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+- uid: Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime
+  id: UriageDatetime
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: UriageDatetime
+  nameWithType: KaikeiJisseki.UriageDatetime
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: UriageDatetime
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 17
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Column("uriage_datetime")]
+
+      [DataType(DataType.DateTime)]
+
+      [Required]
+
+      public DateTime UriageDatetime { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <Column("uriage_datetime")>
+
+      <DataType(DataType.DateTime)>
+
+      <Required>
+
+      Public Property UriageDatetime As Date
+  overload: Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: uriage_datetime
+  - type: System.ComponentModel.DataAnnotations.DataTypeAttribute
+    ctor: System.ComponentModel.DataAnnotations.DataTypeAttribute.#ctor(System.ComponentModel.DataAnnotations.DataType)
+    arguments:
+    - type: System.ComponentModel.DataAnnotations.DataType
+      value: 1
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+- uid: Convenience.Models.DataModels.KaikeiJisseki.UriageSu
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.UriageSu
+  id: UriageSu
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: UriageSu
+  nameWithType: KaikeiJisseki.UriageSu
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.UriageSu
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: UriageSu
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 23
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Column("uriage_su")]
+
+      [Required]
+
+      [Precision(10, 2)]
+
+      public decimal UriageSu { get; set; }
+    parameters: []
+    return:
+      type: System.Decimal
+    content.vb: >-
+      <Column("uriage_su")>
+
+      <Required>
+
+      <Precision(10, 2)>
+
+      Public Property UriageSu As Decimal
+  overload: Convenience.Models.DataModels.KaikeiJisseki.UriageSu*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: uriage_su
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+  - type: Microsoft.EntityFrameworkCore.PrecisionAttribute
+    ctor: Microsoft.EntityFrameworkCore.PrecisionAttribute.#ctor(System.Int32,System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 10
+    - type: System.Int32
+      value: 2
+- uid: Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu
+  id: UriageKingakuSu
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: UriageKingakuSu
+  nameWithType: KaikeiJisseki.UriageKingakuSu
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: UriageKingakuSu
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 29
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Column("uriage_kingaku")]
+
+      [Required]
+
+      [Precision(15, 2)]
+
+      public decimal UriageKingakuSu { get; set; }
+    parameters: []
+    return:
+      type: System.Decimal
+    content.vb: >-
+      <Column("uriage_kingaku")>
+
+      <Required>
+
+      <Precision(15, 2)>
+
+      Public Property UriageKingakuSu As Decimal
+  overload: Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: uriage_kingaku
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+  - type: Microsoft.EntityFrameworkCore.PrecisionAttribute
+    ctor: Microsoft.EntityFrameworkCore.PrecisionAttribute.#ctor(System.Int32,System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 15
+    - type: System.Int32
+      value: 2
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku
+  id: ZeikomiKingaku
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: ZeikomiKingaku
+  nameWithType: KaikeiJisseki.ZeikomiKingaku
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ZeikomiKingaku
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 35
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Column("zeikomi_kingaku")]
+
+      [Required]
+
+      [Precision(15, 2)]
+
+      public decimal ZeikomiKingaku { get; set; }
+    parameters: []
+    return:
+      type: System.Decimal
+    content.vb: >-
+      <Column("zeikomi_kingaku")>
+
+      <Required>
+
+      <Precision(15, 2)>
+
+      Public Property ZeikomiKingaku As Decimal
+  overload: Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: zeikomi_kingaku
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+  - type: Microsoft.EntityFrameworkCore.PrecisionAttribute
+    ctor: Microsoft.EntityFrameworkCore.PrecisionAttribute.#ctor(System.Int32,System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 15
+    - type: System.Int32
+      value: 2
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu
+  id: ShohiZeiritsu
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: ShohiZeiritsu
+  nameWithType: KaikeiJisseki.ShohiZeiritsu
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ShohiZeiritsu
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 41
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [Column("shohi_zeiritsu")]
+
+      [Required]
+
+      [Precision(15, 2)]
+
+      public decimal ShohiZeiritsu { get; set; }
+    parameters: []
+    return:
+      type: System.Decimal
+    content.vb: >-
+      <Column("shohi_zeiritsu")>
+
+      <Required>
+
+      <Precision(15, 2)>
+
+      Public Property ShohiZeiritsu As Decimal
+  overload: Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ColumnAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: shohi_zeiritsu
+  - type: System.ComponentModel.DataAnnotations.RequiredAttribute
+    ctor: System.ComponentModel.DataAnnotations.RequiredAttribute.#ctor
+    arguments: []
+  - type: Microsoft.EntityFrameworkCore.PrecisionAttribute
+    ctor: Microsoft.EntityFrameworkCore.PrecisionAttribute.#ctor(System.Int32,System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 15
+    - type: System.Int32
+      value: 2
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster
+  commentId: P:Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster
+  id: ShohinMaster
+  parent: Convenience.Models.DataModels.KaikeiJisseki
+  langs:
+  - csharp
+  - vb
+  name: ShohinMaster
+  nameWithType: KaikeiJisseki.ShohinMaster
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/DataModels/KaikeiJisseki.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ShohinMaster
+    path: ../Convenience/Models/DataModels/KaikeiJisseki.cs
+    startLine: 47
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.DataModels
+  syntax:
+    content: >-
+      [ForeignKey("ShohinId")]
+
+      public virtual ShohinMaster ShohinMaster { get; set; }
+    parameters: []
+    return:
+      type: Convenience.Models.DataModels.ShohinMaster
+    content.vb: >-
+      <ForeignKey("ShohinId")>
+
+      Public Overridable Property ShohinMaster As ShohinMaster
+  overload: Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster*
+  attributes:
+  - type: System.ComponentModel.DataAnnotations.Schema.ForeignKeyAttribute
+    ctor: System.ComponentModel.DataAnnotations.Schema.ForeignKeyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: ShohinId
+references:
+- uid: Convenience.Models.DataModels
+  commentId: N:Convenience.Models.DataModels
+  href: Convenience.html
+  name: Convenience.Models.DataModels
+  nameWithType: Convenience.Models.DataModels
+  fullName: Convenience.Models.DataModels
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.DataModels
+    name: DataModels
+    href: Convenience.Models.DataModels.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.DataModels
+    name: DataModels
+    href: Convenience.Models.DataModels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ShohinId*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.ShohinId
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_ShohinId
+  name: ShohinId
+  nameWithType: KaikeiJisseki.ShohinId
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ShohinId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_UriageDatetime
+  name: UriageDatetime
+  nameWithType: KaikeiJisseki.UriageDatetime
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.UriageDatetime
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Convenience.Models.DataModels.KaikeiJisseki.UriageSu*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.UriageSu
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_UriageSu
+  name: UriageSu
+  nameWithType: KaikeiJisseki.UriageSu
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.UriageSu
+- uid: System.Decimal
+  commentId: T:System.Decimal
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.decimal
+  name: decimal
+  nameWithType: decimal
+  fullName: decimal
+  nameWithType.vb: Decimal
+  fullName.vb: Decimal
+  name.vb: Decimal
+- uid: Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_UriageKingakuSu
+  name: UriageKingakuSu
+  nameWithType: KaikeiJisseki.UriageKingakuSu
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.UriageKingakuSu
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_ZeikomiKingaku
+  name: ZeikomiKingaku
+  nameWithType: KaikeiJisseki.ZeikomiKingaku
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ZeikomiKingaku
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_ShohiZeiritsu
+  name: ShohiZeiritsu
+  nameWithType: KaikeiJisseki.ShohiZeiritsu
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ShohiZeiritsu
+- uid: Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster*
+  commentId: Overload:Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster
+  href: Convenience.Models.DataModels.KaikeiJisseki.html#Convenience_Models_DataModels_KaikeiJisseki_ShohinMaster
+  name: ShohinMaster
+  nameWithType: KaikeiJisseki.ShohinMaster
+  fullName: Convenience.Models.DataModels.KaikeiJisseki.ShohinMaster
+- uid: Convenience.Models.DataModels.ShohinMaster
+  commentId: T:Convenience.Models.DataModels.ShohinMaster
+  parent: Convenience.Models.DataModels
+  href: Convenience.Models.DataModels.ShohinMaster.html
+  name: ShohinMaster
+  nameWithType: ShohinMaster
+  fullName: Convenience.Models.DataModels.ShohinMaster

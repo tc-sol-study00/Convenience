@@ -1,0 +1,381 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Properties.Message.ErrDef
+  commentId: T:Convenience.Models.Properties.Message.ErrDef
+  id: Message.ErrDef
+  parent: Convenience.Models.Properties
+  children:
+  - Convenience.Models.Properties.Message.ErrDef.CanNotlUpdate
+  - Convenience.Models.Properties.Message.ErrDef.ChumonDateError
+  - Convenience.Models.Properties.Message.ErrDef.ChumonIdError
+  - Convenience.Models.Properties.Message.ErrDef.ChumonIdRelationError
+  - Convenience.Models.Properties.Message.ErrDef.ChumonSuBadRange
+  - Convenience.Models.Properties.Message.ErrDef.ChumonSuIsNull
+  - Convenience.Models.Properties.Message.ErrDef.ChumonZanIsNull
+  - Convenience.Models.Properties.Message.ErrDef.DataValid
+  - Convenience.Models.Properties.Message.ErrDef.NormalUpdate
+  - Convenience.Models.Properties.Message.ErrDef.OtherError
+  - Convenience.Models.Properties.Message.ErrDef.SuErrorBetChumonSuAndZan
+  langs:
+  - csharp
+  - vb
+  name: Message.ErrDef
+  nameWithType: Message.ErrDef
+  fullName: Convenience.Models.Properties.Message.ErrDef
+  type: Enum
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ErrDef
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 30
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  summary: エラーコードenum設定（0から付与）
+  example: []
+  syntax:
+    content: public enum Message.ErrDef
+    content.vb: Public Enum Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.DataValid
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.DataValid
+  id: DataValid
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: DataValid
+  nameWithType: Message.ErrDef.DataValid
+  fullName: Convenience.Models.Properties.Message.ErrDef.DataValid
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: DataValid
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 31
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: DataValid = 0
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.NormalUpdate
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.NormalUpdate
+  id: NormalUpdate
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: NormalUpdate
+  nameWithType: Message.ErrDef.NormalUpdate
+  fullName: Convenience.Models.Properties.Message.ErrDef.NormalUpdate
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: NormalUpdate
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 32
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: NormalUpdate = 1
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.CanNotlUpdate
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.CanNotlUpdate
+  id: CanNotlUpdate
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: CanNotlUpdate
+  nameWithType: Message.ErrDef.CanNotlUpdate
+  fullName: Convenience.Models.Properties.Message.ErrDef.CanNotlUpdate
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: CanNotlUpdate
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 33
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: CanNotlUpdate = 2
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.ChumonIdError
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.ChumonIdError
+  id: ChumonIdError
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: ChumonIdError
+  nameWithType: Message.ErrDef.ChumonIdError
+  fullName: Convenience.Models.Properties.Message.ErrDef.ChumonIdError
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonIdError
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 34
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: ChumonIdError = 3
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.ChumonDateError
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.ChumonDateError
+  id: ChumonDateError
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: ChumonDateError
+  nameWithType: Message.ErrDef.ChumonDateError
+  fullName: Convenience.Models.Properties.Message.ErrDef.ChumonDateError
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonDateError
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 35
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: ChumonDateError = 4
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.ChumonIdRelationError
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.ChumonIdRelationError
+  id: ChumonIdRelationError
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: ChumonIdRelationError
+  nameWithType: Message.ErrDef.ChumonIdRelationError
+  fullName: Convenience.Models.Properties.Message.ErrDef.ChumonIdRelationError
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonIdRelationError
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 36
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: ChumonIdRelationError = 5
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.ChumonSuIsNull
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.ChumonSuIsNull
+  id: ChumonSuIsNull
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: ChumonSuIsNull
+  nameWithType: Message.ErrDef.ChumonSuIsNull
+  fullName: Convenience.Models.Properties.Message.ErrDef.ChumonSuIsNull
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonSuIsNull
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 37
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: ChumonSuIsNull = 6
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.ChumonSuBadRange
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.ChumonSuBadRange
+  id: ChumonSuBadRange
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: ChumonSuBadRange
+  nameWithType: Message.ErrDef.ChumonSuBadRange
+  fullName: Convenience.Models.Properties.Message.ErrDef.ChumonSuBadRange
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonSuBadRange
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 38
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: ChumonSuBadRange = 7
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.ChumonZanIsNull
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.ChumonZanIsNull
+  id: ChumonZanIsNull
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: ChumonZanIsNull
+  nameWithType: Message.ErrDef.ChumonZanIsNull
+  fullName: Convenience.Models.Properties.Message.ErrDef.ChumonZanIsNull
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: ChumonZanIsNull
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 39
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: ChumonZanIsNull = 8
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.SuErrorBetChumonSuAndZan
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.SuErrorBetChumonSuAndZan
+  id: SuErrorBetChumonSuAndZan
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: SuErrorBetChumonSuAndZan
+  nameWithType: Message.ErrDef.SuErrorBetChumonSuAndZan
+  fullName: Convenience.Models.Properties.Message.ErrDef.SuErrorBetChumonSuAndZan
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: SuErrorBetChumonSuAndZan
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 40
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: SuErrorBetChumonSuAndZan = 9
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+- uid: Convenience.Models.Properties.Message.ErrDef.OtherError
+  commentId: F:Convenience.Models.Properties.Message.ErrDef.OtherError
+  id: OtherError
+  parent: Convenience.Models.Properties.Message.ErrDef
+  langs:
+  - csharp
+  - vb
+  name: OtherError
+  nameWithType: Message.ErrDef.OtherError
+  fullName: Convenience.Models.Properties.Message.ErrDef.OtherError
+  type: Field
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: OtherError
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 41
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  syntax:
+    content: OtherError = 10
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+references:
+- uid: Convenience.Models.Properties
+  commentId: N:Convenience.Models.Properties
+  href: Convenience.html
+  name: Convenience.Models.Properties
+  nameWithType: Convenience.Models.Properties
+  fullName: Convenience.Models.Properties
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Properties
+    name: Properties
+    href: Convenience.Models.Properties.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Properties
+    name: Properties
+    href: Convenience.Models.Properties.html
+- uid: Convenience.Models.Properties.Message.ErrDef
+  commentId: T:Convenience.Models.Properties.Message.ErrDef
+  parent: Convenience.Models.Properties
+  href: Convenience.Models.Properties.Message.html
+  name: Message.ErrDef
+  nameWithType: Message.ErrDef
+  fullName: Convenience.Models.Properties.Message.ErrDef
+  spec.csharp:
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+  spec.vb:
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html

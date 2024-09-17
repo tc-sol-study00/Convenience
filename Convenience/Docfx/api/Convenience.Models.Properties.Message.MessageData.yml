@@ -1,0 +1,418 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Properties.Message.MessageData
+  commentId: T:Convenience.Models.Properties.Message.MessageData
+  id: Message.MessageData
+  parent: Convenience.Models.Properties
+  children:
+  - Convenience.Models.Properties.Message.MessageData.MessageNo
+  - Convenience.Models.Properties.Message.MessageData.MessageText
+  langs:
+  - csharp
+  - vb
+  name: Message.MessageData
+  nameWithType: Message.MessageData
+  fullName: Convenience.Models.Properties.Message.MessageData
+  type: Class
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: MessageData
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 9
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  summary: メッセ―ジ表示用データクラス
+  example: []
+  syntax:
+    content: public class Message.MessageData
+    content.vb: Public Class Message.MessageData
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Convenience.Models.Properties.Message.MessageData.MessageNo
+  commentId: P:Convenience.Models.Properties.Message.MessageData.MessageNo
+  id: MessageNo
+  parent: Convenience.Models.Properties.Message.MessageData
+  langs:
+  - csharp
+  - vb
+  name: MessageNo
+  nameWithType: Message.MessageData.MessageNo
+  fullName: Convenience.Models.Properties.Message.MessageData.MessageNo
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: MessageNo
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 13
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  summary: メッセージ番号
+  example: []
+  syntax:
+    content: public Message.ErrDef MessageNo { get; set; }
+    parameters: []
+    return:
+      type: Convenience.Models.Properties.Message.ErrDef
+    content.vb: Public Property MessageNo As Message.ErrDef
+  overload: Convenience.Models.Properties.Message.MessageData.MessageNo*
+- uid: Convenience.Models.Properties.Message.MessageData.MessageText
+  commentId: P:Convenience.Models.Properties.Message.MessageData.MessageText
+  id: MessageText
+  parent: Convenience.Models.Properties.Message.MessageData
+  langs:
+  - csharp
+  - vb
+  name: MessageText
+  nameWithType: Message.MessageData.MessageText
+  fullName: Convenience.Models.Properties.Message.MessageData.MessageText
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/Properties/Message.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: MessageText
+    path: ../Convenience/Models/Properties/Message.cs
+    startLine: 17
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Properties
+  summary: 表示メッセージ
+  example: []
+  syntax:
+    content: public string? MessageText { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property MessageText As String
+  overload: Convenience.Models.Properties.Message.MessageData.MessageText*
+references:
+- uid: Convenience.Models.Properties
+  commentId: N:Convenience.Models.Properties
+  href: Convenience.html
+  name: Convenience.Models.Properties
+  nameWithType: Convenience.Models.Properties
+  fullName: Convenience.Models.Properties
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Properties
+    name: Properties
+    href: Convenience.Models.Properties.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Properties
+    name: Properties
+    href: Convenience.Models.Properties.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Convenience.Models.Properties.Message.MessageData.MessageNo*
+  commentId: Overload:Convenience.Models.Properties.Message.MessageData.MessageNo
+  href: Convenience.Models.Properties.Message.MessageData.html#Convenience_Models_Properties_Message_MessageData_MessageNo
+  name: MessageNo
+  nameWithType: Message.MessageData.MessageNo
+  fullName: Convenience.Models.Properties.Message.MessageData.MessageNo
+- uid: Convenience.Models.Properties.Message.ErrDef
+  commentId: T:Convenience.Models.Properties.Message.ErrDef
+  parent: Convenience.Models.Properties
+  href: Convenience.Models.Properties.Message.html
+  name: Message.ErrDef
+  nameWithType: Message.ErrDef
+  fullName: Convenience.Models.Properties.Message.ErrDef
+  spec.csharp:
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+  spec.vb:
+  - uid: Convenience.Models.Properties.Message
+    name: Message
+    href: Convenience.Models.Properties.Message.html
+  - name: .
+  - uid: Convenience.Models.Properties.Message.ErrDef
+    name: ErrDef
+    href: Convenience.Models.Properties.Message.ErrDef.html
+- uid: Convenience.Models.Properties.Message.MessageData.MessageText*
+  commentId: Overload:Convenience.Models.Properties.Message.MessageData.MessageText
+  href: Convenience.Models.Properties.Message.MessageData.html#Convenience_Models_Properties_Message_MessageData_MessageText
+  name: MessageText
+  nameWithType: Message.MessageData.MessageText
+  fullName: Convenience.Models.Properties.Message.MessageData.MessageText
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

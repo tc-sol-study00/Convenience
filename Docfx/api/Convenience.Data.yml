@@ -1,0 +1,46 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Data
+  commentId: N:Convenience.Data
+  id: Convenience.Data
+  children:
+  - Convenience.Data.ConvenienceContext
+  langs:
+  - csharp
+  - vb
+  name: Convenience.Data
+  nameWithType: Convenience.Data
+  fullName: Convenience.Data
+  type: Namespace
+  assemblies:
+  - Convenience
+references:
+- uid: Convenience.Data.ConvenienceContext
+  commentId: T:Convenience.Data.ConvenienceContext
+  parent: Convenience.Data
+  href: Convenience.Data.ConvenienceContext.html
+  name: ConvenienceContext
+  nameWithType: ConvenienceContext
+  fullName: Convenience.Data.ConvenienceContext
+- uid: Convenience.Data
+  commentId: N:Convenience.Data
+  href: Convenience.html
+  name: Convenience.Data
+  nameWithType: Convenience.Data
+  fullName: Convenience.Data
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Data
+    name: Data
+    href: Convenience.Data.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Data
+    name: Data
+    href: Convenience.Data.html

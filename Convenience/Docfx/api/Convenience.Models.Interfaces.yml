@@ -1,0 +1,110 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Interfaces
+  commentId: N:Convenience.Models.Interfaces
+  id: Convenience.Models.Interfaces
+  children:
+  - Convenience.Models.Interfaces.IChumon
+  - Convenience.Models.Interfaces.IChumonService
+  - Convenience.Models.Interfaces.IDbContext
+  - Convenience.Models.Interfaces.ISharedTools
+  - Convenience.Models.Interfaces.IShiire
+  - Convenience.Models.Interfaces.IShiireService
+  - Convenience.Models.Interfaces.IZaiko
+  - Convenience.Models.Interfaces.IZaikoService
+  langs:
+  - csharp
+  - vb
+  name: Convenience.Models.Interfaces
+  nameWithType: Convenience.Models.Interfaces
+  fullName: Convenience.Models.Interfaces
+  type: Namespace
+  assemblies:
+  - Convenience
+references:
+- uid: Convenience.Models.Interfaces.IChumon
+  commentId: T:Convenience.Models.Interfaces.IChumon
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IChumon.html
+  name: IChumon
+  nameWithType: IChumon
+  fullName: Convenience.Models.Interfaces.IChumon
+- uid: Convenience.Models.Interfaces.IChumonService
+  commentId: T:Convenience.Models.Interfaces.IChumonService
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IChumonService.html
+  name: IChumonService
+  nameWithType: IChumonService
+  fullName: Convenience.Models.Interfaces.IChumonService
+- uid: Convenience.Models.Interfaces.IDbContext
+  commentId: T:Convenience.Models.Interfaces.IDbContext
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IDbContext.html
+  name: IDbContext
+  nameWithType: IDbContext
+  fullName: Convenience.Models.Interfaces.IDbContext
+- uid: Convenience.Models.Interfaces.ISharedTools
+  commentId: T:Convenience.Models.Interfaces.ISharedTools
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.ISharedTools.html
+  name: ISharedTools
+  nameWithType: ISharedTools
+  fullName: Convenience.Models.Interfaces.ISharedTools
+- uid: Convenience.Models.Interfaces.IShiire
+  commentId: T:Convenience.Models.Interfaces.IShiire
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IShiire.html
+  name: IShiire
+  nameWithType: IShiire
+  fullName: Convenience.Models.Interfaces.IShiire
+- uid: Convenience.Models.Interfaces.IShiireService
+  commentId: T:Convenience.Models.Interfaces.IShiireService
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IShiireService.html
+  name: IShiireService
+  nameWithType: IShiireService
+  fullName: Convenience.Models.Interfaces.IShiireService
+- uid: Convenience.Models.Interfaces.IZaiko
+  commentId: T:Convenience.Models.Interfaces.IZaiko
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IZaiko.html
+  name: IZaiko
+  nameWithType: IZaiko
+  fullName: Convenience.Models.Interfaces.IZaiko
+- uid: Convenience.Models.Interfaces.IZaikoService
+  commentId: T:Convenience.Models.Interfaces.IZaikoService
+  parent: Convenience.Models.Interfaces
+  href: Convenience.Models.Interfaces.IZaikoService.html
+  name: IZaikoService
+  nameWithType: IZaikoService
+  fullName: Convenience.Models.Interfaces.IZaikoService
+- uid: Convenience.Models.Interfaces
+  commentId: N:Convenience.Models.Interfaces
+  href: Convenience.html
+  name: Convenience.Models.Interfaces
+  nameWithType: Convenience.Models.Interfaces
+  fullName: Convenience.Models.Interfaces
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html

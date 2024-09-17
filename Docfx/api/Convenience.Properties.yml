@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Properties
+  commentId: N:Convenience.Properties
+  id: Convenience.Properties
+  children:
+  - Convenience.Properties.Resources
+  langs:
+  - csharp
+  - vb
+  name: Convenience.Properties
+  nameWithType: Convenience.Properties
+  fullName: Convenience.Properties
+  type: Namespace
+  assemblies:
+  - Convenience
+references:
+- uid: Convenience.Properties.Resources
+  commentId: T:Convenience.Properties.Resources
+  href: Convenience.Properties.Resources.html
+  name: Resources
+  nameWithType: Resources
+  fullName: Convenience.Properties.Resources

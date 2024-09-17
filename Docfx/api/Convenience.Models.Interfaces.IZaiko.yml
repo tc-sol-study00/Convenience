@@ -1,0 +1,304 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Interfaces.IZaiko
+  commentId: T:Convenience.Models.Interfaces.IZaiko
+  id: IZaiko
+  parent: Convenience.Models.Interfaces
+  children:
+  - Convenience.Models.Interfaces.IZaiko.AddOrderby(System.String,System.Boolean)
+  - Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList(System.String)
+  - Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable
+  langs:
+  - csharp
+  - vb
+  name: IZaiko
+  nameWithType: IZaiko
+  fullName: Convenience.Models.Interfaces.IZaiko
+  type: Interface
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IZaiko.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: IZaiko
+    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    startLine: 5
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: public interface IZaiko
+    content.vb: Public Interface IZaiko
+- uid: Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable
+  commentId: P:Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable
+  id: SoKoZaikoQueryable
+  parent: Convenience.Models.Interfaces.IZaiko
+  langs:
+  - csharp
+  - vb
+  name: SoKoZaikoQueryable
+  nameWithType: IZaiko.SoKoZaikoQueryable
+  fullName: Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable
+  type: Property
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IZaiko.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: SoKoZaikoQueryable
+    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    startLine: 7
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IQueryable<ZaikoViewModel.ZaikoListLine>? SoKoZaikoQueryable { get; set; }
+    parameters: []
+    return:
+      type: System.Linq.IQueryable{Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine}
+    content.vb: Property SoKoZaikoQueryable As IQueryable(Of ZaikoViewModel.ZaikoListLine)
+  overload: Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable*
+- uid: Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList(System.String)
+  commentId: M:Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList(System.String)
+  id: CreateSokoZaikoList(System.String)
+  parent: Convenience.Models.Interfaces.IZaiko
+  langs:
+  - csharp
+  - vb
+  name: CreateSokoZaikoList(string)
+  nameWithType: IZaiko.CreateSokoZaikoList(string)
+  fullName: Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList(string)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IZaiko.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: CreateSokoZaikoList
+    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    startLine: 9
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IQueryable<ZaikoViewModel.ZaikoListLine> CreateSokoZaikoList(string searchKey)
+    parameters:
+    - id: searchKey
+      type: System.String
+    return:
+      type: System.Linq.IQueryable{Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine}
+    content.vb: Function CreateSokoZaikoList(searchKey As String) As IQueryable(Of ZaikoViewModel.ZaikoListLine)
+  overload: Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList*
+  nameWithType.vb: IZaiko.CreateSokoZaikoList(String)
+  fullName.vb: Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList(String)
+  name.vb: CreateSokoZaikoList(String)
+- uid: Convenience.Models.Interfaces.IZaiko.AddOrderby(System.String,System.Boolean)
+  commentId: M:Convenience.Models.Interfaces.IZaiko.AddOrderby(System.String,System.Boolean)
+  id: AddOrderby(System.String,System.Boolean)
+  parent: Convenience.Models.Interfaces.IZaiko
+  langs:
+  - csharp
+  - vb
+  name: AddOrderby(string, bool)
+  nameWithType: IZaiko.AddOrderby(string, bool)
+  fullName: Convenience.Models.Interfaces.IZaiko.AddOrderby(string, bool)
+  type: Method
+  source:
+    remote:
+      path: Convenience/Models/Interfaces/IZaiko.cs
+      branch: main
+      repo: https://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@github.com/tc-sol-study00/Convenience.git
+    id: AddOrderby
+    path: ../Convenience/Models/Interfaces/IZaiko.cs
+    startLine: 10
+  assemblies:
+  - Convenience
+  namespace: Convenience.Models.Interfaces
+  syntax:
+    content: IQueryable<ZaikoViewModel.ZaikoListLine> AddOrderby(string sortKey, bool descending)
+    parameters:
+    - id: sortKey
+      type: System.String
+    - id: descending
+      type: System.Boolean
+    return:
+      type: System.Linq.IQueryable{Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine}
+    content.vb: Function AddOrderby(sortKey As String, descending As Boolean) As IQueryable(Of ZaikoViewModel.ZaikoListLine)
+  overload: Convenience.Models.Interfaces.IZaiko.AddOrderby*
+  nameWithType.vb: IZaiko.AddOrderby(String, Boolean)
+  fullName.vb: Convenience.Models.Interfaces.IZaiko.AddOrderby(String, Boolean)
+  name.vb: AddOrderby(String, Boolean)
+references:
+- uid: Convenience.Models.Interfaces
+  commentId: N:Convenience.Models.Interfaces
+  href: Convenience.html
+  name: Convenience.Models.Interfaces
+  nameWithType: Convenience.Models.Interfaces
+  fullName: Convenience.Models.Interfaces
+  spec.csharp:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+  spec.vb:
+  - uid: Convenience
+    name: Convenience
+    href: Convenience.html
+  - name: .
+  - uid: Convenience.Models
+    name: Models
+    href: Convenience.Models.html
+  - name: .
+  - uid: Convenience.Models.Interfaces
+    name: Interfaces
+    href: Convenience.Models.Interfaces.html
+- uid: Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable*
+  commentId: Overload:Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable
+  href: Convenience.Models.Interfaces.IZaiko.html#Convenience_Models_Interfaces_IZaiko_SoKoZaikoQueryable
+  name: SoKoZaikoQueryable
+  nameWithType: IZaiko.SoKoZaikoQueryable
+  fullName: Convenience.Models.Interfaces.IZaiko.SoKoZaikoQueryable
+- uid: System.Linq.IQueryable{Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine}
+  commentId: T:System.Linq.IQueryable{Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<ZaikoViewModel.ZaikoListLine>
+  nameWithType: IQueryable<ZaikoViewModel.ZaikoListLine>
+  fullName: System.Linq.IQueryable<Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine>
+  nameWithType.vb: IQueryable(Of ZaikoViewModel.ZaikoListLine)
+  fullName.vb: System.Linq.IQueryable(Of Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine)
+  name.vb: IQueryable(Of ZaikoViewModel.ZaikoListLine)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - uid: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel
+    name: ZaikoViewModel
+    href: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.html
+  - name: .
+  - uid: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine
+    name: ZaikoListLine
+    href: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel
+    name: ZaikoViewModel
+    href: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.html
+  - name: .
+  - uid: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine
+    name: ZaikoListLine
+    href: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine.html
+  - name: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList*
+  commentId: Overload:Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList
+  href: Convenience.Models.Interfaces.IZaiko.html#Convenience_Models_Interfaces_IZaiko_CreateSokoZaikoList_System_String_
+  name: CreateSokoZaikoList
+  nameWithType: IZaiko.CreateSokoZaikoList
+  fullName: Convenience.Models.Interfaces.IZaiko.CreateSokoZaikoList
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Convenience.Models.Interfaces.IZaiko.AddOrderby*
+  commentId: Overload:Convenience.Models.Interfaces.IZaiko.AddOrderby
+  href: Convenience.Models.Interfaces.IZaiko.html#Convenience_Models_Interfaces_IZaiko_AddOrderby_System_String_System_Boolean_
+  name: AddOrderby
+  nameWithType: IZaiko.AddOrderby
+  fullName: Convenience.Models.Interfaces.IZaiko.AddOrderby
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models
+  commentId: N:Convenience.Models
+  id: Convenience.Models
+  children:
+  - Convenience.Models.ErrorViewModel
+  - Convenience.Models.Menu
+  - Convenience.Models.MenuItem
+  langs:
+  - csharp
+  - vb
+  name: Convenience.Models
+  nameWithType: Convenience.Models
+  fullName: Convenience.Models
+  type: Namespace
+  assemblies:
+  - Convenience
+references:
+- uid: Convenience.Models.ErrorViewModel
+  commentId: T:Convenience.Models.ErrorViewModel
+  href: Convenience.Models.ErrorViewModel.html
+  name: ErrorViewModel
+  nameWithType: ErrorViewModel
+  fullName: Convenience.Models.ErrorViewModel
+- uid: Convenience.Models.MenuItem
+  commentId: T:Convenience.Models.MenuItem
+  href: Convenience.Models.MenuItem.html
+  name: MenuItem
+  nameWithType: MenuItem
+  fullName: Convenience.Models.MenuItem
+- uid: Convenience.Models.Menu
+  commentId: T:Convenience.Models.Menu
+  href: Convenience.Models.Menu.html
+  name: Menu
+  nameWithType: Menu
+  fullName: Convenience.Models.Menu

@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Convenience.Models.Services
+  commentId: N:Convenience.Models.Services
+  id: Convenience.Models.Services
+  children:
+  - Convenience.Models.Services.ChumonService
+  - Convenience.Models.Services.ShiireService
+  - Convenience.Models.Services.ZaikoService
+  langs:
+  - csharp
+  - vb
+  name: Convenience.Models.Services
+  nameWithType: Convenience.Models.Services
+  fullName: Convenience.Models.Services
+  type: Namespace
+  assemblies:
+  - Convenience
+references:
+- uid: Convenience.Models.Services.ChumonService
+  commentId: T:Convenience.Models.Services.ChumonService
+  href: Convenience.Models.Services.ChumonService.html
+  name: ChumonService
+  nameWithType: ChumonService
+  fullName: Convenience.Models.Services.ChumonService
+- uid: Convenience.Models.Services.ShiireService
+  commentId: T:Convenience.Models.Services.ShiireService
+  href: Convenience.Models.Services.ShiireService.html
+  name: ShiireService
+  nameWithType: ShiireService
+  fullName: Convenience.Models.Services.ShiireService
+- uid: Convenience.Models.Services.ZaikoService
+  commentId: T:Convenience.Models.Services.ZaikoService
+  href: Convenience.Models.Services.ZaikoService.html
+  name: ZaikoService
+  nameWithType: ZaikoService
+  fullName: Convenience.Models.Services.ZaikoService
