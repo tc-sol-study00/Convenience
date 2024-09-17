@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
 
+    /// <summary>
+    /// 倉庫在庫検索コントローラ
+    /// </summary>
     public class ZaikoController : Controller {
         private readonly ConvenienceContext _context;
 

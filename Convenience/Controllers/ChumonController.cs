@@ -15,6 +15,9 @@ using static Convenience.Models.Properties.Message;
 
 
 namespace Convenience.Controllers {
+    /// <summary>
+    /// 注文コントローラ
+    /// </summary>
     public class ChumonController : Controller, ISharedTools {
         private readonly ConvenienceContext _context;
 

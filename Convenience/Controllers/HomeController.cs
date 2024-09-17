@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 
 namespace Convenience.Controllers {
 
+    /// <summary>
+    /// Homeコントローラ（メニュー表示用）
+    /// </summary>
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
 
