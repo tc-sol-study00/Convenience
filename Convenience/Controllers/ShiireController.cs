@@ -10,6 +10,9 @@ using static Convenience.Models.Properties.Message;
 
 namespace Convenience.Controllers {
 
+    /// <summary>
+    /// 仕入サービスクラス
+    /// </summary>
     public class ShiireController : Controller, ISharedTools {
         private readonly ConvenienceContext _context;
 
