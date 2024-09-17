@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Docfx\_site\新しいフォルダー\**" />
+    <Content Remove="Docfx\_site\新しいフォルダー\**" />
+    <EmbeddedResource Remove="Docfx\_site\新しいフォルダー\**" />
+    <EntityDeploy Remove="Docfx\_site\新しいフォルダー\**" />
+    <None Remove="Docfx\_site\新しいフォルダー\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Models\Properties\Chumon2.cs" />
     <Compile Remove="Models\Properties\Class.cs" />
   </ItemGroup>
@@ -362,7 +370,6 @@
   <ItemGroup>
     <Folder Include="Docfx\_site\.git\objects\info\" />
     <Folder Include="Docfx\_site\.git\refs\tags\" />
-    <Folder Include="Docfx\_site\新しいフォルダー\" />
   </ItemGroup>
 
 </Project>
