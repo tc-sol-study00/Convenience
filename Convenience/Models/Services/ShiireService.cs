@@ -9,7 +9,9 @@ using System.Data;
 using static Convenience.Models.Properties.Shiire;
 
 namespace Convenience.Models.Services {
-
+    /// <summary>
+    /// 仕入サービスクラス
+    /// </summary>
     public class ShiireService : IShiireService {
         private readonly ConvenienceContext _context;
 

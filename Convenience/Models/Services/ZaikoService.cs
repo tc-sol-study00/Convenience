@@ -12,7 +12,9 @@ using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 
 namespace Convenience.Models.Services {
 
-    //倉庫在庫検索（サービス）
+    /// <summary>
+    /// 倉庫在庫検索（サービス） 
+    /// </summary>
     public class ZaikoService : IZaikoService {
         //DBコンテキスト
         private readonly ConvenienceContext _context;
@@ -48,7 +50,12 @@ namespace Convenience.Models.Services {
             //在庫クラスインスタンス化
             Zaiko = new Zaiko(_context);
         }
-
+        /// <summary>
+        /// <para>検索キー画面の情報取得</para>
+        /// </summary>
+        /// <param name="inKeySetOrderArray"></param>
+        /// <param name="inSelectWhereItemArray"></param>
+        /// <returns></returns>
         public async Task<IList<ZaikoListLine>> KeyInput(KeyEventRec[] inKeySetOrderArray, SelecteWhereItem[] inSelectWhereItemArray) {
 
             const string doubleQuotation = "\"";
