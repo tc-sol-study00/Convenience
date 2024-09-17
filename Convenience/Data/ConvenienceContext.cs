@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Data {
-
+    /// <summary>
+    /// DBコンテキスト
+    /// </summary>
     public class ConvenienceContext : DbContext {
 
         public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
