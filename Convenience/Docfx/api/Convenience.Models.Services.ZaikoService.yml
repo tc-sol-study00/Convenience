@@ -24,10 +24,12 @@ items:
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: ZaikoService
     path: ../Models/Services/ZaikoService.cs
-    startLine: 15
+    startLine: 17
   assemblies:
   - Convenience
   namespace: Convenience.Models.Services
+  summary: 倉庫在庫検索（サービス）
+  example: []
   syntax:
     content: 'public class ZaikoService : IZaikoService'
     content.vb: Public Class ZaikoService Implements IZaikoService
@@ -61,7 +63,7 @@ items:
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: _context
     path: ../Models/Services/ZaikoService.cs
-    startLine: 17
+    startLine: 19
   assemblies:
   - Convenience
   namespace: Convenience.Models.Services
@@ -88,7 +90,7 @@ items:
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: Zaiko
     path: ../Models/Services/ZaikoService.cs
-    startLine: 19
+    startLine: 21
   assemblies:
   - Convenience
   namespace: Convenience.Models.Services
@@ -115,7 +117,7 @@ items:
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
     path: ../Models/Services/ZaikoService.cs
-    startLine: 26
+    startLine: 28
   assemblies:
   - Convenience
   namespace: Convenience.Models.Services
@@ -153,7 +155,7 @@ items:
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: .ctor
     path: ../Models/Services/ZaikoService.cs
-    startLine: 35
+    startLine: 37
   assemblies:
   - Convenience
   namespace: Convenience.Models.Services
@@ -182,20 +184,24 @@ items:
       repo: https://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@github.com/tc-sol-study00/Convenience.git
     id: KeyInput
     path: ../Models/Services/ZaikoService.cs
-    startLine: 51
+    startLine: 58
   assemblies:
   - Convenience
   namespace: Convenience.Models.Services
+  summary: <p>検索キー画面の情報取得</p>
   example: []
   syntax:
     content: public Task<IList<ZaikoViewModel.ZaikoListLine>> KeyInput(ZaikoViewModel.KeyEventRec[] inKeySetOrderArray, ZaikoViewModel.SelecteWhereItem[] inSelectWhereItemArray)
     parameters:
     - id: inKeySetOrderArray
       type: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.KeyEventRec[]
+      description: ''
     - id: inSelectWhereItemArray
       type: Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.SelecteWhereItem[]
+      description: ''
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.IList{Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine}}
+      description: ''
     content.vb: Public Function KeyInput(inKeySetOrderArray As ZaikoViewModel.KeyEventRec(), inSelectWhereItemArray As ZaikoViewModel.SelecteWhereItem()) As Task(Of IList(Of ZaikoViewModel.ZaikoListLine))
   overload: Convenience.Models.Services.ZaikoService.KeyInput*
   implements:

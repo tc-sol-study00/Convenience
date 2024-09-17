@@ -146,7 +146,7 @@ items:
   assemblies:
   - Convenience
   namespace: Convenience.Data
-  summary: コンストラクタ2
+  summary: コンストラクタ
   example: []
   syntax:
     content: public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
