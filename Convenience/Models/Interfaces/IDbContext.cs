@@ -7,7 +7,7 @@ using System.Data.Entity;
 namespace Convenience.Models.Interfaces {
     public interface IDbContext {
         private const string ConfigrationFileName = "appsettings.json"; 
-        private const string KeyWordInAppConfig = "ConvenienceContext";
+        private const string KeyWordInAppConfig = "ConnectionStrings:ConvenienceContext";
 
         protected static ConvenienceContext DbOpen() {
             //DBコンテクスト用接続子読み込み
@@ -15,6 +15,7 @@ namespace Convenience.Models.Interfaces {
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile(ConfigrationFileName, optional: true, reloadOnChange: true)
                 .Build();
+
             //DBコンテクスト作成
             var contextOptions = new DbContextOptionsBuilder<ConvenienceContext>()
                 .UseNpgsql(configuration[KeyWordInAppConfig])
