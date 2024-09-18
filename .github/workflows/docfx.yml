@@ -44,7 +44,7 @@ jobs:
       with:
         repository: tc-sol-study00/Docfx
         ref: gh-pages
-#        token: ${{ secrets.DEPLOY_TOKEN }}
+        token: ${{ secrets.DEPLOY_TOKEN }}
         persist-credentials: false
 
     - name: Deploy to GitHub Pages
