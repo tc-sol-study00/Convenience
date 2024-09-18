@@ -38,7 +38,7 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         # Upload entire repository
-        path: 'C:/Users/s-to/source/repos/Convenience/Convenience/Docfx/_site'
+        path: '${{ github.workspace }}/Convenience/Docfx/_site'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
