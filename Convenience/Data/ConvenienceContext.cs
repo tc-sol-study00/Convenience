@@ -5,7 +5,6 @@ namespace Convenience.Data {
     /// DBコンテキスト
     /// </summary>
     public class ConvenienceContext : DbContext {
-
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -13,7 +12,6 @@ namespace Convenience.Data {
         public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
             : base(options) {
         }
-
         public DbSet<Convenience.Models.DataModels.ChumonJissekiMeisai> ChumonJissekiMeisai { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ChumonJisseki> ChumonJisseki { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ShiireJisseki> ShiireJisseki { get; set; } = default!;
