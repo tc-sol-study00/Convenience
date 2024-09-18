@@ -50,8 +50,8 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
-#      with:
-#        token: ${{ secrets.DEPLOY_TOKEN }}
+      with:
+        token: ${{ secrets.DEPLOY_TOKEN }}
         
 #    - name: Deploy to GitHub Pages
 #      id: deployment
