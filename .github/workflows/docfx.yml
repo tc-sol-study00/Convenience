@@ -32,7 +32,7 @@ jobs:
         dotnet-version: 8.x
 
     - run: dotnet tool update -g docfx
-    - run: docfx C:/Users/s-to/source/repos/Convenience/Convenience/Docfx/docfx.json
+    - run: docfx ${{ github.workspace }}/Convenience/Docfx/docfx.json
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
