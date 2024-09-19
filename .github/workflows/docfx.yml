@@ -57,7 +57,7 @@ jobs:
     - name: Deploy to another repo
       run: |
         # トークンを環境変数として設定
-        $env:GITHUB_TOKEN = "${{ secrets.DEPLOY_TOKEN }}"
+        $env:GITHUB_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
         # リモートリポジトリの URL をトークンを使ったものに変更
         git remote set-url origin https://$env:GITHUB_TOKEN@github.com/tc-sol-study00/Docfx.git
         Set-Location -Path docs-repo
