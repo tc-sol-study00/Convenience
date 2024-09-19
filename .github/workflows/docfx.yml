@@ -51,8 +51,8 @@ jobs:
     - name: Deploy to another repo
       run: |
         cd docs-repo
-        git rm -r *  # 古いファイルを削除
-        cp -r .${{ github.workspace }}/Docfx/_site/* .  # 新しいドキュメントをコピー  
+        git rm -r --exclude=.git *  # 古いファイルを削除
+        cp -r ${{ github.workspace }}/Docfx/_site/* .  # 新しいドキュメントをコピー  
         git add --all
         git commit -m "Update documentation from action"
-        git push origin main
+        git push origin gh-pages
