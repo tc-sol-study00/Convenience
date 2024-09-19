@@ -43,11 +43,11 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: tc-sol-study00/Docfx
-        token: ${{ secrets.DEPLOY_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         ref: gh-pages
         path: docs-repo
         persist-credentials: true
-        username: ${{ github.actor }}  # または GitHub のユーザー名を指定
+        #username: ${{ github.actor }}  # または GitHub のユーザー名を指定
 
     - name: Deploy to another repo
       run: |
