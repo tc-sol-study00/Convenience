@@ -44,7 +44,7 @@ jobs:
       with:
         repository: tc-sol-study00/Docfx
         token: ${{ secrets.DEPLOY_TOKEN }}
-        branch: gh-pages
+        refs: gh-pages
         path: docs-repo
         persist-credentials: false
 
