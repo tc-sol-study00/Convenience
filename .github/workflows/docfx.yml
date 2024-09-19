@@ -30,29 +30,29 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
-
     - run: dotnet tool update -g docfx
-    - run: docfx ${{ github.workspace }}/Convenience/Docfx/docfx.json
-
+    - run: docfx ${{ github.workspace }}/Docfx/docfx.json
+  
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         # Upload entire repository
-        path: '${{ github.workspace }}/Convenience/Docfx/_site'
+        path: '${{ github.workspace }}/Docfx/_site'
+
     - name: Checkout destination repository
       uses: actions/checkout@v3
       with:
         repository: tc-sol-study00/Docfx
-        ref: gh-pages
         token: ${{ secrets.DEPLOY_TOKEN }}
+        branch: gh-pages
+        path: docs-repo
         persist-credentials: false
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
-      with:
-        token: ${{ secrets.DEPLOY_TOKEN }}
-        
-#    - name: Deploy to GitHub Pages
-#      id: deployment
-#      uses: actions/deploy-pages@v4
+    - name: Deploy to another repo
+      run: |
+        cd docs-repo
+        git rm -r *  # 古いファイルを削除
+        cp -r .${{ github.workspace }}/Docfx/_site/* .  # 新しいドキュメントをコピー
+        git add --all
+        git commit -m "Update documentation from action"
+        git push origin main
