@@ -49,20 +49,20 @@ jobs:
         persist-credentials: true
         #username: ${{ github.actor }}  # または GitHub のユーザー名を指定
 
-    - name: Set up Git configuration
-      run: |
-        git config --global user.email "github-actions@github.com"
-        git config --global user.name "github-actions"
 
     - name: Deploy to another repo
       run: |
         # トークンを環境変数として設定
         $env:GITHUB_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
         # リモートリポジトリの URL をトークンを使ったものに変更
-        git remote set-url origin https://$env:GITHUB_TOKEN@github.com/tc-sol-study00/Docfx.git
+        git remote set-url origin https://github.com/tc-sol-study00/Docfx.git
+
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+
         Set-Location -Path docs-repo
         git rm -r *  # 古いファイルを削除
         Copy-Item -Path "$env:GITHUB_WORKSPACE/Docfx/_site/*" -Destination . -Recurse -Force  # 新しいドキュメントをコピー  
         git add --all
         git commit -m "Update documentation from action"
-        git push origin gh-pages
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/tc-sol-study00/Docfx.git gh-pages
