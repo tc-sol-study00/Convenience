@@ -4,3 +4,6 @@
 [submodule "Docfx/_sites"]
 	path = Docfx/_sites
 	url = https://github.com/tc-sol-study00/Docfx
+[submodule "Docfx/_site"]
+	path = Docfx/_site
+	url = https://github.com/tc-sol-study00/Docfx
