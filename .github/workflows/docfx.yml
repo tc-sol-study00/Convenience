@@ -47,6 +47,7 @@ jobs:
         ref: gh-pages
         path: docs-repo
         persist-credentials: true
+        username: ${{ github.actor }}  # または GitHub のユーザー名を指定
 
     - name: Deploy to another repo
       run: |
