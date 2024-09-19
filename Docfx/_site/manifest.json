@@ -1,0 +1,858 @@
+{
+  "source_base_path": "C:/Users/s-to/source/repos/Convenience/Convenience/Docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Chumon_ChumonMeisai.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Chumon_ChumonMeisai.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Chumon_KeyInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Chumon_KeyInput.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Home_Index.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Home_Index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Home_Privacy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Home_Privacy.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Shared_Error.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Shared_Error.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Shared__Layout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Shared__Layout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Shared__ValidationScriptsPartial.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Shared__ValidationScriptsPartial.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Shiire_Shiire.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Shiire_Shiire.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Shiire_ShiireKeyInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Shiire_ShiireKeyInput.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views_Zaiko_Index.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views_Zaiko_Index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views__ViewImports.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views__ViewImports.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.Views__ViewStart.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.Views__ViewStart.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AspNetCoreGeneratedDocument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AspNetCoreGeneratedDocument.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Controllers.Chumon2Controller.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Controllers.Chumon2Controller.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Controllers.ChumonController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Controllers.ChumonController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Controllers.HomeController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Controllers.HomeController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Controllers.ShiireController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Controllers.ShiireController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Controllers.ZaikoController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Controllers.ZaikoController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Controllers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Data.ConvenienceContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Data.ConvenienceContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Data.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Migrations.ConvenienceContextModelSnapshot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Migrations.ConvenienceContextModelSnapshot.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Migrations.Init.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Migrations.Init.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Migrations.shiireTimeStamp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Migrations.shiireTimeStamp.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Migrations.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.ChumonJisseki.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.ChumonJisseki.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.ChumonJissekiMeisai.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.ChumonJissekiMeisai.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.KaikeiJisseki.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.KaikeiJisseki.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.ShiireJisseki.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.ShiireJisseki.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.ShiireMaster.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.ShiireMaster.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.ShiireSakiMaster.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.ShiireSakiMaster.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.ShohinMaster.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.ShohinMaster.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.SokoZaiko.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.SokoZaiko.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.TentoHaraidashiJisseki.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.TentoHaraidashiJisseki.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.TentoZaiko.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.TentoZaiko.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.DataModels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.DataModels.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ErrorViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ErrorViewModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IChumon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IChumon.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IChumonService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IChumonService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IDbContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.ISharedTools.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.ISharedTools.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IShiire.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IShiire.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IShiireService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IShiireService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IZaiko.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IZaiko.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.IZaikoService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.IZaikoService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Menu.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Menu.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.MenuItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.MenuItem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Chumon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Chumon.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Message.ErrDef.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Message.ErrDef.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Message.MessageData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Message.MessageData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Message.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Message.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Shiire.ChumonList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Shiire.ChumonList.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Shiire.ShiireUkeireReturnSet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Shiire.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Shiire.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.Zaiko.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.Zaiko.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Properties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Properties.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Services.ChumonService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Services.ChumonService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Services.ShiireService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Services.ShiireService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Services.ZaikoService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Services.ZaikoService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.Services.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Chumon.ChumonKeysViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Chumon.ChumonKeysViewModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Chumon.ChumonViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Chumon.ChumonViewModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Chumon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Chumon.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Shiire.ShiireKeysViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Shiire.ShiireKeysViewModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Shiire.ShiireViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Shiire.ShiireViewModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Shiire.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Shiire.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.KeyEventRec.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.KeyEventRec.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.SelecteWhereItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.SelecteWhereItem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.ZaikoListLine.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Zaiko.ZaikoViewModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.ViewModels.Zaiko.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.ViewModels.Zaiko.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Models.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Properties.Resources.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Properties.Resources.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Properties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Properties.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Views.Shiire.ShiireKeyInputModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Views.Shiire.ShiireKeyInputModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Convenience.Views.Shiire.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Convenience.Views.Shiire.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
