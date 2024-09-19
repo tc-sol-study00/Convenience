@@ -44,9 +44,9 @@ jobs:
       with:
         repository: tc-sol-study00/Docfx
         token: ${{ secrets.DEPLOY_TOKEN }}
-        refs: gh-pages
+        ref: gh-pages
         path: docs-repo
-        persist-credentials: false
+        persist-credentials: true
 
     - name: Deploy to another repo
       run: |
