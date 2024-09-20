@@ -32,7 +32,9 @@ jobs:
       with:
         dotnet-version: 8.x
     - run: dotnet tool update -g docfx
-    - run: docfx ${{ github.workspace }}/Docfx/docfx.json
+    - run: |
+        cd ${{ github.workspace }}/Docfx/
+        docfx docfx.json
   
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
