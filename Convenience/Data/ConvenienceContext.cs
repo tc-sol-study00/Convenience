@@ -16,6 +16,9 @@ namespace Convenience.Data {
         /// 注文実績明細
         /// </summary>
         public DbSet<Convenience.Models.DataModels.ChumonJissekiMeisai> ChumonJissekiMeisai { get; set; } = default!;
+        /// <summary>
+        /// 注文実績
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.ChumonJisseki> ChumonJisseki { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ShiireJisseki> ShiireJisseki { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ShiireMaster> ShireMaster { get; set; } = default!;
