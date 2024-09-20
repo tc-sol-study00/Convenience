@@ -24,6 +24,9 @@ namespace Convenience.Data {
         /// 仕入実績
         /// </summary>
         public DbSet<Convenience.Models.DataModels.ShiireJisseki> ShiireJisseki { get; set; } = default!;
+        /// <summary>
+        /// 仕入マスタ
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.ShiireMaster> ShireMaster { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ShiireSakiMaster> ShiireSakiMaster { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ShohinMaster> ShohinMaster { get; set; } = default!;
