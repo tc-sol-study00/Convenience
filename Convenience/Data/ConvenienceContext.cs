@@ -32,6 +32,9 @@ namespace Convenience.Data {
         /// 仕入先マスタ
         /// </summary>
         public DbSet<Convenience.Models.DataModels.ShiireSakiMaster> ShiireSakiMaster { get; set; } = default!;
+        /// <summary>
+        /// 商品マスタ
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.ShohinMaster> ShohinMaster { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.SokoZaiko> SokoZaiko { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.TentoZaiko> TentoZaiko { get; set; } = default!;
