@@ -50,13 +50,13 @@ jobs:
         persist-credentials: true
 
     - name: Deploy to another repo
-      env:
-        GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      #env:
+      #  GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       run: |
         # トークンを環境変数として設定
         #$env:GITHUB_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
         # リモートリポジトリの URL をトークンを使ったものに変更a
-        git remote set-url origin https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/tc-sol-study00/Docfx.git
+        git remote set-url origin https://${{ secrets.DEPLOY_TOKEN }}@github.com/tc-sol-study00/Docfx.git
 
         git config --global user.email "github-actions@github.com"
         git config --global user.name "github-actions"
