@@ -42,10 +42,10 @@ namespace Convenience.Models.Properties {
         /// 注文作成
         /// </summary>
         /// <remarks>
-        /// <para>①仕入先より注文実績データ（親）を生成する</para>
-        /// <para>②注文実績明細データ（子）を仕入マスタを元に作成する</para>
-        /// <para>③注文実績データ（親）と注文実績明細データ（子）を連結する</para>
-        /// <para>④注文実績（プラス注文実績明細）を戻り値とする</para>
+        /// 仕入先より注文実績データ（親）を生成する
+        /// 注文実績明細データ（子）を仕入マスタを元に作成する
+        /// 注文実績データ（親）と注文実績明細データ（子）を連結する
+        /// 注文実績（プラス注文実績明細）を戻り値とする
         /// </remarks>
         /// <param name="inShireSakiId">仕入先コード</param>
         /// <param name="inChumonDate">注文日</param>
