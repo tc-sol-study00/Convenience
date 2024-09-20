@@ -58,8 +58,8 @@ jobs:
         # リモートリポジトリの URL をトークンを使ったものに変更a
         git remote set-url origin https://${{ secrets.DEPLOY_TOKEN }}@github.com/tc-sol-study00/Docfx.git
 
-        git config --global user.email "github-actions@github.com"
-        git config --global user.name "github-actions"
+        git config --global user.email "shigeyuki.to@techno-creative.co.jp"
+        git config --global user.name "Too.Shigeyuki"
 
         Set-Location -Path docs-repo
         git rm -r *  # 古いファイルを削除
