@@ -1,6 +1,0 @@
-[submodule "ConvenienceStarter"]
-	path = ConvenienceStarter
-	url = https://github.com/tc-sol-study00/ConvenienceStarter
-[submodule "Docfx/_sites"]
-	path = Docfx/_sites
-	url = https://github.com/tc-sol-study00/Docfx
