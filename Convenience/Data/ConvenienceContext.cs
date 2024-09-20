@@ -36,9 +36,21 @@ namespace Convenience.Data {
         /// 商品マスタ
         /// </summary>
         public DbSet<Convenience.Models.DataModels.ShohinMaster> ShohinMaster { get; set; } = default!;
+        /// <summary>
+        /// 倉庫在庫
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.SokoZaiko> SokoZaiko { get; set; } = default!;
+        /// <summary>
+        /// 店頭在庫
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.TentoZaiko> TentoZaiko { get; set; } = default!;
+        /// <summary>
+        /// 店頭払出実績
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.TentoHaraidashiJisseki> TentoHaraidashiJisseki { get; set; } = default!;
+        /// <summary>
+        /// 会計実績
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.KaikeiJisseki> KaikeiJisseki { get; set; } = default!;
     }
 }
