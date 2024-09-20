@@ -65,4 +65,4 @@ jobs:
         Copy-Item -Path "$env:GITHUB_WORKSPACE/Docfx/_site/*" -Destination . -Recurse -Force  # 新しいドキュメントをコピー  
         git add --all
         git commit -m "Update documentation from action"
-        git push orgin gh-pages
+        git push origin gh-pages
