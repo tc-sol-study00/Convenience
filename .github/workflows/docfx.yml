@@ -28,19 +28,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        path: prog-repo
+        path: '${{ github.workspace }}/prog-repo'
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
     - run: dotnet tool update -g docfx
-    - run: docfx prog-repo/Docfx/docfx.json
+    - run: |
+        Set-Location -Path ${{ github.workspace }}/prog-repo/Docfx
+        docfx prog-repo/Docfx/docfx.json
   
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         # Upload entire repository
-        path: 'prog-repo/Docfx/_site'
+        path: '${{ github.workspace }}/prog-repo/Docfx/_site'
 
     - name: Checkout destination repository
       uses: actions/checkout@v3
