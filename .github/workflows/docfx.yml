@@ -51,7 +51,7 @@ jobs:
 
     - name: Deploy to another repo
       env:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       run: |
         # ƒg[ƒNƒ“‚ğŠÂ‹«•Ï”‚Æ‚µ‚Äİ’è
         #$env:GITHUB_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
