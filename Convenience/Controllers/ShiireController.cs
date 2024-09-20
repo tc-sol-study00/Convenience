@@ -2,8 +2,6 @@
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
-using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
 using Convenience.Models.ViewModels.Shiire;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.Properties.Message;
