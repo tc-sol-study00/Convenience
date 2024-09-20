@@ -1,0 +1,46 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../../Convenience",
+          "files": [
+            "**/*.csproj"
+          ]
+        }
+      ],
+      "includePrivateMembers": true,
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "Convenience",
+      "_appTitle": "Convenience",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}
