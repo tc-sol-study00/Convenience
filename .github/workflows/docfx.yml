@@ -27,20 +27,20 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        path: prog-repo
     - name: Dotnet Setup
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
     - run: dotnet tool update -g docfx
-    - run: |
-        cd ${{ github.workspace }}/Docfx/
-        docfx docfx.json
+    - run: docfx prog-repo/Docfx/docfx.json
   
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         # Upload entire repository
-        path: '${{ github.workspace }}/Docfx/_site'
+        path: 'prog-repo/Docfx/_site'
 
     - name: Checkout destination repository
       uses: actions/checkout@v3
@@ -55,8 +55,6 @@ jobs:
       #env:
       #  GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       run: |
-        # トークンを環境変数として設定
-        #$env:GITHUB_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
         # リモートリポジトリの URL をトークンを使ったものに変更a
         git remote set-url origin https://${{ secrets.DEPLOY_TOKEN }}@github.com/tc-sol-study00/Docfx.git
 
