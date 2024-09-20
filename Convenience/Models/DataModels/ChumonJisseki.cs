@@ -5,11 +5,20 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
-
+    
+    /// <summary>
+    /// 注文実績DTO
+    /// <Remarks>
+    /// 主キー：注文コード
+    /// </Remarks>
+    /// </summary>
     [Table("chumon_jisseki")]
     [PrimaryKey(nameof(ChumonId))]
     public class ChumonJisseki {
-
+    
+        /// <summary>
+        /// 注文コード
+        /// </summary>
         [Column("chumon_code")]
         [DisplayName("注文コード")]
         [MaxLength(20)]
