@@ -12,6 +12,9 @@ namespace Convenience.Data {
         public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
             : base(options) {
         }
+        /// <summary>
+        /// 注文実績明細
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.ChumonJissekiMeisai> ChumonJissekiMeisai { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ChumonJisseki> ChumonJisseki { get; set; } = default!;
         public DbSet<Convenience.Models.DataModels.ShiireJisseki> ShiireJisseki { get; set; } = default!;
