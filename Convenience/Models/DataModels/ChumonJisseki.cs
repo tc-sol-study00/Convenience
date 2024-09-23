@@ -9,9 +9,6 @@ namespace Convenience.Models.DataModels {
     /// <summary>
     /// 注文実績DTO
     /// </summary>
-    /// <Remarks>
-    /// 主キー：注文コード
-    /// </Remarks>
     [Table("chumon_jisseki")]
     [PrimaryKey(nameof(ChumonId))]
     public class ChumonJisseki {
@@ -25,6 +22,9 @@ namespace Convenience.Models.DataModels {
         [Required]
         public string ChumonId { get; set; }
 
+        /// <summary>
+        /// 仕入先コード
+        /// </summary>
         [Column("shiire_saki_code")]
         [DisplayName("仕入先コード")]
         [MaxLength(10)]
