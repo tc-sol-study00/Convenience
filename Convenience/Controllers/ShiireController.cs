@@ -31,11 +31,20 @@ namespace Convenience.Controllers {
             //shiireService = new ShiireService(_context);
         }
 
+        /// <summary>
+        /// 仕入画面１枚目の初期表示
+        /// </summary>
+        /// <returns>ShiireKeysViewModel 仕入キービューモデル</returns>
         public async Task<IActionResult> ShiireKeyInput() {
             ShiireKeysViewModel keymodel = await shiireService.SetShiireKeysModel();
             return View(keymodel);
         }
 
+        /// <summary>
+        /// 仕入画面１枚目のPost後処理→仕入画面２枚目に遷移
+        /// </summary>
+        /// <param name="inKeysModel">仕入画面１枚目のpostデータ</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShiireKeyInput(ShiireKeysViewModel inKeysModel) {
@@ -43,7 +52,11 @@ namespace Convenience.Controllers {
             ViewBag.HandlingFlg = "FirstDisplay";
             return View("Shiire", shiireViewModel);
         }
-
+        /// <summary>
+        /// 仕入画面２枚目のPost後処理
+        /// </summary>
+        /// <param name="inShiireViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Shiire(ShiireViewModel inShiireViewModel) {
@@ -56,7 +69,10 @@ namespace Convenience.Controllers {
             TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
             return RedirectToAction("Result");
         }
-
+        /// <summary>
+        /// 仕入画面２枚目の初期表示（仕入画面２枚目のPost後処理よりredirect）
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Result() {
             ViewBag.HandlingFlg = "SecondDisplay";

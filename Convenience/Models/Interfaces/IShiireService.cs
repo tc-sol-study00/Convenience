@@ -1,7 +1,9 @@
-﻿using Convenience.Models.DataModels;
-using Convenience.Models.ViewModels.Shiire;
+﻿using Convenience.Models.ViewModels.Shiire;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 仕入サービス用インターフェース
+    /// </summary>
     public interface IShiireService {
 
         /// <summary>

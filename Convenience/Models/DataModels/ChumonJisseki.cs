@@ -16,18 +16,12 @@ namespace Convenience.Models.DataModels {
     [PrimaryKey(nameof(ChumonId))]
     public class ChumonJisseki {
     
-        /// <summary>
-        /// 注文コード
-        /// </summary>
         [Column("chumon_code")]
         [DisplayName("注文コード")]
         [MaxLength(20)]
         [Required]
         public string ChumonId { get; set; }
 
-        /// <summary>
-        /// 仕入先コード
-        /// </summary>
         [Column("shiire_saki_code")]
         [DisplayName("仕入先コード")]
         [MaxLength(10)]

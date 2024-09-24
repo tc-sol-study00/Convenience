@@ -1,11 +1,10 @@
-﻿using Convenience.Models.DataModels;
-using Convenience.Models.ViewModels.Chumon;
-using Convenience.Models.Properties;
-using static Convenience.Models.Properties.Message;
-using Convenience.Data;
+﻿using Convenience.Models.ViewModels.Chumon;
 
 namespace Convenience.Models.Interfaces {
 
+    /// <summary>
+    /// 注文サービスクラス用インターフェース
+    /// </summary>
     public interface IChumonService {
         /// <summary>
         /// 注文クラス用オブジェクト変数

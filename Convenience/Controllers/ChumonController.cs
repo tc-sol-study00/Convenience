@@ -46,6 +46,10 @@ namespace Convenience.Controllers {
             //chumonService = new ChumonService(_context);
         }
 
+        /// <summary>
+        /// 商品注文１枚目の初期表示処理
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> KeyInput() {
             ChumonKeysViewModel keymodel = await chumonService.SetChumonKeysViewModel();
             return View(keymodel);
