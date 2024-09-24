@@ -8,13 +8,10 @@ namespace Convenience.Models.DataModels {
 
     /// <summary>
     /// 注文実績DTO
-    /// </summary>
-<<<<<<< HEAD
-=======
     /// <Remarks>
     /// 主キー：注文コード
     /// </Remarks>
->>>>>>> 9b644b5 (更新)
+    /// </summary>
     [Table("chumon_jisseki")]
     [PrimaryKey(nameof(ChumonId))]
     public class ChumonJisseki {
