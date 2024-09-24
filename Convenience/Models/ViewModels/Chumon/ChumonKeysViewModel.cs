@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.ViewModels.Chumon {
 
+    /// <summary>
+    /// 注文キービューモデル
+    /// </summary>
     public class ChumonKeysViewModel {
 
         [Column("shiire_saki_code")]
@@ -17,6 +20,9 @@ namespace Convenience.Models.ViewModels.Chumon {
         [DisplayName("注文日")]
         public DateOnly ChumonDate { get; set; }
 
+        /// <summary>
+        /// 仕入先一覧
+        /// </summary>
         public List<SelectListItem>? ShiireSakiList { get; set; }
     }
 }

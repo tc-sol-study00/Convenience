@@ -2,6 +2,9 @@
 
 namespace Convenience.Models.ViewModels.Chumon {
 
+    /// <summary>
+    /// 注文明細ビューモデル
+    /// </summary>
     public class ChumonViewModel {
         public ChumonJisseki ChumonJisseki { get; set; }
         public bool? IsNormal { get; set; }
