@@ -20,7 +20,6 @@ namespace Convenience.Controllers {
 
         private ShiireViewModel shiireViewModel;
 
-
         /// <summary>
         /// コンストラクター
         /// </summary>
@@ -40,21 +39,7 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShiireKeyInput(ShiireKeysViewModel inKeysModel) {
-            string inChumonId = inKeysModel.ChumonId;
-            (int, IList<ShiireJisseki>) resultTuple = await shiireService.ShiireHandling(inChumonId);
-
-            //resultTuple.Item2 = resultTuple.Item2.OrderBy(s => new { s.ShiireSakiId, s.ShiirePrdId, s.ShohinId }).ToList();
-
-            List<ShiireJisseki> listdt = (List<ShiireJisseki>)resultTuple.Item2;
-            listdt.Sort((x, y) => {
-                int result = (x.ShiireSakiId != y.ShiireSakiId) ? x.ShiireSakiId.CompareTo(y.ShiireSakiId) :
-                              (x.ShiirePrdId != y.ShiirePrdId) ? x.ShiirePrdId.CompareTo(y.ShiirePrdId) :
-                              x.ShohinId.CompareTo(y.ShohinId);
-                return result;
-            });
-
-            shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
-
+            shiireViewModel = await shiireService.ShiireSetting(inKeysModel);
             ViewBag.HandlingFlg = "FirstDisplay";
             return View("Shiire", shiireViewModel);
         }
@@ -64,26 +49,11 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Shiire(ShiireViewModel inShiireViewModel) {
             ModelState.Clear();
 
-            string inChumonId = inShiireViewModel.ChumonId;
-            DateOnly inShiireDate = inShiireViewModel.ShiireDate;
-            uint inSeqByShiireDate = inShiireViewModel.SeqByShiireDate;
-            IList<ShiireJisseki> inShiireJissekis = inShiireViewModel.ShiireJissekis;
+            var shiireViewModel = await shiireService.ShiireCommit(inShiireViewModel);
 
-            var resultTuple = await shiireService.ShiireHandling(inChumonId, inShiireDate, inSeqByShiireDate, inShiireJissekis);
-
-            List<ShiireJisseki> listdt = (List<ShiireJisseki>)resultTuple.Item2;
-
-            listdt.Sort((x, y) => {
-                int result = (x.ShiireSakiId != y.ShiireSakiId) ? x.ShiireSakiId.CompareTo(y.ShiireSakiId) :
-                              (x.ShiirePrdId != y.ShiirePrdId) ? x.ShiirePrdId.CompareTo(y.ShiirePrdId) :
-                              x.ShohinId.CompareTo(y.ShohinId);
-                return result;
-            });
-
-            shiireViewModel = SetShiireModel(resultTuple.Item1, listdt);
+            ViewBag.HandlingFlg = "SecondDisplay";
 
             TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
-            //return View("Shiire", shiireViewModel);
             return RedirectToAction("Result");
         }
 
@@ -100,30 +70,6 @@ namespace Convenience.Controllers {
             }
         }
 
-        public ShiireViewModel SetShiireModel(int entities, IList<ShiireJisseki> inshiireJissekis) {
-            ShiireJisseki shiireJisseki = inshiireJissekis.FirstOrDefault();
 
-            shiireViewModel = new ShiireViewModel {
-                ChumonId = shiireJisseki.ChumonId
-                ,
-                ChumonDate = shiireJisseki.ChumonJissekiMeisaii.ChumonJisseki.ChumonDate
-                ,
-                ShiireDate = shiireJisseki.ShiireDate
-                ,
-                SeqByShiireDate = shiireJisseki.SeqByShiireDate
-                ,
-                ShiireSakiId = shiireJisseki.ShiireSakiId
-                ,
-                ShiireSakiKaisya = shiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShiireSakiMaster.ShiireSakiKaisya
-                ,
-                ShiireJissekis = inshiireJissekis
-                ,
-                IsNormal = true //正常終了
-                ,
-                Remark = entities != 0 ? new Message().SetMessage(ErrDef.NormalUpdate).MessageText : null
-            };
-            ViewBag.HandlingFlg = "SecondDisplay";
-            return (shiireViewModel);
-        }
     }
 }

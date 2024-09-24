@@ -19,30 +19,44 @@ namespace Convenience.Controllers {
     /// 注文コントローラ
     /// </summary>
     public class ChumonController : Controller, ISharedTools {
+
+        /// <summary>
+        /// DBコンテキスト
+        /// </summary>
         private readonly ConvenienceContext _context;
 
+        /// <summary>
+        /// サービスクラス引継ぎ用キーワード
+        /// </summary>
         private static readonly string IndexName = "ChumonViewModel";
 
+        /// <summary>
+        /// 注文サービスクラス（ＤＩ用）
+        /// </summary>
         private readonly IChumonService chumonService;
-
-        private ChumonViewModel chumonViewModel;
 
         /// <summary>
         /// コンストラクター
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
-        public ChumonController(ConvenienceContext context,IChumonService chumonService) {
+        public ChumonController(ConvenienceContext context, IChumonService chumonService) {
             this._context = context;
             this.chumonService = chumonService;
             //chumonService = new ChumonService(_context);
         }
 
         public async Task<IActionResult> KeyInput() {
-            ChumonKeysViewModel keymodel = SetChumonKeysViewModel();
+            ChumonKeysViewModel keymodel = await chumonService.SetChumonKeysViewModel();
             return View(keymodel);
         }
 
+        /// <summary>
+        /// 商品注文１枚目のPost受信後処理
+        /// </summary>
+        /// <param name="inChumonKeysViewModel">注文キービューモデル</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> KeyInput(ChumonKeysViewModel inChumonKeysViewModel) {
@@ -51,59 +65,57 @@ namespace Convenience.Controllers {
                 throw new InvalidOperationException("Postデータエラー");
             }
 
-            if (inChumonKeysViewModel.ChumonDate == DateOnly.FromDateTime(new DateTime(1, 1, 1))) {
-                chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, DateOnly.FromDateTime(DateTime.Now));
-            }
-            else {
-                chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel.ShiireSakiId, inChumonKeysViewModel.ChumonDate);
-            }
-            //KeepObject();
+            // 注文セッティング
+            ChumonViewModel chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel);
             ViewBag.HandlingFlg = "FirstDisplay";
             return View("ChumonMeisai", chumonViewModel);
         }
 
+        /// <summary>
+        /// 商品注文２枚目の初期表示（表示データは、postを受けたKeyInputメソッドで行う）
+        /// </summary>
+        /// <param name="inChumonViewModel">初期表示する注文明細ビューデータ</param>
+        /// <returns></returns>
         public async Task<IActionResult> ChumonMeisai(ChumonViewModel inChumonViewModel) {
-
             return View(inChumonViewModel);
         }
 
+        /// <summary>
+        ///  商品注文２枚目のPost後の処理
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="inChumonViewModel">注文明細ビューモデル</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChumonMeisai(int id, ChumonViewModel ChumonViewModel) {
+        public async Task<IActionResult> ChumonMeisai(int id, ChumonViewModel inChumonViewModel) {
 
             if (!ModelState.IsValid) {
                 throw new Exception("Postデータエラー");
             };
-
-            //GetObject();
-
-            ModelState.Clear();
-
-            if (ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais == null) {
+            //ModelState.Clear();
+            if (inChumonViewModel.ChumonJisseki.ChumonJissekiMeisais == null) {
                 throw new Exception("Postデータなし");
             }
-            foreach (var item in ChumonViewModel.ChumonJisseki.ChumonJissekiMeisais) {
-                item.ShiireMaster = null;
-            }
-
-            (ChumonJisseki chumonJisseki, int entities, bool isValid, ErrDef errCd)
-                = await chumonService.ChumonCommit(ChumonViewModel.ChumonJisseki);
-
-            chumonViewModel = new ChumonViewModel {
-                ChumonJisseki = chumonJisseki,
-                IsNormal = isValid,
-                Remark = errCd == ErrDef.NormalUpdate && entities > 0 || errCd != ErrDef.NormalUpdate ? new Message().SetMessage(errCd).MessageText : null
-            };
-
-            TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
+            //注文データをDBに書き込む
+            ChumonViewModel ChumonViewModel
+                = await chumonService.ChumonCommit(inChumonViewModel);
+            //Resultに注文明細ビューモデルを引き渡す
+            TempData[IndexName] = ISharedTools.ConvertToSerial(ChumonViewModel);
             return RedirectToAction("Result");
         }
 
+        /// <summary>
+        /// 商品注文２枚目のPostデータコミット後の再表示
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Result() {
             ViewBag.HandlingFlg = "SecondDisplay";
+            //Redirect前のデータを引き継ぐ
             if (TempData.Peek(IndexName) != null) {
-                chumonViewModel= ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName] as string);
+                ChumonViewModel chumonViewModel = ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName] as string);
                 TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
                 return View("ChumonMeisai", chumonViewModel);
             }
@@ -111,16 +123,5 @@ namespace Convenience.Controllers {
                 return RedirectToAction("ChumonMeisai");
             }
         }
-
-        public ChumonKeysViewModel SetChumonKeysViewModel() {
-            var list = _context.ShiireSakiMaster.OrderBy(s => s.ShiireSakiId).Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToList();
-
-            return (new ChumonKeysViewModel() {
-                ShiireSakiId = null,
-                ChumonDate = DateOnly.FromDateTime(DateTime.Today),
-                ShiireSakiList = list
-            });
-        }
-
     }
 }
