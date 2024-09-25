@@ -3,7 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
-
+    /// <summary>
+    /// 仕入先マスタDTO
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：仕入先コード
+    /// </Remarks>
     [Table("shiire_saki_master")]
     public class ShiireSakiMaster {
 

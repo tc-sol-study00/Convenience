@@ -4,7 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
-
+    /// <summary>
+    /// 店頭在庫
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：商品コード
+    /// </Remarks>
     [Table("tento_zaiko")]
     [PrimaryKey(nameof(ShohinId))]
     public class TentoZaiko {

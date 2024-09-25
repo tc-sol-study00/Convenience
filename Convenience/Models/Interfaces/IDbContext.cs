@@ -5,10 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.Entity;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// DB接続用インターフェース（c#コンソールデバッグ用）
+    /// </summary>
     public interface IDbContext {
         private const string ConfigrationFileName = "appsettings.json"; 
         private const string KeyWordInAppConfig = "ConnectionStrings:ConvenienceContext";
 
+        /// <summary>
+        /// PostgreSQL DBオープン
+        /// </summary>
+        /// <returns></returns>
         protected static ConvenienceContext DbOpen() {
             //DBコンテクスト用接続子読み込み
             IConfiguration configuration = new ConfigurationBuilder()

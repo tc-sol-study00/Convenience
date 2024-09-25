@@ -4,7 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
-
+    /// <summary>
+    /// 商品マスタDTO
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：商品コード
+    /// </Remarks>
     [Table("shohin_master")]
     public class ShohinMaster {
 

@@ -4,7 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
-
+    /// <summary>
+    /// 仕入実績実績DTO
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：注文コード、仕入日付、仕入SEQ、仕入先コード、仕入商品コード
+    /// </Remarks>
     [Table("shiire_jisseki")]
     [PrimaryKey(nameof(ChumonId), nameof(ShiireDate), nameof(SeqByShiireDate), nameof(ShiireSakiId), nameof(ShiirePrdId))]
     public class ShiireJisseki {

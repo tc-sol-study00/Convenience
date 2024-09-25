@@ -4,7 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
-
+    /// <summary>
+    /// 倉庫在庫DTO
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：仕入先コード、仕入商品コード、商品コード
+    /// </Remarks>
     [Table("soko_zaiko")]
     [PrimaryKey(nameof(ShiireSakiId), nameof(ShiirePrdId), nameof(ShohinId))]
     public class SokoZaiko {

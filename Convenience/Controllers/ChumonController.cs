@@ -1,25 +1,13 @@
-﻿using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
-using Convenience.Data;
-using Convenience.Models.DataModels;
+﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
-using Convenience.Models.Services;
 using Convenience.Models.ViewModels.Chumon;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Convenience.Models.Properties.Message;
-
 
 namespace Convenience.Controllers {
     /// <summary>
     /// 注文コントローラ
     /// </summary>
     public class ChumonController : Controller, ISharedTools {
-
         /// <summary>
         /// DBコンテキスト
         /// </summary>

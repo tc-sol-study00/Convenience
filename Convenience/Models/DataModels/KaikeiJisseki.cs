@@ -5,6 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
 
+    /// <summary>
+    /// 会計実績DTO
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：商品コード、売上日時
+    /// </Remarks>
     [Table("kaikei_jisseki")]
     [PrimaryKey(nameof(ShohinId), nameof(UriageDatetime))]
     public class KaikeiJisseki {

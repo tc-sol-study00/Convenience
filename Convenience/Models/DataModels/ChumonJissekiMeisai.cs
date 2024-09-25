@@ -7,6 +7,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
 
+    /// <summary>
+    /// 注文実績明細DTO
+    /// </summary>
+    /// <Remarks>
+    /// 主キー：注文コード、注文先コード、仕入商品コード、商品コード
+    /// </Remarks>
     [Table("chumon_jisseki_meisai")]
     [PrimaryKey(nameof(ChumonId), nameof(ShiireSakiId), nameof(ShiirePrdId), nameof(ShohinId))]
     public class ChumonJissekiMeisai {
