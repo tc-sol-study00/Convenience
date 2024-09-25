@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.ViewModels.Chumon {
-
     /// <summary>
     /// 注文キービューモデル
     /// </summary>

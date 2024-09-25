@@ -1,11 +1,28 @@
 ﻿namespace Convenience.Models {
+    /// <summary>
+    /// メニューアイテムクラス
+    /// </summary>
     public class MenuItem {
+        /// <summary>
+        /// メニュー名
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 起動ＵＲＬ
+        /// </summary>
         public string Url { get; set; }
+        /// <summary>
+        /// 説明
+        /// </summary>
         public string Description { get; set; }
     }
-
+    /// <summary>
+    /// メニュークラス
+    /// </summary>
     public class Menu {
+        /// <summary>
+        /// メニュー表示用リスト（メニューアイテムリスト）
+        /// </summary>
         public List<MenuItem> MenuList { get; set; } = new List<MenuItem>
         {
             new MenuItem { Name = "ホーム", Url = "/Home/Index", Description="このページに戻ってきます" },

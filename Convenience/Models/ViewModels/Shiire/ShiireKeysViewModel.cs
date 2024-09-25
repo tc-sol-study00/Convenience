@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Convenience.Models.ViewModels.Shiire {
-
+    /// <summary>
+    /// 仕入キービューモデル
+    /// </summary>
     public class ShiireKeysViewModel {
 
         [DisplayName("注文コード")]
@@ -11,6 +13,9 @@ namespace Convenience.Models.ViewModels.Shiire {
         [Required]
         public string ChumonId { get; set; }
 
+        /// <summary>
+        /// 注文コードリスト（注文残が残っているリスト格納用）
+        /// </summary>
         public IList<SelectListItem> ChumonIdList { get; set; }
     }
 }

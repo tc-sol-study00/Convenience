@@ -9,27 +9,38 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.ViewModels.Zaiko {
-
+    /// <summary>
+    /// 在庫検索用ビューモデル
+    /// </summary>
     public class ZaikoViewModel {
-
+        /// <summary>
+        /// コンストラクタ（なし）
+        /// </summary>
         public ZaikoViewModel() {
-
         }
 
-        //ソートキー選択結果セット用
+        /// <summary>
+        /// ソートキー選択結果セット用
+        /// </summary>
         [DisplayName("ソートキー")]
-
         public class KeyEventRec {
             [DisplayName("ソート項目")]
             public string? KeyEventData { get; set; }
             [DisplayName("昇順・降順")]
             public bool Descending { get; set; } = false;
         }
-
+        /// <summary>
+        /// ソート指示項目の最大値
+        /// </summary>
         const int LineCountForSelectorOfOderBy = 3;    //ソート用３つまで入力ＯＫ
+        /// <summary>
+        /// ソートキー選択結果セット用を使ってリストを初期化
+        /// </summary>
         public KeyEventRec[] KeyEventList { get; set; } = Enumerable.Range(0, LineCountForSelectorOfOderBy).Select(_ => new KeyEventRec()).ToArray();
 
-        //ソート指示選択用一覧（画面表示と選択用）
+        /// <summary>
+        /// ソート指示選択用一覧（画面表示と選択用）
+        /// </summary>
         public SelectList KeyList = new SelectList(
             new List<SelectListItem>
                 {
@@ -44,8 +55,9 @@ namespace Convenience.Models.ViewModels.Zaiko {
                     new SelectListItem { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
                 }, "Value", "Text");
 
-
-        //Where指示選択結果セット用
+        /// <summary>
+        /// Where指示選択結果セット用
+        /// </summary>
         public class SelecteWhereItem {
             [DisplayName("検索項目項目")]
             public string? LeftSide { get; set; }
@@ -57,7 +69,9 @@ namespace Convenience.Models.ViewModels.Zaiko {
             public string? RightSide { get; set; }
         }
 
-        //比較演算子選択用
+        /// <summary>
+        /// 比較演算子選択用
+        /// </summary>
         public SelectList ComparisonOperatorList = new SelectList(
             new List<SelectListItem> {
             new SelectListItem { Value = "==", Text = "=" },
@@ -68,10 +82,18 @@ namespace Convenience.Models.ViewModels.Zaiko {
             new SelectListItem { Value = "<", Text = "<" },
         }, "Value", "Text");
 
+        /// <summary>
+        /// Where入力行数
+        /// </summary>
         const int LineCountForSelectorOfWhere = 6; //Where入力６行
+        /// <summary>
+        /// Where入力リスト初期化
+        /// </summary>
         public SelecteWhereItem[] SelecteWhereItemArray { get; set; } = Enumerable.Range(0, LineCountForSelectorOfWhere).Select(_ => new SelecteWhereItem()).ToArray();
 
-        //Where左辺用カラムセット用
+        /// <summary>
+        /// Where左辺用カラムセット用
+        /// </summary>
         public SelectList SelectWhereLeftSideList = new SelectList(
                 new List<SelectListItem>
                     {
@@ -86,7 +108,9 @@ namespace Convenience.Models.ViewModels.Zaiko {
                     new SelectListItem { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
                     }, "Value", "Text");
 
-        //倉庫在庫・注文実績明細変策用レコード
+        /// <summary>
+        /// 倉庫在庫・注文実績明細変策用レコード
+        /// </summary>
         public class ZaikoListLine {
             [DisplayName("仕入先コード")]
             public string ShiireSakiId { get; set; }
@@ -107,7 +131,10 @@ namespace Convenience.Models.ViewModels.Zaiko {
             [DisplayName("注文残")]
             public decimal ChumonZan { get; set; }
         }
-        //倉庫在庫・注文実績明細変策用レコードのリスト（検索結果がここに入る）
+
+        /// <summary>
+        /// 倉庫在庫・注文実績明細変策用レコードのリスト（検索結果がここに入る）
+        /// </summary>
         public IList<ZaikoListLine> zaikoListLine { get; set; } = new List<ZaikoListLine>();
     }
 }

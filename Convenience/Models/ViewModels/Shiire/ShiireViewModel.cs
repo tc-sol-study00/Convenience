@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Convenience.Models.ViewModels.Shiire {
-
+    /// <summary>
+    /// 仕入ビューモデル
+    /// </summary>
     public class ShiireViewModel {
 
         [DisplayName("注文コード")]
@@ -26,9 +28,18 @@ namespace Convenience.Models.ViewModels.Shiire {
         [DisplayName("仕入先会社")]
         [MaxLength(30)]
         public string ShiireSakiKaisya { get; set; }
-
+        
+        /// <summary>
+        /// 仕入実績
+        /// </summary>
         public IList<ShiireJisseki> ShiireJissekis { get; set; }
+        /// <summary>
+        /// 処理が正常がどうか（正常=true)
+        /// </summary>
         public bool? IsNormal { get; set; }
+        /// <summary>
+        /// 処理結果（ＤＢ反映結果）表示内容
+        /// </summary>
         public string Remark { get; set; }
     }
 }
