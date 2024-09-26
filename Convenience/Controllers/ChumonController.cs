@@ -1,5 +1,6 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.Chumon;
 using Microsoft.AspNetCore.Mvc;
 
@@ -84,11 +85,11 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> ChumonMeisai(int id, ChumonViewModel inChumonViewModel) {
 
             if (!ModelState.IsValid) {
-                throw new Exception("Postデータエラー");
+                throw new PostDataInValidException("Postデータエラー");
             };
             //ModelState.Clear();
             if (inChumonViewModel.ChumonJisseki.ChumonJissekiMeisais == null) {
-                throw new Exception("Postデータなし");
+                throw new PostDataInValidException("Postデータなし");
             }
             //注文データをDBに書き込む
             ChumonViewModel ChumonViewModel

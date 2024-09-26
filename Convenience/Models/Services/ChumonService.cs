@@ -104,7 +104,7 @@ namespace Convenience.Models.Services {
 
             //注文明細ビューモデルを設定し戻り値とする
             return (this.ChumonViewModel = new ChumonViewModel() {
-                ChumonJisseki = createdChumonJisseki ?? existedChumonJisseki ?? throw new Exception("注文セッティングエラー")   //初期表示用の注文実績データ
+                ChumonJisseki = createdChumonJisseki ?? existedChumonJisseki ?? throw new ChumonJissekiSetupException("注文セッティングエラー")   //初期表示用の注文実績データ
             });
         }
 
@@ -136,7 +136,7 @@ namespace Convenience.Models.Services {
 
                 }
                 catch (DbUpdateConcurrencyException ex) {
-                    throw new Exception(ex.Message);
+                    throw new DbUpdateConcurrencyException(ex.Message);
                 }
                 //再表示用データセット
                 updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate);

@@ -55,8 +55,10 @@ namespace Convenience.Models.Properties {
 
             //仕入先より注文実績データ（親）を生成する(a)
 
+            Task<string> taskChumonId = ChumonIdHatsuban(inChumonDate);      //非同期実行（あまり意味ないけど）
+
             ChumonJisseki = new ChumonJisseki {
-                ChumonId = await ChumonIdHatsuban(inChumonDate),    //注文コード発番
+                ChumonId = null,                                    //注文コード発番（非同期終わるまでnull)
                 ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
                 ChumonDate = inChumonDate                           //注文日付
             };
@@ -68,9 +70,16 @@ namespace Convenience.Models.Properties {
                 .Include(s => s.ShohinMaster)
                 .OrderBy(s => s.ShiirePrdId).ToListAsync();
 
-            if(shiireMasters.Count() == 0){ }
+            if (shiireMasters.Count() == 0) {   //仕入マスタがない場合は例外
+                throw new NoDataFoundException(nameof(ShiireMaster));
+            }
 
             ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
+
+            //注文コード発番の結果を得る
+            var chumonId = await taskChumonId;                      //非同期処理を待つ
+            if (chumonId is null) throw new OrderCodeGenerationException("注文コード発番でnullが設定されています");
+            ChumonJisseki.ChumonId = chumonId;                      //問題なければ発番された注文コードをプロパティにセット
 
             //(b)のデータから注文実績明細を作成する
             foreach (ShiireMaster shiire in shiireMasters) {
@@ -121,7 +130,7 @@ namespace Convenience.Models.Properties {
             if (chumonJisseki != null) {
                 // ShiireMaster と ShohinMaster を AsNoTracking() で取得
                 foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais) {
-                    ShiireMaster?  shiireMaster = await _context.ShiireMaster
+                    ShiireMaster? shiireMaster = await _context.ShiireMaster
                         .AsNoTracking()
                         .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId && sm.ShiirePrdId == meisai.ShiirePrdId && sm.ShohinId == meisai.ShohinId)
                         .Include(sm => sm.ShohinMaster)
@@ -178,8 +187,7 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
-        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki,ChumonJisseki existedChumonJisseki)
-        {
+        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
             //引数で渡された注文実績データを現プロパティに反映する
             var config = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
@@ -209,7 +217,7 @@ namespace Convenience.Models.Properties {
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
         private static ChumonJisseki ChumonUpdateWithHandMade(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
-            foreach(ChumonJissekiMeisai postedChumonJissekiMeisai in postedChumonJisseki.ChumonJissekiMeisais) {
+            foreach (ChumonJissekiMeisai postedChumonJissekiMeisai in postedChumonJisseki.ChumonJissekiMeisais) {
                 ChumonJissekiMeisai targetChumonJissekiMeisai = existedChumonJisseki.ChumonJissekiMeisais
                     .Where(x => x.ChumonId == postedChumonJissekiMeisai.ChumonId &&
                                 x.ShiireSakiId == postedChumonJissekiMeisai.ShiireSakiId &&
@@ -234,7 +242,7 @@ namespace Convenience.Models.Properties {
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
         private static ChumonJisseki ChumonUpdateWithIndex(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
-            for(int i = 0; i< postedChumonJisseki.ChumonJissekiMeisais.Count(); i++) {
+            for (int i = 0; i < postedChumonJisseki.ChumonJissekiMeisais.Count(); i++) {
                 if (i < existedChumonJisseki.ChumonJissekiMeisais.Count()) {
                     ChumonJissekiMeisai src = postedChumonJisseki.ChumonJissekiMeisais[i];
                     ChumonJissekiMeisai dest = existedChumonJisseki.ChumonJissekiMeisais[i];
@@ -244,13 +252,9 @@ namespace Convenience.Models.Properties {
                         dest.ChumonSu = src.ChumonSu;
                         dest.ChumonZan = src.ChumonZan + src.ChumonSu - lastChumonSu;
                     }
-                    else {
-                        throw new ArgumentException("PostデータエラーとDB側データの位置エラー(ソートされていない可能性）");
-                    }
+                    else throw new DataPositionMismatchException("PostデータエラーとDB側データの位置エラー(ソートされていない可能性）");
                 }
-                else {
-                    throw new ArgumentException("PostデータエラーとDB側データの件数アンマッチ");
-                }
+                else throw new DataCountMismatchException("PostデータエラーとDB側データの件数アンマッチ");
             }
             return existedChumonJisseki;
         }
@@ -277,7 +281,7 @@ namespace Convenience.Models.Properties {
             if (existedChumonJisseki != null) {  //注文実績がある場合
 
                 //AutoMapper利用か、ハンドメイドなのか選択されている
-                existedChumonJisseki=OverrideProc(postedChumonJisseki, existedChumonJisseki);
+                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki);
                 //_context.Update(existedChumonJisseki); トレースされているからUpdateしなくて良い
                 ChumonJisseki = existedChumonJisseki;
             }
