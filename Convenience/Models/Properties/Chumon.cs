@@ -169,6 +169,98 @@ namespace Convenience.Models.Properties {
         }
 
         /// <summary>
+        /// Postデータの上乗せ処理（AutoMapper利用)
+        /// </summary>
+        /// <remarks>
+        /// private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;の設定の時にコールされる
+        /// ３つの回答例の説明用の為、研修生は気にしなくて良い
+        /// </remarks>
+        /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
+        /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
+        /// <returns>上乗せされた注文実績＋明細データ</returns>
+        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki,ChumonJisseki existedChumonJisseki)
+        {
+            //引数で渡された注文実績データを現プロパティに反映する
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers();
+                cfg.CreateMap<ChumonJisseki, ChumonJisseki>()
+                .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId);
+                cfg.CreateMap<ChumonJissekiMeisai, ChumonJissekiMeisai>()
+                .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId && odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId && odto.ShohinId == o.ShohinId)
+                .BeforeMap((src, dest) => src.LastChumonSu = dest.ChumonSu)
+                .ForMember(dest => dest.ChumonZan, opt => opt.MapFrom(src => src.ChumonZan + src.ChumonSu - src.LastChumonSu))
+                .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore());
+            });
+            //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
+            var mapper = new Mapper(config);
+            mapper.Map(postedChumonJisseki, existedChumonJisseki);
+
+            return existedChumonJisseki;
+        }
+
+        /// <summary>
+        /// Postデータの上乗せ処理（Linq使った手書き対応)
+        /// </summary>
+        /// <remarks>
+        /// private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;の設定の時にコールされる
+        /// ３つの回答例の説明用の為、研修生は気にしなくて良い
+        /// </remarks>
+        /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
+        /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
+        /// <returns>上乗せされた注文実績＋明細データ</returns>
+        private static ChumonJisseki ChumonUpdateWithHandMade(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
+            foreach(ChumonJissekiMeisai postedChumonJissekiMeisai in postedChumonJisseki.ChumonJissekiMeisais) {
+                ChumonJissekiMeisai targetChumonJissekiMeisai = existedChumonJisseki.ChumonJissekiMeisais
+                    .Where(x => x.ChumonId == postedChumonJissekiMeisai.ChumonId &&
+                                x.ShiireSakiId == postedChumonJissekiMeisai.ShiireSakiId &&
+                                x.ShiirePrdId == postedChumonJissekiMeisai.ShiirePrdId)
+                    .Single();
+
+                var lastChumonSu = targetChumonJissekiMeisai.ChumonSu;
+                targetChumonJissekiMeisai.ChumonSu = postedChumonJissekiMeisai.ChumonSu;
+                targetChumonJissekiMeisai.ChumonZan = postedChumonJissekiMeisai.ChumonZan + postedChumonJissekiMeisai.ChumonSu - lastChumonSu;
+            }
+            return existedChumonJisseki;
+        }
+
+        /// <summary>
+        /// Postデータの上乗せ処理（For+Index使った手書き対応)
+        /// </summary>
+        /// <remarks>
+        /// private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithIndex;の設定の時にコールされる
+        /// ３つの回答例の説明用の為、研修生は気にしなくて良い
+        /// </remarks>
+        /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
+        /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
+        /// <returns>上乗せされた注文実績＋明細データ</returns>
+        private static ChumonJisseki ChumonUpdateWithIndex(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
+            for(int i = 0; i< postedChumonJisseki.ChumonJissekiMeisais.Count(); i++) {
+                if (i < existedChumonJisseki.ChumonJissekiMeisais.Count()) {
+                    ChumonJissekiMeisai src = postedChumonJisseki.ChumonJissekiMeisais[i];
+                    ChumonJissekiMeisai dest = existedChumonJisseki.ChumonJissekiMeisais[i];
+
+                    if ((src.ChumonId, src.ShiireSakiId, src.ShiirePrdId) == (dest.ChumonId, dest.ShiireSakiId, dest.ShiirePrdId)) {
+                        var lastChumonSu = dest.ChumonSu;
+                        dest.ChumonSu = src.ChumonSu;
+                        dest.ChumonZan = src.ChumonZan + src.ChumonSu - lastChumonSu;
+                    }
+                    else {
+                        throw new ArgumentException("PostデータエラーとDB側データの位置エラー(ソートされていない可能性）");
+                    }
+                }
+                else {
+                    throw new ArgumentException("PostデータエラーとDB側データの件数アンマッチ");
+                }
+            }
+            return existedChumonJisseki;
+        }
+
+        private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki);
+        //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
+        //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;
+        private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithIndex;
+
+        /// <summary>
         /// 注文実績＋注文明細更新
         /// </summary>
         /// <param name="postedChumonJisseki">postされた注文実績</param>
@@ -178,28 +270,15 @@ namespace Convenience.Models.Properties {
             ChumonJisseki? existedChumonJisseki; //DBにすでに登録されている場合の移送先
 
             //注文実績を読む
-            existedChumonJisseki = await _context.ChumonJisseki.AsNoTracking()
+            existedChumonJisseki = await _context.ChumonJisseki
                 .Include(e => e.ChumonJissekiMeisais.OrderBy(x => x.ShiirePrdId))
                 .FirstOrDefaultAsync(e => e.ChumonId == postedChumonJisseki.ChumonId);
 
             if (existedChumonJisseki != null) {  //注文実績がある場合
 
-                //引数で渡された注文実績データを現プロパティに反映する
-                var config = new MapperConfiguration(cfg => {
-                    cfg.AddCollectionMappers();
-                    cfg.CreateMap<ChumonJisseki, ChumonJisseki>()
-                    .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId);
-                    cfg.CreateMap<ChumonJissekiMeisai, ChumonJissekiMeisai>()
-                    .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId && odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId && odto.ShohinId == o.ShohinId)
-                    .BeforeMap((src, dest) => src.LastChumonSu = dest.ChumonSu)
-                    .ForMember(dest => dest.ChumonZan, opt => opt.MapFrom(src => src.ChumonZan + src.ChumonSu - src.LastChumonSu))
-                    .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore());
-                });
-                //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
-                var mapper = new Mapper(config);
-                mapper.Map(postedChumonJisseki, existedChumonJisseki);
-
-                _context.Update(existedChumonJisseki);
+                //AutoMapper利用か、ハンドメイドなのか選択されている
+                existedChumonJisseki=OverrideProc(postedChumonJisseki, existedChumonJisseki);
+                //_context.Update(existedChumonJisseki); トレースされているからUpdateしなくて良い
                 ChumonJisseki = existedChumonJisseki;
             }
             else {   //注文実績がない場合、引数で渡された注文実績をDBにレコード追加する
