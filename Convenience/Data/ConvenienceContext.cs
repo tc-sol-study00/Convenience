@@ -27,7 +27,7 @@ namespace Convenience.Data {
         /// <summary>
         /// 仕入マスタ
         /// </summary>
-        public DbSet<Convenience.Models.DataModels.ShiireMaster> ShireMaster { get; set; } = default!;
+        public DbSet<Convenience.Models.DataModels.ShiireMaster> ShiireMaster { get; set; } = default!;
         /// <summary>
         /// 仕入先マスタ
         /// </summary>
