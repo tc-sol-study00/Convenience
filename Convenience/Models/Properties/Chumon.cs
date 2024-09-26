@@ -4,6 +4,7 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Entity.Infrastructure;
 
 namespace Convenience.Models.Properties {
 
@@ -52,36 +53,34 @@ namespace Convenience.Models.Properties {
         /// <exception cref="Exception"></exception>
         public async Task<ChumonJisseki> ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
 
-            //引数チェック（仕入先コード有無）
-            if (await _context.ShiireSakiMaster.FindAsync(inShireSakiId) == null) {
-                throw new Exception("仕入先ＩＤエラー");
-            }
             //仕入先より注文実績データ（親）を生成する(a)
 
             ChumonJisseki = new ChumonJisseki {
-                ChumonId = await ChumonIdHatsuban(inChumonDate),              //注文コード発番
+                ChumonId = await ChumonIdHatsuban(inChumonDate),    //注文コード発番
                 ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
                 ChumonDate = inChumonDate                           //注文日付
             };
 
             //注文実績明細データ（子）を作るために仕入マスタを読み込む(b)
-            var shiireMasters = _context.ShireMaster
-                .Where(shiire => shiire.ShiireSakiId == inShireSakiId)
-                .Include(shiire => shiire.ShiireSakiMaster)
-                .Include(shiire => shiire.ShohinMaster)
-                .OrderBy(shiire => shiire.ShohinId);
+            IEnumerable<ShiireMaster> shiireMasters = await _context.ShiireMaster.AsNoTracking()
+                .Where(s => s.ShiireSakiId == inShireSakiId)
+                .Include(s => s.ShiireSakiMaster)
+                .Include(s => s.ShohinMaster)
+                .OrderBy(s => s.ShiirePrdId).ToListAsync();
 
+            if(shiireMasters.Count() == 0){ }
 
-            ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>() { };
+            ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
 
             //(b)のデータから注文実績明細を作成する
-            foreach (var shiire in await shiireMasters.ToListAsync()) {
+            foreach (ShiireMaster shiire in shiireMasters) {
 
                 if (shiire == null || shiire.ShohinMaster == null) continue;
 
-                shiire.ShohinMaster.ShiireMasters = null;
+                //エンティティ連結ループ対策だったが、上記AsNoTracking対応により不要となった
+                //shiire.ShohinMaster.ShiireMasters = null; 
 
-                var meisai = new ChumonJissekiMeisai {
+                ChumonJissekiMeisai meisai = new ChumonJissekiMeisai {
                     ChumonId = ChumonJisseki.ChumonId,
                     ShiireSakiId = ChumonJisseki.ShiireSakiId,  //仕入先コードを注文実績からセット(aより)
                     ShiirePrdId = shiire.ShiirePrdId,           //仕入商品コードのセット(bより）
@@ -101,23 +100,41 @@ namespace Convenience.Models.Properties {
         /// 注文更新用問い合わせ
         /// </summary>
         /// <remarks>
-        /// <para>①注文実績＋注文実績＋仕入マスタ＋商品マスタ検索</para>
+        /// <para>①注文実績＋注文実績明細＋仕入マスタ＋商品マスタ検索</para>
         /// <para>②戻り値を注文実績＋注文実績明細とする</para>
         /// </remarks>
         /// <param name="inShireSakiId">仕入先コード</param>
         /// <param name="inChumonDate">注文日</param>
         /// <returns>既存の注文実績</returns>
         public async Task<ChumonJisseki?> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate) {
-            //①注文実績＋注文実績＋仕入マスタ＋商品マスタ検索
+            /*
+             * ①注文実績＋注文実績明細＋仕入マスタ＋商品マスタ検索 
+             */
 
-            var chumonJisseki = await _context.ChumonJisseki
+            //注文実績＋注文実績明細
+            ChumonJisseki? chumonJisseki = await _context.ChumonJisseki
                         .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
                         .Include(cm => cm.ChumonJissekiMeisais)
-                        .ThenInclude(shi => shi.ShiireMaster)
-                        .ThenInclude(sho => sho.ShohinMaster)
                         .FirstOrDefaultAsync();
 
+            //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
+            if (chumonJisseki != null) {
+                // ShiireMaster と ShohinMaster を AsNoTracking() で取得
+                foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais) {
+                    ShiireMaster?  shiireMaster = await _context.ShiireMaster
+                        .AsNoTracking()
+                        .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId && sm.ShiirePrdId == meisai.ShiirePrdId && sm.ShohinId == meisai.ShohinId)
+                        .Include(sm => sm.ShohinMaster)
+                        .FirstOrDefaultAsync();
+
+                    // 明示的に ShiireMaster を関連付け
+                    // もし、データがなければnullが入る
+                    meisai.ShiireMaster = shiireMaster;
+                }
+            }
+
             //②戻り値を注文実績＋注文実績明細とする
+            //データがない場合はnullで返す
             ChumonJisseki = chumonJisseki;
             return (ChumonJisseki);
         }
