@@ -56,7 +56,7 @@ namespace Convenience.Models.Interfaces {
         public Task<IList<ShiireJisseki>> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate);
 
         /// <summary>
-        /// 仕入実績から仕入実績プロパティに反映
+        /// 注文実績から仕入実績プロパティに反映
         /// </summary>
         /// <param name="inChumonId">注文コード</param>
         /// <param name="inShiireDate">仕入日付</param>
