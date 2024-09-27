@@ -56,5 +56,6 @@ namespace Convenience.Models.DataModels {
 
         [ForeignKey(nameof(ShiireSakiId) + "," + nameof(ShiirePrdId) + "," + nameof(ShohinId))]
         public virtual ShiireMaster? ShiireMaster { get; set; }
+
     }
 }

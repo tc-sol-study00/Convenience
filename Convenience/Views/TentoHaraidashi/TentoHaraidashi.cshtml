@@ -1,0 +1,139 @@
+﻿@using Convenience.Models.ViewModels.TentoHaraidashi
+@model TentoHaraidashiViewModel
+@{
+    TentoHaraidashiJissekiForView? fortitle = new TentoHaraidashiJissekiForView() ;
+
+    if(Model.TentoHaraidashiJissekiForView != null){
+        fortitle = @Model.TentoHaraidashiJissekiForView.FirstOrDefault();
+    }
+}
+<div id="content" style="display:none">
+    <div class="container">
+        <div class="form-group">
+            <form asp-action="TentoHaraidashi">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="1" />
+                <div id="accordion">
+                    <div class="accordion-item">
+                        <h5 class="accordion-header" id="headingOne">
+                            <button class="accordion-button bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <h3>@(ViewData["Title"] ?? "店頭払出画面")</h3>
+                            </button>
+                        </h5>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <b><label asp-for="@Model.HaraidashiDate" class="control-label"></label></b>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input asp-for="@Model.HaraidashiDate" class="form-control custom-disabled" tabindex="-1" />
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.TentoHaraidashiJissekiForView != null)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label asp-for="@fortitle.ShohinId" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.ShiireMaster.ShohinMaster.ShohinName" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.ShiireSakiId" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.ShiirePrdId" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.ShiireMaster.ShiirePrdName" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.SokoZaiko.SokoZaikoSu" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.HaraidashiCaseSu" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.HaraidashiSu" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.TentoZaiko.ZaikoSu" class="control-label"></label>
+                                </th>
+                                <th>
+                                    <label asp-for="@fortitle.HaraidashiDate" class="control-label"></label>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.TentoHaraidashiJissekiForView.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].ShohinId" class="form-control" tabindex="-1" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].ShiireMaster.ShohinMaster.ShohinName" class="form-control" tabindex="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].ShiireSakiId" class="form-control tabindex ="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].ShiirePrdId" class="form-control tabindex ="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].ShiireMaster.ShiirePrdName" class="form-control" tabindex="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].SokoZaiko.SokoZaikoSu" class="form-control" tabindex="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].HaraidashiCaseSu" class="form-control" tabindex="-1" disabled />
+                                        <span asp-validation-for="@Model.TentoHaraidashiJissekiForView[i].HaraidashiCaseSu" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].HaraidashiSu" class="form-control" tabindex="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].TentoZaiko.ZaikoSu" class="form-control" tabindex="-1" disabled />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.TentoHaraidashiJissekiForView[i].HaraidashiDate" class="form-control" tabindex="-1" disabled />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                <div class="form-group">
+                    <input id="submit_btn" type="submit" value="更新" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+        <p>
+            <div id="remark" class="@(Model.IsNormal??true ? "text-primary" : "text-danger")">
+                <b>@Model.Remark</b>
+            </div>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/sites.js"></script>
+    <script>
+        AccordionHandller();
+        RendaSolution();
+    </script>
+}
+
+
