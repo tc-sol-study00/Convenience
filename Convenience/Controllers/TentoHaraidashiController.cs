@@ -24,7 +24,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 注文サービスクラス（ＤＩ用）
         /// </summary>
-        private readonly ITentoHaraidashiService tentoHaraidashiService;
+        private readonly TentoHaraidashiService tentoHaraidashiService;
 
         /// <summary>
         /// コンストラクター
@@ -56,12 +56,12 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TentoHaraidashi(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
 
-            if (!ModelState.IsValid) {
-                throw new InvalidOperationException("Postデータエラー");
-            }
+            //if (!ModelState.IsValid) {
+            //    throw new InvalidOperationException("Postデータエラー");
+            //}
 
             // 注文セッティング
-            TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
+            TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
             ViewBag.HandlingFlg = "FirstDisplay";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }

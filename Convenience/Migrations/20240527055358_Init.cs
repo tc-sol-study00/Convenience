@@ -186,7 +186,6 @@ namespace Convenience.Migrations
                         principalColumns: new[] { "shiire_saki_code", "shiire_prd_code", "shohin_code" },
                         onDelete: ReferentialAction.Cascade);
                 });
-
             migrationBuilder.CreateTable(
                 name: "tento_haraidashi_jisseki",
                 columns: table => new
@@ -209,7 +208,6 @@ namespace Convenience.Migrations
                         principalColumns: new[] { "shiire_saki_code", "shiire_prd_code", "shohin_code" },
                         onDelete: ReferentialAction.Cascade);
                 });
-
             migrationBuilder.CreateTable(
                 name: "shiire_jisseki",
                 columns: table => new
@@ -253,7 +251,7 @@ namespace Convenience.Migrations
                 name: "IX_shiire_master_shohin_code",
                 table: "shiire_master",
                 column: "shohin_code");
-        }
+            }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)

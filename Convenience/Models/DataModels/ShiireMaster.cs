@@ -64,8 +64,8 @@ namespace Convenience.Models.DataModels {
 
         public virtual ICollection<ChumonJissekiMeisai>? ChumonJissekiMeisaiis { get; set; }
 
-        public virtual SokoZaiko? SokoZaikos { get; set; }
+        public virtual SokoZaiko? SokoZaiko { get; set; }
 
-        public virtual ICollection<TentoHaraidashiJisseki>? TentoHaraidashiJissekis { get; set; }
+        public virtual IList<TentoHaraidashiJisseki>? TentoHaraidashiJissekis { get; set; }
     }
 }

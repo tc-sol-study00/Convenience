@@ -4,7 +4,6 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity.Infrastructure;
 
 namespace Convenience.Models.Properties {
 

@@ -11,9 +11,14 @@ namespace Convenience.Models.DataModels {
     /// 主キー：仕入先コード、仕入商品コード、商品コード、払出日時
     /// </Remarks>
     [Table("tento_haraidashi_jisseki")]
-    [PrimaryKey(nameof(ShiireSakiId), nameof(ShiirePrdId), nameof(ShohinId), nameof(HaraidashiDate))]
+    [PrimaryKey(nameof(TentoHaraidashiId),nameof(ShiireSakiId), nameof(ShiirePrdId), nameof(ShohinId))]
     public class TentoHaraidashiJisseki {
 
+        [Column("tento_haraidashi_code")]
+        [DisplayName("店頭払出コード")]
+        [MaxLength(20)]
+        [Required]
+        public string TentoHaraidashiId { get; set; }
         [Column("shiire_saki_code")]
         [DisplayName("仕入先コード")]
         [MaxLength(10)]
@@ -55,7 +60,11 @@ namespace Convenience.Models.DataModels {
         public decimal HaraidashiSu { get; set; }
 
         [ForeignKey(nameof(ShiireSakiId) + "," + nameof(ShiirePrdId) + "," + nameof(ShohinId))]
+        //[NotMapped]
         public virtual ShiireMaster? ShiireMaster { get; set; }
+
+        [ForeignKey(nameof(TentoHaraidashiId))]
+        public virtual TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
 
     }
 }

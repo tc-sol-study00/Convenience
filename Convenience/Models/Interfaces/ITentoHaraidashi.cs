@@ -5,7 +5,7 @@ namespace Convenience.Models.Interfaces {
 
         public TentoHaraidashiJisseki TentoHaraidashiJisseki { get; set; }
 
-        public Task<IEnumerable<TentoHaraidashiJisseki>> TentoHaraidashiSakusei(DateTime argCurrentDateTime);
+        public Task<TentoHaraidashiHeader> TentoHaraidashiSakusei(DateTime argCurrentDateTime);
 
     }
 }

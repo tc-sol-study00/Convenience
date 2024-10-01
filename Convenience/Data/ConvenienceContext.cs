@@ -44,6 +44,11 @@ namespace Convenience.Data {
         /// 店頭在庫
         /// </summary>
         public DbSet<Convenience.Models.DataModels.TentoZaiko> TentoZaiko { get; set; } = default!;
+
+        /// <summary>
+        /// 店頭払出ヘッダー
+        /// </summary>
+        public DbSet<Convenience.Models.DataModels.TentoHaraidashiHeader> TentoHaraidashiHearder { get; set; } = default!;
         /// <summary>
         /// 店頭払出実績
         /// </summary>

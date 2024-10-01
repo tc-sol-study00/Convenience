@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.DataModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Convenience.Models.ViewModels.TentoHaraidashi {
 
@@ -11,8 +12,10 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
         /// </summary>
         /// 
         public DateTime HaraidashiDate { get; set; } 
-        public IList<TentoHaraidashiJissekiForView>? TentoHaraidashiJissekiForView { get; set; }
+        public IList<ShohinMaster>? ShohinMasters { get; set; }
         public bool? IsNormal { get; set; }
         public string? Remark { get; set; } = string.Empty;
+
+        public IList<SelectListItem> TentoHaraidashiIdList { get; set; }
     }
 }
