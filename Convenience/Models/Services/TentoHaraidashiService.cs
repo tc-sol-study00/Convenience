@@ -3,6 +3,7 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.TentoHaraidashi;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Convenience.Models.Services {
@@ -27,23 +28,25 @@ namespace Convenience.Models.Services {
         /// <returns></returns>
         public async Task<TentoHaraidashiViewModel> SetTentoHaraidashiViewModel() {
             DateTime CurrentDateTime = DateTime.Now;
-            var xxx = await TentoHaraidashi.TentoHaraidashiToiawase("20240930-13-001");
 
-            var yyy = TransferToDisplayModel(xxx);
+            IList<ShohinMaster> shohinhmasters = default;
+            //var xxx = await TentoHaraidashi.TentoHaraidashiToiawase("20240930-13-001");
+
+            //var yyy = TransferToDisplayModel(xxx);
 
             var idList = await TentoHaraidashi.CreateListWithTentoHaraidashiId(-5);
-            string nullData=null;
-            idList.Insert(0, new { CurrentDateTime, nullData });
+            idList.Insert(0, new { HaraidashiDateTime=CurrentDateTime, TentoHaraidashiId = string.Empty });
 
             List<SelectListItem> list =new List<SelectListItem>();
             foreach (var rec in idList) {
-                string dateString=((DateTime)rec.HaraidashiDateTime).ToString("yyyy/MM/dd HH:mm:ss");
-                list.Add(new SelectListItem($"{dateString}:{rec.TentoHaraidashiId??string.Empty}", rec.HaraidashiDateTime));
+                string dateString=rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss");
+                list.Add(new SelectListItem($"{dateString}:{rec.TentoHaraidashiId??string.Empty}", $"{dateString}:{rec.TentoHaraidashiId ?? string.Empty}"));
             }
             return new TentoHaraidashiViewModel() {
-                HaraidashiDate = CurrentDateTime,
-                ShohinMasters = yyy,
+                HaraidashiDateAndId = string.Empty,
+                ShohinMasters = shohinhmasters,
                 TentoHaraidashiIdList= list
+
             };
         }
 
@@ -53,7 +56,7 @@ namespace Convenience.Models.Services {
         /// <param name="argTentoHaraidashiViewModel">店頭払出ビューモデル</param>
         /// <returns>TentoHaraidashiViewModel 店頭払出ビューモデル</returns>
         public async Task<TentoHaraidashiViewModel> TentoHaraidashiSetting(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
-            DateTime CurrentDateTime = argTentoHaraidashiViewModel.HaraidashiDate;
+            DateTime CurrentDateTime = argTentoHaraidashiViewModel.HaraidashiDateAndId.;
             await TentoHaraidashi.TentoHaraidashiSakusei(CurrentDateTime);
             return new TentoHaraidashiViewModel();
         }

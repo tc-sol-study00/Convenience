@@ -11,7 +11,7 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
         /// 店頭払出実績
         /// </summary>
         /// 
-        public DateTime HaraidashiDate { get; set; } 
+        public string HaraidashiDateAndId { get; set; } 
         public IList<ShohinMaster>? ShohinMasters { get; set; }
         public bool? IsNormal { get; set; }
         public string? Remark { get; set; } = string.Empty;

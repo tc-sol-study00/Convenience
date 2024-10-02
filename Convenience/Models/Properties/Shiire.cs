@@ -4,9 +4,9 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
-namespace Convenience.Models.Properties {
+namespace Convenience.Models.Properties
+{
     /// <summary>
     /// 仕入クラス
     /// </summary>

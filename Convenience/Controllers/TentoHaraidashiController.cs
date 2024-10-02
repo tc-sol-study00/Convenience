@@ -43,11 +43,20 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> KeyInput() {
 
             TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.SetTentoHaraidashiViewModel();
+            @ViewData["Action"] = "KeyInput";
+            return View("TentoHaraidashi", tentoHaraidashiViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> KeyInput(TentoHaraidashiViewModel argTentoHaraidashiViewModel)
+        {
+            TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
+            @ViewData["Action"] = "TentoHaraidashi";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
 
         /// <summary>
-        /// 商品注文１枚目のPost受信後処理
+        /// 商品注文２枚目のPost受信後処理
         /// </summary>
         /// <param name="inChumonKeysViewModel">注文キービューモデル</param>
         /// <returns></returns>

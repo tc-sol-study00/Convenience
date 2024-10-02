@@ -11,7 +11,7 @@
 <div id="content" style="display:none">
     <div class="container">
         <div class="form-group">
-            <form asp-action="TentoHaraidashi">
+            <form asp-action="@ViewData["Action"]">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="id" value="1" />
                 <div id="accordion">
