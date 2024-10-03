@@ -24,12 +24,12 @@
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
                             <div class="accordion-body">
                                 <div class="row">
-                                    <div class="col-sm-1">
-                                        <b><label asp-for="@Model.HaraidashiDate" class="control-label"></label></b>
-                                    </div>
                                     <div class="col-sm-3">
-                                        <select asp-for="@Model.HaraidashiDate" asp-items="@Model.TentoHaraidashiIdList" class="form-control"></select>
-                                        <!--input asp-for="@Model.HaraidashiDate" class="form-control custom-disabled" /-->
+                                        <b><label asp-for="@Model.HaraidashiDateAndId" class="control-label"></label></b>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <select asp-for="@Model.HaraidashiDateAndId" asp-items="@Model.TentoHaraidashiIdList" class="form-control"></select>
+                                        <!--input asp-for="@Model.HaraidashiDateAndId" class="form-control custom-disabled" /-->
                                     </div>
 
                                 </div>

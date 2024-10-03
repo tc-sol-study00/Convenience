@@ -43,7 +43,8 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> KeyInput() {
 
             TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.SetTentoHaraidashiViewModel();
-            @ViewData["Action"] = "KeyInput";
+            ViewBag.HandlingFlg = "FirstDisplay";
+            ViewData["Action"] = "KeyInput";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
         [HttpPost]
@@ -51,7 +52,8 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> KeyInput(TentoHaraidashiViewModel argTentoHaraidashiViewModel)
         {
             TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
-            @ViewData["Action"] = "TentoHaraidashi";
+            ViewBag.HandlingFlg = "FirstDisplay";
+            ViewData["Action"] = "TentoHaraidashi";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
 
@@ -65,13 +67,16 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TentoHaraidashi(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
 
+            ModelState.Clear();
+
             //if (!ModelState.IsValid) {
             //    throw new InvalidOperationException("Postデータエラー");
             //}
 
             // 注文セッティング
             TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
-            ViewBag.HandlingFlg = "FirstDisplay";
+            ViewBag.HandlingFlg = "SecondDisplay";
+            ViewData["Action"] = "TentoHaraidashi";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
 

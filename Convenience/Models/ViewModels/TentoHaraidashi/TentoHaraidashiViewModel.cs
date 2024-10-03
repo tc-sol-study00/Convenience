@@ -1,5 +1,7 @@
 ﻿using Convenience.Models.DataModels;
+using Convenience.Models.Properties;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace Convenience.Models.ViewModels.TentoHaraidashi {
 
@@ -11,6 +13,7 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
         /// 店頭払出実績
         /// </summary>
         /// 
+        [DisplayName("店頭払出日時＋コード")]
         public string HaraidashiDateAndId { get; set; } 
         public IList<ShohinMaster>? ShohinMasters { get; set; }
         public bool? IsNormal { get; set; }
@@ -18,4 +21,22 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
 
         public IList<SelectListItem> TentoHaraidashiIdList { get; set; }
     }
+
+    /// <summary>
+    /// 店頭払出キー入力に使うリストの内容
+    /// </summary>
+    public class HaraidashiDateTimeAndIdMatching {
+
+        public DateTime HaraidashiDateTime { get; set; } = default;
+        public string TentoHaraidashiId { get; set; } = default;
+
+        public HaraidashiDateTimeAndIdMatching(DateTime HaraidashiDateTime, string TentoHaraidashiId) {
+            this.HaraidashiDateTime = HaraidashiDateTime;
+            this.TentoHaraidashiId = TentoHaraidashiId;
+        }
+        public HaraidashiDateTimeAndIdMatching() {
+
+        }
+    }
+
 }

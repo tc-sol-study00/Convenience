@@ -29,7 +29,7 @@ namespace Convenience.Models.Properties {
                 seq = 1;
             }
             else {
-                seq = uint.Parse(maxTentoHaraidashiId.Substring(11, 3)) + 1;
+                seq = uint.Parse(maxTentoHaraidashiId.Substring(12, 3)) + 1;
             }
             return $"{dateArea}-{seq:000}";
         }
@@ -56,12 +56,15 @@ namespace Convenience.Models.Properties {
              * データ表示用に＋倉庫在庫＋仕入マスタもリンク接続する
              */
 
-            tentoHaraidashiHeader.TentoHaraidashiJissekis = _context.SokoZaiko.AsNoTracking()
+            tentoHaraidashiHeader.TentoHaraidashiJissekis = _context.SokoZaiko
                 .Where(sokozaiko => sokozaiko.SokoZaikoCaseSu > 0 && sokozaiko.SokoZaikoSu > 0)
                 .Include(sokozaiko => sokozaiko.ShiireMaster)
                 .ThenInclude(shiiremaster => shiiremaster.ShohinMaster)
                 .ThenInclude(shohinmaster => shohinmaster.TentoZaiko)
+                .Include(sokozaiko => sokozaiko.ShiireMaster)
+                .ThenInclude(shiiremaster => shiiremaster.SokoZaiko)
                 .Select(x => new TentoHaraidashiJisseki {
+                    TentoHaraidashiId = tentoHaraidashiHeader.TentoHaraidashiId,
                     ShiireSakiId = x.ShiireSakiId,
                     ShiirePrdId = x.ShiirePrdId,
                     ShohinId = x.ShohinId,
@@ -70,7 +73,21 @@ namespace Convenience.Models.Properties {
                     HaraidashiCaseSu = 0,
                     HaraidashiSu = 0,
                     ShiireMaster = x.ShiireMaster,
-                }).ToList();
+                })
+                .ToList();
+
+            foreach (var item in tentoHaraidashiHeader.TentoHaraidashiJissekis) {
+                if (item.ShiireMaster.ShohinMaster.TentoZaiko is null) {
+                    item.ShiireMaster.ShohinMaster.TentoZaiko
+                        = new TentoZaiko {
+                            ShohinId = item.ShohinId,
+                            ZaikoSu = 0,
+                            LastShireDateTime = item.ShiireMaster.SokoZaiko.LastShiireDate,
+                            LastHaraidashiDate = argCurrentDateTime.ToUniversalTime(),
+                            LastUriageDatetime = null,
+                        };
+                }
+            }
 
             _context.Add(tentoHaraidashiHeader);
 
@@ -103,18 +120,6 @@ namespace Convenience.Models.Properties {
 
             return tentoHaraidashiHeader;
         }
-        /// <summary>
-        /// 引数（マイナス値）を使用して、その引数分の日数をさかのぼり、店頭払出日付と店頭払出コード一覧を作る
-        /// </summary>
-        /// <param name="argReverseDaysWithMinus">さかのぼる日数（マイナスでいれる）</param>
-        /// <returns>店頭払出日時・店頭払出コード</returns>
-        public async Task<List<dynamic>> CreateListWithTentoHaraidashiId(int argReverseDaysWithMinus) {
-            var listData = await _context.TentoHaraidashiHearder
-               .Where(x => x.HaraidashiDateTime >= DateTime.Now.AddDays(argReverseDaysWithMinus).Date.ToUniversalTime())
-               .OrderBy(x => x.HaraidashiDateTime)
-               .Select(x => (dynamic)new { HaraidashiDateTime=x.HaraidashiDateTime, TentoHaraidashiId=x.TentoHaraidashiId})
-               .ToListAsync();
-            return listData;
-        }
+
     }
 }

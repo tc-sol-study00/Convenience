@@ -41,8 +41,7 @@ namespace Convenience.Models.DataModels {
         [Column("last_uriage_datetime")]
         [DisplayName("直近売上日時")]
         [DataType(DataType.DateTime)]
-        [Required]
-        public DateTime LastUriageDatetime { get; set; }
+        public DateTime? LastUriageDatetime { get; set; }
 
         [ForeignKey(nameof(ShohinId))]
         public virtual ShohinMaster? ShohinMaster { get; set; }

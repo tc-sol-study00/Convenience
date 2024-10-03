@@ -5,6 +5,11 @@ using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Text.Json;
+using static Convenience.Models.Properties.Message;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.Services {
     public class TentoHaraidashiService {
@@ -30,23 +35,20 @@ namespace Convenience.Models.Services {
             DateTime CurrentDateTime = DateTime.Now;
 
             IList<ShohinMaster> shohinhmasters = default;
-            //var xxx = await TentoHaraidashi.TentoHaraidashiToiawase("20240930-13-001");
 
-            //var yyy = TransferToDisplayModel(xxx);
-
-            var idList = await TentoHaraidashi.CreateListWithTentoHaraidashiId(-5);
-            idList.Insert(0, new { HaraidashiDateTime=CurrentDateTime, TentoHaraidashiId = string.Empty });
+            var idList = await CreateListWithTentoHaraidashiId(-5);
+            idList.Insert(0, new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime=CurrentDateTime, TentoHaraidashiId = null });
 
             List<SelectListItem> list =new List<SelectListItem>();
             foreach (var rec in idList) {
-                string dateString=rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss");
-                list.Add(new SelectListItem($"{dateString}:{rec.TentoHaraidashiId??string.Empty}", $"{dateString}:{rec.TentoHaraidashiId ?? string.Empty}"));
+                string serializedString=JsonSerializer.Serialize(rec);
+                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId??"新規"}", serializedString));
             }
+
             return new TentoHaraidashiViewModel() {
-                HaraidashiDateAndId = string.Empty,
+                HaraidashiDateAndId = JsonSerializer.Serialize(idList[0]),
                 ShohinMasters = shohinhmasters,
                 TentoHaraidashiIdList= list
-
             };
         }
 
@@ -56,10 +58,30 @@ namespace Convenience.Models.Services {
         /// <param name="argTentoHaraidashiViewModel">店頭払出ビューモデル</param>
         /// <returns>TentoHaraidashiViewModel 店頭払出ビューモデル</returns>
         public async Task<TentoHaraidashiViewModel> TentoHaraidashiSetting(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
-            DateTime CurrentDateTime = argTentoHaraidashiViewModel.HaraidashiDateAndId.;
-            await TentoHaraidashi.TentoHaraidashiSakusei(CurrentDateTime);
-            return new TentoHaraidashiViewModel();
+            HaraidashiDateTimeAndIdMatching haraidashiDateTimeAndIdMatching
+                =JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId);
+
+            DateTime postedHaraidashiDateTime = haraidashiDateTimeAndIdMatching.HaraidashiDateTime;
+            TentoHaraidashiHeader tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+
+            IList<ShohinMaster> shohinmasters=TransferToDisplayModel(tentoHaraidashiHeader);
+
+            var idList = new List<HaraidashiDateTimeAndIdMatching>();
+            idList.Add( new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = postedHaraidashiDateTime, TentoHaraidashiId = null });
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var rec in idList) {
+                string serializedString = JsonSerializer.Serialize(rec);
+                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
+            }
+
+            return new TentoHaraidashiViewModel() {
+                HaraidashiDateAndId = argTentoHaraidashiViewModel.HaraidashiDateAndId,
+                ShohinMasters = shohinmasters,
+                TentoHaraidashiIdList = list
+            };
         }
+
         /// <summary>
         /// 店頭払出Commit
         /// </summary>
@@ -67,13 +89,21 @@ namespace Convenience.Models.Services {
         /// <returns>TentoHaraidashiViewModel 店頭払出ビューモデル</returns>
         public async Task<TentoHaraidashiViewModel> TentoHaraidashiCommit(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
 
-            TentoHaraidashiHeader settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase("20240930-13-001");
+            HaraidashiDateTimeAndIdMatching haraidashiDateTimeAndIdMatching
+                = JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId);
+
+            DateTime postedHaraidashiDateTime = haraidashiDateTimeAndIdMatching.HaraidashiDateTime;
+
+            string tentoHaraidashiId = argTentoHaraidashiViewModel.ShohinMasters.SelectMany(x => x.ShiireMasters).SelectMany(x => x.TentoHaraidashiJissekis).Min(x => x.TentoHaraidashiId);
+
+            TentoHaraidashiHeader settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
 
             if (settingTentoHaraidashiHearder == null) {
-                var postedHaraidashiDate = argTentoHaraidashiViewModel.HaraidashiDate;
-                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDate);
+                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
             }
-
+            else {
+                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            }
             foreach (var shohinmaster in argTentoHaraidashiViewModel.ShohinMasters) {
                 foreach (var shiiremaster in shohinmaster.ShiireMasters) {
                     foreach (var tentoharaidashi in shiiremaster.TentoHaraidashiJissekis) {
@@ -82,23 +112,78 @@ namespace Convenience.Models.Services {
                                 x.ShiireSakiId == tentoharaidashi.ShiireSakiId &&
                                 x.ShiirePrdId == tentoharaidashi.ShiirePrdId &&
                                 x.ShohinId == tentoharaidashi.ShohinId).FirstOrDefault();
+                        var wHaraidashiCaseSu = pickupTentoHaraidashiJisseki.HaraidashiCaseSu;
+                        pickupTentoHaraidashiJisseki.HaraidashiCaseSu += tentoharaidashi.HaraidashiCaseSu-wHaraidashiCaseSu;
+                        pickupTentoHaraidashiJisseki.HaraidashiSu += (tentoharaidashi.HaraidashiCaseSu- wHaraidashiCaseSu) * pickupTentoHaraidashiJisseki.ShiireMaster.ShiirePcsPerUnit;
+                        /*
+                         * 倉庫在庫調整
+                         */
+                        ShiireMaster pickupShiireMaster = pickupTentoHaraidashiJisseki.ShiireMaster;
+                        ShohinMaster pickupShohinMaster = pickupShiireMaster.ShohinMaster;
+                        SokoZaiko pickupSokoZaiko = pickupTentoHaraidashiJisseki.ShiireMaster.SokoZaiko;
+                        pickupSokoZaiko.SokoZaikoCaseSu -= tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;
+                        pickupSokoZaiko.SokoZaikoSu -= (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupShiireMaster.ShiirePcsPerUnit;
 
-                        pickupTentoHaraidashiJisseki.HaraidashiCaseSu = tentoharaidashi.HaraidashiCaseSu;
-                        pickupTentoHaraidashiJisseki.HaraidashiSu = tentoharaidashi.HaraidashiCaseSu * shiiremaster.ShiirePcsPerUnit;
+                        /*
+                         * 店頭在庫調整
+                         */
+                        var pickupTentoZaiko = pickupShohinMaster.TentoZaiko;
+                        var wTentoZaiko = pickupTentoZaiko.ZaikoSu;
+                        pickupTentoZaiko.ZaikoSu += (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupShiireMaster.ShiirePcsPerUnit;
                     }
                 }
             }
 
+            var entities = _context.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+            .Select(e => e.Entity).Count();
+            
+ 
             await _context.SaveChangesAsync();
 
-            return new TentoHaraidashiViewModel();
+            var queriedTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            IList<ShohinMaster> shohinmasters= TransferToDisplayModel(queriedTentoHaraidashiHearder);
+
+            var idList = new List<HaraidashiDateTimeAndIdMatching>();
+            idList.Add(new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = postedHaraidashiDateTime, TentoHaraidashiId = tentoHaraidashiId });
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var rec in idList) {
+                string serializedString = JsonSerializer.Serialize(rec);
+                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
+            }
+
+            (bool IsValid, ErrDef errCd) = (true, ErrDef.NormalUpdate);
+
+            return new TentoHaraidashiViewModel() {
+                HaraidashiDateAndId = argTentoHaraidashiViewModel.HaraidashiDateAndId,
+                ShohinMasters = shohinmasters,
+                TentoHaraidashiIdList = list,
+                IsNormal = IsValid,
+                Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate).MessageText : null
+            };
         }
 
-        public List<ShohinMaster> TransferToDisplayModel(TentoHaraidashiHeader argTentoHaraidashiHeader) {
-            List<ShohinMaster> shohinmaster = argTentoHaraidashiHeader.TentoHaraidashiJissekis.GroupBy(x => x.ShiireMaster.ShohinMaster).Select(x => x.Key)
-            .ToList();
-
+        public IList<ShohinMaster> TransferToDisplayModel(TentoHaraidashiHeader argTentoHaraidashiHeader) {
+            IList<ShohinMaster> shohinmaster 
+                = argTentoHaraidashiHeader.TentoHaraidashiJissekis.GroupBy(x => x.ShiireMaster.ShohinMaster).Select(x => x.Key)
+                    .OrderBy(x=>x.ShohinId).ThenBy( x => x.ShiireMasters.FirstOrDefault().ShiireSakiId).ThenBy(x => x.ShiireMasters.FirstOrDefault().ShiirePrdId)
+                    .ToList();
             return shohinmaster;
+        }
+
+        /// <summary>
+        /// 引数（マイナス値）を使用して、その引数分の日数をさかのぼり、店頭払出日付と店頭払出コード一覧を作る
+        /// </summary>
+        /// <param name="argReverseDaysWithMinus">さかのぼる日数（マイナスでいれる）</param>
+        /// <returns>店頭払出日時・店頭払出コード</returns>
+        public async Task<List<HaraidashiDateTimeAndIdMatching>> CreateListWithTentoHaraidashiId(int argReverseDaysWithMinus) {
+            var listData = await _context.TentoHaraidashiHearder
+               .Where(x => x.HaraidashiDateTime >= DateTime.Now.AddDays(argReverseDaysWithMinus).Date.ToUniversalTime())
+               .OrderBy(x => x.HaraidashiDateTime)
+               .Select(x => new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = x.HaraidashiDateTime, TentoHaraidashiId = x.TentoHaraidashiId })
+               .ToListAsync();
+            return listData;
         }
     }
 }
