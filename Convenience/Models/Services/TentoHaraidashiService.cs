@@ -39,11 +39,7 @@ namespace Convenience.Models.Services {
             var idList = await CreateListWithTentoHaraidashiId(-5);
             idList.Insert(0, new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime=CurrentDateTime, TentoHaraidashiId = null });
 
-            List<SelectListItem> list =new List<SelectListItem>();
-            foreach (var rec in idList) {
-                string serializedString=JsonSerializer.Serialize(rec);
-                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId??"新規"}", serializedString));
-            }
+            var list=MakeListWithTentoHaraidashiIdToSelectListItem(idList);
 
             return new TentoHaraidashiViewModel() {
                 HaraidashiDateAndId = JsonSerializer.Serialize(idList[0]),
@@ -67,13 +63,9 @@ namespace Convenience.Models.Services {
             IList<ShohinMaster> shohinmasters=TransferToDisplayModel(tentoHaraidashiHeader);
 
             var idList = new List<HaraidashiDateTimeAndIdMatching>();
-            idList.Add( new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = postedHaraidashiDateTime, TentoHaraidashiId = null });
+            idList.Add(haraidashiDateTimeAndIdMatching);
 
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var rec in idList) {
-                string serializedString = JsonSerializer.Serialize(rec);
-                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
-            }
+            var list = MakeListWithTentoHaraidashiIdToSelectListItem(idList);
 
             return new TentoHaraidashiViewModel() {
                 HaraidashiDateAndId = argTentoHaraidashiViewModel.HaraidashiDateAndId,
@@ -147,11 +139,7 @@ namespace Convenience.Models.Services {
             var idList = new List<HaraidashiDateTimeAndIdMatching>();
             idList.Add(new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = postedHaraidashiDateTime, TentoHaraidashiId = tentoHaraidashiId });
 
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var rec in idList) {
-                string serializedString = JsonSerializer.Serialize(rec);
-                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
-            }
+            var list = MakeListWithTentoHaraidashiIdToSelectListItem(idList);
 
             (bool IsValid, ErrDef errCd) = (true, ErrDef.NormalUpdate);
 
@@ -177,7 +165,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argReverseDaysWithMinus">さかのぼる日数（マイナスでいれる）</param>
         /// <returns>店頭払出日時・店頭払出コード</returns>
-        public async Task<List<HaraidashiDateTimeAndIdMatching>> CreateListWithTentoHaraidashiId(int argReverseDaysWithMinus) {
+        private async Task<List<HaraidashiDateTimeAndIdMatching>> CreateListWithTentoHaraidashiId(int argReverseDaysWithMinus) {
             var listData = await _context.TentoHaraidashiHearder
                .Where(x => x.HaraidashiDateTime >= DateTime.Now.AddDays(argReverseDaysWithMinus).Date.ToUniversalTime())
                .OrderBy(x => x.HaraidashiDateTime)
@@ -185,5 +173,19 @@ namespace Convenience.Models.Services {
                .ToListAsync();
             return listData;
         }
-    }
+
+        /// <summary>
+        /// Ｖｉｅｗのselect項目のために店頭払出日付＋コードのリストを作成する
+        /// </summary>
+        /// <param name="idList"></param>
+        /// <returns></returns>
+        private List<SelectListItem> MakeListWithTentoHaraidashiIdToSelectListItem(List<HaraidashiDateTimeAndIdMatching> idList) {
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var rec in idList) {
+                string serializedString = JsonSerializer.Serialize(rec);
+                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
+            }
+            return list;
+        }
+}
 }
