@@ -49,7 +49,7 @@ namespace Convenience.Models.Properties {
              */
             TentoHaraidashiHeader tentoHaraidashiHeader = new TentoHaraidashiHeader {
                 TentoHaraidashiId = TentoHaraidashiHatsuban(argCurrentDateTime),
-                HaraidashiDateTime = argCurrentDateTime.ToUniversalTime(),
+                HaraidashiDateTime = argCurrentDateTime,
             };
             /*
              * 倉庫在庫より、店頭払出実績（ヘッダー＋実績）を作成する
@@ -69,7 +69,7 @@ namespace Convenience.Models.Properties {
                     ShiirePrdId = x.ShiirePrdId,
                     ShohinId = x.ShohinId,
                     ShireDateTime = x.LastShiireDate,
-                    HaraidashiDate = argCurrentDateTime.ToUniversalTime(),
+                    HaraidashiDate = argCurrentDateTime,
                     HaraidashiCaseSu = 0,
                     HaraidashiSu = 0,
                     ShiireMaster = x.ShiireMaster,
@@ -83,7 +83,7 @@ namespace Convenience.Models.Properties {
                             ShohinId = item.ShohinId,
                             ZaikoSu = 0,
                             LastShireDateTime = item.ShiireMaster.SokoZaiko.LastShiireDate,
-                            LastHaraidashiDate = argCurrentDateTime.ToUniversalTime(),
+                            LastHaraidashiDate = argCurrentDateTime,
                             LastUriageDatetime = null,
                         };
                 }

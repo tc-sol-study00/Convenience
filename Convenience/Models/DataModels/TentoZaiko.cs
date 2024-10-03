@@ -36,7 +36,7 @@ namespace Convenience.Models.DataModels {
         [DisplayName("直近払出日時")]
         [Required]
         [DataType(DataType.DateTime)]
-        public DateTime LastHaraidashiDate { get; set; }
+        public DateTime? LastHaraidashiDate { get; set; }
 
         [Column("last_uriage_datetime")]
         [DisplayName("直近売上日時")]

@@ -57,8 +57,19 @@ namespace Convenience.Models.Services {
             HaraidashiDateTimeAndIdMatching haraidashiDateTimeAndIdMatching
                 =JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId);
 
+            
             DateTime postedHaraidashiDateTime = haraidashiDateTimeAndIdMatching.HaraidashiDateTime;
-            TentoHaraidashiHeader tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+            string postedTentoHaraidashiId = haraidashiDateTimeAndIdMatching.TentoHaraidashiId;
+
+            TentoHaraidashiHeader tentoHaraidashiHeader = default;
+            if (postedTentoHaraidashiId is null)
+            {
+                tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+            }
+            else
+            {
+                tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiToiawase(postedTentoHaraidashiId);
+            }
 
             IList<ShohinMaster> shohinmasters=TransferToDisplayModel(tentoHaraidashiHeader);
 
@@ -133,11 +144,12 @@ namespace Convenience.Models.Services {
  
             await _context.SaveChangesAsync();
 
+            haraidashiDateTimeAndIdMatching.TentoHaraidashiId = settingTentoHaraidashiHearder.TentoHaraidashiId;
             var queriedTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
             IList<ShohinMaster> shohinmasters= TransferToDisplayModel(queriedTentoHaraidashiHearder);
 
             var idList = new List<HaraidashiDateTimeAndIdMatching>();
-            idList.Add(new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = postedHaraidashiDateTime, TentoHaraidashiId = tentoHaraidashiId });
+            idList.Add(haraidashiDateTimeAndIdMatching);
 
             var list = MakeListWithTentoHaraidashiIdToSelectListItem(idList);
 
@@ -168,7 +180,7 @@ namespace Convenience.Models.Services {
         private async Task<List<HaraidashiDateTimeAndIdMatching>> CreateListWithTentoHaraidashiId(int argReverseDaysWithMinus) {
             var listData = await _context.TentoHaraidashiHearder
                .Where(x => x.HaraidashiDateTime >= DateTime.Now.AddDays(argReverseDaysWithMinus).Date.ToUniversalTime())
-               .OrderBy(x => x.HaraidashiDateTime)
+               .OrderByDescending(x => x.HaraidashiDateTime)
                .Select(x => new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = x.HaraidashiDateTime, TentoHaraidashiId = x.TentoHaraidashiId })
                .ToListAsync();
             return listData;
@@ -180,10 +192,14 @@ namespace Convenience.Models.Services {
         /// <param name="idList"></param>
         /// <returns></returns>
         private List<SelectListItem> MakeListWithTentoHaraidashiIdToSelectListItem(List<HaraidashiDateTimeAndIdMatching> idList) {
+            // DateTime を日本標準時（JST）でフォーマット
+            TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+            
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var rec in idList) {
                 string serializedString = JsonSerializer.Serialize(rec);
-                list.Add(new SelectListItem($"{rec.HaraidashiDateTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
+                DateTime jstTime = TimeZoneInfo.ConvertTime(rec.HaraidashiDateTime, jstZone);
+                list.Add(new SelectListItem($"{jstTime.ToString("yyyy/MM/dd HH:mm:ss")}:{rec.TentoHaraidashiId ?? "新規"}", serializedString));
             }
             return list;
         }

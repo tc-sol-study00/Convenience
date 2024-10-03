@@ -78,10 +78,10 @@
                             @for (var i = 0; i < Model.ShohinMasters.Count; i++) {
                                 <tr>
                                     <td rowspan="@Model.ShohinMasters[i].ShiireMasters.Count">
-                                        <input asp-for="@Model.ShohinMasters[i].ShohinId" class="form-control" tabindex="-1" />
+                                        <input asp-for="@Model.ShohinMasters[i].ShohinId" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td rowspan="@Model.ShohinMasters[i].ShiireMasters.Count">
-                                        <input asp-for="@Model.ShohinMasters[i].ShohinName" class="form-control" tabindex="-1" />
+                                        <input asp-for="@Model.ShohinMasters[i].ShohinName" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
 
                                     @for (var j = 0; j < Model.ShohinMasters[i].ShiireMasters.Count; j++) { // 修正
@@ -124,7 +124,7 @@
                                         </td>
                                         <td>
                                                 @if (Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis.Any()) {
-                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiDate" class="form-control" tabindex="-1" />
+                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiDate" class="form-control custom-disabled" tabindex="-1" />
                                                 }
                                                 else {
                                                 <input type="text" class="form-control" disabled />

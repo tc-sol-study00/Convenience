@@ -45,6 +45,9 @@ app.UseAuthorization();
 
 app.UseSession();
 
+//TimeZone(JST)でDB更新ができるように
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 app.MapControllerRoute(
 name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
