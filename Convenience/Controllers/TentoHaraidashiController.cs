@@ -3,6 +3,7 @@ using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.Services;
 using Convenience.Models.ViewModels.Chumon;
+using Convenience.Models.ViewModels.Shiire;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +20,17 @@ namespace Convenience.Controllers {
         /// <summary>
         /// サービスクラス引継ぎ用キーワード
         /// </summary>
-        private static readonly string IndexName = "ChumonViewModel";
+        private static readonly string IndexName = "TentoHaraidashiViewModel";
 
         /// <summary>
         /// 注文サービスクラス（ＤＩ用）
         /// </summary>
         private readonly TentoHaraidashiService tentoHaraidashiService;
+
+        /// <summary>
+        /// ビュー・モデル
+        /// </summary>
+        private TentoHaraidashiViewModel tentoHaraidashiViewModel;
 
         /// <summary>
         /// コンストラクター
@@ -67,17 +73,38 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TentoHaraidashi(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
 
-            ModelState.Clear();
-
             //if (!ModelState.IsValid) {
             //    throw new InvalidOperationException("Postデータエラー");
             //}
 
-            // 注文セッティング
+            // 店頭払出実績更新
             TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
+            //PRG用ビュー・モデル引き渡し
+            TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
+            return RedirectToAction("Result");
+        }
+
+        /// <summary>
+        /// 店頭払出画面２枚目の初期表示（店頭払出画面２枚目のPost後処理よりredirect）
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Result()
+        {
             ViewBag.HandlingFlg = "SecondDisplay";
             ViewData["Action"] = "TentoHaraidashi";
-            return View("TentoHaraidashi", tentoHaraidashiViewModel);
+
+            if (TempData.Peek(IndexName) != null)
+            {
+                //PRG用ビュー・モデル引き取り    
+                tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName] as string);
+                TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
+                return View("TentoHaraidashi", tentoHaraidashiViewModel);
+            }
+            else
+            {
+                return RedirectToAction("TentoHaraidashi");
+            }
         }
 
     }

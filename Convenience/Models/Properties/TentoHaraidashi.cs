@@ -5,11 +5,26 @@ using Microsoft.EntityFrameworkCore;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 
 namespace Convenience.Models.Properties {
+    /// <summary>
+    /// 店頭払出クラス
+    /// </summary>
     public class TentoHaraidashi : ITentoHaraidashi {
 
+        /// <summary>
+        /// DBコンテキスト
+        /// </summary>
         private readonly ConvenienceContext _context;
-        public TentoHaraidashiJisseki TentoHaraidashiJisseki { get; set; }
 
+        /// <summary>
+        /// <para>プロパティ</para>
+        /// <para>店頭払出ヘッダー</para>
+        /// </summary>
+        public TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
+
+        /// <summary>
+        /// コンストラクタ（ASP用）
+        /// </summary>
+        /// <param name="context"></param>
         public TentoHaraidashi(ConvenienceContext context) {
             this._context = context;
         }
@@ -22,7 +37,8 @@ namespace Convenience.Models.Properties {
         private string TentoHaraidashiHatsuban(DateTime argCurrentDateTime) {
             string dateArea = argCurrentDateTime.ToString("yyyyMMdd-HH");
 
-            string? maxTentoHaraidashiId = _context.TentoHaraidashiHearder.Where(x => x.TentoHaraidashiId.StartsWith(dateArea)).Max(s => s.TentoHaraidashiId);
+            string? maxTentoHaraidashiId = _context.TentoHaraidashiHearder
+                .Where(x => x.TentoHaraidashiId.StartsWith(dateArea)).Max(s => s.TentoHaraidashiId);
 
             uint seq = 0;
             if (maxTentoHaraidashiId is null) {
@@ -39,6 +55,7 @@ namespace Convenience.Models.Properties {
         /// <para>①店頭払出ヘッダーを作成する</para>
         /// <para>②倉庫在庫より、店頭払出実績（ヘッダー＋実績）を作成する</para>
         /// <para>③データ表示用に＋倉庫在庫＋仕入マスタもリンク接続する</para>
+        /// <para>4️⃣店頭在庫をリンク接続する</para>
         /// </summary>
         /// <param name="argCurrentDateTime"></param>
         /// <returns>TentoHaraidashiHeader 店頭払出ヘッダー＋店頭払出実績</returns>
@@ -47,16 +64,16 @@ namespace Convenience.Models.Properties {
             /*
              * 店頭払出ヘッダーを作成する
              */
-            TentoHaraidashiHeader tentoHaraidashiHeader = new TentoHaraidashiHeader {
+            this.TentoHaraidashiHeader = new TentoHaraidashiHeader {
                 TentoHaraidashiId = TentoHaraidashiHatsuban(argCurrentDateTime),
                 HaraidashiDateTime = argCurrentDateTime,
             };
+            
             /*
              * 倉庫在庫より、店頭払出実績（ヘッダー＋実績）を作成する
              * データ表示用に＋倉庫在庫＋仕入マスタもリンク接続する
              */
-
-            tentoHaraidashiHeader.TentoHaraidashiJissekis = _context.SokoZaiko
+            this.TentoHaraidashiHeader.TentoHaraidashiJissekis = _context.SokoZaiko
                 .Where(sokozaiko => sokozaiko.SokoZaikoCaseSu > 0 && sokozaiko.SokoZaikoSu > 0)
                 .Include(sokozaiko => sokozaiko.ShiireMaster)
                 .ThenInclude(shiiremaster => shiiremaster.ShohinMaster)
@@ -64,7 +81,7 @@ namespace Convenience.Models.Properties {
                 .Include(sokozaiko => sokozaiko.ShiireMaster)
                 .ThenInclude(shiiremaster => shiiremaster.SokoZaiko)
                 .Select(x => new TentoHaraidashiJisseki {
-                    TentoHaraidashiId = tentoHaraidashiHeader.TentoHaraidashiId,
+                    TentoHaraidashiId = this.TentoHaraidashiHeader.TentoHaraidashiId,
                     ShiireSakiId = x.ShiireSakiId,
                     ShiirePrdId = x.ShiirePrdId,
                     ShohinId = x.ShohinId,
@@ -76,22 +93,26 @@ namespace Convenience.Models.Properties {
                 })
                 .ToList();
 
-            foreach (var item in tentoHaraidashiHeader.TentoHaraidashiJissekis) {
-                if (item.ShiireMaster.ShohinMaster.TentoZaiko is null) {
-                    item.ShiireMaster.ShohinMaster.TentoZaiko
+            /*
+             * 店頭在庫をリンク接続する
+             */
+            foreach (TentoHaraidashiJisseki tentoHaraidashiJisseki in this.TentoHaraidashiHeader.TentoHaraidashiJissekis) {
+                if (tentoHaraidashiJisseki.ShiireMaster.ShohinMaster.TentoZaiko is null) {
+                    tentoHaraidashiJisseki.ShiireMaster.ShohinMaster.TentoZaiko
                         = new TentoZaiko {
-                            ShohinId = item.ShohinId,
+                            ShohinId = tentoHaraidashiJisseki.ShohinId,
                             ZaikoSu = 0,
-                            LastShireDateTime = item.ShiireMaster.SokoZaiko.LastShiireDate,
+                            LastShireDateTime = tentoHaraidashiJisseki.ShiireMaster.SokoZaiko.LastShiireDate,
                             LastHaraidashiDate = argCurrentDateTime,
                             LastUriageDatetime = null,
                         };
                 }
             }
 
-            _context.Add(tentoHaraidashiHeader);
+            //DBへ追加指示
+            _context.Add(this.TentoHaraidashiHeader);
 
-            return (tentoHaraidashiHeader);
+            return (this.TentoHaraidashiHeader);
         }
 
         /// <summary>
@@ -102,9 +123,12 @@ namespace Convenience.Models.Properties {
         /// <para>③実績に店頭在庫をくっつける</para>
         /// </summary>
         /// <param name="argTentoHaraidashiId">店頭払出コード</param>
-        /// <returns>店頭払出ヘッダ</returns>
-        public async Task<TentoHaraidashiHeader> TentoHaraidashiToiawase(string argTentoHaraidashiId) {
-            TentoHaraidashiHeader? tentoHaraidashiHeader =
+        /// <returns>TentoHaraidashiHeader 店頭払出ヘッダ</returns>
+        public async Task<TentoHaraidashiHeader?> TentoHaraidashiToiawase(string argTentoHaraidashiId) {
+            /*
+             * 店頭払出コードより店頭払出ヘッダー以下を検索
+             */
+            this.TentoHaraidashiHeader =
                 _context.TentoHaraidashiHearder
                 .Where(tentoheader => tentoheader.TentoHaraidashiId == argTentoHaraidashiId)
                 //仕入マスタ→倉庫在庫
@@ -118,7 +142,7 @@ namespace Convenience.Models.Properties {
                 .ThenInclude(x => x.TentoZaiko)
                 .FirstOrDefault();
 
-            return tentoHaraidashiHeader;
+            return this.TentoHaraidashiHeader;
         }
 
     }

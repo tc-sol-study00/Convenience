@@ -2,10 +2,6 @@
 
 namespace Convenience.Models.Interfaces {
     public interface ITentoHaraidashiService {
-        /// <summary>
-        /// 注文クラス用オブジェクト変数
-        /// </summary>
-        public ITentoHaraidashi TentoHaraidashi { get; }
 
         /// <summary>
         /// 店頭払出ビューモデル設定
