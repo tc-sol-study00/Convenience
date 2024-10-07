@@ -55,9 +55,9 @@ namespace Convenience.Controllers {
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> KeyInput(TentoHaraidashiViewModel argTentoHaraidashiViewModel)
-        {
-            TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
+        public async Task<IActionResult> KeyInput(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
+            TentoHaraidashiViewModel tentoHaraidashiViewModel =
+                await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
             ViewBag.HandlingFlg = "FirstDisplay";
             ViewData["Action"] = "TentoHaraidashi";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
@@ -78,7 +78,8 @@ namespace Convenience.Controllers {
             //}
 
             // 店頭払出実績更新
-            TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
+            TentoHaraidashiViewModel tentoHaraidashiViewModel =
+                await tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
             //PRG用ビュー・モデル引き渡し
             TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
             return RedirectToAction("Result");
@@ -89,20 +90,17 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Result()
-        {
+        public async Task<IActionResult> Result() {
             ViewBag.HandlingFlg = "SecondDisplay";
             ViewData["Action"] = "TentoHaraidashi";
 
-            if (TempData.Peek(IndexName) != null)
-            {
+            if (TempData.Peek(IndexName) != null) {
                 //PRG用ビュー・モデル引き取り    
                 tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName] as string);
                 TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
                 return View("TentoHaraidashi", tentoHaraidashiViewModel);
             }
-            else
-            {
+            else {
                 return RedirectToAction("TentoHaraidashi");
             }
         }

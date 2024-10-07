@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ConvenienceContext>(options =>
 builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 
 //DIコンテナのサービス登録
+//Dependency Injection（依存性の注入）
 builder.Services.AddScoped<IChumonService,ChumonService>();
 builder.Services.AddScoped<IShiireService,ShiireService>();
 builder.Services.AddScoped<IZaikoService, ZaikoService>();
