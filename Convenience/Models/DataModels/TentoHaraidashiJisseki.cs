@@ -45,17 +45,18 @@ namespace Convenience.Models.DataModels {
         public DateOnly ShireDateTime { get; set; }
 
         [Column("haraidashi_date")]
-        [DisplayName("払出日時")]
+        [DisplayName("店頭払出日時")]
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime HaraidashiDate { get; set; }
 
         [Column("haraidashi_case_su")]
-        [DisplayName("仕入単位払出数")]
+        [DisplayName("仕入単位店頭払出数")]
+        [Range(0, 100, ErrorMessage = "0から100の間の値を入力してください")]
         public int HaraidashiCaseSu { get; set; }
 
         [Column("haraidashi_su")]
-        [DisplayName("払出数")]
+        [DisplayName("店頭払出数")]
         [Precision(7, 2)]
         public decimal HaraidashiSu { get; set; }
 

@@ -22,7 +22,7 @@ namespace Convenience.Models.DataModels {
         public string ShohinId { get; set; }
 
         [Column("zaiko_su")]
-        [DisplayName("在庫数")]
+        [DisplayName("店頭在庫数")]
         [Precision(7, 2)]
         public decimal ZaikoSu { get; set; }
 

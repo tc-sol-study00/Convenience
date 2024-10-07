@@ -50,6 +50,7 @@ namespace Convenience.Controllers {
 
             TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.SetTentoHaraidashiViewModel();
             ViewBag.HandlingFlg = "FirstDisplay";
+            ViewBag.BottunContext = "検索";
             ViewData["Action"] = "KeyInput";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
@@ -59,6 +60,7 @@ namespace Convenience.Controllers {
             TentoHaraidashiViewModel tentoHaraidashiViewModel =
                 await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
             ViewBag.HandlingFlg = "FirstDisplay";
+            ViewBag.BottunContext = "更新";
             ViewData["Action"] = "TentoHaraidashi";
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
@@ -98,6 +100,7 @@ namespace Convenience.Controllers {
                 //PRG用ビュー・モデル引き取り    
                 tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName] as string);
                 TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
+                ViewBag.BottunContext = "更新";
                 return View("TentoHaraidashi", tentoHaraidashiViewModel);
             }
             else {

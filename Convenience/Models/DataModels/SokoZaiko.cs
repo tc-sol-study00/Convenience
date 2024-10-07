@@ -33,12 +33,12 @@ namespace Convenience.Models.DataModels {
         public string ShohinId { get; set; }
 
         [Column("soko_zaiko_case_su")]
-        [DisplayName("仕入単位在庫数")]
+        [DisplayName("仕入単位倉庫在庫数")]
         [Precision(10, 2)]
         public decimal SokoZaikoCaseSu { get; set; }
 
         [Column("soko_zaiko_su")]
-        [DisplayName("在庫数")]
+        [DisplayName("倉庫在庫数")]
         [Precision(10, 2)]
         public decimal SokoZaikoSu { get; set; }
 
