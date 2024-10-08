@@ -3,6 +3,7 @@ using Convenience.Models.Services;
 using Convenience.Models.Properties;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ConvenienceContext>(options =>
@@ -17,9 +18,13 @@ builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 builder.Services.AddScoped<IChumonService,ChumonService>();
 builder.Services.AddScoped<IShiireService,ShiireService>();
 builder.Services.AddScoped<IZaikoService, ZaikoService>();
+builder.Services.AddScoped<IKaikeiService, KaikeiService>();
 builder.Services.AddScoped<IChumon,Chumon>();
 builder.Services.AddScoped<IShiire,Shiire>();
 builder.Services.AddScoped<IZaiko, Zaiko>();
+
+//ServiceでTempDataを使うためのＤＩ
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 //builder.Services.AddRazorPages()
 //                    .AddSessionStateTempDataProvider();

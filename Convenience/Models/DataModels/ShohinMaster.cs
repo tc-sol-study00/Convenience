@@ -26,6 +26,12 @@ namespace Convenience.Models.DataModels {
         [Required]
         public string ShohinName { get; set; }
 
+        [Column("shohin_tanka")]
+        [DisplayName("商品単価")]
+        [Required]
+        [Precision(15, 2)]
+        public decimal ShohinTanka { get; set; }
+
         [Column("shohi_zeiritsu")]
         [DisplayName("消費税率")]
         [Required]

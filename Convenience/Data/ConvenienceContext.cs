@@ -56,6 +56,10 @@ namespace Convenience.Data {
         /// <summary>
         /// 会計実績
         /// </summary>
+        public DbSet<Convenience.Models.DataModels.KaikeiHeader> KaikeiHeader { get; set; } = default!;
+        /// <summary>
+        /// 会計実績
+        /// </summary>
         public DbSet<Convenience.Models.DataModels.KaikeiJisseki> KaikeiJisseki { get; set; } = default!;
     }
 }

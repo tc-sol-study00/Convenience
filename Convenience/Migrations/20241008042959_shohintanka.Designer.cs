@@ -3,6 +3,7 @@ using System;
 using Convenience.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Convenience.Migrations
 {
     [DbContext(typeof(ConvenienceContext))]
-    partial class ConvenienceContextModelSnapshot : ModelSnapshot
+    [Migration("20241008042959_shohintanka")]
+    partial class shohintanka
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,11 +136,6 @@ namespace Convenience.Migrations
                         .HasPrecision(15, 2)
                         .HasColumnType("numeric(15,2)")
                         .HasColumnName("shohi_zeiritsu");
-
-                    b.Property<decimal>("ShohinTanka")
-                        .HasPrecision(15, 2)
-                        .HasColumnType("numeric(15,2)")
-                        .HasColumnName("shohin_tanka");
 
                     b.Property<decimal>("UriageKingaku")
                         .HasPrecision(15, 2)

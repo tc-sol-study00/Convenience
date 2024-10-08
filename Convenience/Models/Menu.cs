@@ -30,7 +30,8 @@
             new MenuItem { Name = "商品注文２", Url = "/Chumon2/KeyInput" , Description="商品注文のサービス未使用版です"},
             new MenuItem { Name = "仕入入力", Url = "/Shiire/ShiireKeyInput" , Description="仕入先毎に注文を作成します。注文コードを指定し注文済みの内容に対して、仕入数量を入力し、仕入数量分倉庫在庫に登録し、注文残を調整します。"},
             new MenuItem { Name = "在庫検索", Url = "/Zaiko/Index" , Description = "仕入後の商品出し前の倉庫在庫が検索できます"},
-            new MenuItem { Name = "店頭払出", Url = "/TentoHaraidashi/KeyInput" , Description = "倉庫在庫を店頭に払い出して店頭在庫にします"}
+            new MenuItem { Name = "店頭払出", Url = "/TentoHaraidashi/KeyInput" , Description = "倉庫在庫を店頭に払い出して店頭在庫にします"},
+            new MenuItem { Name = "会計入力", Url = "/Kaikei/KeyInput" , Description = "お客様へ会計を行います"}
         };
     } 
 }
