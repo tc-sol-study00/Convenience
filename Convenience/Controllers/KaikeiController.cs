@@ -60,8 +60,8 @@ namespace Convenience.Controllers {
             ViewBag.HandlingFlg = "FirstDisplay";   ////アコーデオンを開いた状態にする
             ViewBag.BottunContext = "検索";         //ボタンを「検索」表示にする
             ViewData["Action"] = "KeyInput";        //postされたら、このメソッド(psot付き）に飛ぶ
-            return View("Kaikei", kaikeiViewModel);
             TempData["id"] = "00:Init";
+            return View("Kaikei", kaikeiViewModel);
             //return RedirectToAction("Result", new { id = "01:KeyInput" });
         }
 
