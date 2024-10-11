@@ -2,6 +2,8 @@
 using Convenience.Models.Properties;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.ViewModels.Kaikei {
 
@@ -48,6 +50,10 @@ namespace Convenience.Models.ViewModels.Kaikei {
     }
 
     public class KaikeiJissekiforAdd : KaikeiJisseki {
-        public string ShohinName { get; set; }
+
+        [Column("shohin_code")]
+        [DisplayName("商品コード")]
+        public string? ShohinId { get; set; }
+        public string? ShohinName { get; set; }
     }
 }

@@ -91,13 +91,16 @@ function FirstFocus(firstPosition) {
 
     if (firstPosition && firstPosition.trim() !== "") {
         $(firstPosition).focus();
+        $(firstPosition).select();
     };
 
 }
 function GetShohinName() {
 
-
-    //$('#KaikeiJissekiforAdd_ShohinId').focus();     //商品コード入力にジャンプ
+    var shohinIdElement = $("#KaikeiJissekiforAdd_ShohinId");  // 引数で渡されたIDの要素を取得
+    if (shohinIdElement.length > 0) {  // 要素が存在する場合のみ
+        GetShohinNameWithAjax(shohinIdElement);
+    }
 
     // ShohinIdの選択が変更されたときにイベントを発火
     $('#KaikeiJissekiforAdd_ShohinId').change(function () {
@@ -138,7 +141,6 @@ function GetShohinNameWithAjax(item) {
 
 function ResetForm(stringForm) {
     document.getElementById(stringForm).reset();  // フォームをリセット
-    GetShohinNameWithAjax($('#KaikeiJissekiforAdd_ShohinId'));
 }
 
 function PreventModoru() {

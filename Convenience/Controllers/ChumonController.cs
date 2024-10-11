@@ -39,8 +39,18 @@ namespace Convenience.Controllers {
         /// 商品注文１枚目の初期表示処理
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> KeyInput() {
+        [HttpGet]
+        public async Task<IActionResult> KeyInput(string id) {
+            if ((id??string.Empty).Equals("Result")) {
+                ChumonViewModel chumonViewModel 
+                    = ISharedTools.ConvertFromSerial<ChumonViewModel>((string)TempData[IndexName]);
+                ViewBag.HandlingFlg = "FirstDisplay";
+                TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
+                ViewBag.FocusPosition = "#ChumonJisseki_ChumonJissekiMeisais_0__ChumonSu";
+                return View("ChumonMeisai",chumonViewModel);
+            }
             ChumonKeysViewModel keymodel = await chumonService.SetChumonKeysViewModel();
+            ViewBag.FocusPosition = "#ShiireSakiId";
             return View(keymodel);
         }
 
@@ -60,17 +70,33 @@ namespace Convenience.Controllers {
 
             // 注文セッティング
             ChumonViewModel chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel);
-            ViewBag.HandlingFlg = "FirstDisplay";
-            return View("ChumonMeisai", chumonViewModel);
+            //ViewBag.HandlingFlg = "FirstDisplay";
+            //return View("ChumonMeisai", chumonViewModel);
+            TempData[IndexName]=ISharedTools.ConvertToSerial(chumonViewModel);
+            return RedirectToAction("KeyInput", new { id = "Result" });
         }
+
 
         /// <summary>
         /// 商品注文２枚目の初期表示（表示データは、postを受けたKeyInputメソッドで行う）
         /// </summary>
         /// <param name="inChumonViewModel">初期表示する注文明細ビューデータ</param>
         /// <returns></returns>
-        public async Task<IActionResult> ChumonMeisai(ChumonViewModel inChumonViewModel) {
-            return View(inChumonViewModel);
+        [HttpGet]
+        public async Task<IActionResult> ChumonMeisai(string id) {
+            if ((id ?? string.Empty).Equals("Result")) {
+                ViewBag.HandlingFlg = "SecondDisplay";
+                //Redirect前のデータを引き継ぐ
+                if (TempData.Peek(IndexName) != null) {
+                    ChumonViewModel chumonViewModel = ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName] as string);
+                    TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
+                    return View("ChumonMeisai", chumonViewModel);
+                }
+                else {
+                    return RedirectToAction("ChumonMeisai");
+                }
+            }
+            return NotFound("処理がありません");
         }
 
         /// <summary>
@@ -82,7 +108,7 @@ namespace Convenience.Controllers {
         /// <exception cref="Exception"></exception>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChumonMeisai(int id, ChumonViewModel inChumonViewModel) {
+        public async Task<IActionResult> ChumonMeisai(ChumonViewModel inChumonViewModel) {
 
             if (!ModelState.IsValid) {
                 throw new PostDataInValidException("Postデータエラー");
@@ -96,25 +122,7 @@ namespace Convenience.Controllers {
                 = await chumonService.ChumonCommit(inChumonViewModel);
             //Resultに注文明細ビューモデルを引き渡す
             TempData[IndexName] = ISharedTools.ConvertToSerial(ChumonViewModel);
-            return RedirectToAction("Result");
-        }
-
-        /// <summary>
-        /// 商品注文２枚目のPostデータコミット後の再表示
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> Result() {
-            ViewBag.HandlingFlg = "SecondDisplay";
-            //Redirect前のデータを引き継ぐ
-            if (TempData.Peek(IndexName) != null) {
-                ChumonViewModel chumonViewModel = ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName] as string);
-                TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
-                return View("ChumonMeisai", chumonViewModel);
-            }
-            else {
-                return RedirectToAction("ChumonMeisai");
-            }
+            return RedirectToAction("ChumonMeisai", new { id = "Result"});
         }
     }
 }

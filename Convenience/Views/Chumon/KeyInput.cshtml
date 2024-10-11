@@ -7,7 +7,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="KeyInput">
+        <form asp-action="KeyInput" id="form1">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.AntiForgeryToken()
             <div class="form-group">
@@ -34,4 +34,12 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/sites.js"></script>
+    <script>
+        $(document).ready(function () {
+            RendaSolution();
+            FirstFocus('@ViewBag.FocusPosition');
+            ResetForm("form1");
+        });
+    </script>
 }

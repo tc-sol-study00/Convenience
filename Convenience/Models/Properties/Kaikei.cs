@@ -4,6 +4,7 @@ using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 using Convenience.Migrations;
+using Convenience.Models.ViewModels.Kaikei;
 
 namespace Convenience.Models.Properties {
     /// <summary>
@@ -75,7 +76,7 @@ namespace Convenience.Models.Properties {
         /// </summary>
         /// <param name="argKaikeiJisseki"></param>
         /// <returns>KaikeiJisseki 品目を追加された会計実績</returns>
-        public async Task<IList<KaikeiJisseki>> KaikeiAddcommodity(KaikeiJisseki argKaikeiJisseki) {
+        public async Task<IList<KaikeiJisseki>> KaikeiAddcommodity(KaikeiJissekiforAdd argKaikeiJisseki) {
             
             string shohinId = argKaikeiJisseki.ShohinId;
 

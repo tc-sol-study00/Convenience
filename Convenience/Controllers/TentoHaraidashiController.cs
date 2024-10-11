@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 注文コントローラ
+    /// 店頭払出コントローラ
     /// </summary>
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class TentoHaraidashiController : Controller, ISharedTools {
         /// <summary>
         /// DBコンテキスト
@@ -47,12 +48,25 @@ namespace Convenience.Controllers {
         /// 商品注文１枚目の初期表示処理
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> KeyInput() {
+        /// 
 
-            TentoHaraidashiViewModel tentoHaraidashiViewModel = await _tentoHaraidashiService.SetTentoHaraidashiViewModel();
-            ViewBag.HandlingFlg = "FirstDisplay";
-            ViewBag.BottunContext = "検索";
-            ViewData["Action"] = "KeyInput";
+        [HttpGet]
+        public async Task<IActionResult> KeyInput(string id) {
+            if ((id ?? string.Empty).Equals("Result")){
+                ViewBag.HandlingFlg = "FirstDisplay";
+                ViewBag.BottunContext = "更新";
+                ViewData["Action"] = "TentoHaraidashi";
+                ViewBag.FocusPosition = "#ShohinMasters_0__ShiireMasters_0__TentoHaraidashiJissekis_0__HaraidashiCaseSu";
+                tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>((string)TempData[IndexName]);
+                TempData.Keep(IndexName);
+            }
+            else {
+                tentoHaraidashiViewModel = await _tentoHaraidashiService.SetTentoHaraidashiViewModel();
+                ViewBag.HandlingFlg = "FirstDisplay";
+                ViewBag.BottunContext = "検索";
+                ViewData["Action"] = "KeyInput";
+                ViewBag.FocusPosition = "#HaraidashiDateAndId";
+            }
             return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
         [HttpPost]
@@ -60,10 +74,11 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> KeyInput(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
             TentoHaraidashiViewModel tentoHaraidashiViewModel =
                 await _tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
-            ViewBag.HandlingFlg = "FirstDisplay";
-            ViewBag.BottunContext = "更新";
-            ViewData["Action"] = "TentoHaraidashi";
-            return View("TentoHaraidashi", tentoHaraidashiViewModel);
+
+            TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
+
+            return RedirectToAction("KeyInput", new { id = "Result" });
+            //return View("TentoHaraidashi", tentoHaraidashiViewModel);
         }
 
         /// <summary>
@@ -85,7 +100,7 @@ namespace Convenience.Controllers {
                 await _tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
             //PRG用ビュー・モデル引き渡し
             TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
-            return RedirectToAction("Result");
+            return RedirectToAction("TentoHaraidashi",new { id = "Result"});
         }
 
         /// <summary>
@@ -93,20 +108,24 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Result() {
-            ViewBag.HandlingFlg = "SecondDisplay";
-            ViewData["Action"] = "TentoHaraidashi";
+        public async Task<IActionResult> TentoHaraidashi(string id) {
 
-            if (TempData.Peek(IndexName) != null) {
-                //PRG用ビュー・モデル引き取り    
-                tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName] as string);
-                TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
-                ViewBag.BottunContext = "更新";
-                return View("TentoHaraidashi", tentoHaraidashiViewModel);
+            if ((id ?? string.Empty).Equals("Result")) {
+                ViewBag.HandlingFlg = "SecondDisplay";
+                ViewData["Action"] = "TentoHaraidashi";
+
+                if (TempData.Peek(IndexName) != null) {
+                    //PRG用ビュー・モデル引き取り    
+                    tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName] as string);
+                    TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
+                    ViewBag.BottunContext = "更新";
+                    return View("TentoHaraidashi", tentoHaraidashiViewModel);
+                }
+                else {
+                    return RedirectToAction("TentoHaraidashi");
+                }
             }
-            else {
-                return RedirectToAction("TentoHaraidashi");
-            }
+            return NotFound("処理なし");
         }
 
     }

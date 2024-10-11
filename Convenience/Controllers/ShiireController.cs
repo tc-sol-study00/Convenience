@@ -35,9 +35,21 @@ namespace Convenience.Controllers {
         /// 仕入画面１枚目の初期表示
         /// </summary>
         /// <returns>ShiireKeysViewModel 仕入キービューモデル</returns>
-        public async Task<IActionResult> ShiireKeyInput() {
-            ShiireKeysViewModel keymodel = await shiireService.SetShiireKeysModel();
-            return View(keymodel);
+        /// 
+        [HttpGet]
+        public async Task<IActionResult> ShiireKeyInput(string id) {
+            if ((id ?? string.Empty).Equals("Result")) {
+                ViewBag.HandlingFlg = "FirstDisplay";
+                shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>((string)TempData[IndexName]);
+                TempData.Keep(IndexName);
+                ViewBag.FocusPosition = "#ShiireJissekis_0__NonyuSu";
+                return View("Shiire", shiireViewModel);
+            }
+            else {
+                ShiireKeysViewModel keymodel = await shiireService.SetShiireKeysModel();
+                ViewBag.FocusPosition = "#ChumonId";
+                return View(keymodel);
+            }
         }
 
         /// <summary>
@@ -49,8 +61,10 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShiireKeyInput(ShiireKeysViewModel inKeysModel) {
             shiireViewModel = await shiireService.ShiireSetting(inKeysModel);
-            ViewBag.HandlingFlg = "FirstDisplay";
-            return View("Shiire", shiireViewModel);
+            TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
+            //ViewBag.HandlingFlg = "FirstDisplay";
+            return RedirectToAction("ShiireKeyInput", new { id = "Result" });
+            //return View("Shiire", shiireViewModel);
         }
         /// <summary>
         /// 仕入画面２枚目のPost後処理
@@ -67,22 +81,27 @@ namespace Convenience.Controllers {
             ViewBag.HandlingFlg = "SecondDisplay";
 
             TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
-            return RedirectToAction("Result");
+            return RedirectToAction("Shiire", new { id = "Result" });
         }
         /// <summary>
         /// 仕入画面２枚目の初期表示（仕入画面２枚目のPost後処理よりredirect）
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Result() {
-            ViewBag.HandlingFlg = "SecondDisplay";
-            if (TempData.Peek(IndexName) != null) {
-                shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName] as string);
-                TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
-                return View("Shiire", shiireViewModel);
+        public async Task<IActionResult> Shiire(string id) {
+            if ((id ?? string.Empty).Equals("Result")) {
+                ViewBag.HandlingFlg = "SecondDisplay";
+                if (TempData.Peek(IndexName) != null) {
+                    shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName] as string);
+                    TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
+                    return View("Shiire", shiireViewModel);
+                }
+                else {
+                    return RedirectToAction("Shiire");
+                }
             }
             else {
-                return RedirectToAction("Shiire");
+                return NotFound("処理がありません");
             }
         }
 

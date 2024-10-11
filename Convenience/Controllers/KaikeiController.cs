@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.OutputCaching;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 注文コントローラ
+    /// 会計コントローラ
     /// </summary>
+    
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class KaikeiController : Controller, ISharedTools {
         /// <summary>
         /// DBコンテキスト
