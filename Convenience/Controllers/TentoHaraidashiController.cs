@@ -25,7 +25,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 注文サービスクラス（ＤＩ用）
         /// </summary>
-        private readonly TentoHaraidashiService tentoHaraidashiService;
+        private readonly ITentoHaraidashiService _tentoHaraidashiService;
 
         /// <summary>
         /// ビュー・モデル
@@ -37,9 +37,10 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
-        public TentoHaraidashiController(ConvenienceContext context) {
+        public TentoHaraidashiController(ConvenienceContext context, ITentoHaraidashiService tentoHaraidashiService) {
             this._context = context;
-            this.tentoHaraidashiService = new TentoHaraidashiService(_context);
+            this._tentoHaraidashiService = tentoHaraidashiService;
+            //this._tentoHaraidashiService = new TentoHaraidashiService(_context);
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace Convenience.Controllers {
         /// <returns></returns>
         public async Task<IActionResult> KeyInput() {
 
-            TentoHaraidashiViewModel tentoHaraidashiViewModel = await tentoHaraidashiService.SetTentoHaraidashiViewModel();
+            TentoHaraidashiViewModel tentoHaraidashiViewModel = await _tentoHaraidashiService.SetTentoHaraidashiViewModel();
             ViewBag.HandlingFlg = "FirstDisplay";
             ViewBag.BottunContext = "検索";
             ViewData["Action"] = "KeyInput";
@@ -58,7 +59,7 @@ namespace Convenience.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> KeyInput(TentoHaraidashiViewModel argTentoHaraidashiViewModel) {
             TentoHaraidashiViewModel tentoHaraidashiViewModel =
-                await tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
+                await _tentoHaraidashiService.TentoHaraidashiSetting(argTentoHaraidashiViewModel);
             ViewBag.HandlingFlg = "FirstDisplay";
             ViewBag.BottunContext = "更新";
             ViewData["Action"] = "TentoHaraidashi";
@@ -81,7 +82,7 @@ namespace Convenience.Controllers {
 
             // 店頭払出実績更新
             TentoHaraidashiViewModel tentoHaraidashiViewModel =
-                await tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
+                await _tentoHaraidashiService.TentoHaraidashiCommit(argTentoHaraidashiViewModel);
             //PRG用ビュー・モデル引き渡し
             TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
             return RedirectToAction("Result");

@@ -23,7 +23,7 @@ namespace Convenience.Models.Services {
         private readonly ConvenienceContext _context;
 
         //店頭払出クラス用
-        private ITentoHaraidashi TentoHaraidashi { get; set; }
+        private ITentoHaraidashi _tentoHaraidashi { get; set; }
 
         /// <summary>
         /// 店頭払出ビュー・モデル（プロパティ）
@@ -34,9 +34,9 @@ namespace Convenience.Models.Services {
         /// 店頭払出ビューモデル設定
         /// </summary>
         /// <returns>TentoHaraidashiViewModel 店頭払出ビューモデル</returns>
-        public TentoHaraidashiService(ConvenienceContext context) {
+        public TentoHaraidashiService(ConvenienceContext context, ITentoHaraidashi tentoHaraidashi) {
             this._context = context;
-            this.TentoHaraidashi = new TentoHaraidashi(_context);
+            this._tentoHaraidashi = tentoHaraidashi;
         }
         /// <summary>
         /// 初期表示用
@@ -89,14 +89,14 @@ namespace Convenience.Models.Services {
                 /*
                  * 店頭払出ヘッダ＋実績作成（新規の場合）
                  */
-                tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+                tentoHaraidashiHeader = await _tentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
             }
             else
             {
                 /*
                  * 店頭払出ヘッダ＋実績問い合わせ（登録済みデータ編集の場合）
                  */
-                tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiToiawase(postedTentoHaraidashiId);
+                tentoHaraidashiHeader = await _tentoHaraidashi.TentoHaraidashiToiawase(postedTentoHaraidashiId);
             }
 
             /*
@@ -139,13 +139,13 @@ namespace Convenience.Models.Services {
             /*
              * 店頭払出ヘッダ＋実績問い合わせ(Postデータ更新用ベース）
              */
-            TentoHaraidashiHeader settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            TentoHaraidashiHeader settingTentoHaraidashiHearder = await _tentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
 
             if (settingTentoHaraidashiHearder == null) {    //上記問い合わせデータなし
                 /*
                  * 店頭払出ヘッダ＋実績作成(Postデータ更新用ベース）
                  */
-                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+                settingTentoHaraidashiHearder = await _tentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
             }
 
             /*
@@ -199,7 +199,7 @@ namespace Convenience.Models.Services {
              * DB更新後、再読み込み
              */
             haraidashiDateTimeAndIdMatching.TentoHaraidashiId = settingTentoHaraidashiHearder.TentoHaraidashiId;
-            TentoHaraidashiHeader? queriedTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            TentoHaraidashiHeader? queriedTentoHaraidashiHearder = await _tentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
             IList<ShohinMaster> shohinmasters = TransferToDisplayModel(queriedTentoHaraidashiHearder).ToList();
             /*
              * キー入力用リスト設定
