@@ -53,9 +53,14 @@ namespace Convenience.Controllers {
              */
             KaikeiViewModel kaikeiViewModel = await _kaikeiService.SetKaikeiViewModel();
             //PRG用ビュー・モデル引き渡し
-            TempData[IndexName] = ISharedTools.ConvertToSerial(kaikeiViewModel);
+            //TempData[IndexName] = ISharedTools.ConvertToSerial(kaikeiViewModel);
+            ViewBag.FocusPosition = "#KaikeiDateAndId";    //最初のフォーカス位置
+            ViewBag.HandlingFlg = "FirstDisplay";   ////アコーデオンを開いた状態にする
+            ViewBag.BottunContext = "検索";         //ボタンを「検索」表示にする
+            ViewData["Action"] = "KeyInput";        //postされたら、このメソッド(psot付き）に飛ぶ
+            return View("Kaikei", kaikeiViewModel);
             TempData["id"] = "00:Init";
-            return RedirectToAction("Result", new { id = "01:KeyInput" });
+            //return RedirectToAction("Result", new { id = "01:KeyInput" });
         }
 
         /// <summary>
