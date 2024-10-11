@@ -69,8 +69,6 @@ namespace Convenience.Models.Properties
             return (Shiirejissekis);
         }
 
-
-
         /// <summary>
         /// 仕入実績に既に存在しているかチェック
         /// </summary>
