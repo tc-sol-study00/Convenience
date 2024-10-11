@@ -1,5 +1,6 @@
 ﻿@using Convenience.Models.ViewModels.Kaikei
 @using Convenience.Models.DataModels
+@using System.Text.Json
 @model KaikeiViewModel
 @{
     KaikeiJisseki fortitle = null;
@@ -7,17 +8,22 @@
     if (Model.KaikeiHeader != null && Model.KaikeiHeader.KaikeiJissekis.Count() > 0) {
         fortitle = Model.KaikeiHeader.KaikeiJissekis.FirstOrDefault();
     }
+
+    UriageDateTimeAndIdMatching uriageDateTimeAndIdMatching
+                = JsonSerializer.Deserialize<UriageDateTimeAndIdMatching>(Model.KaikeiDateAndId);
+
+    string uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId;
 }
 <div id="content" style="display:none">
     <div class="container-fluid">
         <div class="form-group">
-            <form asp-action="@ViewData["Action"]">
+            <form asp-action="@ViewData["Action"]" id="form1">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="id" value="1" />
                 <div id="accordion">
                     <div class="accordion-item">
                         <h5 class="accordion-header" id="headingOne">
-                            <button class="accordion-button bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="accordion-button bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" tabindex="-1">
                                 <h3>@(ViewData["Title"] ?? "会計画面")</h3>
                             </button>
                         </h5>
@@ -30,7 +36,7 @@
                                                 <b><label asp-for="@Model.KaikeiDateAndId" class="control-label"></label></b>
                                             </div>
                                             <div class="col">
-                                                <select asp-for="@Model.KaikeiDateAndId" asp-items="@Model.KaikeiHeaderList" class="form-control"></select>
+                                                <select asp-for="@Model.KaikeiDateAndId" asp-items="@Model.KaikeiHeaderList" class="form-control" tabindex="1"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -42,36 +48,51 @@
                     </div>
                 </div>
 
-                @if (!((string?)ViewData["Action"]).Equals("KeyInput"))
+                @if (((string?)ViewData["Action"]).Equals("Kaikei") && uriageDatetimeId is null) //キー入力画面のときで、新規登録の時
                 {
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="d-none d-md-table-cell">
+                                <th class="col-sm-2">
                                     <label asp-for="@fortitle.ShohinId" class="control-label"></label>
                                 </th>
-                                <th class="text-end">
+                                <th class="col-sm-2">
+                                    <label asp-for="@fortitle.ShohinMaster.ShohinName" class="control-label"></label>
+                                </th>
+                                <th class="col-sm-1 text-end">
                                     <label asp-for="@fortitle.UriageSu" class="control-label"></label>
+                                </th>
+                                <th class="col-sm-1">
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="col-sm-auto">
-                                    <select asp-for="@Model.KaikeiJissekiforAdd.ShohinId" asp-items="@Model.ShohinList" class="form-control" tabindex="1"></select>
-                            </td>
-                            <td class="col-sm-auto">
-                                <input asp-for="@Model.KaikeiJissekiforAdd.UriageSu" class="form-control " tabindex="2" />
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="col-sm-auto">
+                                    <fieldset>
+                                        @Html.AntiForgeryToken()
+                                        <select asp-for="@Model.KaikeiJissekiforAdd.ShohinId" asp-items="@Model.ShohinList" class="form-control" tabindex="2">
+                                            <option value="">-- 選択してください --</option>
+                                        </select>
+                                    </fieldset>
+                                </td>
+                                <td class="col-sm-auto">
+                                    <input asp-for="@Model.KaikeiJissekiforAdd.ShohinName" class="form-control custom-disabled" tabindex="-1 " />
+
+                                </td>
+                                <td class="col-sm-auto text-end">
+                                    <input asp-for="@Model.KaikeiJissekiforAdd.UriageSu" class="form-control" tabindex="3" />
+                                </td>
+                                <td class="col-sm-auto">
+                                    <div class="form-group">
+                                        <button id="submit_btn_for_add" type="submit" asp-action="AddKaikei" class="btn btn-primary" tabindex="4">
+                                            追加
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    <div class="form-group">
-                        <button id="submit_btn" type="submit" asp-action="AddKaikei" class="btn btn-primary">
-                            @(ViewBag.BottunContext ?? "ボタン")
-                        </button>
-                    </div>
-
                 }
 
                 @if (Model.KaikeiHeader != null) {
@@ -80,7 +101,6 @@
                 }
 
                 @if (Model.KaikeiHeader != null && Model.KaikeiHeader.KaikeiJissekis.Count() > 0) {
-
                     <table class="table">
                         <thead>
                             <tr>
@@ -116,31 +136,31 @@
                                     <input type="hidden" asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageDatetimeId" />
                                     <input type="hidden" asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohinTanka" />
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohinId" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohinId" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohinMaster.ShohinName" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohinMaster.ShohinName" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageDatetime" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageDatetime" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageSu" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageSu" class="form-control" tabindex="5" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageKingaku" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageKingaku" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ZeikomiKingaku" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ZeikomiKingaku" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohiZeiritsu" class="form-control " tabindex="1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohiZeiritsu" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                     <td>
-                                        @if (@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko is not null)
-                                        {
-                                            <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko.ZaikoSu" class="form-control " tabindex="1" />
-                                        }else{
+                                        @if (@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko is not null) {
+                                            <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko.ZaikoSu" class="form-control custom-disabled" tabindex="-1" />
+                                        }
+                                        else {
                                             <input type="text" class="form-control" tabindex="-1" disabled value="N/A" />
                                         }
                                     </td>
@@ -149,17 +169,18 @@
                         </tbody>
                     </table>
                 }
-                <div class="form-group">
-                    <input id="submit_btn" type="submit" value="@(ViewBag.BottunContext??"ボタン")" class="btn btn-primary" />
-                </div>
-                <p>
-                    <div id="remark" class="@(Model.IsNormal??true ? "text-primary" : "text-danger")">
-                        <b>@Model.Remark</b>
+                @if (((string?)ViewData["Action"]).Equals("KeyInput") || (Model.KaikeiHeader?.KaikeiJissekis?.Count() ?? 0) > 0) {
+                    <div class="form-group">
+                        <input id="submit_btn_for_form" type="submit" value="@(ViewBag.BottunContext??"ボタン")" class="btn btn-primary" tabindex="6" />
                     </div>
-                </p>
+                    <p>
+                        <div id="remark" class="@(Model.IsNormal??true ? "text-primary" : "text-danger")">
+                            <b>@Model.Remark</b>
+                        </div>
+                    </p>
+                }
             </form>
         </div>
-
     </div>
 </div>
 
@@ -169,8 +190,14 @@
     }
     <script src="~/js/sites.js"></script>
     <script>
-        AccordionHandller();
-        RendaSolution();
+        $(document).ready(function () {
+            AccordionHandller();
+            RendaSolution();
+            GetShohinName();
+            FirstFocus('@ViewBag.FocusPosition');
+            ResetForm("form1");
+            //PreventModoru();
+        });
     </script>
 }
 

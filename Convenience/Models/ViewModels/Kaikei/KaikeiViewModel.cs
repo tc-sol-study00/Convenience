@@ -16,7 +16,7 @@ namespace Convenience.Models.ViewModels.Kaikei {
         [DisplayName("会計日時＋コード")]
         public string KaikeiDateAndId { get; set; }
 
-        public KaikeiJisseki KaikeiJissekiforAdd { get; set; } = new KaikeiJisseki();
+        public KaikeiJissekiforAdd KaikeiJissekiforAdd { get; set; } = new KaikeiJissekiforAdd();
         public IList<SelectListItem> ShohinList { get; set; }
 
         public KaikeiHeader KaikeiHeader { get; set; }
@@ -47,4 +47,7 @@ namespace Convenience.Models.ViewModels.Kaikei {
         }
     }
 
+    public class KaikeiJissekiforAdd : KaikeiJisseki {
+        public string ShohinName { get; set; }
+    }
 }

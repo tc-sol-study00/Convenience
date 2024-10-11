@@ -50,6 +50,7 @@ namespace Convenience.Models.Properties {
             }
             return $"{dateArea}-{seq:000}";
         }
+
         /// <summary>
         /// <para>会計作成（新規会計用）</para>
         /// <para>新規会計ヘッダーと実績を作成する</para>
@@ -75,6 +76,7 @@ namespace Convenience.Models.Properties {
         /// <param name="argKaikeiJisseki"></param>
         /// <returns>KaikeiJisseki 品目を追加された会計実績</returns>
         public async Task<IList<KaikeiJisseki>> KaikeiAddcommodity(KaikeiJisseki argKaikeiJisseki) {
+            
             string shohinId = argKaikeiJisseki.ShohinId;
 
             var uriageDatetime=this.KaikeiHeader.UriageDatetime;
@@ -88,12 +90,10 @@ namespace Convenience.Models.Properties {
             kaikeiJisseki = this.KaikeiHeader.KaikeiJissekis.Where(x => x.ShohinId.Equals(shohinId)).FirstOrDefault();
 
             if(kaikeiJisseki is null) {
-
                 var shohinMaster=_context.ShohinMaster.Where(x => x.ShohinId == shohinId).FirstOrDefault();
                 if(shohinMaster is null) {
                     throw new ArgumentException("引数で渡された商品コードがＤＢに見つかりません");
                 }
-
                 kaikeiJisseki = new KaikeiJisseki();
                 kaikeiJisseki.UriageSu = argKaikeiJisseki.UriageSu;
                 kaikeiJisseki.ShohiZeiritsu = shohinMaster.ShohiZeiritsu;
@@ -105,7 +105,7 @@ namespace Convenience.Models.Properties {
                 kaikeiJisseki.UriageDatetime = uriageDatetime;
                 kaikeiJisseki.ShohinMaster = shohinMaster;
                 kaikeiJisseki.TentoZaiko =
-                    await ZaikoConnection(kaikeiJisseki.ShohinId, kaikeiJisseki.UriageDatetime, kaikeiJisseki.UriageSu);
+                    await ZaikoConnection(kaikeiJisseki.ShohinId, kaikeiJisseki.UriageDatetime, kaikeiJisseki.UriageSu, null);
                 kaikeiJisseki.KaikeiHeader = this.KaikeiHeader;
                 this.KaikeiHeader.KaikeiJissekis.Insert(0, kaikeiJisseki);
             }
@@ -115,9 +115,8 @@ namespace Convenience.Models.Properties {
                 kaikeiJisseki.UriageKingaku = kaikeiJisseki.UriageSu * kaikeiJisseki.ShohinTanka;
                 kaikeiJisseki.ZeikomiKingaku = kaikeiJisseki.UriageKingaku * (1.0m + kaikeiJisseki.ShohiZeiritsu/100.0m);
                 kaikeiJisseki.TentoZaiko =
-                    await ZaikoConnection(kaikeiJisseki.ShohinId, kaikeiJisseki.UriageDatetime, kaikeiJisseki.UriageSu - tempUriageSu);
+                    await ZaikoConnection(kaikeiJisseki.ShohinId, kaikeiJisseki.UriageDatetime, kaikeiJisseki.UriageSu - tempUriageSu, kaikeiJisseki.TentoZaiko);
             }
-
             return (KaikeiHeader.KaikeiJissekis);
         }
 
@@ -159,6 +158,11 @@ namespace Convenience.Models.Properties {
             if (queriedkaikeiHeader is null) {
                 postedKaikeiHeader.UriageDatetimeId = UriageDatetimeIdHatsuban(postedUriageDatetime);
                 postedKaikeiHeader.KaikeiJissekis.ToList().ForEach(x => { x.ShohinMaster = null; x.UriageDatetimeId = postedKaikeiHeader.UriageDatetimeId; });
+
+                foreach(var postedItem in postedKaikeiHeader.KaikeiJissekis) {
+                    postedItem.TentoZaiko=await ZaikoConnection(postedItem.ShohinId, postedItem.UriageDatetime, postedItem.UriageSu, null);
+                }
+                
                 _context.Add(postedKaikeiHeader);
                 this.KaikeiHeader=postedKaikeiHeader;
             }
@@ -175,16 +179,22 @@ namespace Convenience.Models.Properties {
                     queriedKaikeiJisseki.UriageKingaku = postedItem.UriageSu * postedItem.ShohinTanka;
                     queriedKaikeiJisseki.ZeikomiKingaku = queriedKaikeiJisseki.UriageKingaku * (1.0m + postedItem.ShohiZeiritsu / 100.0m);
                     queriedKaikeiJisseki.TentoZaiko=
-                        await ZaikoConnection(postedItem.ShohinId, postedItem.UriageDatetime, postedItem.UriageSu - tempUriageSu);
+                        await ZaikoConnection(postedItem.ShohinId, postedItem.UriageDatetime, postedItem.UriageSu - tempUriageSu, null);
                 }
                 this.KaikeiHeader = queriedkaikeiHeader;
             }
             return this.KaikeiHeader;
         }
 
-        public async Task<TentoZaiko> ZaikoConnection(string argShohinId,DateTime argUriageDateTime, decimal argDiffUriageSu) {
+        public async Task<TentoZaiko> ZaikoConnection(string argShohinId,DateTime argUriageDateTime, decimal argDiffUriageSu,TentoZaiko? argTentoZaiko) {
 
-            var tentoZaiko=await _context.TentoZaiko.Where(x => x.ShohinId.Equals(argShohinId)).FirstOrDefaultAsync();
+            TentoZaiko? tentoZaiko = default;
+            if (argTentoZaiko is null) {
+                tentoZaiko = await _context.TentoZaiko.Where(x => x.ShohinId.Equals(argShohinId)).FirstOrDefaultAsync();
+            }
+            else {
+                tentoZaiko = argTentoZaiko;
+            }
 
             if(tentoZaiko is not null) {
                 tentoZaiko.ZaikoSu -=argDiffUriageSu;

@@ -15,13 +15,18 @@ builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 
 //DIコンテナのサービス登録
 //Dependency Injection（依存性の注入）
+//サービス
 builder.Services.AddScoped<IChumonService,ChumonService>();
 builder.Services.AddScoped<IShiireService,ShiireService>();
 builder.Services.AddScoped<IZaikoService, ZaikoService>();
+builder.Services.AddScoped<ITentoHaraidashiService, TentoHaraidashiService>();
 builder.Services.AddScoped<IKaikeiService, KaikeiService>();
+//プロパティ
 builder.Services.AddScoped<IChumon,Chumon>();
 builder.Services.AddScoped<IShiire,Shiire>();
 builder.Services.AddScoped<IZaiko, Zaiko>();
+builder.Services.AddScoped<ITentoHaraidashi, TentoHaraidashi>();
+builder.Services.AddScoped<IKaikei, Kaikei>();
 
 //ServiceでTempDataを使うためのＤＩ
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
