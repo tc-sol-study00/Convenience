@@ -1,10 +1,9 @@
 ﻿using Convenience.Models.DataModels;
 using Convenience.Models.ViewModels.Kaikei;
+using System.Linq.Expressions;
 
-namespace Convenience.Models.Interfaces
-{
-    public interface IKaikei
-    {
+namespace Convenience.Models.Interfaces {
+    public interface IKaikei {
         /// <summary>
         /// 会計ヘッダープロパティ
         /// </summary>
@@ -29,12 +28,22 @@ namespace Convenience.Models.Interfaces
         /// <returns>KaikeiJisseki 品目を追加された会計実績</returns>
         public Task<IList<KaikeiJisseki>> KaikeiAddcommodity(IKaikeiJissekiForAdd argKaikeiJisseki);
 
+
         /// <summary>
-        /// 
+        /// 会計問い合わせ(ソート指示なし）
         /// </summary>
-        /// <param name="argTentoHaraidashiId"></param>
-        /// <returns></returns>
+        /// <param name="argTentoHaraidashiId">店頭払出コード</param>
+        /// <returns>会計実績ヘッダー＋実績</returns>
         public Task<KaikeiHeader?> KaikeiToiawase(string argTentoHaraidashiId);
+
+        /// <summary>
+        /// 会計問い合わせ
+        /// </summary>
+        /// <typeparam name="T">ソート指示された項目のタイプ</typeparam>
+        /// <param name="argTentoHaraidashiId">店頭払出コード</param>
+        /// <param name="orderexpression">ソート指示用ラムダ式</param>
+        /// <returns>会計実績ヘッダー＋実績</returns>
+        public Task<KaikeiHeader?> KaikeiToiawase<T>(string argTentoHaraidashiId, Expression<Func<KaikeiJisseki, T>>? orderexpression);
 
         /// <summary>
         /// 会計ヘッダー＋実績のＤＢ更新

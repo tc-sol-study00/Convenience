@@ -114,7 +114,7 @@ namespace Convenience.Models.Services {
              */
             KaikeiHeader? kaikeiHeader = uriageDatetimeId is null
                 ? await _kaikei.KaikeiSakusei(uriageDatetime)       //新規
-                : await _kaikei.KaikeiToiawase(uriageDatetimeId);   //すでにある場合
+                : await _kaikei.KaikeiToiawase(uriageDatetimeId,x=>x.KaikeiSeq);   //すでにある場合
 
             /*
              * 選択されたキーデータで選択リストを作成する（一件だけ）
@@ -218,7 +218,7 @@ namespace Convenience.Models.Services {
              */
             KaikeiViewModel reQueryKaikeiViewModel= new KaikeiViewModel();
             //ＤＢ更新後の再問合せ
-            reQueryKaikeiViewModel.KaikeiHeader = await _kaikei.KaikeiToiawase(postedUriageDatetimeId);
+            reQueryKaikeiViewModel.KaikeiHeader = await _kaikei.KaikeiToiawase(postedUriageDatetimeId,x=>x.KaikeiSeq);
 
             //処理結果（とりあえずＯＫ）
             reQueryKaikeiViewModel.IsNormal = true;
