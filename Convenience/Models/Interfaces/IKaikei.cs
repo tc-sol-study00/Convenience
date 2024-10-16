@@ -27,7 +27,7 @@ namespace Convenience.Models.Interfaces
         /// <param name="argKaikeiDateTime"></param>
         /// <param name="argKaikeiJisseki"></param>
         /// <returns>KaikeiJisseki 品目を追加された会計実績</returns>
-        public Task<IList<KaikeiJisseki>> KaikeiAddcommodity(KaikeiJissekiforAdd argKaikeiJisseki);
+        public Task<IList<KaikeiJisseki>> KaikeiAddcommodity(IKaikeiJissekiForAdd argKaikeiJisseki);
 
         /// <summary>
         /// 
