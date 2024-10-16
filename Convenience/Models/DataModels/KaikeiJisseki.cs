@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Convenience.Models.Interfaces;
+using Convenience.Models.ViewModels.Kaikei;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +15,7 @@ namespace Convenience.Models.DataModels {
     /// </Remarks>
     [Table("kaikei_jisseki")]
     [PrimaryKey(nameof(UriageDatetimeId),nameof(ShohinId), nameof(UriageDatetime))]
-    public class KaikeiJisseki {
+    public class KaikeiJisseki : IKaikeiJissekiForAdd {
 
         [Column("uriage_datetimeid")]
         [DisplayName("売上日時コード")]
@@ -63,11 +65,25 @@ namespace Convenience.Models.DataModels {
         [Precision(15, 2)]
         public decimal ShohiZeiritsu { get; set; }
 
+        [Column("naigai_class")]
+        [DisplayName("内外区分")]
+        [Required]
+        [MaxLength(1)]
+        public string NaigaiClass { get; set; } = "0";
+
+        [Column("kaikei_seq")]
+        [DisplayName("会計順位")]
+        [Required]
+        public int KaikeiSeq { get; set; }
+
         [ForeignKey(nameof(UriageDatetimeId))]
-        public virtual KaikeiHeader KaikeiHeader { get; set; }
+        public  KaikeiHeader KaikeiHeader { get; set; }
 
         [ForeignKey(nameof(ShohinId))]
-        public virtual ShohinMaster ShohinMaster { get; set; }
+        public ShohinMaster ShohinMaster { get; set; }
+
+        [ForeignKey(nameof(NaigaiClass))]
+        public NaigaiClassMaster NaigaiClassMaster { get; set; }
 
         public TentoZaiko TentoZaiko { get; set; }
     }
