@@ -38,7 +38,6 @@ namespace Convenience.Models.Services {
             this._context = context;
             this._tentoHaraidashi = tentoHaraidashi;
         }
-
         /// <summary>
         /// 初期表示用
         /// </summary>
