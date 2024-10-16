@@ -31,13 +31,14 @@ namespace Convenience.Models.Services {
         public TentoHaraidashiViewModel TentoHaraidashiViewModel { get; set; }
 
         /// <summary>
-        /// 店頭払出ビューモデル設定
+        /// コンストラクタ
         /// </summary>
         /// <returns>TentoHaraidashiViewModel 店頭払出ビューモデル</returns>
         public TentoHaraidashiService(ConvenienceContext context, ITentoHaraidashi tentoHaraidashi) {
             this._context = context;
             this._tentoHaraidashi = tentoHaraidashi;
         }
+
         /// <summary>
         /// 初期表示用
         /// </summary>
@@ -171,9 +172,14 @@ namespace Convenience.Models.Services {
                         ShiireMaster pickupShiireMaster = pickupTentoHaraidashiJisseki.ShiireMaster;
                         ShohinMaster pickupShohinMaster = pickupShiireMaster.ShohinMaster;
                         SokoZaiko pickupSokoZaiko = pickupTentoHaraidashiJisseki.ShiireMaster.SokoZaiko;
-                        pickupSokoZaiko.SokoZaikoCaseSu -= tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;
-                        pickupSokoZaiko.SokoZaikoSu -= (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupShiireMaster.ShiirePcsPerUnit;
-
+                        //いくら追加で倉庫から店頭に払い出したか
+                        var diffCaseSu = tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;
+                        pickupSokoZaiko.SokoZaikoCaseSu -= diffCaseSu;
+                        pickupSokoZaiko.SokoZaikoSu -= diffCaseSu * pickupShiireMaster.ShiirePcsPerUnit;
+                        //プラス＝倉庫→店頭の場合、直近払出日を更新する
+                        if (diffCaseSu > 0) {
+                            pickupSokoZaiko.LastDeliveryDate = DateOnly.FromDateTime(postedHaraidashiDateTime);
+                        }
                         /*
                          * 店頭在庫調整
                          */
