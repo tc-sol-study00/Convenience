@@ -33,16 +33,16 @@ namespace Convenience.Models.DataModels {
         public decimal ShohinTanka { get; set; }
 
         [Column("shohi_zeiritsu")]
-        [DisplayName("消費税率")]
+        [DisplayName("消費税率（持ち帰り）")]
         [Required]
         [Precision(15, 2)]
         public decimal ShohiZeiritsu { get; set; }
 
-        [Column("shohi_zeiritsu_gaisyoku")]
-        [DisplayName("消費税率（外食）")]
+        [Column("shohi_zeiritsu_eatin")]
+        [DisplayName("消費税率（イートイン）")]
         [Required]
         [Precision(15, 2)]
-        public decimal ShohiZeiritsuGaishoku { get; set; }
+        public decimal ShohiZeiritsuEatIn { get; set; }
 
         public virtual IList<ShiireMaster>? ShiireMasters { get; set; }
 
