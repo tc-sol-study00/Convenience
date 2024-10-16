@@ -35,11 +35,11 @@ namespace Convenience.Models.Properties {
         /// </summary>
         /// <param name="argCurrentDateTime">会計日時</param>
         /// <returns>会計コード(yyyyMMdd-HH-001～999、HHは店頭払出日時の時間部分</returns>
-        private string UriageDatetimeIdHatsuban(DateTime argCurrentDateTime) {
+        private async Task<string> UriageDatetimeIdHatsuban(DateTime argCurrentDateTime) {
             string dateArea = argCurrentDateTime.ToString("yyyyMMdd-HH");
 
-            string? maxUriageDatetimeId = _context.KaikeiHeader
-                .Where(x => x.UriageDatetimeId.StartsWith(dateArea)).Max(s => s.UriageDatetimeId);
+            string? maxUriageDatetimeId = await _context.KaikeiHeader
+                .Where(x => x.UriageDatetimeId.StartsWith(dateArea)).MaxAsync(s => s.UriageDatetimeId);
 
             uint seq = 0;
             if (maxUriageDatetimeId is null) {
@@ -99,13 +99,12 @@ namespace Convenience.Models.Properties {
              * Postされた商品コードより、プロパティ内会計実績を検索し関連する会計実績を抽出する
              */
             kaikeiJisseki = this.KaikeiHeader.KaikeiJissekis
-                .Where(x => x.ShohinId.Equals(shohinId))
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.ShohinId.Equals(shohinId));
 
             /*
              * 関係する商品マスタを問い合わせる
              */
-            var shohinMaster = _context.ShohinMaster.Where(x => x.ShohinId == shohinId).FirstOrDefault();
+            var shohinMaster = await _context.ShohinMaster.AsNoTracking().FirstOrDefaultAsync(x => x.ShohinId == shohinId);
             if (shohinMaster is null) {
                 throw new ArgumentException("引数で渡された商品コードがＤＢに見つかりません");
             }
@@ -131,7 +130,7 @@ namespace Convenience.Models.Properties {
                 kaikeiJisseki.UriageKingaku = argKaikeiJisseki.UriageKingaku;
                                                                         //売上金額                
                 /* 消費税関連処理 */
-                ShohizeiKeisan(argKaikeiJisseki, kaikeiJisseki);        //内外区分
+                await ShohizeiKeisan(argKaikeiJisseki, kaikeiJisseki);        //内外区分
                                                                         //消費税率
                                                                         //税込み金額
                 kaikeiJisseki.UriageDatetimeId = this.KaikeiHeader.UriageDatetimeId;
@@ -163,11 +162,10 @@ namespace Convenience.Models.Properties {
                 argKaikeiJisseki.UriageKingaku = kaikeiJisseki.UriageSu * shohinMaster.ShohinTanka;
                 kaikeiJisseki.UriageKingaku = argKaikeiJisseki.UriageKingaku;
                                                                         //売上金額
-                ShohizeiKeisan(argKaikeiJisseki, kaikeiJisseki);        //内外区分
+                await ShohizeiKeisan(argKaikeiJisseki, kaikeiJisseki);  //内外区分
                                                                         //消費税率
                                                                         //税込み金額
                                                                         //売上日時コードは既にセットされている
-                //kaikeiJisseki.UriageDatetimeId = this.KaikeiHeader.UriageDatetimeId;
                                                                         //商品単価は既にセットされている
                                                                         //売上日時は既にセットされている
                                                                         //商品マスタはすでにセットされている
@@ -202,31 +200,22 @@ namespace Convenience.Models.Properties {
             */
            //Where部分
            var qty1 = _context.KaikeiHeader
-                .Where(x => x.UriageDatetimeId.Equals(argTentoHaraidashiId));
-
-            //OrderBy指示するか、そのままか
-            IIncludableQueryable<KaikeiHeader, IEnumerable<KaikeiJisseki>> qty2;
-            if (orderexpression is null) {
-                qty2 = qty1.Include(x => x.KaikeiJissekis);
-            }
-            else {
-                qty2 = qty1.Include(x => x.KaikeiJissekis.AsQueryable().OrderBy(orderexpression));
-            }
-
-            //以降の記述（Include)
-            var qty3 = qty2
+                .Where(x => x.UriageDatetimeId.Equals(argTentoHaraidashiId))
+                .Include(x => x.KaikeiJissekis)
                 .ThenInclude(x => x.ShohinMaster)
                 .Include(x => x.KaikeiJissekis)
                 .ThenInclude(x => x.TentoZaiko)
                 .Include(x => x.KaikeiJissekis)
                 .ThenInclude(x => x.NaigaiClassMaster);
 
+            //OrderBy指示するか、そのままか
+
+            IQueryable<KaikeiHeader> qty2 =orderexpression is not null?
+                qty1.Include(x => x.KaikeiJissekis.AsQueryable().OrderBy(orderexpression)):qty2 = qty1;
             /*
              * Linq実行
              */
-            this.KaikeiHeader=qty3.FirstOrDefault();
-
-            return this.KaikeiHeader;
+            return this.KaikeiHeader = await qty2.FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -239,21 +228,16 @@ namespace Convenience.Models.Properties {
             /*
              * 前準備　
              */
-            var postedKaikeiHeader = argpostedKaikeiHeader;                     //Postされた会計実績ヘッダー
-            var postedUriageDatetimeId = postedKaikeiHeader.UriageDatetimeId;   //売上日時コード
-            var postedUriageDatetime = postedKaikeiHeader.UriageDatetime;       //売上日時
+            KaikeiHeader postedKaikeiHeader = argpostedKaikeiHeader;                     //Postされた会計実績ヘッダー
+            string postedUriageDatetimeId = postedKaikeiHeader.UriageDatetimeId;   //売上日時コード
+            DateTime postedUriageDatetime = postedKaikeiHeader.UriageDatetime;       //売上日時
 
             /*
              * 会計ヘッダー＋実績問い合わせ
              */
-            KaikeiHeader? queriedkaikeiHeader = default;
-            if (postedUriageDatetimeId is null) {
-                queriedkaikeiHeader = null; //新規の場合はnull
-            }
-            else {
-                                            //問い合わせ
-                queriedkaikeiHeader = await KaikeiToiawase(postedUriageDatetimeId,x => x.KaikeiSeq);
-            }
+            KaikeiHeader? queriedkaikeiHeader = postedUriageDatetimeId is null
+                ? null  // 新規の場合は null
+                : await KaikeiToiawase(postedUriageDatetimeId, x => x.KaikeiSeq);
 
             /*
              * 会計ヘッダー＋実績登録
@@ -263,26 +247,25 @@ namespace Convenience.Models.Properties {
                  * 新規の場合
                  * 売上日時コード発番
                  */
-                postedKaikeiHeader.UriageDatetimeId = UriageDatetimeIdHatsuban(postedUriageDatetime);
+                postedKaikeiHeader.UriageDatetimeId = await UriageDatetimeIdHatsuban(postedUriageDatetime);
 
                 //会計実績に、売上日時ＩＤと反映＋ShohinMasterをNULL(しておかないと、add時、更新エラーになる）
-                postedKaikeiHeader.KaikeiJissekis.ToList().ForEach(x => { x.ShohinMaster = null; x.UriageDatetimeId = postedKaikeiHeader.UriageDatetimeId; });
-
-
+                postedKaikeiHeader.KaikeiJissekis.ToList()
+                    .ForEach(x => { x.ShohinMaster = null; x.UriageDatetimeId=postedKaikeiHeader.UriageDatetimeId;});
                 /*
                  * 会計実績に対する処理
                  * 店頭在庫の登録
                  * 会計Seqの反映
                  */
-                for (int index=0; index < postedKaikeiHeader.KaikeiJissekis.Count;index++) {
-
-                    KaikeiJisseki postedItem = postedKaikeiHeader.KaikeiJissekis[index];
-                    ShohinMaster ? shohinMaster=_context.ShohinMaster.AsNoTracking().Where(x => x.ShohinId == postedItem.ShohinId).FirstOrDefault();
-
-                    postedItem.UriageKingaku = postedItem.UriageSu * shohinMaster?.ShohinTanka??0;
-                    ShohizeiKeisan(postedItem, postedItem);   //消費税関連処理
+                int index = 1;
+                foreach (var postedItem in postedKaikeiHeader.KaikeiJissekis) {
+                    ShohinMaster? shohinMaster = await _context.ShohinMaster
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(x => x.ShohinId == postedItem.ShohinId);
+                    postedItem.UriageKingaku = postedItem.UriageSu * (shohinMaster?.ShohinTanka ?? 0);
+                    await ShohizeiKeisan(postedItem, postedItem);  // 消費税関連処理
                     postedItem.TentoZaiko = await ZaikoConnection(postedItem.ShohinId, postedItem.UriageDatetime, postedItem.UriageSu, null);
-                    postedItem.KaikeiSeq = index + 1;
+                    postedItem.KaikeiSeq = index++;
                 }
 
                 /*
@@ -297,8 +280,8 @@ namespace Convenience.Models.Properties {
                 /*
                  * 既存データの場合
                  */
-                for (int index = 0; index < postedKaikeiHeader.KaikeiJissekis.Count; index++) {
-                    KaikeiJisseki postedItem = postedKaikeiHeader.KaikeiJissekis[index];
+                int index = 1;
+                foreach (KaikeiJisseki postedItem in postedKaikeiHeader.KaikeiJissekis) {
                     /*
                      * 売上金額を求めておく
                      */
@@ -307,24 +290,24 @@ namespace Convenience.Models.Properties {
                      * 更新対象を抽出
                      */
                     var queriedKaikeiJisseki = queriedkaikeiHeader.KaikeiJissekis
-                        .Where(x => x.UriageDatetimeId.Equals(postedItem.UriageDatetimeId) &&
+                        .Single(x => x.UriageDatetimeId.Equals(postedItem.UriageDatetimeId) &&
                         x.ShohinId.Equals(postedItem.ShohinId) &&
                         x.UriageDatetime == postedItem.UriageDatetime
-                        ).Single();
+                        );
                     /*
                      * Postデータを問い合わせた結果にオーバーライドさせる
                      */
-                    var tempUriageSu = queriedKaikeiJisseki.UriageSu;                       
-                    queriedKaikeiJisseki.UriageSu += postedItem.UriageSu - tempUriageSu;                //売上数
+                    var suDifference = postedItem.UriageSu - queriedKaikeiJisseki.UriageSu;
+                    queriedKaikeiJisseki.UriageSu += suDifference;                                      //売上数
                     queriedKaikeiJisseki.UriageKingaku = postedItem.UriageKingaku;                      //売上金額
                     //消費税関連処理
-                    ShohizeiKeisan(postedItem, queriedKaikeiJisseki);                                   //内外区分
+                    await ShohizeiKeisan(postedItem, queriedKaikeiJisseki);                             //内外区分
                                                                                                         //消費税率
                                                                                                         //税込み金額
                     queriedKaikeiJisseki.TentoZaiko =
-                        await ZaikoConnection(postedItem.ShohinId, postedItem.UriageDatetime, postedItem.UriageSu - tempUriageSu, null);
+                        await ZaikoConnection(postedItem.ShohinId, postedItem.UriageDatetime, suDifference, null);
                                                                                                         //店頭在庫への反映
-                    postedItem.KaikeiSeq = index + 1;                                                   //会計Seq
+                    postedItem.KaikeiSeq = index++;                                                   //会計Seq
                 }
                 this.KaikeiHeader = queriedkaikeiHeader;                                                //プロパティにセット
             }
@@ -344,13 +327,7 @@ namespace Convenience.Models.Properties {
              * 店頭在庫の抽出
              * （引数）店頭在庫がセットされていれば、それを適用
              */
-            TentoZaiko? tentoZaiko = default;
-            if (argTentoZaiko is null) {
-                tentoZaiko = await _context.TentoZaiko.Where(x => x.ShohinId.Equals(argShohinId)).FirstOrDefaultAsync();
-            }
-            else {
-                tentoZaiko = argTentoZaiko;
-            }
+            TentoZaiko? tentoZaiko = argTentoZaiko ?? await _context.TentoZaiko.FirstOrDefaultAsync(x => x.ShohinId.Equals(argShohinId));
 
             /*
              * 店頭在庫計算
@@ -373,34 +350,24 @@ namespace Convenience.Models.Properties {
         /// <returns>消費税関連で計算されたものの反映先（会計実績）</returns>
         /// <exception cref="InvalidDataException"></exception>
         /// <remarks>（条件）売上金額が第一引数側にセットされていること</remarks>
-        private KaikeiJisseki ShohizeiKeisan(IKaikeiJissekiForAdd inKaikeiJisseki, KaikeiJisseki outKaikeiJisseki) {
-            decimal shohiZei = default;
-
+        private async Task<KaikeiJisseki> ShohizeiKeisan(IKaikeiJissekiForAdd inKaikeiJisseki, KaikeiJisseki outKaikeiJisseki) {
             /*
              * 商品マスタから消費税率を求める
              */
-            ShohinMaster? shohinmaster = default;
-            if (inKaikeiJisseki.ShohinMaster?.ShohinId is null) {
-                shohinmaster = _context.ShohinMaster.AsNoTracking()
-                    .Where(x => x.ShohinId == inKaikeiJisseki.ShohinId)
-                    .FirstOrDefault();
-            }
-            else {
-                shohinmaster = inKaikeiJisseki.ShohinMaster;
-            }
+            ShohinMaster? shohinmaster = inKaikeiJisseki.ShohinMaster?.ShohinId is null
+                ? await _context.ShohinMaster.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.ShohinId == inKaikeiJisseki.ShohinId)
+                : inKaikeiJisseki.ShohinMaster;
+
             /*
              * 内外区分により消費税率を切り分ける
              */
-            switch (inKaikeiJisseki.NaigaiClass) {
-                case "0":
-                    shohiZei = shohinmaster.ShohiZeiritsu;
-                    break;
-                case "1":
-                    shohiZei = shohinmaster.ShohiZeiritsuEatIn;
-                    break;
-                default:
-                    throw new InvalidDataException("NaigaiClassの区分が不正です");
-            }
+            decimal shohiZei = inKaikeiJisseki.NaigaiClass switch {
+                "0" => shohinmaster.ShohiZeiritsu,
+                "1" => shohinmaster.ShohiZeiritsuEatIn,
+                _ => throw new InvalidDataException("NaigaiClassの区分が不正です")
+            };
+
             /*
              * 消費税込み計算
              */
