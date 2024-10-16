@@ -61,5 +61,10 @@ namespace Convenience.Data {
         /// 会計実績
         /// </summary>
         public DbSet<Convenience.Models.DataModels.KaikeiJisseki> KaikeiJisseki { get; set; } = default!;
+
+        /// <summary>
+        /// 内外区分マスタ
+        /// </summary>
+        public DbSet<Convenience.Models.DataModels.NaigaiClassMaster> NaigaiClassMaster { get; set; } = default!;
     }
 }
