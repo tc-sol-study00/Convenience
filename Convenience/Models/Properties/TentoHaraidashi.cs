@@ -22,7 +22,7 @@ namespace Convenience.Models.Properties {
         public TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
 
         /// <summary>
-        /// コンストラクタ（ASP用）
+        /// コンストラクタ
         /// </summary>
         /// <param name="context"></param>
         public TentoHaraidashi(ConvenienceContext context) {
