@@ -3,16 +3,12 @@
 @using System.Text.Json
 @model KaikeiViewModel
 @{
-    KaikeiJisseki fortitle = null;
-
-    if (Model.KaikeiHeader != null && Model.KaikeiHeader.KaikeiJissekis.Count() > 0) {
-        fortitle = Model.KaikeiHeader.KaikeiJissekis.FirstOrDefault();
-    }
+    var fortitle = Model?.KaikeiHeader?.KaikeiJissekis?.FirstOrDefault();
 
     UriageDateTimeAndIdMatching uriageDateTimeAndIdMatching
                 = JsonSerializer.Deserialize<UriageDateTimeAndIdMatching>(Model.KaikeiDateAndId);
 
-    string uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId;
+    string? uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId;
 }
 <div id="content" style="display:none">
     <div class="container-fluid">
@@ -63,7 +59,12 @@
                                     <label asp-for="@fortitle.UriageSu" class="control-label"></label>
                                 </th>
                                 <th class="col-sm-1">
+                                    <label asp-for="@fortitle.NaigaiClass" class="control-label"></label>
                                 </th>
+                                <th class="col-sm-1">
+                                <!-- 追加ボタン分の空間確保-->
+                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -80,12 +81,16 @@
                                     <input asp-for="@Model.KaikeiJissekiforAdd.ShohinName" class="form-control custom-disabled" tabindex="-1 " />
 
                                 </td>
-                                <td class="col-sm-auto text-end">
-                                    <input asp-for="@Model.KaikeiJissekiforAdd.UriageSu" class="form-control" tabindex="3" />
+                                <td class="col-sm-auto">
+                                    <input asp-for="@Model.KaikeiJissekiforAdd.UriageSu" class="form-control  text-end" tabindex="3" />
+                                </td>
+                                <td class="col-sm-auto">
+                                    <select asp-for="@Model.KaikeiJissekiforAdd.NaigaiClass" asp-items="@Model.KaikeiJissekiforAdd.NaigaiClassListItems" class="form-control" tabindex="4">
+                                    </select>
                                 </td>
                                 <td class="col-sm-auto">
                                     <div class="form-group">
-                                        <button id="submit_btn_for_add" type="submit" asp-action="AddKaikei" class="btn btn-primary" tabindex="4">
+                                        <button id="submit_btn_for_add" type="submit" asp-action="AddKaikei" class="btn btn-primary" tabindex="5">
                                             追加
                                         </button>
                                     </div>
@@ -107,14 +112,15 @@
                                 <th class="d-none d-md-table-cell">
                                     <label asp-for="@fortitle.ShohinId" class="control-label"></label>
                                 </th>
-                                <th>
+                                <th >
                                     <label asp-for="@fortitle.ShohinMaster.ShohinName" class="control-label"></label>
                                 </th>
-                                <th class="text-end">
-                                    <label asp-for="@fortitle.UriageDatetime" class="control-label"></label>
-                                </th>
+
                                 <th class="text-end">
                                     <label asp-for="@fortitle.UriageSu" class="control-label"></label>
+                                </th>
+                                <th class="text-end">
+                                    <label asp-for="@fortitle.NaigaiClass" class="control-label"></label>
                                 </th>
                                 <th class="text-end">
                                     <label asp-for="@fortitle.UriageKingaku" class="control-label"></label>
@@ -127,6 +133,9 @@
                                 </th>
                                 <th class="text-end">
                                     <label asp-for="@fortitle.TentoZaiko.ZaikoSu" class="control-label"></label>
+                                </th>
+                                <th class="text-end">
+                                    <label asp-for="@fortitle.UriageDatetime" class="control-label"></label>
                                 </th>
                             </tr>
                         </thead>
@@ -141,28 +150,33 @@
                                     <td>
                                         <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohinMaster.ShohinName" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
+
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageDatetime" class="form-control custom-disabled" tabindex="-1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageSu" class="form-control text-end" tabindex="6" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageSu" class="form-control" tabindex="5" />
+                                        <select asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].NaigaiClass" asp-items="@Model.KaikeiJissekiforAdd.NaigaiClassListItems" class="form-control" tabindex="7">
+                                        </select>
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageKingaku" class="form-control custom-disabled" tabindex="-1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageKingaku" class="form-control custom-disabled text-end" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ZeikomiKingaku" class="form-control custom-disabled" tabindex="-1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ZeikomiKingaku" class="form-control custom-disabled text-end" tabindex="-1" />
                                     </td>
                                     <td>
-                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohiZeiritsu" class="form-control custom-disabled" tabindex="-1" />
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].ShohiZeiritsu" class="form-control custom-disabled text-end" tabindex="-1" />
                                     </td>
                                     <td>
                                         @if (@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko is not null) {
-                                            <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko.ZaikoSu" class="form-control custom-disabled" tabindex="-1" />
+                                            <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].TentoZaiko.ZaikoSu" class="form-control custom-disabled text-end" tabindex="-1" />
                                         }
                                         else {
-                                            <input type="text" class="form-control" tabindex="-1" disabled value="N/A" />
+                                            <input type="text" class="form-control text-end" tabindex="-1" disabled value="N/A" />
                                         }
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.KaikeiHeader.KaikeiJissekis[i].UriageDatetime" class="form-control custom-disabled" tabindex="-1" />
                                     </td>
                                 </tr>
                             }
@@ -171,7 +185,7 @@
                 }
                 @if (((string?)ViewData["Action"]).Equals("KeyInput") || (Model.KaikeiHeader?.KaikeiJissekis?.Count() ?? 0) > 0) {
                     <div class="form-group">
-                        <input id="submit_btn_for_form" type="submit" value="@(ViewBag.BottunContext??"ボタン")" class="btn btn-primary" tabindex="6" />
+                        <input id="submit_btn_for_form" type="submit" value="@(ViewBag.BottunContext??"ボタン")" class="btn btn-primary" tabindex="8" />
                     </div>
                     <p>
                         <div id="remark" class="@(Model.IsNormal??true ? "text-primary" : "text-danger")">

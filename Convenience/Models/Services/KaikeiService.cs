@@ -81,7 +81,7 @@ namespace Convenience.Models.Services {
             /*
              * ビューモデルの作成
              */
-            this.KaikeiViewModel = new KaikeiViewModel() {
+            this.KaikeiViewModel = new KaikeiViewModel(_context) {
                 KaikeiDateAndId = defaultsetting,
                 KaikeiHeaderList = kaikeiHeaderList
             };
@@ -134,7 +134,7 @@ namespace Convenience.Models.Services {
             /*
              * ビューモデルの作成
              */
-            this.KaikeiViewModel = new KaikeiViewModel() {
+            this.KaikeiViewModel = new KaikeiViewModel(_context) {
                 KaikeiDateAndId = argKaikeiViewModel.KaikeiDateAndId,
                 KaikeiHeaderList = kaikeiHeaderList,
                 KaikeiHeader = kaikeiHeader,
@@ -166,7 +166,7 @@ namespace Convenience.Models.Services {
                 this.KaikeiViewModel.KaikeiHeader.KaikeiJissekis = new List<KaikeiJisseki>();
             }
 
-            KaikeiJisseki kaikeiJissekiforAdd = argKaikeiViewModel.KaikeiJissekiforAdd;
+            IKaikeiJissekiForAdd kaikeiJissekiforAdd = argKaikeiViewModel.KaikeiJissekiforAdd;
 
             /*
              * 画面入力された会計実績を追加（画面上のみＤＢにはまだ反映させない
@@ -216,26 +216,30 @@ namespace Convenience.Models.Services {
             /*
              * ビューデータの作成
              */
-
+            KaikeiViewModel reQueryKaikeiViewModel= new KaikeiViewModel();
             //ＤＢ更新後の再問合せ
-            argKaikeiViewModel.KaikeiHeader = await _kaikei.KaikeiToiawase(postedUriageDatetimeId);
+            reQueryKaikeiViewModel.KaikeiHeader = await _kaikei.KaikeiToiawase(postedUriageDatetimeId);
 
             //処理結果（とりあえずＯＫ）
-            argKaikeiViewModel.IsNormal = true;
-            argKaikeiViewModel.Remark = new Message().SetMessage(ErrDef.NormalUpdate).MessageText;
+            reQueryKaikeiViewModel.IsNormal = true;
+            reQueryKaikeiViewModel.Remark = new Message().SetMessage(ErrDef.NormalUpdate).MessageText;
 
             //選択されたキーデータで選択リストを作成する（一件だけ）
-            argKaikeiViewModel.KaikeiHeaderList
+            reQueryKaikeiViewModel.KaikeiHeaderList
                 = SetKeyInputList(new UriageDateTimeAndIdMatching(postedKaikeiHeader.UriageDatetime, postedKaikeiHeader.UriageDatetimeId));
 
             //再描画後、前画面でデータ入力した商品コードをセットしておく
             //一行しかないから、かならず[0]はある
-            argKaikeiViewModel.KaikeiDateAndId = argKaikeiViewModel.KaikeiHeaderList[0].Value;
+            reQueryKaikeiViewModel.KaikeiDateAndId = reQueryKaikeiViewModel.KaikeiHeaderList[0].Value;
 
+            //
+            reQueryKaikeiViewModel.KaikeiJissekiforAdd = new KaikeiJissekiForAdd(_context);
+
+            this.KaikeiViewModel = reQueryKaikeiViewModel;
             //TempDataにビューモデルを保存
             SetViewModelToTempData(this.KaikeiViewModel);
 
-            return argKaikeiViewModel;
+            return this.KaikeiViewModel;
         }
 
         /// <summary>
