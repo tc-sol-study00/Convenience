@@ -3,6 +3,7 @@ using System;
 using Convenience.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Convenience.Migrations
 {
     [DbContext(typeof(ConvenienceContext))]
-    partial class ConvenienceContextModelSnapshot : ModelSnapshot
+    [Migration("20241016012920_kaikeiseq")]
+    partial class kaikeiseq
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +132,7 @@ namespace Convenience.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("uriage_datetime");
 
-                    b.Property<int>("KaikeiSeq")
+                    b.Property<int?>("KaikeiSeq")
                         .HasColumnType("integer")
                         .HasColumnName("kaikei_seq");
 
