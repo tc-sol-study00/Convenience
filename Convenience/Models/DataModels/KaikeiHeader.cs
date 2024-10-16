@@ -26,6 +26,6 @@ namespace Convenience.Models.DataModels {
         [DataType(DataType.DateTime)]
         [Required]
         public DateTime UriageDatetime { get; set; }
-        public virtual IList<KaikeiJisseki> KaikeiJissekis { get; set; } 
+        public IList<KaikeiJisseki> KaikeiJissekis { get; set; } 
     }
 }
