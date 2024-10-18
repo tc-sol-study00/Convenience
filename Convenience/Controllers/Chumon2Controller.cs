@@ -19,7 +19,7 @@ namespace Convenience.Controllers {
 
         //private IChumonService chumonService;
 
-        private IChumon chumon;
+        private readonly IChumon chumon;
 
         public Chumon2Controller(ConvenienceContext context) {
             _context = context;
@@ -41,10 +41,13 @@ namespace Convenience.Controllers {
             }
 
             //注文実績モデル変数定義
-            ChumonJisseki chumonJisseki;
+            ChumonJisseki? chumonJisseki;
 
-            string inShiireSakiId = inChumonKeysViewModel.ShiireSakiId;
-            DateOnly inChumonDate = inChumonKeysViewModel.ChumonDate;
+            string inShiireSakiId = inChumonKeysViewModel.ShiireSakiId 
+                ?? throw new ArgumentException("仕入先コードセットなし");
+            DateOnly inChumonDate = inChumonKeysViewModel.ChumonDate > DateOnly.MinValue 
+                ? inChumonKeysViewModel.ChumonDate 
+                : throw new ArgumentException("注文日付セットなし");
 
             //もし、引数の注文日付がない場合（画面入力の注文日付が入力なしだと、1年1月1日になる
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == inChumonDate) {
@@ -54,10 +57,8 @@ namespace Convenience.Controllers {
                 //注文日付指定あり→注文問い合わせ
                 chumonJisseki = await chumon.ChumonToiawase(inShiireSakiId, inChumonDate);
 
-                if (chumonJisseki == null) {
-                    //注文問い合わせでデータがない場合は、注文作成
-                    chumonJisseki = await chumon.ChumonSakusei(inShiireSakiId,inChumonDate);
-                }
+                //注文問い合わせでデータがない場合(null)は、注文作成
+                chumonJisseki ??= await chumon.ChumonSakusei(inShiireSakiId, inChumonDate);
             }
 
             ViewData["Title"] = "商品注文２";
@@ -66,7 +67,7 @@ namespace Convenience.Controllers {
 
         }
 
-        public async Task<IActionResult> ChumonMeisai(ChumonViewModel inChumonViewModel) {
+        public IActionResult ChumonMeisai(ChumonViewModel inChumonViewModel) {
 
             ViewData["Title"] = "商品注文２";
 
@@ -87,7 +88,8 @@ namespace Convenience.Controllers {
             }
 
             //注文実績更新（データ更新・追加共有）
-            ChumonJisseki chumonJisseki = await chumon.ChumonUpdate(ChumonViewModel.ChumonJisseki);
+            ChumonJisseki chumonJisseki = await chumon.ChumonUpdate(ChumonViewModel.ChumonJisseki)
+                ?? throw new Exception("DB更新エラー");
 
             //データが更新されているかEFから聞く
             var entities = _context.ChangeTracker.Entries()
@@ -99,10 +101,11 @@ namespace Convenience.Controllers {
 
             //ＤＢ更新結果をもう一度問い合わせて、再表示させる
 
-            chumonJisseki = await chumon.ChumonToiawase(ChumonViewModel.ChumonJisseki.ShiireSakiId, ChumonViewModel.ChumonJisseki.ChumonDate);
+            chumonJisseki = await chumon.ChumonToiawase(ChumonViewModel.ChumonJisseki.ShiireSakiId, ChumonViewModel.ChumonJisseki.ChumonDate)
+                ?? throw new Exception("DB更新後のデータが見つかりません");
 
             var chumonViewModel = new ChumonViewModel {
-                ChumonJisseki = chumonJisseki,
+                ChumonJisseki = chumonJisseki!,
                 IsNormal = true,
                 Remark = entities!=0 ? "更新しました":string.Empty 
             };

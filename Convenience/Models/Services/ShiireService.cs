@@ -50,6 +50,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ShiireService() {
             this._context = IDbContext.DbOpen();
+            this.shiire = new Shiire(_context);
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Convenience.Models.Services {
         /// <para>③関係する倉庫在庫を接続（表示用）</para>
         /// </remarks>
         public async Task<ShiireViewModel> ShiireSetting(ShiireKeysViewModel inShiireKeysViewModel) {
-            var chumonId = inShiireKeysViewModel.ChumonId;
+            var chumonId = inShiireKeysViewModel.ChumonId??throw new ArgumentException("注文コードがセットされていません");
             DateOnly inShiireDate = DateOnly.FromDateTime(DateTime.Now);
             //仕入SEQ
             uint inSeqByShiireDate = await shiire.NextSeq(chumonId, inShiireDate);
@@ -137,7 +138,7 @@ namespace Convenience.Models.Services {
             //　・DBに保存する
 
             //初期化
-            ShiireUkeireReturnSet shiirezaikoset = null;    //仕入実績・在庫を管理するオブジェクト 
+            ShiireUkeireReturnSet? shiirezaikoset = null;   //仕入実績・在庫を管理するオブジェクト 
             bool isLoopContinue = true;                     //リトライフラグ→DB更新のトライを続けるかフラグ 
             uint loopCount = 1;                             //リトライ回数を管理する変数
             int entities = 0;                                 //SaveChangeしたエンティティ数
@@ -189,6 +190,7 @@ namespace Convenience.Models.Services {
                 }
             }
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
+            _ = shiirezaikoset ?? throw new Exception("shiirezaikosetがnullです");
             shiire.ShiireSokoConnection(shiirezaikoset.ShiireJissekis, shiirezaikoset.SokoZaikos);
 
             List<ShiireJisseki> listdt = (List<ShiireJisseki>)shiirezaikoset.ShiireJissekis;
@@ -225,12 +227,13 @@ namespace Convenience.Models.Services {
         /// <param name="inshiireJissekis"></param>
         /// <returns></returns>
         private ShiireViewModel SetShiireModel(int entities, IList<ShiireJisseki> inshiireJissekis) {
-            ShiireJisseki shiireJisseki = inshiireJissekis.FirstOrDefault();
+            ShiireJisseki shiireJisseki = inshiireJissekis?.FirstOrDefault()
+                ??throw new ArgumentException("仕入実績がセットされていません");
 
             this.ShiireViewModel = new ShiireViewModel {
                 ChumonId = shiireJisseki.ChumonId
                 ,
-                ChumonDate = shiireJisseki.ChumonJissekiMeisaii.ChumonJisseki.ChumonDate
+                ChumonDate = shiireJisseki.ChumonJissekiMeisaii.ChumonJisseki?.ChumonDate ?? DateOnly.MinValue
                 ,
                 ShiireDate = shiireJisseki.ShiireDate
                 ,
@@ -238,13 +241,13 @@ namespace Convenience.Models.Services {
                 ,
                 ShiireSakiId = shiireJisseki.ShiireSakiId
                 ,
-                ShiireSakiKaisya = shiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShiireSakiMaster.ShiireSakiKaisya
+                ShiireSakiKaisya = shiireJisseki.ChumonJissekiMeisaii.ShiireMaster?.ShiireSakiMaster?.ShiireSakiKaisya ?? string.Empty
                 ,
                 ShiireJissekis = inshiireJissekis
                 ,
                 IsNormal = true //正常終了
                 ,
-                Remark = entities != 0 ? new Message().SetMessage(ErrDef.NormalUpdate).MessageText : null
+                Remark = entities != 0 ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText??string.Empty : string.Empty
             };
             return (this.ShiireViewModel);
         }

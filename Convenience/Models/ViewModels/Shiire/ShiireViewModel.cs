@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
+#pragma warning disable CS8618
+
 namespace Convenience.Models.ViewModels.Shiire {
     /// <summary>
     /// 仕入ビューモデル

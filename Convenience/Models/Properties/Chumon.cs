@@ -3,7 +3,9 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
 
@@ -15,7 +17,7 @@ namespace Convenience.Models.Properties {
         /// <summary>
         /// 注文実績プロパティ
         /// </summary>
-        public ChumonJisseki ChumonJisseki { get; set; }
+        public ChumonJisseki? ChumonJisseki { get; set; }
 
         /// <summary>
         /// DBコンテキスト
@@ -54,7 +56,7 @@ namespace Convenience.Models.Properties {
 
             //仕入先より注文実績データ（親）を生成する(a)
 
-            Task<string> taskChumonId = ChumonIdHatsuban(inChumonDate);      //非同期実行（あまり意味ないけど）
+            Task<string?> taskChumonId = ChumonIdHatsuban(inChumonDate);      //非同期実行（あまり意味ないけど）
 
             ChumonJisseki = new ChumonJisseki {
                 ChumonId = null,                                    //注文コード発番（非同期終わるまでnull)
@@ -69,15 +71,14 @@ namespace Convenience.Models.Properties {
                 .Include(s => s.ShohinMaster)
                 .OrderBy(s => s.ShiirePrdId).ToListAsync();
 
-            if (shiireMasters.Count() == 0) {   //仕入マスタがない場合は例外
+            if (!shiireMasters.Any()) {   //仕入マスタがない場合は例外
                 throw new NoDataFoundException(nameof(ShiireMaster));
             }
 
             ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
 
             //注文コード発番の結果を得る
-            var chumonId = await taskChumonId;                      //非同期処理を待つ
-            if (chumonId is null) throw new OrderCodeGenerationException("注文コード発番でnullが設定されています");
+            var chumonId = await taskChumonId ?? throw new OrderCodeGenerationException("注文コード発番でnullが設定されています");                      //非同期処理を待つ
             ChumonJisseki.ChumonId = chumonId;                      //問題なければ発番された注文コードをプロパティにセット
 
             //(b)のデータから注文実績明細を作成する
@@ -88,7 +89,7 @@ namespace Convenience.Models.Properties {
                 //エンティティ連結ループ対策だったが、上記AsNoTracking対応により不要となった
                 //shiire.ShohinMaster.ShiireMasters = null; 
 
-                ChumonJissekiMeisai meisai = new ChumonJissekiMeisai {
+                ChumonJissekiMeisai meisai = new (){
                     ChumonId = ChumonJisseki.ChumonId,
                     ShiireSakiId = ChumonJisseki.ShiireSakiId,  //仕入先コードを注文実績からセット(aより)
                     ShiirePrdId = shiire.ShiirePrdId,           //仕入商品コードのセット(bより）
@@ -127,17 +128,20 @@ namespace Convenience.Models.Properties {
 
             //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
             if (chumonJisseki != null) {
-                // ShiireMaster と ShohinMaster を AsNoTracking() で取得
-                foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais) {
-                    ShiireMaster? shiireMaster = await _context.ShiireMaster
-                        .AsNoTracking()
-                        .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId && sm.ShiirePrdId == meisai.ShiirePrdId && sm.ShohinId == meisai.ShohinId)
-                        .Include(sm => sm.ShohinMaster)
-                        .FirstOrDefaultAsync();
 
-                    // 明示的に ShiireMaster を関連付け
-                    // もし、データがなければnullが入る
-                    meisai.ShiireMaster = shiireMaster;
+                if (chumonJisseki.ChumonJissekiMeisais != null) {
+                    // ShiireMaster と ShohinMaster を AsNoTracking() で取得
+                    foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais) {
+                        ShiireMaster? shiireMaster = await _context.ShiireMaster
+                            .AsNoTracking()
+                            .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId && sm.ShiirePrdId == meisai.ShiirePrdId && sm.ShohinId == meisai.ShohinId)
+                            .Include(sm => sm.ShohinMaster)
+                            .FirstOrDefaultAsync();
+
+                        // 明示的に ShiireMaster を関連付け
+                        // もし、データがなければnullが入る
+                        meisai.ShiireMaster = shiireMaster;
+                    }
                 }
             }
 
@@ -156,7 +160,7 @@ namespace Convenience.Models.Properties {
         /// <param name="InTheDate">注文日付</param>
         /// <param name="_context">ＤＢコンテキスト</param>
         /// <returns>発番された注文コード</returns>
-        private async Task<string> ChumonIdHatsuban(DateOnly InTheDate) {
+        private async Task<string?> ChumonIdHatsuban(DateOnly InTheDate) {
             uint seqNumber;
             string dateArea;
             //今日の日付
@@ -164,7 +168,7 @@ namespace Convenience.Models.Properties {
 
             //今日の日付からすでに今日の分の注文コードがないか調べる
             var chumonid = await _context.ChumonJisseki
-                .Where(x => x.ChumonId.StartsWith(dateArea))
+                .Where(x => x.ChumonId!.StartsWith(dateArea))
                 .MaxAsync(x => x.ChumonId);
 
             // 上記以外の場合、 //注文コードの右３桁の数値を求め＋１にする
@@ -216,6 +220,9 @@ namespace Convenience.Models.Properties {
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
         private static ChumonJisseki ChumonUpdateWithHandMade(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
+
+            _ = postedChumonJisseki?.ChumonJissekiMeisais??throw new ArgumentException("注文実績Postデータエラー");
+            _ = existedChumonJisseki?.ChumonJissekiMeisais?? throw new ArgumentException("注文実績ベースデータエラー");
             foreach (ChumonJissekiMeisai postedChumonJissekiMeisai in postedChumonJisseki.ChumonJissekiMeisais) {
                 ChumonJissekiMeisai targetChumonJissekiMeisai = existedChumonJisseki.ChumonJissekiMeisais
                     .Where(x => x.ChumonId == postedChumonJissekiMeisai.ChumonId &&
@@ -241,8 +248,11 @@ namespace Convenience.Models.Properties {
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
         private static ChumonJisseki ChumonUpdateWithIndex(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
-            for (int i = 0; i < postedChumonJisseki.ChumonJissekiMeisais.Count(); i++) {
-                if (i < existedChumonJisseki.ChumonJissekiMeisais.Count()) {
+            _ = postedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績Postデータエラー");
+            _ = existedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績ベースデータエラー");
+
+            for (int i = 0; i < postedChumonJisseki.ChumonJissekiMeisais.Count; i++) {
+                if (i < existedChumonJisseki.ChumonJissekiMeisais.Count) {
                     ChumonJissekiMeisai src = postedChumonJisseki.ChumonJissekiMeisais[i];
                     ChumonJissekiMeisai dest = existedChumonJisseki.ChumonJissekiMeisais[i];
 
@@ -270,11 +280,13 @@ namespace Convenience.Models.Properties {
         /// <returns>postされた注文実績を上書きされた注文実績</returns>
         public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki) {
 
+            _=postedChumonJisseki?.ChumonJissekiMeisais?? throw new ArgumentException("注文実績Postデータエラー");
+
             ChumonJisseki? existedChumonJisseki; //DBにすでに登録されている場合の移送先
 
             //注文実績を読む
             existedChumonJisseki = await _context.ChumonJisseki
-                .Include(e => e.ChumonJissekiMeisais.OrderBy(x => x.ShiirePrdId))
+                .Include(e => e.ChumonJissekiMeisais!.OrderBy(x => x.ShiirePrdId))
                 .FirstOrDefaultAsync(e => e.ChumonId == postedChumonJisseki.ChumonId);
 
             if (existedChumonJisseki != null) {  //注文実績がある場合
@@ -294,5 +306,12 @@ namespace Convenience.Models.Properties {
             //注文実績＋注文実績明細を戻り値とする
             return ChumonJisseki;
         }
+
+        /// <summary>
+        /// 注文可能な仕入先一覧を作成する
+        /// </summary>
+        /// <returns>IEnumerable<ShiireSakiMaster>注文可能な仕入先マスタのリスト（実行前）</returns>
+        public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) =>
+            orderExpression != null ? _context.ShiireSakiMaster.OrderBy(orderExpression) : _context.ShiireSakiMaster;
     }
 }

@@ -28,6 +28,7 @@ namespace Convenience.Controllers {
         public ShiireController(ConvenienceContext context,IShiireService shiireService) {
             this._context = context;
             this.shiireService = shiireService;
+            this.shiireViewModel = new ShiireViewModel();
             //shiireService = new ShiireService(_context);
         }
 
@@ -40,7 +41,7 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> ShiireKeyInput(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "FirstDisplay";
-                shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>((string)TempData[IndexName]);
+                shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tempdataなし"));
                 TempData.Keep(IndexName);
                 ViewBag.FocusPosition = "#ShiireJissekis_0__NonyuSu";
                 return View("Shiire", shiireViewModel);
@@ -88,11 +89,11 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Shiire(string id) {
+        public IActionResult Shiire(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "SecondDisplay";
                 if (TempData.Peek(IndexName) != null) {
-                    shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName] as string);
+                    shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tepdataなし"));
                     TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
                     return View("Shiire", shiireViewModel);
                 }

@@ -5,7 +5,6 @@
 }
 <h2>倉庫在庫検索</h2>
 
-
 <div class="container">
     <div class="form-group">
         <h3>キー入力部</h3>
@@ -18,12 +17,11 @@
                             <p>ソート順位</p>
                         </div>
                         <div class="col-4">
-                            <label asp-for="@Model.KeyEventList.FirstOrDefault().KeyEventData" class="control-label"></label>
+                            <label asp-for="@Model.KeyEventList.FirstOrDefault()!.KeyEventData" class="control-label"></label>
                         </div>
                         <div class="col-2 text-center">
                         </div>
                     </div>
-
                     @for (int i = 0; i < @Model.KeyEventList.Length; i++) {
                         <div class="row mb-1">
                             <div class="col-2 text-center">
@@ -54,13 +52,13 @@
                             <p>検索キー</p>
                         </div>
                         <div class="col-4">
-                            <label asp-for="@Model.SelecteWhereItemArray.FirstOrDefault().LeftSide" class="control-label"></label>
+                            <label asp-for="@Model.SelecteWhereItemArray.FirstOrDefault()!.LeftSide" class="control-label"></label>
                         </div>
                         <div class="col-2 text-center">
-                            <label asp-for="@Model.SelecteWhereItemArray.FirstOrDefault().ComparisonOperator" class="control-label"></label>
+                            <label asp-for="@Model.SelecteWhereItemArray.FirstOrDefault()!.ComparisonOperator" class="control-label"></label>
                         </div>
                         <div class="col-4">
-                            <label asp-for="@Model.SelecteWhereItemArray.FirstOrDefault().RightSide" class="control-label"></label>
+                            <label asp-for="@Model.SelecteWhereItemArray.FirstOrDefault()!.RightSide" class="control-label"></label>
                         </div>
                     </div>
                     @for (int i = 0; i < Model.SelecteWhereItemArray.Count(); i++) {
@@ -82,7 +80,6 @@
                                 <input asp-for="@Model.SelecteWhereItemArray[i].RightSide" class="form-control" />
                             </div>
                         </div>
-
                     }
                 </div>
             </div>
@@ -90,73 +87,72 @@
         </form>
     </div>
 
-
     <hr class="my-2 bg-primary"></hr>
 
-    @if (Model.zaikoListLine != null && Model.zaikoListLine.Count() > 0) {
+    @if (Model.ZaikoListLines != null && Model.ZaikoListLines.Count() > 0) {
         <div class="list-group">
             <table class="table table-striped table-bordered">
                 <thead class="table-primary">
                     <tr>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().ShiireSakiId" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.ShiireSakiId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().ShiirePrdId" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.ShiirePrdId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().ShohinId" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.ShohinId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().ShohinName" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.ShohinName" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().ChumonZan" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.ChumonZan" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().SokoZaikoCaseSu" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.SokoZaikoCaseSu" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().SokoZaikoSu" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.SokoZaikoSu" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().LastShiireDate" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.LastShiireDate" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.zaikoListLine.FirstOrDefault().LastDeliveryDate" class="control-label"></label>
+                            <label asp-for="@Model.ZaikoListLines.FirstOrDefault()!.LastDeliveryDate" class="control-label"></label>
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @for (var i = 0; i < Model.zaikoListLine.Count; i++) {
+                    @for (var i = 0; i < Model.ZaikoListLines.Count; i++) {
                         <tr>
                             <td>
-                                @Model.zaikoListLine[i].ShiireSakiId
+                                @Model.ZaikoListLines[i].ShiireSakiId
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].ShiirePrdId
+                                @Model.ZaikoListLines[i].ShiirePrdId
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].ShohinId
+                                @Model.ZaikoListLines[i].ShohinId
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].ShohinName
+                                @Model.ZaikoListLines[i].ShohinName
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].ChumonZan
+                                @Model.ZaikoListLines[i].ChumonZan
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].SokoZaikoCaseSu
+                                @Model.ZaikoListLines[i].SokoZaikoCaseSu
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].SokoZaikoSu
+                                @Model.ZaikoListLines[i].SokoZaikoSu
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].LastShiireDate
+                                @Model.ZaikoListLines[i].LastShiireDate
                             </td>
                             <td>
-                                @Model.zaikoListLine[i].LastDeliveryDate
+                                @Model.ZaikoListLines[i].LastDeliveryDate
                             </td>
                         </tr>
                     }

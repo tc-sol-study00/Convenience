@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+#pragma warning disable CS8618
+
 namespace Convenience.Models.DataModels {
 
     /// <summary>
@@ -20,7 +22,7 @@ namespace Convenience.Models.DataModels {
         [DisplayName("注文コード")]
         [MaxLength(20)]
         [Required]
-        public string ChumonId { get; set; }
+        public string? ChumonId { get; set; }
 
         [Column("shiire_saki_code")]
         [DisplayName("仕入先コード")]

@@ -6,6 +6,7 @@ using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 using System.Collections.Generic;
 using System.Text.Json;
 using static Convenience.Models.Properties.Message;
@@ -23,7 +24,7 @@ namespace Convenience.Models.Services {
         private readonly ConvenienceContext _context;
 
         //店頭払出クラス用
-        private ITentoHaraidashi _tentoHaraidashi { get; set; }
+        private ITentoHaraidashi TentoHaraidashi { get; set; }
 
         /// <summary>
         /// 店頭払出ビュー・モデル（プロパティ）
@@ -36,7 +37,8 @@ namespace Convenience.Models.Services {
         /// <returns>TentoHaraidashiViewModel 店頭払出ビューモデル</returns>
         public TentoHaraidashiService(ConvenienceContext context, ITentoHaraidashi tentoHaraidashi) {
             this._context = context;
-            this._tentoHaraidashi = tentoHaraidashi;
+            this.TentoHaraidashi = tentoHaraidashi;
+            this.TentoHaraidashiViewModel = new TentoHaraidashiViewModel();
         }
         /// <summary>
         /// 初期表示用
@@ -51,16 +53,18 @@ namespace Convenience.Models.Services {
              */
             IList<HaraidashiDateTimeAndIdMatching> HaraidashiDateTimeAndIdMatchings = await CreateListWithTentoHaraidashiId(-5);
             HaraidashiDateTimeAndIdMatchings
-                .Insert(0, new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime=CurrentDateTime, TentoHaraidashiId = null });
-            IList<SelectListItem> selectListItem=MakeListWithTentoHaraidashiIdToSelectListItem(HaraidashiDateTimeAndIdMatchings);
+                .Insert(0, new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = CurrentDateTime, TentoHaraidashiId = null });
+            IList<SelectListItem> selectListItem = MakeListWithTentoHaraidashiIdToSelectListItem(HaraidashiDateTimeAndIdMatchings);
 
             /*
              *  キー入力用にViewModelを設定
              */
-            return this.TentoHaraidashiViewModel = new TentoHaraidashiViewModel() {
-                HaraidashiDateAndId = JsonSerializer.Serialize(HaraidashiDateTimeAndIdMatchings[0]),
+            var KeyInputListTop = HaraidashiDateTimeAndIdMatchings[0] ?? throw new InvalidDataException("キー入力用リストエラー");
+
+            return this.TentoHaraidashiViewModel = new() {
+                HaraidashiDateAndId = JsonSerializer.Serialize(KeyInputListTop),
                 ShohinMasters = default,
-                TentoHaraidashiIdList= selectListItem
+                TentoHaraidashiIdList = selectListItem
             };
         }
 
@@ -73,46 +77,52 @@ namespace Convenience.Models.Services {
             /*
              * 店頭払出日時＋コードの取得
              */
-            HaraidashiDateTimeAndIdMatching haraidashiDateTimeAndIdMatching
-                =JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId);
+            _ = argTentoHaraidashiViewModel?.HaraidashiDateAndId ?? throw new ArgumentException("店頭払出ビューモデルがセットされていません");
+            HaraidashiDateTimeAndIdMatching? haraidashiDateTimeAndIdMatching
+                = JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId)
+                ?? throw new InvalidDataException("店頭払出日時コードがセットされていません");
+
             //店頭払出日時            
-            DateTime postedHaraidashiDateTime = haraidashiDateTimeAndIdMatching.HaraidashiDateTime;
-            //店頭払出コード
-            string postedTentoHaraidashiId = haraidashiDateTimeAndIdMatching.TentoHaraidashiId;
+            DateTime postedHaraidashiDateTime = 
+                haraidashiDateTimeAndIdMatching.HaraidashiDateTime > DateTime.MinValue ? 
+                haraidashiDateTimeAndIdMatching.HaraidashiDateTime : throw new InvalidDataException("払出日時がセットされていません");
+            //店頭払出コード(新規の時はnull)
+            string? postedTentoHaraidashiId = haraidashiDateTimeAndIdMatching.TentoHaraidashiId;
 
             /*
              * 店頭払出ヘッダー＋実績のセット
              */
-            TentoHaraidashiHeader tentoHaraidashiHeader = default;
-            if (postedTentoHaraidashiId is null) //Postデータの店頭払出コードがnull＝新規
+            TentoHaraidashiHeader? tentoHaraidashiHeader;
+            if (postedTentoHaraidashiId == default) //Postデータの店頭払出コードがnull＝新規
             {
                 /*
                  * 店頭払出ヘッダ＋実績作成（新規の場合）
                  */
-                tentoHaraidashiHeader = await _tentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+                tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
             }
-            else
-            {
+            else {
                 /*
                  * 店頭払出ヘッダ＋実績問い合わせ（登録済みデータ編集の場合）
                  */
-                tentoHaraidashiHeader = await _tentoHaraidashi.TentoHaraidashiToiawase(postedTentoHaraidashiId);
+                tentoHaraidashiHeader = await TentoHaraidashi.TentoHaraidashiToiawase(postedTentoHaraidashiId);
             }
 
             /*
              * 商品マスタリストから店頭払出情報を参照するようにモデル組み換え
              */
-            IList<ShohinMaster> shohinmasters=TransferToDisplayModel(tentoHaraidashiHeader).ToList();
+            IList<ShohinMaster> shohinmasters = tentoHaraidashiHeader != null ?
+            TransferToDisplayModel(tentoHaraidashiHeader).ToList() : throw new NoDataFoundException(" 店頭払出ヘッダ＋実績のデータがありません");
 
             /*
              * キー入力用リスト設定
              * 第１画面で選択されたキーでセレクトリストを絞り込んでおく
              */
-            IList<HaraidashiDateTimeAndIdMatching> HaraidashiDateTimeAndIdMatchings = new List<HaraidashiDateTimeAndIdMatching>();
-            HaraidashiDateTimeAndIdMatchings.Add(haraidashiDateTimeAndIdMatching);
+            IList<HaraidashiDateTimeAndIdMatching> HaraidashiDateTimeAndIdMatchings = new List<HaraidashiDateTimeAndIdMatching> {
+                haraidashiDateTimeAndIdMatching
+            };
             IList<SelectListItem> selectListItems = MakeListWithTentoHaraidashiIdToSelectListItem(HaraidashiDateTimeAndIdMatchings);
 
-            return this.TentoHaraidashiViewModel = new TentoHaraidashiViewModel() {
+            return this.TentoHaraidashiViewModel = new() {
                 HaraidashiDateAndId = argTentoHaraidashiViewModel.HaraidashiDateAndId,
                 ShohinMasters = shohinmasters,
                 TentoHaraidashiIdList = selectListItems
@@ -128,49 +138,58 @@ namespace Convenience.Models.Services {
             /*
              * 店頭払出日時＋コードの取得
              */
+            _ = argTentoHaraidashiViewModel?.HaraidashiDateAndId ?? throw new ArgumentException("店頭払出ビューモデルがセットされていません");
             HaraidashiDateTimeAndIdMatching haraidashiDateTimeAndIdMatching
-                = JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId);
+                = JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId)
+                ??throw new InvalidDataException("店頭払出日時コードがセットされていません");
 
             //店頭払出日時 
             DateTime postedHaraidashiDateTime = haraidashiDateTimeAndIdMatching.HaraidashiDateTime;
             //店頭払出コード
-            string tentoHaraidashiId = argTentoHaraidashiViewModel.ShohinMasters.SelectMany(x => x.ShiireMasters).SelectMany(x => x.TentoHaraidashiJissekis).Min(x => x.TentoHaraidashiId);
+            string tentoHaraidashiId = argTentoHaraidashiViewModel?.ShohinMasters?
+                .Where(x => x.ShiireMasters != null)
+                .SelectMany(x => x.ShiireMasters!)
+                .Where(x => x.TentoHaraidashiJissekis != null)
+                .SelectMany(x => x.TentoHaraidashiJissekis!)
+                .Min(x => x.TentoHaraidashiId)
+                ?? throw new NoDataFoundException("店頭払出コードがセットされていません");
 
             /*
              * 店頭払出ヘッダ＋実績問い合わせ(Postデータ更新用ベース）
              */
-            TentoHaraidashiHeader settingTentoHaraidashiHearder = await _tentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            TentoHaraidashiHeader? settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
 
-            if (settingTentoHaraidashiHearder == null) {    //上記問い合わせデータなし
-                /*
-                 * 店頭払出ヘッダ＋実績作成(Postデータ更新用ベース）
-                 */
-                settingTentoHaraidashiHearder = await _tentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
-            }
+            /*
+             * 店頭払出ヘッダ＋実績作成(Postデータ更新用ベース）
+             */
+            settingTentoHaraidashiHearder ??= await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
 
             /*
              * Postデータ更新用ベースにポストデータを上乗せする
              */
-            foreach (var shohinmaster in argTentoHaraidashiViewModel.ShohinMasters) {       //Postされた商品マスタ
-                foreach (var shiiremaster in shohinmaster.ShiireMasters) {                  //Postされた仕入マスタ
-                    foreach (var tentoharaidashi in shiiremaster.TentoHaraidashiJissekis) { //Postされた店頭払出実績
+            foreach (var shohinmaster in argTentoHaraidashiViewModel.ShohinMasters) {                   //Postされた商品マスタ
+                foreach (var shiiremaster in shohinmaster.ShiireMasters??new List<ShiireMaster>()) {    //Postされた仕入マスタ
+                    foreach (var tentoharaidashi in shiiremaster.TentoHaraidashiJissekis??new List<TentoHaraidashiJisseki>()) {
+                        //Postされた店頭払出実績
                         var pickupTentoHaraidashiJisseki = settingTentoHaraidashiHearder.TentoHaraidashiJissekis    //上乗せ処理用に更新用ベースを検索
                             .Where(x => x.TentoHaraidashiId == tentoharaidashi.TentoHaraidashiId &&
                                 x.ShiireSakiId == tentoharaidashi.ShiireSakiId &&
                                 x.ShiirePrdId == tentoharaidashi.ShiirePrdId &&
-                                x.ShohinId == tentoharaidashi.ShohinId).FirstOrDefault();
+                                x.ShohinId == tentoharaidashi.ShohinId).FirstOrDefault()
+                                ?? throw new NoDataFoundException("店頭払出実績が見つかりません");
                         //上乗せ処理
                         var wHaraidashiCaseSu = pickupTentoHaraidashiJisseki.HaraidashiCaseSu;      //上乗せ前のデータを退避
-                        pickupTentoHaraidashiJisseki.HaraidashiCaseSu += tentoharaidashi.HaraidashiCaseSu-wHaraidashiCaseSu;    //払出ケース数    
-                        pickupTentoHaraidashiJisseki.HaraidashiSu += 
-                            (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupTentoHaraidashiJisseki.ShiireMaster.ShiirePcsPerUnit;
-                                                                                                                                //払出数
+                        pickupTentoHaraidashiJisseki.HaraidashiCaseSu += tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;    //払出ケース数
+
+                        pickupTentoHaraidashiJisseki.HaraidashiSu +=
+                            (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupTentoHaraidashiJisseki!.ShiireMaster?.ShiirePcsPerUnit?? throw new NoDataFoundException("仕入マスタがありません"); ;
+                        //払出数
                         /*
                          * 倉庫在庫調整
                          */
-                        ShiireMaster pickupShiireMaster = pickupTentoHaraidashiJisseki.ShiireMaster;
-                        ShohinMaster pickupShohinMaster = pickupShiireMaster.ShohinMaster;
-                        SokoZaiko pickupSokoZaiko = pickupTentoHaraidashiJisseki.ShiireMaster.SokoZaiko;
+                        ShiireMaster pickupShiireMaster = pickupTentoHaraidashiJisseki.ShiireMaster ?? throw new InvalidDataException("仕入マスタがありません");
+                        ShohinMaster pickupShohinMaster = pickupShiireMaster.ShohinMaster ?? throw new InvalidDataException("商品マスタがありません");
+                        SokoZaiko pickupSokoZaiko = pickupTentoHaraidashiJisseki.ShiireMaster.SokoZaiko ?? throw new InvalidDataException("倉庫在庫がセットされていません");
                         //いくら追加で倉庫から店頭に払い出したか
                         var diffCaseSu = tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;
                         pickupSokoZaiko.SokoZaikoCaseSu -= diffCaseSu;
@@ -182,7 +201,7 @@ namespace Convenience.Models.Services {
                         /*
                          * 店頭在庫調整
                          */
-                        var pickupTentoZaiko = pickupShohinMaster.TentoZaiko;
+                        TentoZaiko pickupTentoZaiko = pickupShohinMaster.TentoZaiko ?? throw new InvalidDataException("店頭在庫がありません");
                         var wTentoZaiko = pickupTentoZaiko.ZaikoSu;
                         pickupTentoZaiko.ZaikoSu += (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupShiireMaster.ShiirePcsPerUnit;
                     }
@@ -194,7 +213,7 @@ namespace Convenience.Models.Services {
             int entities = _context.ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
                 .Select(e => e.Entity).Count();
-            
+
             /*
              * DB更新
              */
@@ -204,14 +223,16 @@ namespace Convenience.Models.Services {
              * DB更新後、再読み込み
              */
             haraidashiDateTimeAndIdMatching.TentoHaraidashiId = settingTentoHaraidashiHearder.TentoHaraidashiId;
-            TentoHaraidashiHeader? queriedTentoHaraidashiHearder = await _tentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            TentoHaraidashiHeader? queriedTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId)
+                ?? throw new NoDataFoundException("店頭払出実績がありません");
             IList<ShohinMaster> shohinmasters = TransferToDisplayModel(queriedTentoHaraidashiHearder).ToList();
             /*
              * キー入力用リスト設定
              * 第１画面で選択されたキーでセレクトリストを絞り込んでおく
             */
-            IList<HaraidashiDateTimeAndIdMatching> haraidashiDateTimeAndIdMatchings = new List<HaraidashiDateTimeAndIdMatching>();
-            haraidashiDateTimeAndIdMatchings.Add(haraidashiDateTimeAndIdMatching);
+            IList<HaraidashiDateTimeAndIdMatching> haraidashiDateTimeAndIdMatchings = new List<HaraidashiDateTimeAndIdMatching> {
+                haraidashiDateTimeAndIdMatching
+            };
             IList<SelectListItem> selectListItems = MakeListWithTentoHaraidashiIdToSelectListItem(haraidashiDateTimeAndIdMatchings);
 
             /*
@@ -219,12 +240,12 @@ namespace Convenience.Models.Services {
              */
             (bool IsValid, ErrDef errCd) = (true, ErrDef.NormalUpdate);
 
-            return this.TentoHaraidashiViewModel = new TentoHaraidashiViewModel() {
+            return this.TentoHaraidashiViewModel = new () {
                 HaraidashiDateAndId = argTentoHaraidashiViewModel.HaraidashiDateAndId,
                 ShohinMasters = shohinmasters,
                 TentoHaraidashiIdList = selectListItems,
                 IsNormal = IsValid,
-                Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate).MessageText : null
+                Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText??string.Empty : null
             };
         }
         /// <summary>
@@ -232,12 +253,14 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argTentoHaraidashiHeader"></param>
         /// <returns></returns>
-        private IEnumerable<ShohinMaster> TransferToDisplayModel(TentoHaraidashiHeader argTentoHaraidashiHeader) {
-            IEnumerable<ShohinMaster?> shohinmasters
-                = argTentoHaraidashiHeader.TentoHaraidashiJissekis.GroupBy(x => x.ShiireMaster.ShohinMaster).Select(x => x.Key)
+        private static IEnumerable<ShohinMaster> TransferToDisplayModel(TentoHaraidashiHeader argTentoHaraidashiHeader) {
+            IEnumerable<ShohinMaster> shohinmasters
+                = argTentoHaraidashiHeader.TentoHaraidashiJissekis.GroupBy(x => x.ShiireMaster?.ShohinMaster)
+                    .Select(x => x.Key!)
+                    .Where(x => x.ShiireMasters != null && x.ShohinId != null)
                     .OrderBy(x => x.ShohinId)
-                    .ThenBy(x => x.ShiireMasters.FirstOrDefault().ShiireSakiId)
-                    .ThenBy(x => x.ShiireMasters.FirstOrDefault().ShiirePrdId);
+                    .ThenBy(x => x.ShiireMasters?.FirstOrDefault()?.ShiireSakiId)
+                    .ThenBy(x => x.ShiireMasters?.FirstOrDefault()?.ShiirePrdId);
             return shohinmasters;
         }
 
@@ -250,8 +273,8 @@ namespace Convenience.Models.Services {
             /*
              * 店頭払出ヘッダーを引数日数分さかのぼり、一覧を作る
              */
-            IList<HaraidashiDateTimeAndIdMatching> HaraidashiDateTimeAndIdMatchings = await _context.TentoHaraidashiHearder
-               .Where(x => x.HaraidashiDateTime >= DateTime.Now.AddDays(argReverseDaysWithMinus).Date.ToUniversalTime())
+            IList<HaraidashiDateTimeAndIdMatching> HaraidashiDateTimeAndIdMatchings =
+                await TentoHaraidashi.TentoHaraidashiHeaderList(x => x.HaraidashiDateTime >= DateTime.Now.AddDays(argReverseDaysWithMinus).Date.ToUniversalTime())
                .OrderByDescending(x => x.HaraidashiDateTime)
                .Select(x => new HaraidashiDateTimeAndIdMatching() { HaraidashiDateTime = x.HaraidashiDateTime, TentoHaraidashiId = x.TentoHaraidashiId })
                .ToListAsync();
@@ -263,10 +286,10 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="idList"></param>
         /// <returns></returns>
-        private IList<SelectListItem> MakeListWithTentoHaraidashiIdToSelectListItem(IEnumerable<HaraidashiDateTimeAndIdMatching> argHaraidashiDateTimeAndIdMatching) {
+        private static IList<SelectListItem> MakeListWithTentoHaraidashiIdToSelectListItem(IEnumerable<HaraidashiDateTimeAndIdMatching> argHaraidashiDateTimeAndIdMatching) {
             // DateTime を日本標準時（JST）でフォーマット
             TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-            
+
             /*
              * 店頭払出日と店頭払出コードのリストをセレクトアイテムリストに変換する
              */
@@ -275,7 +298,7 @@ namespace Convenience.Models.Services {
                 string serializedString = JsonSerializer.Serialize(item);
                 DateTime jstTime = TimeZoneInfo.ConvertTime(item.HaraidashiDateTime, jstZone);
                 selectListItems.Add(new SelectListItem(
-                    $"{item.TentoHaraidashiId?? "🆕新規"+ new string('-', 11)}:{jstTime.ToString("yyyy/MM/dd HH:mm:ss")}", serializedString));
+                    $"{item.TentoHaraidashiId ?? "🆕新規" + new string('-', 11)}:{jstTime:yyyy/MM/dd HH:mm:ss}", serializedString));
             }
             return selectListItems;
         }

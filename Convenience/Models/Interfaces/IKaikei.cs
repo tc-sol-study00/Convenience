@@ -7,7 +7,7 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// 会計ヘッダープロパティ
         /// </summary>
-        public KaikeiHeader KaikeiHeader { get; set; }
+        public KaikeiHeader? KaikeiHeader { get; set; }
 
         /// <summary>
         /// <para>会計作成（新規会計用）</para>
@@ -19,7 +19,7 @@ namespace Convenience.Models.Interfaces {
         /// <para>①会計ヘッダーの作成</para>
         /// <para>②会計実績の作成</para>
         /// </remarks>
-        public Task<KaikeiHeader> KaikeiSakusei(DateTime argCurrentDateTime);
+        public KaikeiHeader KaikeiSakusei(DateTime argCurrentDateTime);
         /// <summary>
         /// 会計実績の品目追加
         /// </summary>
@@ -50,7 +50,7 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <param name="argpostedKaikeiHeader">反映する会計ヘッダ＋実績</param>
         /// <returns>KaikeiHeader DB更新された会計ヘッダ＋実績</returns>
-        public Task<KaikeiHeader?> KaikeiUpdate(KaikeiHeader argpostedKaikeiHeader);
+        public Task<KaikeiHeader> KaikeiUpdate(KaikeiHeader argpostedKaikeiHeader);
 
     }
 }

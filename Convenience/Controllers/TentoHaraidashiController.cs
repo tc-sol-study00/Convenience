@@ -41,6 +41,7 @@ namespace Convenience.Controllers {
         public TentoHaraidashiController(ConvenienceContext context, ITentoHaraidashiService tentoHaraidashiService) {
             this._context = context;
             this._tentoHaraidashiService = tentoHaraidashiService;
+            this.tentoHaraidashiViewModel = new TentoHaraidashiViewModel();
             //this._tentoHaraidashiService = new TentoHaraidashiService(_context);
         }
 
@@ -57,7 +58,7 @@ namespace Convenience.Controllers {
                 ViewBag.BottunContext = "更新";
                 ViewData["Action"] = "TentoHaraidashi";
                 ViewBag.FocusPosition = "#ShohinMasters_0__ShiireMasters_0__TentoHaraidashiJissekis_0__HaraidashiCaseSu";
-                tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>((string)TempData[IndexName]);
+                tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName]?.ToString() ?? throw new Exception("tempdataなし"));
                 TempData.Keep(IndexName);
             }
             else {
@@ -108,7 +109,7 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> TentoHaraidashi(string id) {
+        public IActionResult TentoHaraidashi(string id) {
 
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "SecondDisplay";
@@ -116,7 +117,7 @@ namespace Convenience.Controllers {
 
                 if (TempData.Peek(IndexName) != null) {
                     //PRG用ビュー・モデル引き取り    
-                    tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName] as string);
+                    tentoHaraidashiViewModel = ISharedTools.ConvertFromSerial<TentoHaraidashiViewModel>(TempData[IndexName]?.ToString() ?? throw new Exception("tempdataなし"));
                     TempData[IndexName] = ISharedTools.ConvertToSerial(tentoHaraidashiViewModel);
                     ViewBag.BottunContext = "更新";
                     return View("TentoHaraidashi", tentoHaraidashiViewModel);

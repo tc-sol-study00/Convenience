@@ -26,7 +26,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="serial">シリアルデータ</param>
         /// <returns></returns>
         protected static T ConvertFromSerial<T>(string serial) {
-            return JsonSerializer.Deserialize<T>(serial);
+            return JsonSerializer.Deserialize<T>(serial)??throw new Exception("Deserializeエラー");
         }
     }
 }

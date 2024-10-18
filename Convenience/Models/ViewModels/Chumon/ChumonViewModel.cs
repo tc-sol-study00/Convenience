@@ -1,5 +1,6 @@
 ﻿using Convenience.Models.DataModels;
 
+#pragma warning disable CS8618
 namespace Convenience.Models.ViewModels.Chumon {
 
     /// <summary>

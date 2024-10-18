@@ -14,12 +14,12 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
         /// </summary>
         /// 
         [DisplayName("店頭払出日時＋コード")]
-        public string HaraidashiDateAndId { get; set; } 
+        public string? HaraidashiDateAndId { get; set; } 
         public IList<ShohinMaster>? ShohinMasters { get; set; }
         public bool? IsNormal { get; set; }
         public string? Remark { get; set; } = string.Empty;
 
-        public IList<SelectListItem> TentoHaraidashiIdList { get; set; }
+        public IList<SelectListItem> TentoHaraidashiIdList { get; set; } = new List<SelectListItem>();
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
     public class HaraidashiDateTimeAndIdMatching {
 
         public DateTime HaraidashiDateTime { get; set; } = default;
-        public string TentoHaraidashiId { get; set; } = default;
+        public string? TentoHaraidashiId { get; set; } = default;
 
         public HaraidashiDateTimeAndIdMatching(DateTime HaraidashiDateTime, string TentoHaraidashiId) {
             this.HaraidashiDateTime = HaraidashiDateTime;

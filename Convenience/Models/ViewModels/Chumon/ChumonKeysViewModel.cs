@@ -13,7 +13,7 @@ namespace Convenience.Models.ViewModels.Chumon {
         [DisplayName("仕入先コード")]
         [MaxLength(10)]
         [Required]
-        public string ShiireSakiId { get; set; }
+        public string? ShiireSakiId { get; set; }
 
         [Column("chumon_date")]
         [DisplayName("注文日")]

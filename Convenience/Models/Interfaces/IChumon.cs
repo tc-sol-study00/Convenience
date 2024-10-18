@@ -1,5 +1,6 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
+using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
@@ -9,7 +10,7 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// 注文実績プロパティ
         /// </summary>
-        public ChumonJisseki ChumonJisseki { get; set; }
+        public ChumonJisseki? ChumonJisseki { get; set; }
 
         /// <summary>
         /// 注文作成
@@ -36,7 +37,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inShireSakiId">仕入先コード</param>
         /// <param name="inChumonDate">注文日</param>
         /// <returns>既存の注文実績</returns>
-        public Task<ChumonJisseki> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate);
+        public Task<ChumonJisseki?> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate);
 
         /// <summary>
         /// 注文実績＋注文明細更新
@@ -44,5 +45,11 @@ namespace Convenience.Models.Interfaces {
         /// <param name="postedChumonJisseki">postされた注文実績</param>
         /// <returns>postされた注文実績を上書きされた注文実績</returns>
         public Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki);
+
+        /// <summary>
+        /// 注文可能な仕入先一覧を作成する
+        /// </summary>
+        /// <returns>IEnumerable<ShiireSakiMaster>注文可能な仕入先マスタのリスト（実行前）</returns>
+        public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression);
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience.Models.DataModels {
+#pragma warning disable CS8618
 
     /// <summary>
     /// 会計ヘッダーDTO

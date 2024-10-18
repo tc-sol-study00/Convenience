@@ -32,7 +32,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private KaikeiViewModel KaikeiViewModel;
+        //private readonly KaikeiViewModel KaikeiViewModel;
 
         /// <summary>
         /// コンストラクター
@@ -42,6 +42,7 @@ namespace Convenience.Controllers {
         public KaikeiController(ConvenienceContext context, IKaikeiService KaikeiService) {
             this._context = context;
             this._kaikeiService = KaikeiService;
+            //this.KaikeiViewModel = new KaikeiViewModel(_context);
         }
 
         /// <summary>
@@ -136,14 +137,14 @@ namespace Convenience.Controllers {
         /// <param name="id">getされるデータ（どこから来たかキーワード）</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Result(string id) {
+        public IActionResult Result(string id) {
 
-            if (id.CompareTo((string)TempData["id"])<0) {
-                id = (string)TempData["id"];
-                return RedirectToAction("Result", new { id = id });
+            if (id.CompareTo(TempData["id"]?.ToString())<0) {
+                id = TempData["id"]?.ToString()??string.Empty;
+                return RedirectToAction("Result", new { id });
             }
             if (TempData.Peek(IndexName) != null) {
-                var kaikeiViewModel = ISharedTools.ConvertFromSerial<KaikeiViewModel>(TempData[IndexName] as string);
+                var kaikeiViewModel = ISharedTools.ConvertFromSerial<KaikeiViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tempdataなし"));
                 /*
                  * 描画前設定
                  */

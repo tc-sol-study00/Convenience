@@ -130,7 +130,8 @@ namespace Convenience.Models.Services {
             if (inKeySetOrderArray != null && inKeySetOrderArray.Any()) {
                 foreach (var item in inKeySetOrderArray.Where(item => !string.IsNullOrEmpty(item.KeyEventData))) {
                     if (item.KeyEventData != null) {
-                        sokoZaikos = Zaiko.AddOrderby(item.KeyEventData, item.Descending);
+                        sokoZaikos = Zaiko.AddOrderby(item.KeyEventData, item.Descending)
+                            ??throw new Exception("AddOrderbyエラー");
                     }
                 }
             }

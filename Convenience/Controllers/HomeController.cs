@@ -9,10 +9,8 @@ namespace Convenience.Controllers {
     /// Homeコントローラ（メニュー表示用）
     /// </summary>
     public class HomeController : Controller {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger) {
-            _logger = logger;
+        public HomeController() {
         }
 
         public IActionResult Index() {
@@ -35,7 +33,7 @@ namespace Convenience.Controllers {
             IStatusCodeReExecuteFeature? statusCodeReExecuteFeature =
                 HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
 
-            ErrorViewModel errorViewModel = new ErrorViewModel() {
+            ErrorViewModel errorViewModel = new () {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                 StatusCode = id == 0 ? null : id,
                 EventAt = dateTime,

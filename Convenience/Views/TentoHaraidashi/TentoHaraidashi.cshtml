@@ -2,10 +2,10 @@
 @using Convenience.Models.DataModels
 @model TentoHaraidashiViewModel
 @{
-    TentoHaraidashiJisseki fortitle = null;
+    TentoHaraidashiJisseki fortitle = new TentoHaraidashiJisseki();
 
     if (Model.ShohinMasters != null && Model.ShohinMasters.Count() > 0) {
-        fortitle = Model.ShohinMasters.FirstOrDefault().ShiireMasters.FirstOrDefault().TentoHaraidashiJissekis.FirstOrDefault();
+        fortitle = Model.ShohinMasters!.First().ShiireMasters!.First().TentoHaraidashiJissekis!.First();
     }
 }
 <div id="content" style="display:none">
@@ -50,7 +50,7 @@
                                     <label asp-for="@fortitle.ShohinId" class="control-label"></label>
                                 </th>
                                 <th>
-                                    <label asp-for="@fortitle.ShiireMaster.ShohinMaster.ShohinName" class="control-label"></label>
+                                    <label asp-for="@fortitle.ShiireMaster!.ShohinMaster!.ShohinName" class="control-label"></label>
                                 </th>
                                 <th class="d-none d-md-table-cell">
                                     <label asp-for="@fortitle.ShiireSakiId" class="control-label"></label>
@@ -59,10 +59,10 @@
                                     <label asp-for="@fortitle.ShiirePrdId" class="control-label"></label>
                                 </th>
                                 <th>
-                                    <label asp-for="@fortitle.ShiireMaster.ShiirePrdName" class="control-label"></label>
+                                    <label asp-for="@fortitle.ShiireMaster!.ShiirePrdName" class="control-label"></label>
                                 </th>
                                 <th class="text-end">
-                                    <label asp-for="@fortitle.ShiireMaster.SokoZaiko.SokoZaikoSu" class="control-label"></label>
+                                    <label asp-for="@fortitle.ShiireMaster!.SokoZaiko!.SokoZaikoSu" class="control-label"></label>
                                 </th>
                                 <th class="text-end">
                                     <label asp-for="@fortitle.HaraidashiCaseSu" class="control-label"></label>
@@ -74,78 +74,71 @@
                                     <label asp-for="@fortitle.HaraidashiDate" class="control-label"></label>
                                 </th>
                                 <th class="text-end">
-                                    <label asp-for="@fortitle.ShiireMaster.ShohinMaster.TentoZaiko.ZaikoSu" class="control-label"></label>
+                                    <label asp-for="@fortitle.ShiireMaster!.ShohinMaster!.TentoZaiko!.ZaikoSu" class="control-label"></label>
                                 </th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            @for (var i = 0; i < Model.ShohinMasters.Count; i++) {
-                                <tr>
-                                    <td rowspan="@Model.ShohinMasters[i].ShiireMasters.Count" class="col-sm-auto d-none d-md-table-cell">
-                                        <input asp-for="@Model.ShohinMasters[i].ShohinId" class="form-control custom-disabled" tabindex="-1" />
-                                    </td>
-                                    <td rowspan="@Model.ShohinMasters[i].ShiireMasters.Count" class="col-sm-auto">
-                                        <input asp-for="@Model.ShohinMasters[i].ShohinName" class="form-control custom-disabled" tabindex="-1" />
-                                    </td>
+                            @if (Model.ShohinMasters is not null) {
+                                @for (var i = 0; i < Model.ShohinMasters.Count; i++) {
+                                    <tr>
+                                        <td rowspan="@Model.ShohinMasters[i].ShiireMasters?.Count??1" class="col-sm-auto d-none d-md-table-cell">
+                                            <input asp-for="@Model.ShohinMasters[i].ShohinId" class="form-control custom-disabled" tabindex="-1" />
+                                        </td>
+                                        <td rowspan="@Model.ShohinMasters[i].ShiireMasters?.Count??1" class="col-sm-auto">
+                                            <input asp-for="@Model.ShohinMasters[i].ShohinName" class="form-control custom-disabled" tabindex="-1" />
+                                        </td>
 
-                                    @for (var j = 0; j < Model.ShohinMasters[i].ShiireMasters.Count; j++) { // 修正
-                                        @if (Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis.Any()) {
-                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].TentoHaraidashiId" />
-                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].ShiireSakiId" />
-                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].ShiirePrdId" />
-                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].ShohinId" />
-                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters[j].ShiirePcsPerUnit" />
-                                        }
-                                        <td class="col-sm-auto d-none d-md-table-cell">
-                                            <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].ShiireSakiId" class="form-control custom-disabled" tabindex="-1" />
-                                        </td>
-                                        <td class="col-sm-auto d-none d-md-table-cell">
-                                            <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].ShiirePrdId" class="form-control custom-disabled" tabindex="-1" />
-                                        </td>
-                                        <td class="col-sm-auto">
-                                            <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].ShiirePrdName" class="form-control custom-disabled" tabindex="-1" />
-                                        </td>
-                                        <td class="col-sm-auto">
-                                            <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].SokoZaiko.SokoZaikoSu" class="form-control custom-disabled text-end" tabindex="-1" />
-                                        </td>
-                                        <td class="col-sm-auto">
-                                            @if (Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis.Any()) { // 空チェック
-                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiCaseSu" class="form-control text-end" type="text" />
-                                                <span asp-validation-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiCaseSu" class="text-danger"></span>
-                                            }
-                                            else {
-                                                <input type="text" class="form-control" disabled />
-                                                // デフォルトの入力フィールド
-                                            }
-                                        </td>
-                                        <td class="col-sm-auto d-none d-md-table-cell">
-                                            @if (Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis.Any()) {
-                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiSu" class="form-control  custom-disabled text-end" tabindex="-1" />
-                                            }
-                                            else {
-                                                <input type="text" class="form-control" disabled />
-                                            }
-                                        </td>
-                                        <td class="col-sm-auto d-none d-md-table-cell">
-                                            @if (Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis.Any()) {
-                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiDate" type="text" class="form-control custom-disabled" tabindex="-1" value="@Model.ShohinMasters[i].ShiireMasters[j].TentoHaraidashiJissekis[0].HaraidashiDate.ToString("yyyy-MM-dd HH:mm:ss")" />
-                                            }
-                                            else {
-                                                <input type="text" class="form-control" disabled />
-                                            }
-                                        </td>
-                                    }
-                                    <td rowspan="@Model.ShohinMasters[i].ShiireMasters.Count" class="col-sm-auto">
-                                        @if (Model.ShohinMasters[i].TentoZaiko != null) {
-                                            <input asp-for="@Model.ShohinMasters[i].TentoZaiko.ZaikoSu" class="form-control text-end" tabindex="-1" disabled />
-                                        }
-                                        else {
-                                            <input type="text" class="form-control" tabindex="-1" disabled value="N/A" /> <!-- または適切な代替テキストを表示 -->
-                                        }
-                                    </td>
+                                        @if (Model.ShohinMasters[i].ShiireMasters is not null) {
+                                            @for (var j = 0; j < Model.ShohinMasters[i].ShiireMasters!.Count; j++) { // 修正
+                                                <td rowspan="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis?.Count??1" class="col-sm-auto d-none d-md-table-cell">
+                                                    <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].ShiireSakiId" class="form-control custom-disabled" tabindex="-1" />
+                                                </td>
+                                                <td rowspan="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis?.Count??1" class="col-sm-auto d-none d-md-table-cell">
+                                                    <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].ShiirePrdId" class="form-control custom-disabled" tabindex="-1" />
+                                                </td>
+                                                <td rowspan="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis?.Count??1" class="col-sm-auto">
+                                                    <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].ShiirePrdName" class="form-control custom-disabled" tabindex="-1" />
+                                                </td>
+                                                <td rowspan="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis?.Count??1" class="col-sm-auto">
+                                                    <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].SokoZaiko!.SokoZaikoSu" class="form-control custom-disabled text-end" tabindex="-1" />
+                                                </td>
+                                                @if (Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis is not null) {
+                                                    @for (var k = 0; k < Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis!.Count; k++) {
+                                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].TentoHaraidashiId" />
+                                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].ShiireSakiId" />
+                                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].ShiirePrdId" />
+                                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].ShohinId" />
+                                                            <input type="hidden" asp-for="@Model.ShohinMasters[i].ShiireMasters![j].ShiirePcsPerUnit" />
 
-                                </tr>
+                                                        <td class="col-sm-auto">
+
+                                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].HaraidashiCaseSu" class="form-control text-end" type="text" />
+                                                                <span asp-validation-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].HaraidashiCaseSu" class="text-danger"></span>
+                                                        </td>
+                                                        <td class="col-sm-auto d-none d-md-table-cell">
+                                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].HaraidashiSu" class="form-control  custom-disabled text-end" tabindex="-1" />
+                                                        </td>
+                                                        <td class="col-sm-auto d-none d-md-table-cell">
+                                                                <input asp-for="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].HaraidashiDate" type="text" class="form-control custom-disabled" tabindex="-1" value="@Model.ShohinMasters[i].ShiireMasters![j].TentoHaraidashiJissekis![k].HaraidashiDate.ToString("yyyy-MM-dd HH:mm:ss")" />
+                                                        </td>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        <td rowspan="@Model.ShohinMasters[i].ShiireMasters!.Count" class="col-sm-auto">
+                                            @if (Model.ShohinMasters[i].TentoZaiko != null) {
+                                                <input asp-for="@Model.ShohinMasters[i].TentoZaiko!.ZaikoSu" class="form-control text-end" tabindex="-1" disabled />
+                                            }
+                                            else {
+                                                <input type="text" class="form-control" tabindex="-1" disabled value="N/A" /> <!-- または適切な代替テキストを表示 -->
+                                            }
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
                             }
 
                         </tbody>

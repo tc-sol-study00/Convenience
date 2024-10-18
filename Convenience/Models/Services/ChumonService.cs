@@ -28,7 +28,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// コンストラクタ 注文オブジェクト用記述
         /// </summary>
-        private Func<ConvenienceContext, IChumon> CreateChumonInstance = context => new Chumon(context);
+        private readonly Func<ConvenienceContext, IChumon> CreateChumonInstance = context => new Chumon(context);
 
         /// <summary>
         /// 注文キービューモデル（１枚目の画面用）
@@ -63,7 +63,8 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <returns>ChumonKeysViewModel 注文キービューモデル</returns>
         public async Task<ChumonKeysViewModel> SetChumonKeysViewModel() {
-            var list = await _context.ShiireSakiMaster.OrderBy(s => s.ShiireSakiId).Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToListAsync();
+            var list = await chumon.ShiireSakiList(s => s.ShiireSakiId)
+                .Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToListAsync();
 
             return (this.ChumonKeysViewModel=new ChumonKeysViewModel() {
                 ShiireSakiId = null,
@@ -80,13 +81,13 @@ namespace Convenience.Models.Services {
         public async Task<ChumonViewModel> ChumonSetting(ChumonKeysViewModel inChumonKeysViewModel) {
 
             //仕入先コード抽出
-            string shiireSakiId = inChumonKeysViewModel.ShiireSakiId;
+            string shiireSakiId = inChumonKeysViewModel?.ShiireSakiId??throw new ArgumentException("仕入先がセットされていません");
             //注文日付抽出
             DateOnly chumonDate = 
                 inChumonKeysViewModel.ChumonDate == DateOnly.FromDateTime(new DateTime(1, 1, 1))?DateOnly.FromDateTime(DateTime.Now):inChumonKeysViewModel.ChumonDate;
 
             //注文実績モデル変数定義
-            ChumonJisseki createdChumonJisseki = default, existedChumonJisseki = default;
+            ChumonJisseki? createdChumonJisseki = default, existedChumonJisseki = default;
             //もし、引数の注文日付がない場合（画面入力の注文日付が入力なしだと、1年1月1日になる
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == chumonDate) {
                 //注文作成
@@ -119,7 +120,7 @@ namespace Convenience.Models.Services {
             //注文実績抽出
             ChumonJisseki postedchumonJisseki = inChumonViewModel.ChumonJisseki;
             //Postされたデータで注文実績と注文実績明細の更新
-            var updatedChumonJisseki = await chumon.ChumonUpdate(postedchumonJisseki);
+            ChumonJisseki updatedChumonJisseki = await chumon.ChumonUpdate(postedchumonJisseki);
 
             //Postされた注文実績のデータチェック
             (bool IsValid, ErrDef errCd) = ChumonJissekiIsValid(updatedChumonJisseki);
@@ -139,13 +140,15 @@ namespace Convenience.Models.Services {
                     throw new DbUpdateConcurrencyException(ex.Message);
                 }
                 //再表示用データセット
-                updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate);
+                updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate)
+                    ?? throw new NoDataFoundException("DB更新後のデータがありません");
+
                 
                 //注文ビューモデルセット(正常時）
                 this.ChumonViewModel = new ChumonViewModel {
                     ChumonJisseki = updatedChumonJisseki,
                     IsNormal = IsValid,
-                    Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate).MessageText : null
+                    Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText : null
                 };
             }
             else {
@@ -153,7 +156,7 @@ namespace Convenience.Models.Services {
                 this.ChumonViewModel = new ChumonViewModel {
                     ChumonJisseki = updatedChumonJisseki,
                     IsNormal = IsValid,
-                    Remark = new Message().SetMessage(errCd).MessageText
+                    Remark = new Message().SetMessage(errCd)?.MessageText
                 };
             }
             //注文明細ビューモデルを返却
@@ -166,30 +169,37 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="inChumonJisseki">postされた注文実績</param>
         /// <returns>正常=true、異常=false、エラーコード</returns>
-        private (bool, ErrDef) ChumonJissekiIsValid(ChumonJisseki inChumonJisseki) {
+        private static (bool, ErrDef) ChumonJissekiIsValid(ChumonJisseki inChumonJisseki) {
             var chumonId = inChumonJisseki.ChumonId;
             var chumonDate = inChumonJisseki.ChumonDate;
 
-            if (!Regex.IsMatch(chumonId, "^[0-9]{8}-[0-9]{3}$")) {
+            if (!Regex.IsMatch(chumonId??string.Empty, "^[0-9]{8}-[0-9]{3}$")) {
                 return (false, ErrDef.ChumonIdError);
             }
-            else if (chumonDate == null || chumonDate <= (new DateOnly(1, 1, 1))) {
+            else if (chumonDate == DateOnly.MinValue || chumonDate <= (new DateOnly(1, 1, 1))) {
                 return (false, ErrDef.ChumonDateError);
             }
 
+            if(inChumonJisseki?.ChumonJissekiMeisais is null) {
+                return (false, ErrDef.NothingChumonJisseki);
+            }
             foreach (var i in inChumonJisseki.ChumonJissekiMeisais) {
                 if (i.ChumonId != chumonId) {
                     return (false, ErrDef.ChumonIdRelationError);
                 }
+                /*
                 else if (i.ChumonSu == null) {
                     return (false, ErrDef.ChumonSuIsNull);
                 }
+                */
                 else if (i.ChumonSu < 0) {
                     return (false, ErrDef.ChumonSuBadRange);
                 }
+                /*
                 else if (i.ChumonZan == null) {
                     return (false, ErrDef.ChumonZanIsNull);
                 }
+                */
                 else if (i.ChumonSu < i.ChumonZan) {
                     return (false, ErrDef.SuErrorBetChumonSuAndZan);
                 }

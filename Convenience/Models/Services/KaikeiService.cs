@@ -27,7 +27,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// 会計クラス用
         /// </summary>
-        private IKaikei _kaikei { get; set; }
+        private IKaikei Kaikei { get; set; }
 
         /// <summary>
         /// 会計ビュー・モデル（プロパティ）
@@ -39,6 +39,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         private readonly ITempDataDictionary _tempData;
 
+        private const string tempDataIndex = "KaikeiService";
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -49,8 +50,8 @@ namespace Convenience.Models.Services {
         /// </remarks>
         public KaikeiService(ConvenienceContext context, IKaikei kaikei, ITempDataDictionaryFactory tempDataFactory, IActionContextAccessor actionContextAccessor) {
             this._context = context;    //DBコンテキスト用
-            this._kaikei = kaikei;      //会計クラス
-
+            this.Kaikei = kaikei;      //会計クラス
+            this.KaikeiViewModel = new KaikeiViewModel(_context);
             //TemoData用ＤＩ
             if (actionContextAccessor.ActionContext != null && actionContextAccessor.ActionContext.HttpContext != null) { // null チェック
                 _tempData = tempDataFactory.GetTempData(actionContextAccessor.ActionContext.HttpContext);
@@ -73,15 +74,14 @@ namespace Convenience.Models.Services {
             /*
              * ５日前を対象に過去の会計データを抽出し、新規分含めキー入力の選択リストを作成する
              */
-            IList<UriageDateTimeAndIdMatching> uriageDateTimeAndIdMatchings;
-            var kaikeiHeaderList = SetKeyInputList(-5, CurrentDateTime);
-
-            string defaultsetting = kaikeiHeaderList[0].Value;  //新規分データを初期値設定
+            var kaikeiHeaderList = await SetKeyInputList(-5, CurrentDateTime);
+            string defaultsetting = kaikeiHeaderList.Count>0?kaikeiHeaderList[0].Value  //新規分データを初期値設定
+                : throw new NoDataFoundException("選択リスト0件");  
 
             /*
              * ビューモデルの作成
              */
-            this.KaikeiViewModel = new KaikeiViewModel(_context) {
+            this.KaikeiViewModel = new (_context) {
                 KaikeiDateAndId = defaultsetting,
                 KaikeiHeaderList = kaikeiHeaderList
             };
@@ -97,24 +97,27 @@ namespace Convenience.Models.Services {
         /// <param name="argKaikeiViewModel">会計ビューモデル</param>
         /// <returns>KaikeiViewModel 会計ビューモデル</returns>
         public async Task<KaikeiViewModel> KaikeiSetting(KaikeiViewModel argKaikeiViewModel) {
-            
+
+            _ = argKaikeiViewModel?.KaikeiDateAndId??throw new ArgumentException("引数なし");
+
             /*
              * 引数のデータ取り出し
              */
 
             //Json化されているキーデータをモデルに変換
             UriageDateTimeAndIdMatching uriageDateTimeAndIdMatching
-                = JsonSerializer.Deserialize<UriageDateTimeAndIdMatching>(argKaikeiViewModel.KaikeiDateAndId);
-
-            string uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId; //売上日時コード
+                = JsonSerializer.Deserialize<UriageDateTimeAndIdMatching>(argKaikeiViewModel.KaikeiDateAndId)
+                ?? throw new ArgumentException("Jsonデータなし");
+   
+            string uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId??string.Empty; //売上日時コード
             DateTime uriageDatetime = uriageDateTimeAndIdMatching.UriageDatetime;   //売上日時
 
             /*
              * 会計ヘッダ＋実績を初期設定
              */
-            KaikeiHeader? kaikeiHeader = uriageDatetimeId is null
-                ? await _kaikei.KaikeiSakusei(uriageDatetime)       //新規
-                : await _kaikei.KaikeiToiawase(uriageDatetimeId,x=>x.KaikeiSeq);   //すでにある場合
+            KaikeiHeader kaikeiHeader = (uriageDatetimeId == string.Empty
+                ? Kaikei.KaikeiSakusei(uriageDatetime)       //新規
+                : await Kaikei.KaikeiToiawase(uriageDatetimeId!,x=>x.KaikeiSeq))!;   //すでにある場合
 
             /*
              * 選択されたキーデータで選択リストを作成する（一件だけ）
@@ -138,7 +141,7 @@ namespace Convenience.Models.Services {
                 KaikeiDateAndId = argKaikeiViewModel.KaikeiDateAndId,
                 KaikeiHeaderList = kaikeiHeaderList,
                 KaikeiHeader = kaikeiHeader,
-                ShohinList = shohinList
+                ShohinList = shohinList,
             };
 
             //TempDataにビューモデルを保存
@@ -159,7 +162,7 @@ namespace Convenience.Models.Services {
              * TempDataからのデータ復帰
              */
             this.KaikeiViewModel = GetViewModelToTempData();
-            _kaikei.KaikeiHeader = this.KaikeiViewModel.KaikeiHeader;
+            Kaikei.KaikeiHeader = this.KaikeiViewModel.KaikeiHeader;
 
             //会計実績がnullなら、０件リスト化
             if (this.KaikeiViewModel.KaikeiHeader.KaikeiJissekis is null) {
@@ -172,10 +175,10 @@ namespace Convenience.Models.Services {
              * 画面入力された会計実績を追加（画面上のみＤＢにはまだ反映させない
              */
             this.KaikeiViewModel.KaikeiHeader.KaikeiJissekis
-                = await _kaikei.KaikeiAddcommodity(argKaikeiViewModel.KaikeiJissekiforAdd);
+                = await Kaikei.KaikeiAddcommodity(kaikeiJissekiforAdd);
 
             //post前に入力されていた商品コードを表示用にセットしておく
-            this.KaikeiViewModel.KaikeiJissekiforAdd.ShohinId = argKaikeiViewModel.KaikeiJissekiforAdd.ShohinId;
+            this.KaikeiViewModel.KaikeiJissekiforAdd.ShohinId = kaikeiJissekiforAdd.ShohinId;
 
             //TempDataにビューモデルを保存
             SetViewModelToTempData(this.KaikeiViewModel);
@@ -203,7 +206,7 @@ namespace Convenience.Models.Services {
             /*
              * postされたデータを、プロパティに置いたデータに上書き
              */
-            KaikeiHeader updatedKaikeiHeader = await _kaikei.KaikeiUpdate(postedKaikeiHeader);
+            KaikeiHeader updatedKaikeiHeader = await Kaikei.KaikeiUpdate(postedKaikeiHeader);
             
             //売上日時コード抽出（上記のメソッドで発番されるので、このタイミング
             string postedUriageDatetimeId = updatedKaikeiHeader.UriageDatetimeId;
@@ -216,24 +219,32 @@ namespace Convenience.Models.Services {
             /*
              * ビューデータの作成
              */
-            KaikeiViewModel reQueryKaikeiViewModel= new KaikeiViewModel();
-            //ＤＢ更新後の再問合せ
-            reQueryKaikeiViewModel.KaikeiHeader = await _kaikei.KaikeiToiawase(postedUriageDatetimeId,x=>x.KaikeiSeq);
+            KaikeiViewModel reQueryKaikeiViewModel = new(_context) {
+                //ＤＢ更新後の再問合せ
+                KaikeiHeader = await Kaikei.KaikeiToiawase(postedUriageDatetimeId, x => x.KaikeiSeq)
+                ?? throw new NoDataFoundException("更新したデータがＤＢ上で見つかりません"),
 
-            //処理結果（とりあえずＯＫ）
-            reQueryKaikeiViewModel.IsNormal = true;
-            reQueryKaikeiViewModel.Remark = new Message().SetMessage(ErrDef.NormalUpdate).MessageText;
+                //処理結果（とりあえずＯＫ）
+                IsNormal = true,
+                Remark = new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText,
 
-            //選択されたキーデータで選択リストを作成する（一件だけ）
-            reQueryKaikeiViewModel.KaikeiHeaderList
-                = SetKeyInputList(new UriageDateTimeAndIdMatching(postedKaikeiHeader.UriageDatetime, postedKaikeiHeader.UriageDatetimeId));
+                //選択されたキーデータで選択リストを作成する（一件だけ）
+                KaikeiHeaderList
+                = SetKeyInputList(new UriageDateTimeAndIdMatching(postedKaikeiHeader.UriageDatetime, postedKaikeiHeader.UriageDatetimeId))
+
+            };
 
             //再描画後、前画面でデータ入力した商品コードをセットしておく
             //一行しかないから、かならず[0]はある
-            reQueryKaikeiViewModel.KaikeiDateAndId = reQueryKaikeiViewModel.KaikeiHeaderList[0].Value;
 
+            if (reQueryKaikeiViewModel.KaikeiHeaderList.Count > 0) {
+                reQueryKaikeiViewModel.KaikeiDateAndId = reQueryKaikeiViewModel.KaikeiHeaderList[0].Value;
+            }
+            else {
+                throw new Exception("商品リストエラー");
+            }
             //
-            reQueryKaikeiViewModel.KaikeiJissekiforAdd = new KaikeiJissekiForAdd(_context);
+            //reQueryKaikeiViewModel.KaikeiJissekiforAdd = new KaikeiJissekiForAdd(_context);
 
             this.KaikeiViewModel = reQueryKaikeiViewModel;
             //TempDataにビューモデルを保存
@@ -251,9 +262,9 @@ namespace Convenience.Models.Services {
         /// <para>画面からajaxで、商品コードを投げてくるから、商品名称を返す</para>
         /// </remarks>
         public async Task<string> GetShohinName(string argShohinId) {
-            var shohinName = _context.ShohinMaster.Where(x => x.ShohinId.Equals(argShohinId)).Select(x => x.ShohinName).FirstOrDefault();
+            var shohinName = await _context.ShohinMaster.Where(x => x.ShohinId.Equals(argShohinId)).Select(x => x.ShohinName).FirstOrDefaultAsync();
 
-            if (shohinName is null) shohinName = string.Empty;
+            shohinName ??= string.Empty;
             return shohinName;
         }
         /// <summary>
@@ -265,14 +276,15 @@ namespace Convenience.Models.Services {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
                 WriteIndented = true,
             });
-            _tempData["test"] = serializedString;
+            _tempData[tempDataIndex] = serializedString;
         }
         /// <summary>
         /// tempデータからビューモデルへ復帰
         /// </summary>
         /// <returns></returns>
         private KaikeiViewModel GetViewModelToTempData() {
-            KaikeiViewModel kaikeiViewModel = JsonSerializer.Deserialize<KaikeiViewModel>((string)_tempData["test"]);
+            string tempData = _tempData[tempDataIndex]?.ToString() ?? throw new ArgumentException("TempDataなし");
+            KaikeiViewModel kaikeiViewModel = JsonSerializer.Deserialize<KaikeiViewModel>(tempData)??throw new Exception("Jsonデータ不正");
             return kaikeiViewModel;
         }
         /// <summary>
@@ -281,24 +293,24 @@ namespace Convenience.Models.Services {
         /// <param name="argDaysAgo"></param>
         /// <param name="argCurrentDateTime"></param>
         /// <returns>IList<SelectListItem>キー入力用リスト（新規分＋過去分）</returns>
-        private IList<SelectListItem> SetKeyInputList(int argDaysAgo, DateTime argCurrentDateTime) {
+        private async Task<IList<SelectListItem>> SetKeyInputList(int argDaysAgo, DateTime argCurrentDateTime) {
 
             /*
              * ５日前を対象に過去の会計データを抽出し、キー入力の選択リストを作成する
              */
-            IList<UriageDateTimeAndIdMatching> uriageDateTimeAndIdMatchings = _context.KaikeiHeader.Where(x => x.UriageDatetime >= DateTime.Now.AddDays(argDaysAgo).Date.ToUniversalTime())
+            IList<UriageDateTimeAndIdMatching> uriageDateTimeAndIdMatchings = await _context.KaikeiHeader.Where(x => x.UriageDatetime >= DateTime.Now.AddDays(argDaysAgo).Date.ToUniversalTime())
                     .OrderByDescending(x => x.UriageDatetime)
                     .Select(x => new UriageDateTimeAndIdMatching {
                         UriageDatetime = x.UriageDatetime,
                         UriageDatetimeId = x.UriageDatetimeId
                     })
-                    .ToList();
+                    .ToListAsync();
             /*
              * 上記キー入力の選択リストに、今から入力する会計を新規で一覧のトップにいれる
              */
             uriageDateTimeAndIdMatchings.Insert(0, new UriageDateTimeAndIdMatching() {
                 UriageDatetime = argCurrentDateTime,
-                UriageDatetimeId = null
+                UriageDatetimeId = string.Empty
             });
 
             return SetSelectListItem(uriageDateTimeAndIdMatchings);//リストアイテム化
@@ -312,10 +324,11 @@ namespace Convenience.Models.Services {
         /// <remarks>
         /// <para>リストの中で選択されたものだけに絞る</para>
         /// </remarks>
-        private IList<SelectListItem> SetKeyInputList(UriageDateTimeAndIdMatching argUriageDateTimeAndIdMatching) {
+        private static IList<SelectListItem> SetKeyInputList(UriageDateTimeAndIdMatching argUriageDateTimeAndIdMatching) {
             IList<UriageDateTimeAndIdMatching> uriageDateTimeAndIdMatchings
-                = new List<UriageDateTimeAndIdMatching>();
-            uriageDateTimeAndIdMatchings.Add(argUriageDateTimeAndIdMatching);
+                = new List<UriageDateTimeAndIdMatching> {
+                    argUriageDateTimeAndIdMatching
+                };
             return SetSelectListItem(uriageDateTimeAndIdMatchings);//リストアイテム化
         }
 
@@ -324,19 +337,19 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argUriageDateTimeAndIdMatchings">セットするリスト内容</param>
         /// <returns>IList<SelectListItem> 表示用リスト化されたもの</returns>
-        private IList<SelectListItem> SetSelectListItem(IList<UriageDateTimeAndIdMatching> argUriageDateTimeAndIdMatchings) {
+        private static IList<SelectListItem> SetSelectListItem(IList<UriageDateTimeAndIdMatching> argUriageDateTimeAndIdMatchings) {
             /*
              * 表示用リストアイテムを設定する
              */
-            string defaultsetting = default;
+            //string? defaultsetting;
             IList<SelectListItem> kaikeiHeaderList = new List<SelectListItem>();
             for (int i = 0; i < argUriageDateTimeAndIdMatchings.Count; i++) {
                 var item = argUriageDateTimeAndIdMatchings[i];
 
                 string serializedString = JsonSerializer.Serialize(item);
-                kaikeiHeaderList.Add(new SelectListItem($"{item.UriageDatetimeId ?? "新規"}:{item.UriageDatetime}", serializedString));
+                kaikeiHeaderList.Add(new SelectListItem($"{(item.UriageDatetimeId==string.Empty?"新規": item.UriageDatetimeId)}:{item.UriageDatetime}", serializedString));
 
-                if (i == 0) defaultsetting = serializedString;  
+                //if (i == 0) defaultsetting = serializedString;  
             }
             return kaikeiHeaderList;
         }

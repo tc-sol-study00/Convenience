@@ -1,4 +1,5 @@
 ﻿using Convenience.Data;
+using Convenience.Migrations;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
@@ -35,10 +36,18 @@ namespace Convenience.Models.ViewModels.Kaikei {
         public KaikeiViewModel(ConvenienceContext context) {
             ConvenienceContext _context = context;
             KaikeiJissekiforAdd = new KaikeiJissekiForAdd(_context);
+            ShohinList = new List<SelectListItem>();
+            KaikeiDateAndId = string.Empty;
+            KaikeiHeader = new KaikeiHeader();
+            KaikeiHeaderList = new List<SelectListItem>();
         }
         public KaikeiViewModel() {
+            KaikeiJissekiforAdd = new KaikeiJissekiForAdd();
+            ShohinList = new List<SelectListItem>();
+            KaikeiDateAndId = string.Empty;
+            KaikeiHeader = new KaikeiHeader();
+            KaikeiHeaderList = new List<SelectListItem>();
         }
-
     }
     public class KaikeiJissekiForAdd : IKaikeiJissekiForAdd {
 
@@ -48,19 +57,27 @@ namespace Convenience.Models.ViewModels.Kaikei {
         public string? ShohinName { get; set; }
         public decimal UriageSu { get; set; }
         public decimal UriageKingaku { get; set; }
-        public string NaigaiClass { get; set; } = "0";
-        public ShohinMaster ShohinMaster { get; set; }
+        public string NaigaiClass { get; set; }
+        public ShohinMaster? ShohinMaster { get; set; }
         public IEnumerable<SelectListItem> NaigaiClassListItems { get; set; }
 
+        private void Initial() {
+            this.UriageSu = 0;
+            this.UriageKingaku = 0;
+        }
+        public KaikeiJissekiForAdd() {
+            this.NaigaiClassListItems = new List<SelectListItem>();
+            this.NaigaiClass = "0";
+            Initial();
+        }
         public KaikeiJissekiForAdd(ConvenienceContext context) {
             ConvenienceContext _context = context;
             this.NaigaiClassListItems =
                 _context.NaigaiClassMaster.AsNoTracking().OrderBy(x => x.NaigaiClass)
                 .Select(x => new SelectListItem() { Text = $"{x.NaigaiClass}:{x.NaigaiClassName}", Value = x.NaigaiClass })
                 .ToList();
-            _context = context;
-        }
-        public KaikeiJissekiForAdd() {
+            this.NaigaiClass = "0";
+            Initial();
         }
     }
 
@@ -74,7 +91,7 @@ namespace Convenience.Models.ViewModels.Kaikei {
     public class UriageDateTimeAndIdMatching {
 
         public DateTime UriageDatetime { get; set; } = default;
-        public string UriageDatetimeId { get; set; } = default;
+        public string? UriageDatetimeId { get; set; } = default;
 
         public UriageDateTimeAndIdMatching(DateTime UriageDatetime, string UriageDatetimeId) {
             this.UriageDatetime = UriageDatetime;

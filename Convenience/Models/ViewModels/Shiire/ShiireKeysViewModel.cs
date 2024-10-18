@@ -11,11 +11,11 @@ namespace Convenience.Models.ViewModels.Shiire {
         [DisplayName("注文コード")]
         [MaxLength(20)]
         [Required]
-        public string ChumonId { get; set; }
+        public string? ChumonId { get; set; }
 
         /// <summary>
         /// 注文コードリスト（注文残が残っているリスト格納用）
         /// </summary>
-        public IList<SelectListItem> ChumonIdList { get; set; }
+        public IList<SelectListItem> ChumonIdList { get; set; } = new List<SelectListItem>();
     }
 }

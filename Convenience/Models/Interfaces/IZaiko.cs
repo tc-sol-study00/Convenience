@@ -23,6 +23,6 @@ namespace Convenience.Models.Interfaces {
         /// <param name="sortKey">ソートキー</param>
         /// <param name="descending">降順・昇順区分</param>
         /// <returns>倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) ソート指示付き　ISoKoZaikoQueryable型にして遅延実行化</returns>
-        public IQueryable<ZaikoListLine> AddOrderby(string sortKey, bool descending);
+        public IQueryable<ZaikoListLine>? AddOrderby(string sortKey, bool descending);
         }
 }

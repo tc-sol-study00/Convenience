@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+#pragma warning disable CS8981
+#pragma warning disable IDE1006
 
 namespace Convenience.Migrations
 {

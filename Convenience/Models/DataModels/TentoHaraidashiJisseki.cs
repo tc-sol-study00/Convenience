@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+#pragma warning disable CS8618
+
 namespace Convenience.Models.DataModels {
     /// <summary>
     /// 店頭払出実績DTO

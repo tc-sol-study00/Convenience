@@ -41,18 +41,18 @@ namespace Convenience.Models.ViewModels.Zaiko {
         /// <summary>
         /// ソート指示選択用一覧（画面表示と選択用）
         /// </summary>
-        public SelectList KeyList = new SelectList(
+        public SelectList KeyList = new(
             new List<SelectListItem>
                 {
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShiireSakiId), Text = "仕入先コード" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShiirePrdId), Text = "仕入商品コード" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShohinId), Text = "商品コード" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShohinName), Text = "商品名" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.SokoZaikoCaseSu), Text = "在庫数" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.SokoZaikoSu), Text = "倉庫在庫数" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.LastShiireDate), Text = "直近仕入日" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.LastDeliveryDate), Text = "直近払出日" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
+                    new() { Value = nameof(ZaikoListLine.ShiireSakiId), Text = "仕入先コード" },
+                    new() { Value = nameof(ZaikoListLine.ShiirePrdId), Text = "仕入商品コード" },
+                    new() { Value = nameof(ZaikoListLine.ShohinId), Text = "商品コード" },
+                    new() { Value = nameof(ZaikoListLine.ShohinName), Text = "商品名" },
+                    new() { Value = nameof(ZaikoListLine.SokoZaikoCaseSu), Text = "在庫数" },
+                    new() { Value = nameof(ZaikoListLine.SokoZaikoSu), Text = "倉庫在庫数" },
+                    new() { Value = nameof(ZaikoListLine.LastShiireDate), Text = "直近仕入日" },
+                    new() { Value = nameof(ZaikoListLine.LastDeliveryDate), Text = "直近払出日" },
+                    new() { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
                 }, "Value", "Text");
 
         /// <summary>
@@ -72,14 +72,14 @@ namespace Convenience.Models.ViewModels.Zaiko {
         /// <summary>
         /// 比較演算子選択用
         /// </summary>
-        public SelectList ComparisonOperatorList = new SelectList(
+        public SelectList ComparisonOperatorList = new(
             new List<SelectListItem> {
-            new SelectListItem { Value = "==", Text = "=" },
-            new SelectListItem { Value = "!=", Text = "!=" },
-            new SelectListItem { Value = ">=", Text = ">=" },
-            new SelectListItem { Value = ">", Text = ">" },
-            new SelectListItem { Value = "<=", Text = "<=" },
-            new SelectListItem { Value = "<", Text = "<" },
+            new (){ Value = "==", Text = "=" },
+            new (){ Value = "!=", Text = "!=" },
+            new (){ Value = ">=", Text = ">=" },
+            new (){ Value = ">", Text = ">" },
+            new (){ Value = "<=", Text = "<=" },
+            new (){ Value = "<", Text = "<" },
         }, "Value", "Text");
 
         /// <summary>
@@ -94,20 +94,21 @@ namespace Convenience.Models.ViewModels.Zaiko {
         /// <summary>
         /// Where左辺用カラムセット用
         /// </summary>
-        public SelectList SelectWhereLeftSideList = new SelectList(
+        public SelectList SelectWhereLeftSideList = new (
                 new List<SelectListItem>
                     {
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShiireSakiId), Text = "仕入先コード" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShiirePrdId), Text = "仕入商品コード" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShohinId), Text = "商品コード" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ShohinName), Text = "商品名" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.SokoZaikoCaseSu), Text = "在庫数" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.SokoZaikoSu), Text = "倉庫在庫数" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.LastShiireDate), Text = "直近仕入日" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.LastDeliveryDate), Text = "直近払出日" },
-                    new SelectListItem { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
+                    new() { Value = nameof(ZaikoListLine.ShiireSakiId), Text = "仕入先コード" },
+                    new() { Value = nameof(ZaikoListLine.ShiirePrdId), Text = "仕入商品コード" },
+                    new() { Value = nameof(ZaikoListLine.ShohinId), Text = "商品コード" },
+                    new() { Value = nameof(ZaikoListLine.ShohinName), Text = "商品名" },
+                    new() { Value = nameof(ZaikoListLine.SokoZaikoCaseSu), Text = "在庫数" },
+                    new() { Value = nameof(ZaikoListLine.SokoZaikoSu), Text = "倉庫在庫数" },
+                    new() { Value = nameof(ZaikoListLine.LastShiireDate), Text = "直近仕入日" },
+                    new() { Value = nameof(ZaikoListLine.LastDeliveryDate), Text = "直近払出日" },
+                    new() { Value = nameof(ZaikoListLine.ChumonZan), Text = "注文残" },
                     }, "Value", "Text");
 
+#pragma warning disable CS8618
         /// <summary>
         /// 倉庫在庫・注文実績明細変策用レコード
         /// </summary>
@@ -119,7 +120,7 @@ namespace Convenience.Models.ViewModels.Zaiko {
             [DisplayName("商品コード")]
             public string ShohinId { get; set; }
             [DisplayName("商品名称")]
-            public string ShohinName { get; set; }
+            public string? ShohinName { get; set; }
             [DisplayName("仕入単位在庫数")]
             public decimal SokoZaikoCaseSu { get; set; }
             [DisplayName("在庫数")]
@@ -129,12 +130,14 @@ namespace Convenience.Models.ViewModels.Zaiko {
             [DisplayName("直近払出日")]
             public DateOnly? LastDeliveryDate { get; set; }
             [DisplayName("注文残")]
-            public decimal ChumonZan { get; set; }
+            public decimal? ChumonZan { get; set; }
         }
+
+#pragma warning restore CS8618
 
         /// <summary>
         /// 倉庫在庫・注文実績明細変策用レコードのリスト（検索結果がここに入る）
         /// </summary>
-        public IList<ZaikoListLine> zaikoListLine { get; set; } = new List<ZaikoListLine>();
+        public IList<ZaikoListLine> ZaikoListLines { get; set; } = new List<ZaikoListLine>();
     }
 }

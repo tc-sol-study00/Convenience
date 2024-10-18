@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.DataModels;
+using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Convenience.Models.Interfaces
         /// <para>プロパティ</para>
         /// <para>店頭払出ヘッダー</para>
         /// </summary>
-        public TentoHaraidashiHeader TentoHaraidashiHeader { get; set; }
+        public TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
 
         /// <summary>
         /// <para>倉庫在庫から店頭払出実績（ヘッダー＋実績）を作成する</para>
@@ -31,5 +32,12 @@ namespace Convenience.Models.Interfaces
         /// <param name="argTentoHaraidashiId">店頭払出コード</param>
         /// <returns>TentoHaraidashiHeader 店頭払出ヘッダ</returns>
         public Task<TentoHaraidashiHeader?> TentoHaraidashiToiawase(string argTentoHaraidashiId);
+
+        /// <summary>
+        /// 店頭払出ヘッダーのリストを条件より作成
+        /// </summary>
+        /// <param name="whereExpression">条件式</param>
+        /// <returns>IQueryable<TentoHaraidashiHeader> 店頭払出ヘッダーリスト（遅延実行）</returns>
+        public IQueryable<TentoHaraidashiHeader> TentoHaraidashiHeaderList(Expression<Func<TentoHaraidashiHeader, bool>> whereExpression);
     }
 }

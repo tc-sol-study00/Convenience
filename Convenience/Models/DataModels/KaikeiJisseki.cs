@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+#pragma warning disable CS8618
+
 namespace Convenience.Models.DataModels {
 
     /// <summary>
@@ -27,7 +29,7 @@ namespace Convenience.Models.DataModels {
         [DisplayName("商品コード")]
         [MaxLength(10)]
         [Required]
-        public string ShohinId { get; set; }
+        public string? ShohinId { get; set; }
 
         [Column("uriage_datetime")]
         [DisplayName("売上日時")]
@@ -80,11 +82,11 @@ namespace Convenience.Models.DataModels {
         public  KaikeiHeader KaikeiHeader { get; set; }
 
         [ForeignKey(nameof(ShohinId))]
-        public ShohinMaster ShohinMaster { get; set; }
+        public ShohinMaster? ShohinMaster { get; set; }
 
         [ForeignKey(nameof(NaigaiClass))]
-        public NaigaiClassMaster NaigaiClassMaster { get; set; }
+        public NaigaiClassMaster? NaigaiClassMaster { get; set; }
 
-        public TentoZaiko TentoZaiko { get; set; }
+        public TentoZaiko? TentoZaiko { get; set; }
     }
 }

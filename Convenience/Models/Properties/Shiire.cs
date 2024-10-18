@@ -33,13 +33,17 @@ namespace Convenience.Models.Properties
         /// </summary>
         /// <param name="context">ASPから引き継ぐDBコンテキスト</param>
         public Shiire(ConvenienceContext context) {
-            _context = context;
+            this._context = context;
+            this.Shiirejissekis = new List<ShiireJisseki>();
+            this.SokoZaikos=new List<SokoZaiko>();
         }
         /// <summary>
         /// 仕入クラスデバッグ用
         /// </summary>
         public Shiire() {
             _context = IDbContext.DbOpen();
+            this.Shiirejissekis = new List<ShiireJisseki>();
+            this.SokoZaikos = new List<SokoZaiko>();
         }
 
         /// <summary>
@@ -100,6 +104,11 @@ namespace Convenience.Models.Properties
             /// 倉庫在庫
             /// </summary>
             public IList<SokoZaiko> SokoZaikos { get; set; }
+
+            public ShiireUkeireReturnSet() {
+                this.ShiireJissekis = new List<ShiireJisseki>();
+                this.SokoZaikos = new List<SokoZaiko>();
+            }
         }
 
         /// <summary>
@@ -140,11 +149,11 @@ namespace Convenience.Models.Properties
             IList<ShiireJisseki> queriedShiireJissekis = await _context.ShiireJisseki
                 .Where(c => c.ChumonId == inChumonId && c.ShiireDate == inShiireDate && c.SeqByShiireDate == inSeqByShiireDate)
                 .Include(cjm => cjm.ChumonJissekiMeisaii)
-                .ThenInclude(cj => cj.ChumonJisseki)
-                .ThenInclude(ss => ss.ShiireSakiMaster)
+                .ThenInclude(cj => cj!.ChumonJisseki)
+                .ThenInclude(ss => ss!.ShiireSakiMaster)
                 .Include(cjm => cjm.ChumonJissekiMeisaii)
                 .ThenInclude(a => a.ShiireMaster)
-                .ThenInclude(s => s.ShohinMaster)
+                .ThenInclude(s => s!.ShohinMaster)
                 .ToListAsync();
             //プロパティに設定
             Shiirejissekis = queriedShiireJissekis;
@@ -165,9 +174,9 @@ namespace Convenience.Models.Properties
             IList<ChumonJissekiMeisai> queriedChumonJissekiMeisais = await _context.ChumonJissekiMeisai
                 .Where(c => c.ChumonId == inChumonId)
                 .Include(cj => cj.ChumonJisseki)
-                .ThenInclude(ss => ss.ShiireSakiMaster)
+                .ThenInclude(ss => ss!.ShiireSakiMaster)
                 .Include(sm => sm.ShiireMaster)
-                .ThenInclude(s => s.ShohinMaster)
+                .ThenInclude(s => s!.ShohinMaster)
                 .ToListAsync();
 
             //現在時間
@@ -219,10 +228,10 @@ namespace Convenience.Models.Properties
                 })
                 .Select(gr => new {
                     ShireSakiId = gr.Key.ShiireSakiId,
-                    ShiirePrdId = gr.Key.ShiirePrdId,
-                    ShohinId = gr.Key.ShohinId,
+                    gr.Key.ShiirePrdId,
+                    gr.Key.ShohinId,
                     NonyuSubalance = gr.Sum(i => i.NonyuSubalance),
-                    SokoZaikoSu = gr.Sum(j => j.ChumonJissekiMeisaii.ShiireMaster.ShiirePcsPerUnit * j.NonyuSubalance ?? 0),
+                    SokoZaikoSu = gr.Sum(j => j.ChumonJissekiMeisaii?.ShiireMaster?.ShiirePcsPerUnit * j.NonyuSubalance ?? 0),
                     ShireDateTime = gr.Max(k => k.ShiireDateTime)
                 }).ToList()
                 ;
@@ -244,11 +253,11 @@ namespace Convenience.Models.Properties
             var result = shiireJissekiGrp.GroupJoin(
             sokoZaikos,
             sjg => new { sjg.ShireSakiId, sjg.ShiirePrdId, sjg.ShohinId },
-            sz => new { ShireSakiId = sz.ShiireSakiId, ShiirePrdId = sz.ShiirePrdId, ShohinId = sz.ShohinId },
+            sz => new { ShireSakiId = sz.ShiireSakiId, sz.ShiirePrdId, sz.ShohinId },
             (sjg, sz) => new {
                 ShiireSakiId = sjg.ShireSakiId,
-                ShiirePrdId = sjg.ShiirePrdId,
-                ShohinId = sjg.ShohinId,
+                sjg.ShiirePrdId,
+                sjg.ShohinId,
                 SokoZaikoCaseSu = sjg.NonyuSubalance + sz.Sum(sz => sz.SokoZaikoCaseSu),
                 SokoZaikoSu = sjg.SokoZaikoSu + sz.Sum(sz => sz.SokoZaikoSu),
                 LastShiireDate = DateOnly.FromDateTime(sjg.ShireDateTime),
@@ -282,7 +291,7 @@ namespace Convenience.Models.Properties
 
             var mapper2 = new Mapper(config2);
 
-            if (sokoZaikos.Count() == 0) {
+            if (sokoZaikos.Count == 0) {
                 //新規倉庫在庫登録
                 await _context.SokoZaiko.AddRangeAsync(result);
             }
@@ -325,6 +334,15 @@ namespace Convenience.Models.Properties
         public class ChumonList {
             public string ChumonId { get; set; }
             public decimal ChumonZan { get; set; }
+
+            public ChumonList(string ChumonId,decimal ChumonZan) {
+                this.ChumonId = ChumonId;
+                this.ChumonZan = ChumonZan;
+            }
+            public ChumonList() {
+                this.ChumonId = string.Empty;
+                this.ChumonZan = decimal.MinValue;
+            }
         }
         /// <summary>
         /// 注文残がある注文のリスト化

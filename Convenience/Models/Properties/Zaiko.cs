@@ -74,7 +74,7 @@ namespace Convenience.Models.Properties {
 
                 //倉庫在庫検索（遅延実行）
                 SoKoZaikoQueryable = _context.SokoZaiko.AsNoTracking()
-                    .Include(i => i.ShiireMaster).ThenInclude(j => j.ShohinMaster)
+                    .Include(i => i.ShiireMaster).ThenInclude(j => j!.ShohinMaster)
                     .GroupJoin(chumonJissekiQueryable,
                             soko => new { soko.ShiireSakiId, soko.ShiirePrdId, soko.ShohinId },
                             cjm => new { cjm.ShiireSakiId, cjm.ShiirePrdId, cjm.ShohinId },
@@ -85,12 +85,12 @@ namespace Convenience.Models.Properties {
                                 ShiireSakiId = soko.soko.ShiireSakiId,
                                 ShiirePrdId = soko.soko.ShiirePrdId,
                                 ShohinId = soko.soko.ShohinId,
-                                ShohinName = soko.soko.ShiireMaster.ShohinMaster.ShohinName,
+                                ShohinName = soko.soko.ShiireMaster!.ShohinMaster!.ShohinName,
                                 SokoZaikoCaseSu = soko.soko.SokoZaikoCaseSu,
                                 SokoZaikoSu = soko.soko.SokoZaikoSu,
                                 LastShiireDate = soko.soko.LastShiireDate,
                                 LastDeliveryDate = soko.soko.LastDeliveryDate,
-                                ChumonZan = cjm.ChumonZan
+                                ChumonZan = cjm!.ChumonZan
                             })
                     .AsQueryable();
             }
@@ -111,13 +111,13 @@ namespace Convenience.Models.Properties {
         /// <param name="sortKey">ソートキー</param>
         /// <param name="descending">降順・昇順区分</param>
         /// <returns>倉庫在庫　＆　注文実績明細(変数:SoKoZaikoQueryable) ソート指示付き　ISoKoZaikoQueryable型にして遅延実行化</returns>
-        public IQueryable<ZaikoListLine> AddOrderby(string sortKey, bool descending) {
+        public IQueryable<ZaikoListLine>? AddOrderby(string sortKey, bool descending) {
 
             //倉庫在庫の検索指示があるかどうか。あればオーダー設定を追加する   
             if (SoKoZaikoQueryable != null) {
 
                 //ソートキーの昇順・降順設定（遅延実行）
-                IQueryable<ZaikoListLine>? orderQueryable = SoKoZaikoQueryable;
+                IQueryable<ZaikoListLine>? orderQueryable;
                 
                 if (isFirstCalled) {
                     //初回であれば、OrderBy
