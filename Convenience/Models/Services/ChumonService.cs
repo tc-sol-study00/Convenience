@@ -13,7 +13,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 注文サービスクラス
     /// </summary>
-    public class ChumonService : IChumonService, IDbContext {
+    public partial class ChumonService : IChumonService, IDbContext {
 
         /// <summary>
         /// DBコンテクスト
@@ -46,7 +46,7 @@ namespace Convenience.Models.Services {
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumon">注文クラスＤＩ注入用</param>
         public ChumonService(ConvenienceContext context, IChumon chumon) {
-            this._context = context;
+            _context = context;
             this.chumon = chumon;
             //chumon = CreateChumonInstance(_context);
         }
@@ -66,11 +66,11 @@ namespace Convenience.Models.Services {
             var list = await chumon.ShiireSakiList(s => s.ShiireSakiId)
                 .Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToListAsync();
 
-            return (this.ChumonKeysViewModel=new ChumonKeysViewModel() {
+            return ChumonKeysViewModel = new ChumonKeysViewModel() {
                 ShiireSakiId = null,
                 ChumonDate = DateOnly.FromDateTime(DateTime.Today),
                 ShiireSakiList = list
-            });
+            };
         }
 
         /// <summary>
@@ -104,9 +104,9 @@ namespace Convenience.Models.Services {
             }
 
             //注文明細ビューモデルを設定し戻り値とする
-            return (this.ChumonViewModel = new ChumonViewModel() {
+            return ChumonViewModel = new ChumonViewModel() {
                 ChumonJisseki = createdChumonJisseki ?? existedChumonJisseki ?? throw new ChumonJissekiSetupException("注文セッティングエラー")   //初期表示用の注文実績データ
-            });
+            };
         }
 
         /// <summary>
@@ -143,9 +143,9 @@ namespace Convenience.Models.Services {
                 updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate)
                     ?? throw new NoDataFoundException("DB更新後のデータがありません");
 
-                
+
                 //注文ビューモデルセット(正常時）
-                this.ChumonViewModel = new ChumonViewModel {
+                ChumonViewModel = new ChumonViewModel {
                     ChumonJisseki = updatedChumonJisseki,
                     IsNormal = IsValid,
                     Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText : null
@@ -153,14 +153,14 @@ namespace Convenience.Models.Services {
             }
             else {
                 //注文ビューモデルセット(チェックエラー時）
-                this.ChumonViewModel = new ChumonViewModel {
+                ChumonViewModel = new ChumonViewModel {
                     ChumonJisseki = updatedChumonJisseki,
                     IsNormal = IsValid,
                     Remark = new Message().SetMessage(errCd)?.MessageText
                 };
             }
             //注文明細ビューモデルを返却
-            return this.ChumonViewModel;
+            return ChumonViewModel;
 
         }
 
@@ -173,33 +173,24 @@ namespace Convenience.Models.Services {
             var chumonId = inChumonJisseki.ChumonId;
             var chumonDate = inChumonJisseki.ChumonDate;
 
-            if (!Regex.IsMatch(chumonId??string.Empty, "^[0-9]{8}-[0-9]{3}$")) {
+            if (!ChumonRegex().IsMatch(chumonId ??string.Empty)) {
                 return (false, ErrDef.ChumonIdError);
             }
-            else if (chumonDate == DateOnly.MinValue || chumonDate <= (new DateOnly(1, 1, 1))) {
+            else if (chumonDate == DateOnly.MinValue || chumonDate <= new DateOnly(1, 1, 1)) {
                 return (false, ErrDef.ChumonDateError);
             }
 
             if(inChumonJisseki?.ChumonJissekiMeisais is null) {
                 return (false, ErrDef.NothingChumonJisseki);
             }
+
             foreach (var i in inChumonJisseki.ChumonJissekiMeisais) {
                 if (i.ChumonId != chumonId) {
                     return (false, ErrDef.ChumonIdRelationError);
                 }
-                /*
-                else if (i.ChumonSu == null) {
-                    return (false, ErrDef.ChumonSuIsNull);
-                }
-                */
                 else if (i.ChumonSu < 0) {
                     return (false, ErrDef.ChumonSuBadRange);
                 }
-                /*
-                else if (i.ChumonZan == null) {
-                    return (false, ErrDef.ChumonZanIsNull);
-                }
-                */
                 else if (i.ChumonSu < i.ChumonZan) {
                     return (false, ErrDef.SuErrorBetChumonSuAndZan);
                 }
@@ -207,5 +198,7 @@ namespace Convenience.Models.Services {
             return (true, ErrDef.DataValid);
         }
 
+        [GeneratedRegex("^[0-9]{8}-[0-9]{3}$")]
+        private static partial Regex ChumonRegex();
     }
 }
