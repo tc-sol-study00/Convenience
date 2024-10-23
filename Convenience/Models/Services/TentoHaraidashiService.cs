@@ -3,14 +3,10 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.TentoHaraidashi;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
-using System.Collections.Generic;
 using System.Text.Json;
 using static Convenience.Models.Properties.Message;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.Services {
     /// <summary>
@@ -141,7 +137,7 @@ namespace Convenience.Models.Services {
             _ = argTentoHaraidashiViewModel?.HaraidashiDateAndId ?? throw new ArgumentException("店頭払出ビューモデルがセットされていません");
             HaraidashiDateTimeAndIdMatching haraidashiDateTimeAndIdMatching
                 = JsonSerializer.Deserialize<HaraidashiDateTimeAndIdMatching>(argTentoHaraidashiViewModel.HaraidashiDateAndId)
-                ??throw new InvalidDataException("店頭払出日時コードがセットされていません");
+                ?? throw new InvalidDataException("店頭払出日時コードがセットされていません");
 
             //店頭払出日時 
             DateTime postedHaraidashiDateTime = haraidashiDateTimeAndIdMatching.HaraidashiDateTime;
@@ -165,54 +161,22 @@ namespace Convenience.Models.Services {
             settingTentoHaraidashiHearder ??= await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
 
             /*
-             * Postデータ更新用ベースにポストデータを上乗せする
+             * Postデータから店頭払出実績を抽出する
              */
-            foreach (var shohinmaster in argTentoHaraidashiViewModel.ShohinMasters) {                   //Postされた商品マスタ
-                foreach (var shiiremaster in shohinmaster.ShiireMasters??new List<ShiireMaster>()) {    //Postされた仕入マスタ
-                    foreach (var tentoharaidashi in shiiremaster.TentoHaraidashiJissekis??new List<TentoHaraidashiJisseki>()) {
-                        //Postされた店頭払出実績
-                        var pickupTentoHaraidashiJisseki = settingTentoHaraidashiHearder.TentoHaraidashiJissekis    //上乗せ処理用に更新用ベースを検索
-                            .Where(x => x.TentoHaraidashiId == tentoharaidashi.TentoHaraidashiId &&
-                                x.ShiireSakiId == tentoharaidashi.ShiireSakiId &&
-                                x.ShiirePrdId == tentoharaidashi.ShiirePrdId &&
-                                x.ShohinId == tentoharaidashi.ShohinId).FirstOrDefault()
-                                ?? throw new NoDataFoundException("店頭払出実績が見つかりません");
-                        //上乗せ処理
-                        var wHaraidashiCaseSu = pickupTentoHaraidashiJisseki.HaraidashiCaseSu;      //上乗せ前のデータを退避
-                        pickupTentoHaraidashiJisseki.HaraidashiCaseSu += tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;    //払出ケース数
+            List<TentoHaraidashiJisseki> postedTentoHaraidashiJissekis
+                = argTentoHaraidashiViewModel.ShohinMasters.SelectMany(sm => sm.ShiireMasters!.SelectMany(sim => sim.TentoHaraidashiJissekis!)).ToList();
 
-                        pickupTentoHaraidashiJisseki.HaraidashiSu +=
-                            (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupTentoHaraidashiJisseki!.ShiireMaster?.ShiirePcsPerUnit?? throw new NoDataFoundException("仕入マスタがありません"); ;
-                        //払出数
-                        /*
-                         * 倉庫在庫調整
-                         */
-                        ShiireMaster pickupShiireMaster = pickupTentoHaraidashiJisseki.ShiireMaster ?? throw new InvalidDataException("仕入マスタがありません");
-                        ShohinMaster pickupShohinMaster = pickupShiireMaster.ShohinMaster ?? throw new InvalidDataException("商品マスタがありません");
-                        SokoZaiko pickupSokoZaiko = pickupTentoHaraidashiJisseki.ShiireMaster.SokoZaiko ?? throw new InvalidDataException("倉庫在庫がセットされていません");
-                        //いくら追加で倉庫から店頭に払い出したか
-                        var diffCaseSu = tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu;
-                        pickupSokoZaiko.SokoZaikoCaseSu -= diffCaseSu;
-                        pickupSokoZaiko.SokoZaikoSu -= diffCaseSu * pickupShiireMaster.ShiirePcsPerUnit;
-                        //プラス＝倉庫→店頭の場合、直近払出日を更新する
-                        if (diffCaseSu > 0) {
-                            pickupSokoZaiko.LastDeliveryDate = DateOnly.FromDateTime(postedHaraidashiDateTime);
-                        }
-                        /*
-                         * 店頭在庫調整
-                         */
-                        TentoZaiko pickupTentoZaiko = pickupShohinMaster.TentoZaiko ?? throw new InvalidDataException("店頭在庫がありません");
-                        var wTentoZaiko = pickupTentoZaiko.ZaikoSu;
-                        pickupTentoZaiko.ZaikoSu += (tentoharaidashi.HaraidashiCaseSu - wHaraidashiCaseSu) * pickupShiireMaster.ShiirePcsPerUnit;
-                    }
-                }
-            }
+            /*
+             * Postデータを上書きしてＤＢ更新準備をする
+             */
+            settingTentoHaraidashiHearder.TentoHaraidashiJissekis= TentoHaraidashi.TentoHaraidashiUpdate(postedTentoHaraidashiJissekis);
+
             /*
              * 更新エンティティ数を求める
              */
             int entities = _context.ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                .Select(e => e.Entity).Count();
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+            .Select(e => e.Entity).Count();
 
             /*
              * DB更新

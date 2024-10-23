@@ -1,10 +1,8 @@
 ﻿using Convenience.Models.DataModels;
 using System.Linq.Expressions;
 
-namespace Convenience.Models.Interfaces
-{
-    public interface ITentoHaraidashi
-    {
+namespace Convenience.Models.Interfaces {
+    public interface ITentoHaraidashi {
         /// <summary>
         /// <para>プロパティ</para>
         /// <para>店頭払出ヘッダー</para>
@@ -32,6 +30,14 @@ namespace Convenience.Models.Interfaces
         /// <param name="argTentoHaraidashiId">店頭払出コード</param>
         /// <returns>TentoHaraidashiHeader 店頭払出ヘッダ</returns>
         public Task<TentoHaraidashiHeader?> TentoHaraidashiToiawase(string argTentoHaraidashiId);
+
+        /// <summary>
+        /// Postデータを上書きしてＤＢ更新準備をする
+        /// </summary>
+        /// <param name="argTentoHaraidashiJissekis">Postされた店頭払出実績</param>
+        /// <returns>IList<TentoHaraidashiJisseki> Postデータが上書きされた店頭払出実績</returns>
+        /// <exception cref="Exception"></exception>
+        public IList<TentoHaraidashiJisseki> TentoHaraidashiUpdate(IEnumerable<TentoHaraidashiJisseki> argTentoHaraidashiJissekis);
 
         /// <summary>
         /// 店頭払出ヘッダーのリストを条件より作成
