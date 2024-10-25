@@ -24,12 +24,19 @@ namespace Convenience.Models.Properties {
         /// </summary>
         private readonly ConvenienceContext _context;
 
+        private static IMapper? _mapper;
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
+        /// 
         public Chumon(ConvenienceContext context) {
             _context = context;
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile(new AutoMapperProfile(this));
+            });
+
+            _mapper = config.CreateMapper();
         }
 
         /// <summary>
@@ -131,7 +138,8 @@ namespace Convenience.Models.Properties {
 
                 if (chumonJisseki.ChumonJissekiMeisais != null) {
                     // ShiireMaster と ShohinMaster を AsNoTracking() で取得
-                    foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais) {
+                    chumonJisseki.ChumonJissekiMeisais.ToList().ForEach(async meisai =>
+                    {
                         ShiireMaster? shiireMaster = await _context.ShiireMaster
                             .AsNoTracking()
                             .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId && sm.ShiirePrdId == meisai.ShiirePrdId && sm.ShohinId == meisai.ShohinId)
@@ -141,7 +149,7 @@ namespace Convenience.Models.Properties {
                         // 明示的に ShiireMaster を関連付け
                         // もし、データがなければnullが入る
                         meisai.ShiireMaster = shiireMaster;
-                    }
+                    });
                 }
             }
 
@@ -192,19 +200,7 @@ namespace Convenience.Models.Properties {
         /// <returns>上乗せされた注文実績＋明細データ</returns>
         private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
             //引数で渡された注文実績データを現プロパティに反映する
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddCollectionMappers();
-                cfg.CreateMap<ChumonJisseki, ChumonJisseki>()
-                .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId);
-                cfg.CreateMap<ChumonJissekiMeisai, ChumonJissekiMeisai>()
-                .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId && odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId && odto.ShohinId == o.ShohinId)
-                .BeforeMap((src, dest) => src.LastChumonSu = dest.ChumonSu)
-                .ForMember(dest => dest.ChumonZan, opt => opt.MapFrom(src => src.ChumonZan + src.ChumonSu - src.LastChumonSu))
-                .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore());
-            });
-            //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
-            var mapper = new Mapper(config);
-            mapper.Map(postedChumonJisseki, existedChumonJisseki);
+            _mapper!.Map(postedChumonJisseki, existedChumonJisseki);
 
             return existedChumonJisseki;
         }
@@ -269,9 +265,9 @@ namespace Convenience.Models.Properties {
         }
 
         private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki);
-        //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
+        private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
         //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;
-        private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithIndex;
+        //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithIndex;
 
         /// <summary>
         /// 注文実績＋注文明細更新

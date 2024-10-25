@@ -13,6 +13,7 @@ namespace Convenience.Models.Interfaces {
         public decimal UriageSu { get; set; }
         public decimal UriageKingaku { get; set; }
         public string NaigaiClass { get; set; }
+        public DateTime UriageDatetime { get; set; }
         public ShohinMaster? ShohinMaster { get; set; }
     }
 }

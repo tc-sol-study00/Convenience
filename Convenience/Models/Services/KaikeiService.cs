@@ -211,6 +211,8 @@ namespace Convenience.Models.Services {
             //売上日時コード抽出（上記のメソッドで発番されるので、このタイミング
             string postedUriageDatetimeId = updatedKaikeiHeader.UriageDatetimeId;
 
+            var entities = _context.ChangeTracker.Entries();
+
             /*
              * DB更新
              */

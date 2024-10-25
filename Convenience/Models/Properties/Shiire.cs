@@ -53,18 +53,10 @@ namespace Convenience.Models.Properties
         /// <returns>Postされた注仕入実績がオーバライドされた仕入実績プロパティ</returns>
         public IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis) {
             // AutoMapperの初期設定
-           
+
             var config = new MapperConfiguration(cfg => {
-                cfg.AddCollectionMappers();
-                cfg.CreateMap<ShiireJisseki, ShiireJisseki>()
-                .EqualityComparison((odto, o) => odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId)
-                .ForMember(dest => dest.ShiireDateTime, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.ShiireDateTime, DateTimeKind.Utc)))
-                .ForMember(dest => dest.NonyuSu, opt => opt.MapFrom(src => src.NonyuSu))
-                .BeforeMap((src, dest) => dest.NonyuSubalance = src.NonyuSu - dest.NonyuSu)
-                .ForMember(dest => dest.NonyuSubalance, opt => opt.Ignore())
-                .ForMember(dest => dest.ChumonJissekiMeisaii, opt => opt.Ignore())
-                .AfterMap((src, dest) => _context.Entry(dest).Property(v => v.Version).OriginalValue = src.Version)
-                .AfterMap((src, dest) => _context.Entry(dest.ChumonJissekiMeisaii).Property(v => v.Version).OriginalValue = src.ChumonJissekiMeisaii.Version);
+                cfg.AddCollectionMappers(); // コレクションマッパーを追加
+                cfg.AddProfile(new AutoMapperProfile(this,_context));
             });
 
             var mapper = config.CreateMapper(); // AutoMapperのインスタンス作成
@@ -182,23 +174,16 @@ namespace Convenience.Models.Properties
             //現在時間
             DateTime nowTime = DateTime.Now;
 
+
             //注文明細 to 仕入実績（Ａ）　複数のレコード
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<ChumonJissekiMeisai, ShiireJisseki>()
-                    .ForMember(dest => dest.ChumonId, opt => opt.MapFrom(src => src.ChumonId))
-                    .ForMember(dest => dest.ShiireDate, opt => opt.MapFrom(src => inShiireDate))
-                    .ForMember(dest => dest.SeqByShiireDate, opt => opt.MapFrom(src => inSeqByShiireDate))
-                    .ForMember(dest => dest.ShiireDateTime, opt => opt.MapFrom(src => DateTime.SpecifyKind(nowTime, DateTimeKind.Utc)))
-                    .ForMember(dest => dest.ShiireSakiId, opt => opt.MapFrom(src => src.ShiireSakiId))
-                    .ForMember(dest => dest.ShiirePrdId, opt => opt.MapFrom(src => src.ShiirePrdId))
-                    .ForMember(dest => dest.ShohinId, opt => opt.MapFrom(src => src.ShohinId))
-                    .ForMember(dest => dest.NonyuSu, opt => opt.MapFrom(src => 0))
-                    //                .ForMember(dest => dest.NonyuSu, opt => opt.MapFrom(src => src.ChumonZan))  //注文残
-                    .ForMember(dest => dest.ChumonJissekiMeisaii, opt => opt.MapFrom(src => src)); //ChuumonJissekiMeisai Set
-            });
 
             //AutoMapperの処理
-            var mapper = new Mapper(config);
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers(); // コレクションマッパーを追加
+                cfg.AddProfile(new AutoMapperProfile(this, inShiireDate, inSeqByShiireDate, nowTime));
+            });
+            var mapper = config.CreateMapper();
             IList<ShiireJisseki> createdShiireJissekis = new List<ShiireJisseki>();
             mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(queriedChumonJissekiMeisais, createdShiireJissekis);
 

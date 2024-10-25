@@ -52,5 +52,25 @@ namespace Convenience.Models.Interfaces {
         /// <returns>KaikeiHeader DB更新された会計ヘッダ＋実績</returns>
         public Task<KaikeiHeader> KaikeiUpdate(KaikeiHeader argpostedKaikeiHeader);
 
-    }
+        /// <summary>
+        /// 店頭在庫から売上分を差し引く
+        /// </summary>
+        /// <param name="argShohinId">商品コード</param>
+        /// <param name="argUriageDateTime">売上日時</param>
+        /// <param name="argDiffUriageSu">差し引く個数</param>
+        /// <param name="argTentoZaiko">店頭在庫</param>
+        /// <returns>店頭在庫</returns>
+        public TentoZaiko? ZaikoConnection(string argShohinId, DateTime argUriageDateTime, decimal argDiffUriageSu, TentoZaiko? argTentoZaiko);
+
+        /// <summary>
+        /// 消費税計算
+        /// </summary>
+        /// <param name="inKaikeiJisseki">会計実績</param>
+        /// <param name="outKaikeiJisseki">消費税関連で計算されたものの反映先（会計実績）</param>
+        /// <returns>消費税関連で計算されたものの反映先（会計実績）</returns>
+        /// <exception cref="InvalidDataException"></exception>
+        /// <remarks>（条件）売上金額が第一引数側にセットされていること</remarks>
+        public KaikeiJisseki ShohizeiKeisan(IKaikeiJissekiForAdd inKaikeiJisseki, KaikeiJisseki outKaikeiJisseki);
+
+        }
 }

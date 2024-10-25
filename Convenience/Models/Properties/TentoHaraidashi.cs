@@ -26,11 +26,23 @@ namespace Convenience.Models.Properties {
         public TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
 
         /// <summary>
+        /// AutoMapper
+        /// </summary>
+        private readonly IMapper _mapper;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="context"></param>
         public TentoHaraidashi(ConvenienceContext context) {
             this._context = context;
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers(); // コレクションマッパーを追加
+                cfg.AddProfile(new AutoMapperProfile(this));
+            });
+
+            this._mapper = config.CreateMapper();
         }
 
         /// <summary>
@@ -164,12 +176,13 @@ namespace Convenience.Models.Properties {
             _ = TentoHaraidashiHeader ?? throw new Exception("引数エラー");
             IList<TentoHaraidashiJisseki> settingTentoHaraidashiJissekis = this.TentoHaraidashiHeader.TentoHaraidashiJissekis;
 
+            /*
             decimal shiirePcsPerUnit = default;
             decimal defHaraidashiCaseSu = default;
             decimal beforeSokoZaikoSu = default;
             decimal beforeSokoZaikoCaseSu = default;
             decimal beforeTentoZaikoSu = default;
-
+            */
             //上乗せ前の事前チェック
             if (settingTentoHaraidashiJissekis.Any(th => th.ShiireMaster?.ShohinMaster?.TentoZaiko == null) == true) throw new Exception("仕入マスタor商品マスタor店頭在庫にnullのデータがあります");
             if (settingTentoHaraidashiJissekis.Any(th => th.ShiireMaster?.SokoZaiko == null) == true) throw new Exception("倉庫在庫にnullのデータがあります");
@@ -177,31 +190,9 @@ namespace Convenience.Models.Properties {
             /*
              * Postデータを上乗せする
              */
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddCollectionMappers();
-                cfg.CreateMap<TentoHaraidashiJisseki, TentoHaraidashiJisseki>()
-                .EqualityComparison((odto, o) => odto.TentoHaraidashiId == o.TentoHaraidashiId && odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId && odto.ShohinId == o.ShohinId)
-                .BeforeMap((src, dest) => {
-                    defHaraidashiCaseSu = src.HaraidashiCaseSu - dest.HaraidashiCaseSu;
-                    shiirePcsPerUnit = dest.ShiireMaster!.ShiirePcsPerUnit;
-                    beforeSokoZaikoCaseSu = dest.ShiireMaster!.SokoZaiko!.SokoZaikoCaseSu;
-                    beforeSokoZaikoSu = dest.ShiireMaster!.SokoZaiko!.SokoZaikoSu;
-                    beforeTentoZaikoSu = dest.ShiireMaster!.ShohinMaster!.TentoZaiko!.ZaikoSu;
-                })
-                .ForMember(dest => dest.HaraidashiCaseSu, opt => opt.MapFrom(src => src.HaraidashiCaseSu))
-                .ForMember(dest => dest.HaraidashiSu, opt => opt.MapFrom(src => src.HaraidashiCaseSu * shiirePcsPerUnit))
-                .ForMember(dest => dest.ShiireMaster, opt => opt.Ignore())
-                .ForMember(dest => dest.TentoHaraidashiHeader, opt => opt.Ignore())
-                .ForPath(dest => dest.ShiireMaster!.SokoZaiko!.SokoZaikoCaseSu, opt => opt.MapFrom(src => beforeSokoZaikoCaseSu - defHaraidashiCaseSu))
-                .ForPath(dest => dest.ShiireMaster!.SokoZaiko!.SokoZaikoSu, opt => opt.MapFrom(src => beforeSokoZaikoSu - defHaraidashiCaseSu * shiirePcsPerUnit))
-                .ForPath(dest => dest.ShiireMaster!.SokoZaiko!.LastDeliveryDate, opt => { opt.MapFrom(src => DateOnly.FromDateTime(src.HaraidashiDate)); opt.Condition(x => defHaraidashiCaseSu > 0); })
-                .ForPath(dest => dest.ShiireMaster!.ShohinMaster!.TentoZaiko!.ZaikoSu, opt => opt.MapFrom(src => beforeTentoZaikoSu + defHaraidashiCaseSu * shiirePcsPerUnit))
-                ;
-            });
             //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
-            var mapper = new Mapper(config);
 
-            mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
+            _mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
 
             this.TentoHaraidashiHeader.TentoHaraidashiJissekis = settingTentoHaraidashiJissekis;
 

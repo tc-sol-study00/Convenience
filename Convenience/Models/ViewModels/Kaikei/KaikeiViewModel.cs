@@ -58,6 +58,7 @@ namespace Convenience.Models.ViewModels.Kaikei {
         public decimal UriageSu { get; set; }
         public decimal UriageKingaku { get; set; }
         public string NaigaiClass { get; set; }
+        public DateTime UriageDatetime { get; set; }
         public ShohinMaster? ShohinMaster { get; set; }
         public IEnumerable<SelectListItem> NaigaiClassListItems { get; set; }
 

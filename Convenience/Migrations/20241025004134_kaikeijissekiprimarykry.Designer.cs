@@ -3,6 +3,7 @@ using System;
 using Convenience.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Convenience.Migrations
 {
     [DbContext(typeof(ConvenienceContext))]
-    partial class ConvenienceContextModelSnapshot : ModelSnapshot
+    [Migration("20241025004134_kaikeijissekiprimarykry")]
+    partial class kaikeijissekiprimarykry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace Convenience.Migrations
 
                     b.HasIndex("ShiireSakiId");
 
-                    b.ToTable("chumon_jisseki", (string)null);
+                    b.ToTable("chumon_jisseki");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ChumonJissekiMeisai", b =>
@@ -94,7 +97,7 @@ namespace Convenience.Migrations
 
                     b.HasIndex("ShiireSakiId", "ShiirePrdId", "ShohinId");
 
-                    b.ToTable("chumon_jisseki_meisai", (string)null);
+                    b.ToTable("chumon_jisseki_meisai");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.KaikeiHeader", b =>
@@ -110,7 +113,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("UriageDatetimeId");
 
-                    b.ToTable("kaikei_header", (string)null);
+                    b.ToTable("kaikei_header");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.KaikeiJisseki", b =>
@@ -170,7 +173,7 @@ namespace Convenience.Migrations
 
                     b.HasIndex("ShohinId");
 
-                    b.ToTable("kaikei_jisseki", (string)null);
+                    b.ToTable("kaikei_jisseki");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.NaigaiClassMaster", b =>
@@ -188,7 +191,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("NaigaiClass");
 
-                    b.ToTable("naigai_class_master", (string)null);
+                    b.ToTable("naigai_class_master");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShiireJisseki", b =>
@@ -241,7 +244,7 @@ namespace Convenience.Migrations
 
                     b.HasIndex("ChumonId", "ShiireSakiId", "ShiirePrdId", "ShohinId");
 
-                    b.ToTable("shiire_jisseki", (string)null);
+                    b.ToTable("shiire_jisseki");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShiireMaster", b =>
@@ -287,7 +290,7 @@ namespace Convenience.Migrations
 
                     b.HasIndex("ShohinId");
 
-                    b.ToTable("shiire_master", (string)null);
+                    b.ToTable("shiire_master");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShiireSakiMaster", b =>
@@ -341,7 +344,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("ShiireSakiId");
 
-                    b.ToTable("shiire_saki_master", (string)null);
+                    b.ToTable("shiire_saki_master");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ShohinMaster", b =>
@@ -374,7 +377,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("ShohinId");
 
-                    b.ToTable("shohin_master", (string)null);
+                    b.ToTable("shohin_master");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.SokoZaiko", b =>
@@ -420,7 +423,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("ShiireSakiId", "ShiirePrdId", "ShohinId");
 
-                    b.ToTable("soko_zaiko", (string)null);
+                    b.ToTable("soko_zaiko");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.TentoHaraidashiHeader", b =>
@@ -436,7 +439,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("TentoHaraidashiId");
 
-                    b.ToTable("tento_haraidashi_header", (string)null);
+                    b.ToTable("tento_haraidashi_header");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.TentoHaraidashiJisseki", b =>
@@ -482,7 +485,7 @@ namespace Convenience.Migrations
 
                     b.HasIndex("ShiireSakiId", "ShiirePrdId", "ShohinId");
 
-                    b.ToTable("tento_haraidashi_jisseki", (string)null);
+                    b.ToTable("tento_haraidashi_jisseki");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.TentoZaiko", b =>
@@ -512,7 +515,7 @@ namespace Convenience.Migrations
 
                     b.HasKey("ShohinId");
 
-                    b.ToTable("tento_zaiko", (string)null);
+                    b.ToTable("tento_zaiko");
                 });
 
             modelBuilder.Entity("Convenience.Models.DataModels.ChumonJisseki", b =>

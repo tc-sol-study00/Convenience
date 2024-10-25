@@ -16,7 +16,7 @@ namespace Convenience.Models.DataModels {
     /// 主キー：商品コード、売上日時
     /// </Remarks>
     [Table("kaikei_jisseki")]
-    [PrimaryKey(nameof(UriageDatetimeId),nameof(ShohinId), nameof(UriageDatetime))]
+    [PrimaryKey(nameof(UriageDatetimeId),nameof(ShohinId))]
     public class KaikeiJisseki : IKaikeiJissekiForAdd {
 
         [Column("uriage_datetimeid")]
