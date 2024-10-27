@@ -28,6 +28,11 @@ namespace Convenience.Models.Properties
         public IList<SokoZaiko> SokoZaikos { get; set; }
 
         /// <summary>
+        /// AutoMapper用
+        /// </summary>
+        private IMapper? _mapper;
+
+        /// <summary>
         /// コンストラクタ
         /// 通常の場合はＤＢコンテキストを引き継ぐ
         /// </summary>
@@ -56,11 +61,11 @@ namespace Convenience.Models.Properties
 
             var config = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
-                cfg.AddProfile(new AutoMapperProfile(this,_context));
+                cfg.AddProfile(new ShiirePostToDTOAutoMapperProfile(_context));
             });
 
-            var mapper = config.CreateMapper(); // AutoMapperのインスタンス作成
-            mapper.Map<IList<ShiireJisseki>, IList<ShiireJisseki>>(inShiireJissekis, Shiirejissekis);
+            _mapper = config.CreateMapper(); // AutoMapperのインスタンス作成
+            _mapper.Map<IList<ShiireJisseki>, IList<ShiireJisseki>>(inShiireJissekis, Shiirejissekis);
 
             return (Shiirejissekis);
         }
@@ -181,11 +186,11 @@ namespace Convenience.Models.Properties
 
             var config = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
-                cfg.AddProfile(new AutoMapperProfile(this, inShiireDate, inSeqByShiireDate, nowTime));
+                cfg.AddProfile(new ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile(this, inShiireDate, inSeqByShiireDate, nowTime));
             });
-            var mapper = config.CreateMapper();
+            _mapper = config.CreateMapper();
             IList<ShiireJisseki> createdShiireJissekis = new List<ShiireJisseki>();
-            mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(queriedChumonJissekiMeisais, createdShiireJissekis);
+            _mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(queriedChumonJissekiMeisais, createdShiireJissekis);
 
             //仕入実績に対し、EFに新規（Add）の指示
             await _context.ShiireJisseki.AddRangeAsync(createdShiireJissekis);
@@ -274,7 +279,7 @@ namespace Convenience.Models.Properties
                 ;
             });
 
-            var mapper2 = new Mapper(config2);
+            _mapper = new Mapper(config2);
 
             if (sokoZaikos.Count == 0) {
                 //新規倉庫在庫登録
@@ -282,7 +287,7 @@ namespace Convenience.Models.Properties
             }
             else {
                 //既に倉庫在庫がある場合は上書き
-                mapper2.Map<IList<SokoZaiko>, IList<SokoZaiko>>(result, sokoZaikos);
+                _mapper.Map<IList<SokoZaiko>, IList<SokoZaiko>>(result, sokoZaikos);
             }
 
             SokoZaikos = sokoZaikos;

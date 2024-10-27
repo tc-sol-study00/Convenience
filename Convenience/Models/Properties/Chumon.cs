@@ -24,7 +24,6 @@ namespace Convenience.Models.Properties {
         /// </summary>
         private readonly ConvenienceContext _context;
 
-        private static IMapper? _mapper;
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -32,11 +31,6 @@ namespace Convenience.Models.Properties {
         /// 
         public Chumon(ConvenienceContext context) {
             _context = context;
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddProfile(new AutoMapperProfile(this));
-            });
-
-            _mapper = config.CreateMapper();
         }
 
         /// <summary>
@@ -138,7 +132,7 @@ namespace Convenience.Models.Properties {
 
                 if (chumonJisseki.ChumonJissekiMeisais != null) {
                     // ShiireMaster と ShohinMaster を AsNoTracking() で取得
-                    chumonJisseki.ChumonJissekiMeisais.ToList().ForEach(async meisai =>
+                    var tasks=chumonJisseki.ChumonJissekiMeisais.Select(async meisai =>
                     {
                         ShiireMaster? shiireMaster = await _context.ShiireMaster
                             .AsNoTracking()
@@ -200,7 +194,14 @@ namespace Convenience.Models.Properties {
         /// <returns>上乗せされた注文実績＋明細データ</returns>
         private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
             //引数で渡された注文実績データを現プロパティに反映する
-            _mapper!.Map(postedChumonJisseki, existedChumonJisseki);
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers();
+                cfg.AddProfile(new ChumonChumonJissekiToDTOAutoMapperProfile());
+            });
+
+            IMapper mapper = config.CreateMapper();
+            
+            mapper!.Map(postedChumonJisseki, existedChumonJisseki);
 
             return existedChumonJisseki;
         }

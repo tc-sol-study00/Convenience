@@ -29,28 +29,11 @@ namespace Convenience.Models.Properties {
         public KaikeiHeader? KaikeiHeader { get; set; }
 
         /// <summary>
-        /// AutoMapper
-        /// </summary>
-        private readonly IMapper _mapper;
-        private readonly IMapper _mappershared;
-        /// <summary>
         /// コンストラクタ（ASP用）
         /// </summary>
         /// <param name="context"></param>
         public Kaikei(ConvenienceContext context) {
             this._context = context;
-
-            var config1 = new MapperConfiguration(cfg => {
-                cfg.AddCollectionMappers(); // コレクションマッパーを追加
-                cfg.AddProfile(new AutoMapperProfile(this));
-            });
-
-            var config2 = new MapperConfiguration(cfg => {
-                cfg.AddProfile(new AutoMapperProfile(this));
-            });
-
-            this._mapper = config1.CreateMapper();
-            this._mappershared = config2.CreateMapper();
         }
 
         /// <summary>
@@ -140,12 +123,23 @@ namespace Convenience.Models.Properties {
              * 会計実績の各項目セット
              */
 
-            var tmpSaveDatas = _mappershared.Map<List<KaikeiJisseki>>(this.KaikeiHeader.KaikeiJissekis);
+            var configKaikeiAddLineToTempData = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers();
+                cfg.AddProfile(new KaikeiAddLineToTempDataAutoMapperProfile(this));
+            });
+
+            var configShared = new MapperConfiguration(cfg => {
+                cfg.AddProfile(new AutoMapperSharedProfile());
+            });
+
+            IMapper mapperKaikeiAddLineToTempData = configKaikeiAddLineToTempData.CreateMapper();
+            IMapper mapperShared = configShared.CreateMapper();
+            var tmpSaveDatas = mapperShared.Map<List<KaikeiJisseki>>(this.KaikeiHeader.KaikeiJissekis);
 
             /*
              * 会計済みリスト作成
              */
-            _mapper.Map(new List<IKaikeiJissekiForAdd>() { argKaikeiJisseki }, tmpSaveDatas);
+            mapperKaikeiAddLineToTempData.Map(new List<IKaikeiJissekiForAdd>() { argKaikeiJisseki }, tmpSaveDatas);
 
             var tmpSaveData = tmpSaveDatas.FirstOrDefault() ?? throw new Exception("データエラー");
 
@@ -247,7 +241,13 @@ namespace Convenience.Models.Properties {
             /*
              * 会計ヘッダー＋実績登録
              */
-            _mapper.Map<KaikeiHeader,KaikeiHeader>(postedKaikeiHeader, queriedkaikeiHeader);
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers();
+                cfg.AddProfile(new KaikeiPostToDTOAutoMapperProfile(this));
+            });
+
+            IMapper mapper = config.CreateMapper();
+            mapper.Map<KaikeiHeader,KaikeiHeader>(postedKaikeiHeader, queriedkaikeiHeader);
 
             if (_context.Entry(queriedkaikeiHeader).State == EntityState.Detached) _context.Add(queriedkaikeiHeader);
 

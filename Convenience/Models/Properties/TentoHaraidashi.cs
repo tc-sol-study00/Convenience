@@ -28,7 +28,7 @@ namespace Convenience.Models.Properties {
         /// <summary>
         /// AutoMapper
         /// </summary>
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
 
         /// <summary>
         /// コンストラクタ
@@ -37,12 +37,6 @@ namespace Convenience.Models.Properties {
         public TentoHaraidashi(ConvenienceContext context) {
             this._context = context;
 
-            var config = new MapperConfiguration(cfg => {
-                cfg.AddCollectionMappers(); // コレクションマッパーを追加
-                cfg.AddProfile(new AutoMapperProfile(this));
-            });
-
-            this._mapper = config.CreateMapper();
         }
 
         /// <summary>
@@ -191,6 +185,13 @@ namespace Convenience.Models.Properties {
              * Postデータを上乗せする
              */
             //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddCollectionMappers(); // コレクションマッパーを追加
+                cfg.AddProfile(new TentoHaraidashiPostToDTOAutoMapperProfile());
+            });
+
+            _mapper = config.CreateMapper();
 
             _mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
 
