@@ -12,6 +12,7 @@ using AutoMapper.EquivalencyExpression;
 using Microsoft.Build.Framework;
 
 namespace Convenience.Models.Properties {
+
     /// <summary>
     /// 店頭払出クラス
     /// </summary>
@@ -202,9 +203,9 @@ namespace Convenience.Models.Properties {
             /*
              * 前準備　
              */
-            KaikeiHeader postedKaikeiHeader = argpostedKaikeiHeader;                     //Postされた会計実績ヘッダー
+            KaikeiHeader postedKaikeiHeader = argpostedKaikeiHeader;               //Postされた会計実績ヘッダー
             string postedUriageDatetimeId = postedKaikeiHeader.UriageDatetimeId;   //売上日時コード
-            DateTime postedUriageDatetime = postedKaikeiHeader.UriageDatetime;       //売上日時
+            DateTime postedUriageDatetime = postedKaikeiHeader.UriageDatetime;     //売上日時
 
             /*
              * 会計ヘッダー＋実績問い合わせ

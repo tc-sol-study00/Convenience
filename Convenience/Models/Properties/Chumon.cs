@@ -123,9 +123,9 @@ namespace Convenience.Models.Properties {
 
             //注文実績＋注文実績明細
             ChumonJisseki? chumonJisseki = await _context.ChumonJisseki
-                        .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
-                        .Include(cm => cm.ChumonJissekiMeisais)
-                        .FirstOrDefaultAsync();
+                .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
+                .Include(cm => cm.ChumonJissekiMeisais)
+                .FirstOrDefaultAsync();
 
             //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
             if (chumonJisseki != null) {
@@ -143,7 +143,6 @@ namespace Convenience.Models.Properties {
                     }
                 }
             }
-
 
             //②戻り値を注文実績＋注文実績明細とする
             //データがない場合はnullで返す
