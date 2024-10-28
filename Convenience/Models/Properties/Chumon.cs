@@ -129,23 +129,21 @@ namespace Convenience.Models.Properties {
 
             //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
             if (chumonJisseki != null) {
-
                 if (chumonJisseki.ChumonJissekiMeisais != null) {
                     // ShiireMaster と ShohinMaster を AsNoTracking() で取得
-                    var tasks=chumonJisseki.ChumonJissekiMeisais.Select(async meisai =>
-                    {
-                        ShiireMaster? shiireMaster = await _context.ShiireMaster
+                    foreach(var meisai in chumonJisseki.ChumonJissekiMeisais){
+                        var shiireMaster = await _context.ShiireMaster
                             .AsNoTracking()
                             .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId && sm.ShiirePrdId == meisai.ShiirePrdId && sm.ShohinId == meisai.ShohinId)
                             .Include(sm => sm.ShohinMaster)
                             .FirstOrDefaultAsync();
 
-                        // 明示的に ShiireMaster を関連付け
-                        // もし、データがなければnullが入る
+                        // 明示的に ShiireMaster を関連付け（データがなければ null が入る）
                         meisai.ShiireMaster = shiireMaster;
-                    });
+                    }
                 }
             }
+
 
             //②戻り値を注文実績＋注文実績明細とする
             //データがない場合はnullで返す
