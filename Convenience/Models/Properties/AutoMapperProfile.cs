@@ -6,16 +6,13 @@ using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Convenience.Models.Properties
-{
+namespace Convenience.Models.Properties {
     /// <summary>
     /// AutoMapper用プロファイル
     /// </summary>
-    public class KaikeiPostToDTOAutoMapperProfile : Profile
-    {
+    public class KaikeiPostToDTOAutoMapperProfile : Profile {
 
-        public KaikeiPostToDTOAutoMapperProfile(IKaikei kaikei)
-        {
+        public KaikeiPostToDTOAutoMapperProfile(IKaikei kaikei) {
 
             int indexCounter = 1;
             decimal difUriageSu = default;
@@ -36,8 +33,7 @@ namespace Convenience.Models.Properties
             .ForMember(dest => dest.ShohinMaster, opt => opt.Ignore())
             .ForMember(dest => dest.TentoZaiko, opt => opt.Ignore())
             .BeforeMap((src, dest) => difUriageSu = src.UriageSu - dest.UriageSu)
-            .AfterMap((src, dest) =>
-            {
+            .AfterMap((src, dest) => {
                 indexCounter++;
                 kaikei.ShohizeiKeisan(src, dest);       //内外区分による税込み金額の計算
                 dest.TentoZaiko = kaikei.ZaikoConnection(dest.ShohinId!, dest.UriageDatetime, difUriageSu, dest.TentoZaiko);
@@ -45,11 +41,9 @@ namespace Convenience.Models.Properties
         }
     }
 
-    public class KaikeiAddLineToTempDataAutoMapperProfile : Profile
-    {
+    public class KaikeiAddLineToTempDataAutoMapperProfile : Profile {
 
-        public KaikeiAddLineToTempDataAutoMapperProfile(IKaikei kaikei)
-        {
+        public KaikeiAddLineToTempDataAutoMapperProfile(IKaikei kaikei) {
 
             /*
              * 会計実績(Post->一時領域：追加ボタン用)
@@ -59,8 +53,7 @@ namespace Convenience.Models.Properties
                 .ForMember(dest => dest.UriageSu, opt => opt.MapFrom((src, dest) => dest.UriageSu + src.UriageSu))                  //売上数
                 .ForMember(dest => dest.UriageKingaku, opt => opt.MapFrom((src, dest) => dest.UriageSu * src.ShohinMaster!.ShohinTanka))   //売上金額
                 .ForMember(dest => dest.ShohinTanka, opt => opt.MapFrom((src, dest) => src.ShohinMaster!.ShohinTanka))                   //商品単価
-                .AfterMap((src, dest) =>
-                {
+                .AfterMap((src, dest) => {
                     kaikei.ShohizeiKeisan(src, dest);                                                                                      //内外区分による税込み金額の計算
                     dest.TentoZaiko
                         = kaikei.ZaikoConnection(dest.ShohinId!, dest.UriageDatetime, src.UriageSu, dest.TentoZaiko);                      //店頭在庫への反映（売った分減る）
@@ -69,10 +62,8 @@ namespace Convenience.Models.Properties
         }
     }
 
-    public class TentoHaraidashiPostToDTOAutoMapperProfile : Profile
-    {
-        public TentoHaraidashiPostToDTOAutoMapperProfile()
-        {
+    public class TentoHaraidashiPostToDTOAutoMapperProfile : Profile {
+        public TentoHaraidashiPostToDTOAutoMapperProfile() {
 
             decimal shiirePcsPerUnit = default;
             decimal defHaraidashiCaseSu = default;
@@ -82,8 +73,7 @@ namespace Convenience.Models.Properties
 
             CreateMap<TentoHaraidashiJisseki, TentoHaraidashiJisseki>()
             .EqualityComparison((odto, o) => odto.TentoHaraidashiId == o.TentoHaraidashiId && odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId && odto.ShohinId == o.ShohinId)
-            .BeforeMap((src, dest) =>
-            {
+            .BeforeMap((src, dest) => {
                 defHaraidashiCaseSu = src.HaraidashiCaseSu - dest.HaraidashiCaseSu;
                 shiirePcsPerUnit = dest.ShiireMaster!.ShiirePcsPerUnit;
                 beforeSokoZaikoCaseSu = dest.ShiireMaster!.SokoZaiko!.SokoZaikoCaseSu;
@@ -102,10 +92,8 @@ namespace Convenience.Models.Properties
         }
     }
 
-    public class ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile : Profile
-    {
-        public ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile(IShiire shiire, DateOnly inShiireDate, uint inSeqByShiireDate, DateTime nowTime)
-        {
+    public class ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile : Profile {
+        public ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile(IShiire shiire, DateOnly inShiireDate, uint inSeqByShiireDate, DateTime nowTime) {
             CreateMap<ChumonJissekiMeisai, ShiireJisseki>()
             .ForMember(dest => dest.ChumonId, opt => opt.MapFrom(src => src.ChumonId))
             .ForMember(dest => dest.ShiireDate, opt => opt.MapFrom(src => inShiireDate))
@@ -120,10 +108,8 @@ namespace Convenience.Models.Properties
         }
     }
 
-    public class ShiirePostToDTOAutoMapperProfile : Profile
-    {
-        public ShiirePostToDTOAutoMapperProfile(ConvenienceContext _context)
-        {
+    public class ShiirePostToDTOAutoMapperProfile : Profile {
+        public ShiirePostToDTOAutoMapperProfile(ConvenienceContext _context) {
             CreateMap<ShiireJisseki, ShiireJisseki>()
             .EqualityComparison((odto, o) => odto.ShiireSakiId == o.ShiireSakiId && odto.ShiirePrdId == o.ShiirePrdId)
             .ForMember(dest => dest.ShiireDateTime, opt => opt.MapFrom(src => DateTime.SpecifyKind(src.ShiireDateTime, DateTimeKind.Utc)))
@@ -136,11 +122,9 @@ namespace Convenience.Models.Properties
         }
     }
 
-    public class ChumonChumonJissekiToDTOAutoMapperProfile : Profile
-    {
+    public class ChumonChumonJissekiToDTOAutoMapperProfile : Profile {
 
-        public ChumonChumonJissekiToDTOAutoMapperProfile()
-        {
+        public ChumonChumonJissekiToDTOAutoMapperProfile() {
             CreateMap<ChumonJisseki, ChumonJisseki>()
             .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId);
 
@@ -151,6 +135,21 @@ namespace Convenience.Models.Properties
             .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore());
         }
     }
+
+    public class ChumonCreateChumonJissekiToDTOAutoMapperProfile : Profile {
+        public ChumonCreateChumonJissekiToDTOAutoMapperProfile(){
+        CreateMap<ShiireMaster, ChumonJissekiMeisai>()
+        .ForMember(dest => dest.ChumonId, opt => opt.MapFrom((src, dest, destMember, context) => context.Items["ChumonId"]))
+        .ForMember(dest => dest.ShiireSakiId, opt => opt.MapFrom((src, dest, destMember, context) => context.Items["ShiireSakiId"]))
+        //仕入先コードを注文実績からセット(aより)
+        .ForMember(dest => dest.ShiirePrdId, opt => opt.MapFrom(src => src.ShiirePrdId))    //仕入商品コードのセット(bより）
+        .ForMember(dest => dest.ShohinId, opt => opt.MapFrom(src => src.ShohinId))          //仕入マスタから商品コード（bより）
+        .ForMember(dest => dest.ChumonSu, opt => opt.MapFrom(opt => 0))                     //初期値として注文数０をセット
+        .ForMember(dest => dest.ChumonZan, opt => opt.MapFrom(opt => 0))                    //初期値として注文残０をセット
+        .ForMember(dest => dest.ShiireMaster, opt => opt.MapFrom(src => src))               //仕入マスタに対するリレーション情報のセット
+        ;
+    }
+}
 
     public class AutoMapperSharedProfile : Profile
     {

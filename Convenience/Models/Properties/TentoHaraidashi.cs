@@ -51,7 +51,7 @@ namespace Convenience.Models.Properties {
                 .Where(x => x.TentoHaraidashiId.StartsWith(dateArea)).Max(s => s.TentoHaraidashiId);
 
             uint seq = 0;
-            if (maxTentoHaraidashiId is null) {
+            if (!IsExistCheck(maxTentoHaraidashiId)) {
                 seq = 1;
             }
             else {
@@ -111,7 +111,7 @@ namespace Convenience.Models.Properties {
                 _ = tentoHaraidashiJisseki?.ShiireMaster?.ShohinMaster ?? throw new InvalidDataException("店頭在庫リンクエラー");
                 _ = tentoHaraidashiJisseki.ShiireMaster.SokoZaiko ?? throw new InvalidDataException("倉庫在庫リンクエラー");
 
-                if (tentoHaraidashiJisseki.ShiireMaster.ShohinMaster.TentoZaiko is null) {
+                if (!IsExistCheck(tentoHaraidashiJisseki.ShiireMaster.ShohinMaster.TentoZaiko)) {
                     tentoHaraidashiJisseki.ShiireMaster.ShohinMaster.TentoZaiko
                         = new TentoZaiko {
                             ShohinId = tentoHaraidashiJisseki.ShohinId,
@@ -178,8 +178,12 @@ namespace Convenience.Models.Properties {
             decimal beforeTentoZaikoSu = default;
             */
             //上乗せ前の事前チェック
-            if (settingTentoHaraidashiJissekis.Any(th => th.ShiireMaster?.ShohinMaster?.TentoZaiko == null) == true) throw new Exception("仕入マスタor商品マスタor店頭在庫にnullのデータがあります");
-            if (settingTentoHaraidashiJissekis.Any(th => th.ShiireMaster?.SokoZaiko == null) == true) throw new Exception("倉庫在庫にnullのデータがあります");
+            if (settingTentoHaraidashiJissekis.Any(th => !IsExistCheck(th.ShiireMaster?.ShohinMaster?.TentoZaiko))) {
+                throw new Exception("仕入マスタor商品マスタor店頭在庫にnullのデータがあります"); 
+            }
+            if (settingTentoHaraidashiJissekis.Any(th => !IsExistCheck(th.ShiireMaster?.SokoZaiko))) {
+                throw new Exception("倉庫在庫にnullのデータがあります");
+            }
 
             /*
              * Postデータを上乗せする
@@ -208,5 +212,18 @@ namespace Convenience.Models.Properties {
             /// <returns>IQueryable<TentoHaraidashiHeader> 店頭払出ヘッダーリスト（遅延実行）</returns>
             public IQueryable<TentoHaraidashiHeader> TentoHaraidashiHeaderList(Expression<Func<TentoHaraidashiHeader,bool>> whereExpression) =>
             whereExpression is null ? _context.TentoHaraidashiHearder:_context.TentoHaraidashiHearder.Where(whereExpression);
+
+        private static bool IsExistCheck<T>(T? checkdata) {
+            if (checkdata == null) {
+                return false; // null の場合は false を返す
+            }
+
+            // T が IEnumerable かどうかを確認
+            if (checkdata is IEnumerable<object>) {
+                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
+            }
+
+            return true;
+        }
     }
 }

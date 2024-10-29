@@ -49,7 +49,7 @@ namespace Convenience.Models.Properties {
                 .Where(x => x.UriageDatetimeId.StartsWith(dateArea)).MaxAsync(s => s.UriageDatetimeId);
 
             uint seq = 0;
-            if (maxUriageDatetimeId is null) {
+            if (!IsExistCheck(maxUriageDatetimeId)) {
                 seq = 1;
             }
             else {
@@ -99,7 +99,7 @@ namespace Convenience.Models.Properties {
             KaikeiJisseki? kaikeiJisseki = default;
 
             //プロパティ内会計実績がnullの場合は、ゼロリスト化して、add準備する
-            if (this.KaikeiHeader.KaikeiJissekis is null) {
+            if (!IsExistCheck(this.KaikeiHeader.KaikeiJissekis)) {
                 this.KaikeiHeader.KaikeiJissekis = new List<KaikeiJisseki>();
             }
 
@@ -113,7 +113,9 @@ namespace Convenience.Models.Properties {
             /*
              * 関係する商品マスタを問い合わせる
              */
-            argKaikeiJisseki.ShohinMaster = await _context.ShohinMaster.AsNoTracking().FirstOrDefaultAsync(x => x.ShohinId == shohinId)
+            argKaikeiJisseki.ShohinMaster = await _context.ShohinMaster
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ShohinId == shohinId)
                     ?? throw new ArgumentException("引数で渡された商品コードがＤＢに見つかりません");
 
             /*
@@ -145,9 +147,12 @@ namespace Convenience.Models.Properties {
             var tmpSaveData = tmpSaveDatas.FirstOrDefault() ?? throw new Exception("データエラー");
 
             var existingItem = this.KaikeiHeader.KaikeiJissekis.FirstOrDefault(x => x.ShohinId == shohinId);
-            if (existingItem == null) this.KaikeiHeader.KaikeiJissekis.Insert(0, tmpSaveData);
-            else this.KaikeiHeader.KaikeiJissekis[this.KaikeiHeader.KaikeiJissekis.IndexOf(existingItem)] = tmpSaveData;
-
+            if (IsExistCheck(existingItem)) {
+                this.KaikeiHeader.KaikeiJissekis[this.KaikeiHeader.KaikeiJissekis.IndexOf(existingItem)] = tmpSaveData;
+            }
+            else {
+                this.KaikeiHeader.KaikeiJissekis.Insert(0, tmpSaveData);
+            }
             return (KaikeiHeader.KaikeiJissekis);
         }
 
@@ -250,7 +255,9 @@ namespace Convenience.Models.Properties {
             IMapper mapper = config.CreateMapper();
             mapper.Map<KaikeiHeader,KaikeiHeader>(postedKaikeiHeader, queriedkaikeiHeader);
 
-            if (_context.Entry(queriedkaikeiHeader).State == EntityState.Detached) _context.Add(queriedkaikeiHeader);
+            if (_context.Entry(queriedkaikeiHeader).State == EntityState.Detached) {
+                _context.Add(queriedkaikeiHeader);
+            }
 
             return this.KaikeiHeader = queriedkaikeiHeader;
         }
@@ -273,9 +280,9 @@ namespace Convenience.Models.Properties {
             /*
              * 店頭在庫計算
              */
-            if (tentoZaiko is not null) {
-                tentoZaiko.ZaikoSu -= argDiffUriageSu;
-                tentoZaiko.ZaikoSu = tentoZaiko.ZaikoSu > 0 ? tentoZaiko.ZaikoSu : 0;
+            if (IsExistCheck(tentoZaiko)) {
+                tentoZaiko!.ZaikoSu -= argDiffUriageSu;
+                tentoZaiko!.ZaikoSu = tentoZaiko!.ZaikoSu > 0 ? tentoZaiko!.ZaikoSu : 0;
                 //直近売上日のセット
                 if (argDiffUriageSu > 0) tentoZaiko.LastUriageDatetime = argUriageDateTime;
             }
@@ -319,6 +326,18 @@ namespace Convenience.Models.Properties {
             outKaikeiJisseki.ZeikomiKingaku = outKaikeiJisseki.UriageKingaku * (1.0m + outKaikeiJisseki.ShohiZeiritsu / 100.0m);
             //税込金額
             return outKaikeiJisseki;
+        }
+        private static bool IsExistCheck<T>(T? checkdata) {
+            if (checkdata == null) {
+                return false; // null の場合は false を返す
+            }
+
+            // T が IEnumerable かどうかを確認
+            if (checkdata is IEnumerable<object>) {
+                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
+            }
+
+            return true;
         }
     }
 }

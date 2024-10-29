@@ -5,8 +5,7 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Convenience.Models.Properties
-{
+namespace Convenience.Models.Properties {
     /// <summary>
     /// 仕入クラス
     /// </summary>
@@ -21,7 +20,7 @@ namespace Convenience.Models.Properties
         /// 仕入実績プロパティ
         /// Include ChuumonJissekiMeisai
         /// </summary>
-        public IList<ShiireJisseki> Shiirejissekis { get; set; } 
+        public IList<ShiireJisseki> Shiirejissekis { get; set; }
         /// <summary>
         /// 倉庫在庫プロパティ
         /// </summary>
@@ -40,7 +39,7 @@ namespace Convenience.Models.Properties
         public Shiire(ConvenienceContext context) {
             this._context = context;
             this.Shiirejissekis = new List<ShiireJisseki>();
-            this.SokoZaikos=new List<SokoZaiko>();
+            this.SokoZaikos = new List<SokoZaiko>();
         }
         /// <summary>
         /// 仕入クラスデバッグ用
@@ -325,7 +324,7 @@ namespace Convenience.Models.Properties
             public string ChumonId { get; set; }
             public decimal ChumonZan { get; set; }
 
-            public ChumonList(string ChumonId,decimal ChumonZan) {
+            public ChumonList(string ChumonId, decimal ChumonZan) {
                 this.ChumonId = ChumonId;
                 this.ChumonZan = ChumonZan;
             }
@@ -355,7 +354,7 @@ namespace Convenience.Models.Properties
         /// <param name="inShiireJissekis">仕入実績</param>
         /// <param name="indata">仕入実績に結合する倉庫在庫</param>
         /// <return>倉庫在庫が接続された仕入実績</return>
-        public IList<ShiireJisseki> ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> inSokoZaiko ){
+        public IList<ShiireJisseki> ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> inSokoZaiko) {
             //引数で渡された仕入実績を一行づつ取り出す
             foreach (var item in inShiireJissekis) {
                 //仕入実績とマッチする倉庫在庫を取得
@@ -366,7 +365,7 @@ namespace Convenience.Models.Properties
                         z.ShohinId == item.ShohinId)
                     .FirstOrDefault();
                 //マッチする倉庫在庫の有無チェック
-                if (sokoZaiko != null) {    
+                if (IsExistCheck(sokoZaiko)) {
                     //ありの場合、取得した倉庫在庫を仕入実績に接続
                     item.SokoZaiko = sokoZaiko;
                 }
@@ -383,6 +382,18 @@ namespace Convenience.Models.Properties
             }
             //倉庫在庫が接続された仕入実績
             return inShiireJissekis;
+        }
+        private static bool IsExistCheck<T>(T? checkdata) {
+            if (checkdata == null) {
+                return false; // null の場合は false を返す
+            }
+
+            // T が IEnumerable かどうかを確認
+            if (checkdata is IEnumerable<object>) {
+                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
+            }
+
+            return true;
         }
     }
 }
