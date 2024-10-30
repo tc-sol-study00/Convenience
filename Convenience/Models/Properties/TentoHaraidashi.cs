@@ -36,7 +36,6 @@ namespace Convenience.Models.Properties {
         /// <param name="context"></param>
         public TentoHaraidashi(ConvenienceContext context) {
             this._context = context;
-
         }
 
         /// <summary>
@@ -170,13 +169,6 @@ namespace Convenience.Models.Properties {
             _ = TentoHaraidashiHeader ?? throw new Exception("引数エラー");
             IList<TentoHaraidashiJisseki> settingTentoHaraidashiJissekis = this.TentoHaraidashiHeader.TentoHaraidashiJissekis;
 
-            /*
-            decimal shiirePcsPerUnit = default;
-            decimal defHaraidashiCaseSu = default;
-            decimal beforeSokoZaikoSu = default;
-            decimal beforeSokoZaikoCaseSu = default;
-            decimal beforeTentoZaikoSu = default;
-            */
             //上乗せ前の事前チェック
             if (settingTentoHaraidashiJissekis.Any(th => !IsExistCheck(th.ShiireMaster?.ShohinMaster?.TentoZaiko))) {
                 throw new Exception("仕入マスタor商品マスタor店頭在庫にnullのデータがあります"); 
@@ -190,18 +182,14 @@ namespace Convenience.Models.Properties {
              */
             //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
 
-            var config = new MapperConfiguration(cfg => {
+            _mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
                 cfg.AddProfile(new TentoHaraidashiPostToDTOAutoMapperProfile());
-            });
-
-            _mapper = config.CreateMapper();
+            }).CreateMapper();
 
             _mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
 
-            this.TentoHaraidashiHeader.TentoHaraidashiJissekis = settingTentoHaraidashiJissekis;
-
-            return this.TentoHaraidashiHeader.TentoHaraidashiJissekis;
+            return this.TentoHaraidashiHeader.TentoHaraidashiJissekis = settingTentoHaraidashiJissekis;
         }
 
 

@@ -183,13 +183,21 @@ namespace Convenience.Models.Properties {
 
             //AutoMapperの処理
 
-            var config = new MapperConfiguration(cfg => {
+            _mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
-                cfg.AddProfile(new ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile(this, inShiireDate, inSeqByShiireDate, nowTime));
-            });
-            _mapper = config.CreateMapper();
+                cfg.AddProfile(new ShiireConvChumonJissekiToShiireJissekiAutoMapperProfile());
+            }).CreateMapper();
+
             IList<ShiireJisseki> createdShiireJissekis = new List<ShiireJisseki>();
-            _mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>(queriedChumonJissekiMeisais, createdShiireJissekis);
+            _mapper.Map<IList<ChumonJissekiMeisai>, IList<ShiireJisseki>>
+                (queriedChumonJissekiMeisais, createdShiireJissekis,
+                    opt => {
+                        opt.Items["ShiireDate"] = inShiireDate;
+                        opt.Items["SeqByShiireDate"] = inSeqByShiireDate;
+                        opt.Items["ShiireDateTime"] = DateTime.SpecifyKind(nowTime, DateTimeKind.Utc);
+                    }
+                )
+            ;
 
             //仕入実績に対し、EFに新規（Add）の指示
             await _context.ShiireJisseki.AddRangeAsync(createdShiireJissekis);

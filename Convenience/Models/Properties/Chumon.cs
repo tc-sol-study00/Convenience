@@ -68,6 +68,7 @@ namespace Convenience.Models.Properties {
             };
 
             //注文実績明細データ（子）を作るために仕入マスタを読み込む(b)
+
             IEnumerable<ShiireMaster> shiireMasters = await _context.ShiireMaster.AsNoTracking()
                 .Where(s => s.ShiireSakiId == inShireSakiId)
                 .Include(s => s.ShiireSakiMaster)
@@ -77,8 +78,6 @@ namespace Convenience.Models.Properties {
             if (!shiireMasters.Any()) {   //仕入マスタがない場合は例外
                 throw new NoDataFoundException(nameof(ShiireMaster));
             }
-
-            //ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
 
             //(b)のデータから注文実績明細を作成する
 
@@ -112,12 +111,14 @@ namespace Convenience.Models.Properties {
              */
 
             //注文実績＋注文実績明細
+
             ChumonJisseki? chumonJisseki = await _context.ChumonJisseki
                 .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
                 .Include(cm => cm.ChumonJissekiMeisais)
                 .FirstOrDefaultAsync();
 
             //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
+
             if (IsExistCheck(chumonJisseki)) {
                 if (IsExistCheck(chumonJisseki.ChumonJissekiMeisais)) {
                     // ShiireMaster と ShohinMaster を AsNoTracking() で取得
@@ -138,6 +139,7 @@ namespace Convenience.Models.Properties {
 
             //②戻り値を注文実績＋注文実績明細とする
             //データがない場合はnullで返す
+
             ChumonJisseki = chumonJisseki;
             return (ChumonJisseki);
         }
@@ -158,12 +160,14 @@ namespace Convenience.Models.Properties {
             dateArea = InTheDate.ToString("yyyyMMdd");
 
             //今日の日付からすでに今日の分の注文コードがないか調べる
+
             var chumonid = await _context.ChumonJisseki
                 .Where(x => x.ChumonId!.StartsWith(dateArea))
                 .MaxAsync(x => x.ChumonId);
 
             // 上記以外の場合、 //注文コードの右３桁の数値を求め＋１にする
-            seqNumber = string.IsNullOrEmpty(chumonid) ? 1 //今日、注文コード起こすのが初めての場合
+
+            seqNumber = string.IsNullOrEmpty(chumonid) ? 1      //今日、注文コード起こすのが初めての場合
                       : uint.Parse(chumonid.Substring(9, 3)) + 1;
 
             ////３桁の数値が999以内（ＯＫ） それを超過するとnull
