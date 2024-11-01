@@ -108,16 +108,16 @@
                             <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.ZaikoSu class=" control-label"></label>
+                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.ZaikoSu" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastShireDateTime class=" control-label"></label>
+                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastShireDateTime" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastHaraidashiDate class=" control-label"></label>
+                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastHaraidashiDate" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastUriageDatetime class=" control-label"></label>
+                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastUriageDatetime" class="control-label"></label>
                         </th>
                     </tr>
                 </thead>
@@ -125,49 +125,49 @@
                 <tbody>
                     @foreach (var item in Model.DataArea.TentoZaIkoLines!) {
                         <tr>
-                            <td>
-                                @item.ShohinId
-                            </td>
-                            <td>
-                                @item.ShohinName
-                            </td>
-                            <td>
-                                @item.ZaikoSu
-                            </td>
-                            <td>
-                                @item.LastShireDateTime
-                            </td>
-                            <td>
-                                @item.LastHaraidashiDate
-                            </td>
-                            <td>
-                                @item.LastUriageDatetime
-                            </td>
+                        <td>
+                            @item.ShohinId
+                        </td>
+                        <td>
+                            @item.ShohinName
+                        </td>
+                        <td>
+                            @item.ZaikoSu
+                        </td>
+                        <td>
+                            @item.LastShireDateTime
+                        </td>
+                        <td>
+                            @item.LastHaraidashiDate
+                        </td>
+                        <td>
+                            @item.LastUriageDatetime
+                        </td>
 
-                        </tr>
+                </tr>
                     }
-                </tbody>
-            </table>
-        </div>
-        <div class="pagination justify-content-center">
-            @if (ViewBag.CurrentPage > 1) {
-                <a href="@Url.Action("Result", "TentoZaiko", new { page = ViewBag.CurrentPage - 1 })" class="page-link">前へ</a>
-            }
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination justify-content-center">
+        @if (ViewBag.CurrentPage > 1) {
+        <a href="@Url.Action("Result", "TentoZaiko", new { page = ViewBag.CurrentPage - 1 })" class="page-link">前へ</a>
+        }
 
-            <ul class="pagination">
-                @for (int i = 1; i <= ViewBag.TotalPages; i++) {
-                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                        <a href="@Url.Action("Result", "TentoZaiko", new { page = i })" class="page-link">
-                            @i
-                        </a>
-                    </li>
-                }
-            </ul>
+        <ul class="pagination">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++) {
+            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                <a href="@Url.Action("Result", "TentoZaiko", new { page = i })" class="page-link">
+                    @i
+                </a>
+            </li>
+}
+        </ul>
 
-            @if (ViewBag.CurrentPage < ViewBag.TotalPages) {
-                <a href="@Url.Action("Result", "TentoZaiko", new { page = ViewBag.CurrentPage + 1 })" class="page-link">次へ</a>
-            }
-        </div>
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages) {
+        <a href="@Url.Action("Result", "TentoZaiko", new { page = ViewBag.CurrentPage + 1 })" class="page-link">次へ</a>
+}
+    </div>
     }
 </div>
 
