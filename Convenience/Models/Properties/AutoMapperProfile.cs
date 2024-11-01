@@ -3,6 +3,7 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
@@ -54,15 +55,15 @@ namespace Convenience.Models.Properties {
              */
             CreateMap<IKaikeiJissekiForAdd, KaikeiJisseki>()
                 .EqualityComparison((src, dest) => src.ShohinId == dest.ShohinId)   //商品コードがすでに会計されていたら、以下の処理は加算
-                .ForMember(dest => dest.UriageSu, opt => opt.MapFrom((src, dest) => dest.UriageSu + src.UriageSu))                          //売上数
+                .ForMember(dest => dest.UriageSu, opt => opt.MapFrom((src, dest) => dest.UriageSu + src.UriageSu))          //売上数
                 .ForMember(dest => dest.UriageKingaku, 
                     opt => opt.MapFrom((src, dest) => dest.UriageSu * src.ShohinMaster!.ShohinTanka)
-                 )                                                                                                                          //売上金額
-                .ForMember(dest => dest.ShohinTanka, opt => opt.MapFrom((src, dest) => src.ShohinMaster!.ShohinTanka))                      //商品単価
+                 )                                                                                                          //売上金額
+                .ForMember(dest => dest.ShohinTanka, opt => opt.MapFrom((src, dest) => src.ShohinMaster!.ShohinTanka))      //商品単価
                 .AfterMap((src, dest) => {
-                        kaikei.ShohizeiKeisan(src, dest);                                                                                   //内外区分による税込み金額の計算
+                        kaikei.ShohizeiKeisan(src, dest);                                                                   //内外区分による税込み金額の計算
                         dest.TentoZaiko
-                            = kaikei.ZaikoConnection(dest.ShohinId!, dest.UriageDatetime, src.UriageSu, dest.TentoZaiko);                   //店頭在庫への反映（売った分減る）
+                            = kaikei.ZaikoConnection(dest.ShohinId!, dest.UriageDatetime, src.UriageSu, dest.TentoZaiko);   //店頭在庫への反映（売った分減る）
                     }
                  );
         }
@@ -180,6 +181,15 @@ namespace Convenience.Models.Properties {
         ;
     }
 }
+    public class TentoZaikoPostdataToTentoZaikoViewModel : Profile {
+        public TentoZaikoPostdataToTentoZaikoViewModel() {
+            CreateMap<TentoZaikoViewModel, TentoZaikoViewModel>();
+            CreateMap<TentoZaikoViewModel.DataAreaClass, TentoZaikoViewModel.DataAreaClass>();
+            CreateMap<TentoZaiko, TentoZaikoViewModel.DataAreaClass.TentoZaIkoLine>()
+            .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShohinMaster.ShohinName))
+            ;
+        }
+    }
 
     public class AutoMapperSharedProfile : Profile
     {

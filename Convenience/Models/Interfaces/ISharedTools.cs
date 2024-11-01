@@ -1,6 +1,5 @@
 ﻿using Convenience.Models.ViewModels.Chumon;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
@@ -13,10 +12,10 @@ namespace Convenience.Models.Interfaces {
         /// <typeparam name="T">シリアル対象オブジェクトのタイプ設定</typeparam>
         /// <param name="obj">シリアル化する対象オブジェクト</param>
         /// <returns></returns>
-        protected static string ConvertToSerial<T>(T obj){
-            return JsonSerializer.Serialize(obj,new JsonSerializerOptions() {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                        WriteIndented = true,
+        protected static string ConvertToSerial<T>(T obj) {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented,
+                new JsonSerializerSettings {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
         }
         /// <summary>
@@ -26,7 +25,25 @@ namespace Convenience.Models.Interfaces {
         /// <param name="serial">シリアルデータ</param>
         /// <returns></returns>
         protected static T ConvertFromSerial<T>(string serial) {
-            return JsonSerializer.Deserialize<T>(serial)??throw new Exception("Deserializeエラー");
+            return JsonConvert.DeserializeObject<T>(serial) ?? throw new Exception("Deserializeエラー");
+        }
+
+        /// <summary>
+        /// データがnullではないか、リスト形式ならば0件ではないか
+        /// </summary>
+        /// <typeparam name="T">チェックする型</typeparam>
+        /// <param name="checkdata">チェックするデータ</param>
+        /// <returns></returns>
+        protected static bool IsExistCheck<T>(T? checkdata) {
+            if (checkdata == null) {
+                return false; // null の場合は false を返す
+            }
+
+            // T が IEnumerable かどうかを確認
+            if (checkdata is IEnumerable<object>) {
+                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
+            }
+            return true;
         }
     }
 }

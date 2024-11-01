@@ -21,8 +21,9 @@ builder.Services.AddScoped<IShiireService,ShiireService>();
 builder.Services.AddScoped<IZaikoService, ZaikoService>();
 builder.Services.AddScoped<ITentoHaraidashiService, TentoHaraidashiService>();
 builder.Services.AddScoped<IKaikeiService, KaikeiService>();
+builder.Services.AddScoped<ITentoZaikoService,TentoZaikoService>();
 //プロパティ
-builder.Services.AddScoped<IChumon,Chumon>();
+builder.Services.AddScoped<IChumon, Chumon>();
 builder.Services.AddScoped<IShiire,Shiire>();
 builder.Services.AddScoped<IZaiko, Zaiko>();
 builder.Services.AddScoped<ITentoHaraidashi, TentoHaraidashi>();
