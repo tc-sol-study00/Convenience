@@ -32,7 +32,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argTentoZaikoViewModel">店頭在庫検索ビューモデル</param>
         /// <returns>店頭在庫ビューモデル（検索内容含む）</returns>
-        public TentoZaikoViewModel TentoZaikoRetrival(TentoZaikoViewModel argTentoZaikoViewModel) {
+        public async Task<TentoZaikoViewModel> TentoZaikoRetrival(TentoZaikoViewModel argTentoZaikoViewModel) {
 
             /*
              *  店頭在庫のクエリを初期セット。OrderbyやWhereを追加するから、
@@ -60,8 +60,10 @@ namespace Convenience.Models.Services {
                 mapper.Map<TentoZaikoViewModel>(argTentoZaikoViewModel);
 
             //クエリ結果のマッピング
+
+            IEnumerable<TentoZaiko> instanceTentoZaiko = await queriedTentoZaiko.ToListAsync();
             tentoZaikoViewModel.DataArea.TentoZaIkoLines =
-                mapper.Map<IEnumerable<DataAreaClass.TentoZaIkoLine>>(queriedTentoZaiko.ToList());
+                mapper.Map<IEnumerable<DataAreaClass.TentoZaIkoLine>>(instanceTentoZaiko);
 
             /*
              *  マップされた店頭在庫の表情報を画面上のソート指示によりソートする
