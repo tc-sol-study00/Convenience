@@ -33,7 +33,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private TentoZaikoViewModel tentoHaraidashiViewModel;
+        private readonly TentoZaikoViewModel tentoHaraidashiViewModel;
         /// <summary>
         /// １ページの行数
         /// </summary>
@@ -56,14 +56,14 @@ namespace Convenience.Controllers {
         /// <returns>店頭在庫ビューモデル（初期表示）</returns>
         /// 
         [HttpGet]
-        public async Task<IActionResult> Index(string id) {
+        public Task<IActionResult> Index(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "FirstDisplay";
             }
             else {
                 ViewBag.HandlingFlg = "FirstDisplay";
             }
-            return View("Index", tentoHaraidashiViewModel);
+            return Task.FromResult<IActionResult>(View("Index", tentoHaraidashiViewModel));
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace Convenience.Controllers {
         [HttpGet]
         public async Task<IActionResult> Result(int page) {
             if (TempData.Peek(IndexName) is string tempDataStr) {
-                var keyArea = ISharedTools.ConvertFromSerial<TentoZaikoViewModel.KeywordAreaClass>(tempDataStr);
-                var tentoZaikoViewModel = new TentoZaikoViewModel { KeywordArea = keyArea };
+                TentoZaikoViewModel.KeywordAreaClass keyArea = ISharedTools.ConvertFromSerial<TentoZaikoViewModel.KeywordAreaClass>(tempDataStr);
+                TentoZaikoViewModel tentoZaikoViewModel = new () { KeywordArea = keyArea };
 
                 return await ProcessResult(tentoZaikoViewModel, page, PageSize);
             }
@@ -94,10 +94,10 @@ namespace Convenience.Controllers {
 
         private async Task<IActionResult> ProcessResult(TentoZaikoViewModel tentoZaikoViewModel, int page, int pageSize) {
             // 店頭在庫検索
-            var createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
+            TentoZaikoViewModel createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
 
             // ページング処理
-            var totalLines = createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Count();
+            int totalLines = createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Count();
             ViewBag.TotalPages = Math.Ceiling((double)totalLines / pageSize);
             ViewBag.CurrentPage = page;
 

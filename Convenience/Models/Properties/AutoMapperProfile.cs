@@ -186,7 +186,7 @@ namespace Convenience.Models.Properties {
             CreateMap<TentoZaikoViewModel, TentoZaikoViewModel>();
             CreateMap<TentoZaikoViewModel.DataAreaClass, TentoZaikoViewModel.DataAreaClass>();
             CreateMap<TentoZaiko, TentoZaikoViewModel.DataAreaClass.TentoZaIkoLine>()
-            .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShohinMaster.ShohinName))
+            .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShohinMaster!.ShohinName))
             ;
         }
     }
