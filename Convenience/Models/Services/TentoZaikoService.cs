@@ -88,7 +88,7 @@ namespace Convenience.Models.Services {
         /// <param name="argSortEventRec">ソート指示部</param>
         /// <param name="argTentoZaikos">ソート対象となる表示用店頭在庫データ</param>
         /// <returns></returns>
-        private IEnumerable<DataAreaClass.TentoZaIkoLine> SetSortKey
+        private static IEnumerable<DataAreaClass.TentoZaIkoLine> SetSortKey
             (KeywordAreaClass.SortAreaClass.SortEventRec[] argSortEventRec, IEnumerable<DataAreaClass.TentoZaIkoLine> argTentoZaikos) {
 
             //OrderByのときはtrue、ThenByのときはfalse
@@ -97,7 +97,7 @@ namespace Convenience.Models.Services {
             //画面のソート指示行を処理する
             for (int i = 0; i < argSortEventRec.Length; i++) {
 
-                var aSortEventRec = argSortEventRec[i];
+                KeywordAreaClass.SortAreaClass.SortEventRec aSortEventRec = argSortEventRec[i];
                 if (ISharedTools.IsExistCheck(aSortEventRec.KeyEventData)) {     //指示がない場合があるので、チェック
                     string sortKey = aSortEventRec.KeyEventData!;
                     bool descending = aSortEventRec.Descending!;
@@ -122,14 +122,14 @@ namespace Convenience.Models.Services {
         /// <param name="argSelecteWhereItemArray">検索指示項目</param>
         /// <param name="tentoZaiko">店頭在庫クエリ</param>
         /// <returns></returns>
-        private IQueryable<TentoZaiko> SearchItemRecognizer
+        private static IQueryable<TentoZaiko> SearchItemRecognizer
             (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IQueryable<TentoZaiko> tentoZaiko) {
 
             bool needAnd = false;
             Expression<Func<TentoZaiko, bool>>? setExpression = default; //初期化
 
             //検索指示項目行を処理する
-            for (var i = 0; i < argSelecteWhereItemArray.Length; i++) {
+            for (int i = 0; i < argSelecteWhereItemArray.Length; i++) {
                 string? leftSide, rightSide, comparison;
                 //左辺側が指示されているものだけ処理
                 if (ISharedTools.IsExistCheck(leftSide = argSelecteWhereItemArray[i].LeftSide)) {
@@ -137,7 +137,7 @@ namespace Convenience.Models.Services {
                         if (ISharedTools.IsExistCheck(comparison = argSelecteWhereItemArray[i].ComparisonOperator)) {
                             /* Where系ラムダ式を作る */
                             Expression<Func<TentoZaiko, bool>> lambda = leftSide switch {
-                                nameof(DataAreaClass.TentoZaIkoLine.ShohinId) =>BuildComparison<TentoZaiko>(nameof(TentoZaiko.ShohinId), comparison!, rightSide!),
+                                nameof(DataAreaClass.TentoZaIkoLine.ShohinId) => BuildComparison<TentoZaiko>(nameof(TentoZaiko.ShohinId), comparison!, rightSide!),
                                 nameof(DataAreaClass.TentoZaIkoLine.ShohinName) =>
                                     BuildComparison<TentoZaiko>
                                         ($"{nameof(TentoZaiko.ShohinMaster)}.{nameof(TentoZaiko.ShohinMaster.ShohinName)}",
@@ -152,11 +152,11 @@ namespace Convenience.Models.Services {
                                     BuildComparison<TentoZaiko>(nameof(TentoZaiko.LastHaraidashiDate), comparison!, DateTime.Parse(rightSide!)),
                                 nameof(DataAreaClass.TentoZaIkoLine.LastUriageDatetime) =>
                                     BuildComparison<TentoZaiko>(nameof(TentoZaiko.LastUriageDatetime), comparison!, DateTime.Parse(rightSide!)),
-                                _ => throw new ArgumentOutOfRangeException("検索キー指示エラー({leftSide})")
+                                _ => throw new Exception("検索キー指示エラー({leftSide})")
                             };
                             if(needAnd){
                                 //2回目以降はAnd定義を追加
-                                setExpression = CombineExpressions(setExpression, lambda);
+                                setExpression = CombineExpressions(setExpression!, lambda);
                             }
                             else {
                                 //初回はセットのみ
@@ -180,9 +180,9 @@ namespace Convenience.Models.Services {
         /*
          * 複数のWhere系ラムダ式をAndで結ぶ
          */
-        private Expression<Func<T, bool>> CombineExpressions<T>(Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2) {
-            var parameter = Expression.Parameter(typeof(T), "x");
-            var combined = Expression.AndAlso(
+        private static Expression<Func<T, bool>> CombineExpressions<T>(Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2) {
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
+            BinaryExpression combined = Expression.AndAlso(
                 Expression.Invoke(expr1, parameter),
                 Expression.Invoke(expr2, parameter)
             );
@@ -192,19 +192,19 @@ namespace Convenience.Models.Services {
         /*
          * Where系ラムダ式を作る
          */
-        private Expression<Func<T, bool>> BuildComparison<T>(
+        private static Expression<Func<T, bool>> BuildComparison<T>(
             string propertyName,
             string strComparisonType,
             object value
         ) {
-            var parameter = Expression.Parameter(typeof(T), "x");
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
 
             Type type = value.GetType();
-            var constant = Expression.Constant(value, type);
+            ConstantExpression constant = Expression.Constant(value, type);
             Expression property = parameter;
 
             // ShohinMaster.ShohinNameの指定を認識させる
-            foreach (var member in propertyName.Split('.')) {
+            foreach (string member in propertyName.Split('.')) {
                 property = Expression.Property(property, member);
             }
 
@@ -220,8 +220,8 @@ namespace Convenience.Models.Services {
             Expression comparison;
             if (property.Type == typeof(string)) {
                 // 文字列の比較の場合、String.Compareを使用する
-                var compareMethod = typeof(string).GetMethod("Compare", new[] { typeof(string), typeof(string) });
-                var compareExpression = Expression.Call(compareMethod, property, constant);
+                System.Reflection.MethodInfo? compareMethod = typeof(string).GetMethod("Compare", new[] { typeof(string), typeof(string) });
+                MethodCallExpression compareExpression = Expression.Call(compareMethod!, property, constant);
 
                 comparison = comparisonType switch {
                     KeywordAreaClass.KeyAreaClass.Comparisons.Equal => Expression.Equal(compareExpression, Expression.Constant(0)),

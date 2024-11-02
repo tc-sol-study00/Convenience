@@ -59,7 +59,7 @@ namespace Convenience.Models.Properties {
 
             //仕入先より注文実績データ（親）を生成する(a)
 
-            var chumonId = await ChumonIdHatsuban(inChumonDate)??throw new Exception("注文コード発番エラー");     
+            string chumonId = await ChumonIdHatsuban(inChumonDate)??throw new Exception("注文コード発番エラー");     
 
             ChumonJisseki = new ChumonJisseki {
                 ChumonId = chumonId,                                //注文コード発番
@@ -120,10 +120,10 @@ namespace Convenience.Models.Properties {
             //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
 
             if (IsExistCheck(chumonJisseki)) {
-                if (IsExistCheck(chumonJisseki.ChumonJissekiMeisais)) {
+                if (IsExistCheck(chumonJisseki!.ChumonJissekiMeisais)) {
                     // ShiireMaster と ShohinMaster を AsNoTracking() で取得
-                    foreach(var meisai in chumonJisseki.ChumonJissekiMeisais){
-                        var shiireMaster = await _context.ShiireMaster
+                    foreach(ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais!){
+                        ShiireMaster? shiireMaster = await _context.ShiireMaster
                             .AsNoTracking()
                             .Where( sm => sm.ShiireSakiId == meisai.ShiireSakiId &&
                                     sm.ShiirePrdId == meisai.ShiirePrdId &&
@@ -161,7 +161,7 @@ namespace Convenience.Models.Properties {
 
             //今日の日付からすでに今日の分の注文コードがないか調べる
 
-            var chumonid = await _context.ChumonJisseki
+            string? chumonid = await _context.ChumonJisseki
                 .Where(x => x.ChumonId!.StartsWith(dateArea))
                 .MaxAsync(x => x.ChumonId);
 
@@ -218,7 +218,7 @@ namespace Convenience.Models.Properties {
                                 x.ShiirePrdId == postedChumonJissekiMeisai.ShiirePrdId)
                     .Single();
 
-                var lastChumonSu = targetChumonJissekiMeisai.ChumonSu;
+                decimal lastChumonSu = targetChumonJissekiMeisai.ChumonSu;
                 targetChumonJissekiMeisai.ChumonSu = postedChumonJissekiMeisai.ChumonSu;
                 targetChumonJissekiMeisai.ChumonZan = postedChumonJissekiMeisai.ChumonZan + postedChumonJissekiMeisai.ChumonSu - lastChumonSu;
             }
@@ -246,7 +246,7 @@ namespace Convenience.Models.Properties {
 
                     if ((src.ChumonId, src.ShiireSakiId, src.ShiirePrdId) ==
                             (dest.ChumonId, dest.ShiireSakiId, dest.ShiirePrdId)) {
-                        var lastChumonSu = dest.ChumonSu;
+                        decimal lastChumonSu = dest.ChumonSu;
                         dest.ChumonSu = src.ChumonSu;
                         dest.ChumonZan = src.ChumonZan + src.ChumonSu - lastChumonSu;
                     }
@@ -284,13 +284,13 @@ namespace Convenience.Models.Properties {
             if (IsExistCheck(existedChumonJisseki)) {
                 //注文実績がある場合
                 //AutoMapper利用か、ハンドメイドなのか選択されている
-                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki);
+                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki!);
                 ChumonJisseki = existedChumonJisseki;
             }
             else {
                 //注文実績がない場合
                 //注文実績がない場合、引数で渡された注文実績をDBにレコード追加する
-                foreach (var item in postedChumonJisseki.ChumonJissekiMeisais) {
+                foreach (ChumonJissekiMeisai item in postedChumonJisseki.ChumonJissekiMeisais) {
                     item.ChumonZan = item.ChumonSu;
                 }
                 await _context.ChumonJisseki.AddAsync(postedChumonJisseki);
@@ -305,8 +305,8 @@ namespace Convenience.Models.Properties {
             }
 
             // T が IEnumerable かどうかを確認
-            if (checkdata is IEnumerable<object>) {
-                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
+            if (checkdata is IEnumerable<object> enumerable) {
+                return enumerable.Any(); // リストの場合は要素があるかどうかを確認
             }
 
             return true; // リストでない場合は true を返す（存在している）
