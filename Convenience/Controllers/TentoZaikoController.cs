@@ -94,7 +94,7 @@ namespace Convenience.Controllers {
 
         private async Task<IActionResult> ProcessResult(TentoZaikoViewModel tentoZaikoViewModel, int page, int pageSize) {
             // 店頭在庫検索
-            var createdTentoZaikoViewModel = tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
+            var createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
 
             // ページング処理
             var totalLines = createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Count();

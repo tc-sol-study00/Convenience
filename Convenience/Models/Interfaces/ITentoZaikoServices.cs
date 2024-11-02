@@ -9,6 +9,6 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <param name="argTentoZaikoViewModel">店頭在庫検索ビューモデル</param>
         /// <returns>店頭在庫ビューモデル（検索内容含む）</returns>
-        public TentoZaikoViewModel TentoZaikoRetrival(TentoZaikoViewModel argTentoZaikoViewModel);
+        public Task<TentoZaikoViewModel> TentoZaikoRetrival(TentoZaikoViewModel argTentoZaikoViewModel);
         }
 }
