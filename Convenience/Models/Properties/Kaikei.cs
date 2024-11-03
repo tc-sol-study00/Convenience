@@ -16,7 +16,7 @@ namespace Convenience.Models.Properties {
     /// <summary>
     /// 店頭払出クラス
     /// </summary>
-    public class Kaikei : IKaikei {
+    public class Kaikei : IKaikei,ISharedTools {
 
         /// <summary>
         /// DBコンテキスト
@@ -49,7 +49,7 @@ namespace Convenience.Models.Properties {
                 .Where(x => x.UriageDatetimeId.StartsWith(dateArea)).MaxAsync(s => s.UriageDatetimeId);
 
             uint seq = 0;
-            if (!IsExistCheck(maxUriageDatetimeId)) {
+            if (!ISharedTools.IsExistCheck(maxUriageDatetimeId)) {
                 seq = 1;
             }
             else {
@@ -99,7 +99,7 @@ namespace Convenience.Models.Properties {
             KaikeiJisseki? kaikeiJisseki = default;
 
             //プロパティ内会計実績がnullの場合は、ゼロリスト化して、add準備する
-            if (!IsExistCheck(this.KaikeiHeader.KaikeiJissekis)) {
+            if (!ISharedTools.IsExistCheck(this.KaikeiHeader.KaikeiJissekis)) {
                 this.KaikeiHeader.KaikeiJissekis = new List<KaikeiJisseki>();
             }
 
@@ -126,29 +126,29 @@ namespace Convenience.Models.Properties {
              * 会計実績の各項目セット
              */
 
-            var configKaikeiAddLineToTempData = new MapperConfiguration(cfg => {
+            IMapper mapperKaikeiAddLineToTempData = new MapperConfiguration(cfg =>
+            {
                 cfg.AddCollectionMappers();
                 cfg.AddProfile(new KaikeiAddLineToTempDataAutoMapperProfile(this));
-            });
+            }).CreateMapper();
 
-            var configShared = new MapperConfiguration(cfg => {
+            IMapper mapperShared = new MapperConfiguration(cfg =>
+            {
                 cfg.AddProfile(new AutoMapperSharedProfile());
-            });
+            }).CreateMapper();
 
-            IMapper mapperKaikeiAddLineToTempData = configKaikeiAddLineToTempData.CreateMapper();
-            IMapper mapperShared = configShared.CreateMapper();
-            var tmpSaveDatas = mapperShared.Map<List<KaikeiJisseki>>(this.KaikeiHeader.KaikeiJissekis);
+            List<KaikeiJisseki> tmpSaveDatas = mapperShared.Map<List<KaikeiJisseki>>(this.KaikeiHeader.KaikeiJissekis);
 
             /*
              * 会計済みリスト作成
              */
             mapperKaikeiAddLineToTempData.Map(new List<IKaikeiJissekiForAdd>() { argKaikeiJisseki }, tmpSaveDatas);
 
-            var tmpSaveData = tmpSaveDatas.FirstOrDefault() ?? throw new Exception("データエラー");
+            KaikeiJisseki tmpSaveData = tmpSaveDatas.FirstOrDefault() ?? throw new Exception("データエラー");
 
-            var existingItem = this.KaikeiHeader.KaikeiJissekis.FirstOrDefault(x => x.ShohinId == shohinId);
-            if (IsExistCheck(existingItem)) {
-                this.KaikeiHeader.KaikeiJissekis[this.KaikeiHeader.KaikeiJissekis.IndexOf(existingItem)] = tmpSaveData;
+            KaikeiJisseki? existingItem = this.KaikeiHeader.KaikeiJissekis.FirstOrDefault(x => x.ShohinId == shohinId);
+            if (ISharedTools.IsExistCheck(existingItem)) {
+                this.KaikeiHeader.KaikeiJissekis[this.KaikeiHeader.KaikeiJissekis.IndexOf(existingItem!)] = tmpSaveData;
             }
             else {
                 this.KaikeiHeader.KaikeiJissekis.Insert(0, tmpSaveData);
@@ -178,7 +178,7 @@ namespace Convenience.Models.Properties {
              * Linq組み立て
              */
             //Where部分
-            IQueryable<KaikeiHeader> qty1 = _context.KaikeiHeader
+            IQueryable<KaikeiHeader> query = _context.KaikeiHeader
                 .Where(x => x.UriageDatetimeId.Equals(argTentoHaraidashiId))
                 .Include(x => x.KaikeiJissekis)
                 .ThenInclude(x => x.ShohinMaster)
@@ -189,12 +189,12 @@ namespace Convenience.Models.Properties {
 
             //OrderBy指示するか、そのままか
 
-            IQueryable<KaikeiHeader> qty2 = orderexpression is not null ?
-                qty1.Include(x => x.KaikeiJissekis.AsQueryable().OrderBy(orderexpression)) : qty1;
+            query = orderexpression is not null ?
+                query.Include(x => x.KaikeiJissekis.AsQueryable().OrderBy(orderexpression)) : query;
             /*
              * Linq実行
              */
-            return this.KaikeiHeader = await qty2.FirstOrDefaultAsync();
+            return this.KaikeiHeader = await query.FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -222,37 +222,57 @@ namespace Convenience.Models.Properties {
                 queriedkaikeiHeader = new KaikeiHeader();
                 string uriageDatetimeId = await UriageDatetimeIdHatsuban(postedUriageDatetime) ?? throw new Exception("");
                 postedKaikeiHeader.UriageDatetimeId = uriageDatetimeId;
-                postedKaikeiHeader.KaikeiJissekis.ToList().ForEach(x => {
-                    x.UriageDatetimeId = uriageDatetimeId;
-                    x.UriageDatetime = postedKaikeiHeader.UriageDatetime;
-                    x.ShohinMaster = _context.ShohinMaster.AsNoTracking().FirstOrDefault(y => y.ShohinId == x.ShohinId);
-                    x.TentoZaiko = _context.TentoZaiko.FirstOrDefault(y => y.ShohinId == x.ShohinId);
-                });
+
+                //Postから商品コード一覧を作る
+                IEnumerable<string?> shohinIds =postedKaikeiHeader.KaikeiJissekis.Select(x => x.ShohinId);
+
+                // 商品マスタと店舗在庫を一度に取得
+                IList<ShohinMaster> shohinMasters = await _context.ShohinMaster
+                    .AsNoTracking()
+                    .Where(y => shohinIds.Contains(y.ShohinId))
+                    .ToListAsync();
+
+                IList<TentoZaiko> tentoZaikos = await _context.TentoZaiko
+                    .Where(y => shohinIds.Contains(y.ShohinId))
+                    .ToListAsync();
+
+                foreach (KaikeiJisseki jisseki in postedKaikeiHeader.KaikeiJissekis){
+                    jisseki.UriageDatetimeId = uriageDatetimeId;
+                    jisseki.UriageDatetime = postedKaikeiHeader.UriageDatetime;
+                    jisseki.ShohinMaster = shohinMasters.FirstOrDefault(y => y.ShohinId == jisseki.ShohinId);
+                    jisseki.TentoZaiko = tentoZaikos.FirstOrDefault(y => y.ShohinId == jisseki.ShohinId);
+                }
             }
             else {
                 //新規以外は問い合わせて、変更の準備
-                queriedkaikeiHeader = await KaikeiToiawase(postedUriageDatetimeId, x => x.KaikeiSeq)??throw new Exception("会計問い合わせエラー");
-                postedKaikeiHeader.KaikeiJissekis.ToList().ForEach(x =>
-                    x.ShohinMaster = queriedkaikeiHeader.KaikeiJissekis.FirstOrDefault(y => x.UriageDatetimeId == y.UriageDatetimeId && x.ShohinId == y.ShohinId)?.ShohinMaster ?? throw new Exception("")
-                );
+                queriedkaikeiHeader = await KaikeiToiawase(postedUriageDatetimeId, x => x.KaikeiSeq)
+                    ??throw new Exception("会計問い合わせエラー");
+
+                foreach(KaikeiJisseki jisseki in postedKaikeiHeader.KaikeiJissekis){
+                    jisseki.ShohinMaster = queriedkaikeiHeader.KaikeiJissekis
+                        .FirstOrDefault(
+                            y => jisseki.UriageDatetimeId == y.UriageDatetimeId && 
+                                 jisseki.ShohinId == y.ShohinId
+                         )?.ShohinMaster ?? throw new Exception("関係する商品マスタがありません");
+                }
             }
             /*
              * post側で金額を設定
              */
-            postedKaikeiHeader.KaikeiJissekis.ToList().ForEach(x => {
-                x.ShohinTanka = x.ShohinMaster!.ShohinTanka;
-                x.UriageKingaku = x.UriageSu * x.ShohinTanka;
-            });
+
+            foreach(KaikeiJisseki jisseki in postedKaikeiHeader.KaikeiJissekis){
+                jisseki.ShohinTanka = jisseki.ShohinMaster?.ShohinTanka ?? throw new Exception("単価が設定されていません");
+                jisseki.UriageKingaku = jisseki.UriageSu * jisseki.ShohinTanka;
+            }
 
             /*
              * 会計ヘッダー＋実績登録
              */
-            var config = new MapperConfiguration(cfg => {
+            IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
                 cfg.AddProfile(new KaikeiPostToDTOAutoMapperProfile(this));
-            });
+            }).CreateMapper();
 
-            IMapper mapper = config.CreateMapper();
             mapper.Map<KaikeiHeader,KaikeiHeader>(postedKaikeiHeader, queriedkaikeiHeader);
 
             if (_context.Entry(queriedkaikeiHeader).State == EntityState.Detached) {
@@ -280,7 +300,7 @@ namespace Convenience.Models.Properties {
             /*
              * 店頭在庫計算
              */
-            if (IsExistCheck(tentoZaiko)) {
+            if (ISharedTools.IsExistCheck(tentoZaiko)) {
                 tentoZaiko!.ZaikoSu -= argDiffUriageSu;
                 tentoZaiko!.ZaikoSu = tentoZaiko!.ZaikoSu > 0 ? tentoZaiko!.ZaikoSu : 0;
                 //直近売上日のセット
@@ -326,18 +346,6 @@ namespace Convenience.Models.Properties {
             outKaikeiJisseki.ZeikomiKingaku = outKaikeiJisseki.UriageKingaku * (1.0m + outKaikeiJisseki.ShohiZeiritsu / 100.0m);
             //税込金額
             return outKaikeiJisseki;
-        }
-        private static bool IsExistCheck<T>(T? checkdata) {
-            if (checkdata == null) {
-                return false; // null の場合は false を返す
-            }
-
-            // T が IEnumerable かどうかを確認
-            if (checkdata is IEnumerable<object>) {
-                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
-            }
-
-            return true;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Convenience.Models.Properties {
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            var contextOptions = new DbContextOptionsBuilder<ConvenienceContext>()
+            DbContextOptions<ConvenienceContext> contextOptions = new DbContextOptionsBuilder<ConvenienceContext>()
                 .UseNpgsql(configuration["ConvenienceContext"])
                 .Options;
 
