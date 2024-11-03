@@ -84,14 +84,17 @@ namespace Convenience.Models.Services {
             string shiireSakiId = inChumonKeysViewModel?.ShiireSakiId??throw new ArgumentException("仕入先がセットされていません");
             //注文日付抽出
             DateOnly chumonDate = 
-                inChumonKeysViewModel.ChumonDate == DateOnly.FromDateTime(new DateTime(1, 1, 1))?DateOnly.FromDateTime(DateTime.Now):inChumonKeysViewModel.ChumonDate;
+                inChumonKeysViewModel.ChumonDate == DateOnly.FromDateTime(new DateTime(1, 1, 1))
+                    ?DateOnly.FromDateTime(DateTime.Now)
+                    :inChumonKeysViewModel.ChumonDate;
 
             //注文実績モデル変数定義
             ChumonJisseki? createdChumonJisseki = default, existedChumonJisseki = default;
             //もし、引数の注文日付がない場合（画面入力の注文日付が入力なしだと、1年1月1日になる
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == chumonDate) {
                 //注文作成
-                createdChumonJisseki = await chumon.ChumonSakusei(shiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
+                createdChumonJisseki = 
+                    await chumon.ChumonSakusei(shiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
             }
             else {
                 //注文日付指定あり→注文問い合わせ
@@ -105,7 +108,9 @@ namespace Convenience.Models.Services {
 
             //注文明細ビューモデルを設定し戻り値とする
             return ChumonViewModel = new ChumonViewModel() {
-                ChumonJisseki = createdChumonJisseki ?? existedChumonJisseki ?? throw new ChumonJissekiSetupException("注文セッティングエラー")   //初期表示用の注文実績データ
+                ChumonJisseki = createdChumonJisseki 
+                ?? existedChumonJisseki 
+                ?? throw new ChumonJissekiSetupException("注文セッティングエラー")   //初期表示用の注文実績データ
             };
         }
 
@@ -148,7 +153,9 @@ namespace Convenience.Models.Services {
                 ChumonViewModel = new ChumonViewModel {
                     ChumonJisseki = updatedChumonJisseki,
                     IsNormal = IsValid,
-                    Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText : null
+                    Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid 
+                    ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText 
+                    : null
                 };
             }
             else {

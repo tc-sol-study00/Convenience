@@ -48,15 +48,18 @@ namespace Convenience.Models.Services {
         /// <para>会計クラスのＤＩ</para>
         /// <para>コントローラ以外でtempdata扱いが出来ようにするＤＩ（２つ）</para>
         /// </remarks>
-        public KaikeiService(ConvenienceContext context, IKaikei kaikei, ITempDataDictionaryFactory tempDataFactory, IActionContextAccessor actionContextAccessor) {
+        public KaikeiService(
+            ConvenienceContext context,
+            IKaikei kaikei,
+            ITempDataDictionaryFactory tempDataFactory,
+            IActionContextAccessor actionContextAccessor) {
             this._context = context;    //DBコンテキスト用
             this.Kaikei = kaikei;      //会計クラス
             this.KaikeiViewModel = new KaikeiViewModel(_context);
             //TemoData用ＤＩ
             if (actionContextAccessor.ActionContext != null && actionContextAccessor.ActionContext.HttpContext != null) { // null チェック
                 _tempData = tempDataFactory.GetTempData(actionContextAccessor.ActionContext.HttpContext);
-            }
-            else {
+            } else {
                 throw new InvalidOperationException("HttpContext is not available.");
             }
         }
@@ -65,7 +68,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <returns>KaikeiViewModel 会計ビューモデル</returns>
         public async Task<KaikeiViewModel> SetKaikeiViewModel() {
-            
+
             /*
              * 現在時間
              */
@@ -75,13 +78,13 @@ namespace Convenience.Models.Services {
              * ５日前を対象に過去の会計データを抽出し、新規分含めキー入力の選択リストを作成する
              */
             var kaikeiHeaderList = await SetKeyInputList(-5, CurrentDateTime);
-            string defaultsetting = kaikeiHeaderList.Count>0?kaikeiHeaderList[0].Value  //新規分データを初期値設定
-                : throw new NoDataFoundException("選択リスト0件");  
+            string defaultsetting = kaikeiHeaderList.Count > 0 ? kaikeiHeaderList[0].Value  //新規分データを初期値設定
+                : throw new NoDataFoundException("選択リスト0件");
 
             /*
              * ビューモデルの作成
              */
-            this.KaikeiViewModel = new (_context) {
+            this.KaikeiViewModel = new(_context) {
                 KaikeiDateAndId = defaultsetting,
                 KaikeiHeaderList = kaikeiHeaderList
             };
@@ -98,7 +101,7 @@ namespace Convenience.Models.Services {
         /// <returns>KaikeiViewModel 会計ビューモデル</returns>
         public async Task<KaikeiViewModel> KaikeiSetting(KaikeiViewModel argKaikeiViewModel) {
 
-            _ = argKaikeiViewModel?.KaikeiDateAndId??throw new ArgumentException("引数なし");
+            _ = argKaikeiViewModel?.KaikeiDateAndId ?? throw new ArgumentException("引数なし");
 
             /*
              * 引数のデータ取り出し
@@ -108,8 +111,8 @@ namespace Convenience.Models.Services {
             UriageDateTimeAndIdMatching uriageDateTimeAndIdMatching
                 = JsonSerializer.Deserialize<UriageDateTimeAndIdMatching>(argKaikeiViewModel.KaikeiDateAndId)
                 ?? throw new ArgumentException("Jsonデータなし");
-   
-            string uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId??string.Empty; //売上日時コード
+
+            string uriageDatetimeId = uriageDateTimeAndIdMatching.UriageDatetimeId ?? string.Empty; //売上日時コード
             DateTime uriageDatetime = uriageDateTimeAndIdMatching.UriageDatetime;   //売上日時
 
             /*
@@ -117,12 +120,12 @@ namespace Convenience.Models.Services {
              */
             KaikeiHeader kaikeiHeader = (uriageDatetimeId == string.Empty
                 ? Kaikei.KaikeiSakusei(uriageDatetime)       //新規
-                : await Kaikei.KaikeiToiawase(uriageDatetimeId!,x=>x.KaikeiSeq))!;   //すでにある場合
+                : await Kaikei.KaikeiToiawase(uriageDatetimeId!, x => x.KaikeiSeq))!;   //すでにある場合
 
             /*
              * 選択されたキーデータで選択リストを作成する（一件だけ）
              */
-            IList<SelectListItem> kaikeiHeaderList=SetKeyInputList(uriageDateTimeAndIdMatching);
+            IList<SelectListItem> kaikeiHeaderList = SetKeyInputList(uriageDateTimeAndIdMatching);
 
             /*
              * 会計を一つづつ入れる時に商品コードをいれる用に、商品リストを作成する
@@ -146,7 +149,7 @@ namespace Convenience.Models.Services {
 
             //TempDataにビューモデルを保存
             SetViewModelToTempData(this.KaikeiViewModel);
-            
+
             return this.KaikeiViewModel;
 
         }
@@ -207,7 +210,7 @@ namespace Convenience.Models.Services {
              * postされたデータを、プロパティに置いたデータに上書き
              */
             KaikeiHeader updatedKaikeiHeader = await Kaikei.KaikeiUpdate(postedKaikeiHeader);
-            
+
             //売上日時コード抽出（上記のメソッドで発番されるので、このタイミング
             string postedUriageDatetimeId = updatedKaikeiHeader.UriageDatetimeId;
 
@@ -241,8 +244,7 @@ namespace Convenience.Models.Services {
 
             if (reQueryKaikeiViewModel.KaikeiHeaderList.Count > 0) {
                 reQueryKaikeiViewModel.KaikeiDateAndId = reQueryKaikeiViewModel.KaikeiHeaderList[0].Value;
-            }
-            else {
+            } else {
                 throw new Exception("商品リストエラー");
             }
             //
@@ -286,7 +288,7 @@ namespace Convenience.Models.Services {
         /// <returns></returns>
         private KaikeiViewModel GetViewModelToTempData() {
             string tempData = _tempData[tempDataIndex]?.ToString() ?? throw new ArgumentException("TempDataなし");
-            KaikeiViewModel kaikeiViewModel = JsonSerializer.Deserialize<KaikeiViewModel>(tempData)??throw new Exception("Jsonデータ不正");
+            KaikeiViewModel kaikeiViewModel = JsonSerializer.Deserialize<KaikeiViewModel>(tempData) ?? throw new Exception("Jsonデータ不正");
             return kaikeiViewModel;
         }
         /// <summary>
@@ -349,7 +351,7 @@ namespace Convenience.Models.Services {
                 var item = argUriageDateTimeAndIdMatchings[i];
 
                 string serializedString = JsonSerializer.Serialize(item);
-                kaikeiHeaderList.Add(new SelectListItem($"{(item.UriageDatetimeId==string.Empty?"新規": item.UriageDatetimeId)}:{item.UriageDatetime}", serializedString));
+                kaikeiHeaderList.Add(new SelectListItem($"{(item.UriageDatetimeId == string.Empty ? "新規" : item.UriageDatetimeId)}:{item.UriageDatetime}", serializedString));
 
                 //if (i == 0) defaultsetting = serializedString;  
             }

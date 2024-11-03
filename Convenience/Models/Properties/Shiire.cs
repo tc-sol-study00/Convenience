@@ -9,7 +9,7 @@ namespace Convenience.Models.Properties {
     /// <summary>
     /// 仕入クラス
     /// </summary>
-    public class Shiire : IShiire, IDbContext {
+    public class Shiire : IShiire, IDbContext,ISharedTools {
 
         /// <summary>
         /// DBコンテキスト
@@ -58,7 +58,7 @@ namespace Convenience.Models.Properties {
         public IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis) {
             // AutoMapperの初期設定
 
-            var config = new MapperConfiguration(cfg => {
+            MapperConfiguration config = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
                 cfg.AddProfile(new ShiirePostToDTOAutoMapperProfile(_context));
             });
@@ -77,7 +77,7 @@ namespace Convenience.Models.Properties {
         /// <param name="inSeqByShiireDate">仕入SEQ（仕入実績に対する検索キー）</param>
         /// <returns>データがあればtrueなければfalse/returns>
         public async Task<bool> ChuumonIdOnShiireJissekiExistingCheck(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
-            var result = await _context.ShiireJisseki
+            ShiireJisseki? result = await _context.ShiireJisseki
                .FirstOrDefaultAsync(
                    w => w.ChumonId == inChumonId
                    && w.ShiireDate == inShiireDate
@@ -117,7 +117,7 @@ namespace Convenience.Models.Properties {
 
             //注文残を設定・注文実績明細にセット
 
-            foreach (var item in inShiireJissekis) {
+            foreach (ShiireJisseki item in inShiireJissekis) {
                 item.ChumonJissekiMeisaii.ChumonZan -= item.NonyuSubalance ?? 0;
                 if (item.ChumonJissekiMeisaii.ChumonZan < 0) {
                     item.ChumonJissekiMeisaii.ChumonZan = 0;
@@ -126,7 +126,7 @@ namespace Convenience.Models.Properties {
 
             //仕入実績を元に倉庫在庫セット
 
-            var sokoZaikos = await ZaikoSet(inShiireJissekis);
+            IList<SokoZaiko> sokoZaikos = await ZaikoSet(inShiireJissekis);
 
             return (new ShiireUkeireReturnSet {
                 ShiireJissekis = inShiireJissekis,
@@ -236,9 +236,9 @@ namespace Convenience.Models.Properties {
             //現在の倉庫在庫を読み込む準備
 
             IList<SokoZaiko> sokoZaikos = new List<SokoZaiko>();
-            var shiireSakiIds = shiireJissekiGrp.Select(s => s.ShireSakiId).ToList();
-            var shiirePrdIds = shiireJissekiGrp.Select(s => s.ShiirePrdId).ToList();
-            var shohinIds = shiireJissekiGrp.Select(s => s.ShohinId).ToList();
+            IList<string> shiireSakiIds = shiireJissekiGrp.Select(s => s.ShireSakiId).ToList();
+            IList<string> shiirePrdIds = shiireJissekiGrp.Select(s => s.ShiirePrdId).ToList();
+            IList<string> shohinIds = shiireJissekiGrp.Select(s => s.ShohinId).ToList();
 
             // 倉庫在庫を一括で取得
             sokoZaikos = await _context.SokoZaiko
@@ -247,7 +247,7 @@ namespace Convenience.Models.Properties {
                             shohinIds.Contains(s.ShohinId))
                 .ToListAsync();
 
-            var result = shiireJissekiGrp.GroupJoin(
+            List<SokoZaiko> result = shiireJissekiGrp.GroupJoin(
             sokoZaikos,
             sjg => new { sjg.ShireSakiId, sjg.ShiirePrdId, sjg.ShohinId },
             sz => new { ShireSakiId = sz.ShiireSakiId, sz.ShiirePrdId, sz.ShohinId },
@@ -272,7 +272,7 @@ namespace Convenience.Models.Properties {
             //倉庫在庫更新
             //倉庫在庫に項目名をあわせているため、単純コピーで行けるはず
 
-            var config2 = new MapperConfiguration(cfg => {
+            MapperConfiguration config2 = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
                 cfg.CreateMap<SokoZaiko, SokoZaiko>()
                 .EqualityComparison((s, t)
@@ -364,7 +364,7 @@ namespace Convenience.Models.Properties {
         /// <return>倉庫在庫が接続された仕入実績</return>
         public IList<ShiireJisseki> ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> inSokoZaiko) {
             //引数で渡された仕入実績を一行づつ取り出す
-            foreach (var item in inShiireJissekis) {
+            foreach (ShiireJisseki item in inShiireJissekis) {
                 //仕入実績とマッチする倉庫在庫を取得
                 SokoZaiko? sokoZaiko = inSokoZaiko
                     .Where(z =>
@@ -373,7 +373,7 @@ namespace Convenience.Models.Properties {
                         z.ShohinId == item.ShohinId)
                     .FirstOrDefault();
                 //マッチする倉庫在庫の有無チェック
-                if (IsExistCheck(sokoZaiko)) {
+                if (ISharedTools.IsExistCheck(sokoZaiko)) {
                     //ありの場合、取得した倉庫在庫を仕入実績に接続
                     item.SokoZaiko = sokoZaiko;
                 }
@@ -390,18 +390,6 @@ namespace Convenience.Models.Properties {
             }
             //倉庫在庫が接続された仕入実績
             return inShiireJissekis;
-        }
-        private static bool IsExistCheck<T>(T? checkdata) {
-            if (checkdata == null) {
-                return false; // null の場合は false を返す
-            }
-
-            // T が IEnumerable かどうかを確認
-            if (checkdata is IEnumerable<object>) {
-                return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
-            }
-
-            return true;
         }
     }
 }
