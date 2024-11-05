@@ -3,6 +3,7 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.ViewModels.KaikeiJisseki;
 using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
@@ -187,6 +188,17 @@ namespace Convenience.Models.Properties {
             CreateMap<TentoZaikoViewModel.DataAreaClass, TentoZaikoViewModel.DataAreaClass>();
             CreateMap<TentoZaiko, TentoZaikoViewModel.DataAreaClass.TentoZaIkoLine>()
             .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShohinMaster!.ShohinName))
+            ;
+        }
+    }
+
+    public class KaikeiJissekiPostdataToKaikeiJissekiViewModel : Profile {
+        public KaikeiJissekiPostdataToKaikeiJissekiViewModel() {
+            CreateMap<KaikeiJissekiViewModel, KaikeiJissekiViewModel>();
+            CreateMap<KaikeiJissekiViewModel.DataAreaClass, KaikeiJissekiViewModel.DataAreaClass>();
+            CreateMap<KaikeiJisseki, KaikeiJissekiViewModel.DataAreaClass.KaikeiJissekiLineClass>()
+            .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShohinMaster!.ShohinName))
+            .ForMember(dest => dest.NaigaiClassName, opt => opt.MapFrom(src => src.NaigaiClassMaster!.NaigaiClassName))
             ;
         }
     }

@@ -144,7 +144,8 @@ namespace Convenience.Controllers {
                 return RedirectToAction("Result", new { id });
             }
             if (TempData.Peek(IndexName) != null) {
-                var kaikeiViewModel = ISharedTools.ConvertFromSerial<KaikeiViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tempdataなし"));
+                KaikeiViewModel kaikeiViewModel = 
+                    ISharedTools.ConvertFromSerial<KaikeiViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tempdataなし"));
                 /*
                  * 描画前設定
                  */
@@ -190,7 +191,7 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetShohinName([FromForm]string ShohinId) {
-            var shohinName=await _kaikeiService.GetShohinName(ShohinId);
+            string shohinName =await _kaikeiService.GetShohinName(ShohinId);
             return Content(shohinName);
         }
 
