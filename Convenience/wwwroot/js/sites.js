@@ -8,7 +8,13 @@ function AccordionHandller() {
     //初期画面の場合は、アコーデオンは開いた状態にする
     //その判断は、ContollerからViewBagに設定してもらう
     if ($('#handlingFlg').data("message") == "FirstDisplay") {
+        console.log($.cookie("AccordionOpenStatus"));
+
+        document.cookie = "cookieAccordionOpenStatus=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+
         $.cookie("AccordionOpenStatus", "Show");
+
+        console.log($.cookie("AccordionOpenStatus"));
     }
     //アコ―デオン制御
     let accordion = document.getElementById('accordion');
@@ -63,14 +69,23 @@ function AccordionHandller() {
         closeAccordionIfSmallScreen();
     });
 
+    //店頭在庫検索用
+    $('#need-collapse-at-retrival').on('submit', function () {
+        if (window.innerWidth <= breakpoint) {
+            $.cookie("AccordionOpenStatus", "Hide", { path: '/' });
+        } else {
+            $.cookie("AccordionOpenStatus", "Show", { path: '/' });
+        }
+    });
+
     //アコーデオンが開かれたとき
     $('#accordion').on('show.bs.collapse', function () {
-        $.cookie("AccordionOpenStatus", "Show");
+        $.cookie("AccordionOpenStatus", "Show", { path: '/' });
     });
 
     //アコーデオンが閉じられた時
     $('#accordion').on('hide.bs.collapse', function () {
-        $.cookie("AccordionOpenStatus", "Hide");
+        $.cookie("AccordionOpenStatus", "Hide", { path: '/' });
     });
 }
 function RendaSolution() {

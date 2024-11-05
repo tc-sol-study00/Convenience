@@ -57,12 +57,11 @@ namespace Convenience.Controllers {
         /// 
         [HttpGet]
         public Task<IActionResult> Index(string id) {
-            if ((id ?? string.Empty).Equals("Result")) {
-                ViewBag.HandlingFlg = "FirstDisplay";
-            }
-            else {
-                ViewBag.HandlingFlg = "FirstDisplay";
-            }
+            ViewBag.HandlingFlg = "FirstDisplay";
+            //最初のカーソル位置
+            ViewBag.FocusPosition = "#KeywordArea_KeyArea_SelecteWhereItemArray_0__LeftSide";
+
+            //最初のカーソル位置
             return Task.FromResult<IActionResult>(View("Index", tentoHaraidashiViewModel));
         }
 
@@ -107,7 +106,10 @@ namespace Convenience.Controllers {
             // キーワードエリアの保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(createdTentoZaikoViewModel.KeywordArea);
 
+            //最初のカーソル位置
+            ViewBag.FocusPosition = "#KeywordArea_KeyArea_SelecteWhereItemArray_0__LeftSide";
             // 結果をビューに返す
+            ViewBag.HandlingFlg = "SecondDisplay";
             return View("Index", createdTentoZaikoViewModel);
         }
 
