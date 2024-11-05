@@ -55,7 +55,7 @@ namespace Convenience.Models.Services {
             /*
              *  キー入力用にViewModelを設定
              */
-            var KeyInputListTop = HaraidashiDateTimeAndIdMatchings[0] ?? throw new InvalidDataException("キー入力用リストエラー");
+            HaraidashiDateTimeAndIdMatching KeyInputListTop = HaraidashiDateTimeAndIdMatchings[0] ?? throw new InvalidDataException("キー入力用リストエラー");
 
             return this.TentoHaraidashiViewModel = new() {
                 HaraidashiDateAndId = JsonSerializer.Serialize(KeyInputListTop),
@@ -258,7 +258,7 @@ namespace Convenience.Models.Services {
              * 店頭払出日と店頭払出コードのリストをセレクトアイテムリストに変換する
              */
             IList<SelectListItem> selectListItems = new List<SelectListItem>();
-            foreach (var item in argHaraidashiDateTimeAndIdMatching) {
+            foreach (HaraidashiDateTimeAndIdMatching item in argHaraidashiDateTimeAndIdMatching) {
                 string serializedString = JsonSerializer.Serialize(item);
                 DateTime jstTime = TimeZoneInfo.ConvertTime(item.HaraidashiDateTime, jstZone);
                 selectListItems.Add(new SelectListItem(

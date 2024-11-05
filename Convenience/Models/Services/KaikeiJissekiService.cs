@@ -140,6 +140,8 @@ namespace Convenience.Models.Services {
                             Expression<Func<KaikeiJisseki, bool>> lambda = leftSide switch {
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.ShohinId) => 
                                     BuildComparison<KaikeiJisseki>(nameof(KaikeiJisseki.ShohinId), comparison!, rightSide!),
+                                nameof(DataAreaClass.KaikeiJissekiLineClass.ShohinName) =>
+                                    BuildComparison<KaikeiJisseki>(nameof(KaikeiJisseki.ShohinMaster.ShohinName), comparison!, rightSide!),
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.UriageDatetime) =>
                                     BuildComparison<KaikeiJisseki>(nameof(KaikeiJisseki.UriageDatetime), comparison!, DateTime.Parse(rightSide!)),
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.UriageSu) =>

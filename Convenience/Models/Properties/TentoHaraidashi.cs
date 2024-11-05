@@ -26,11 +26,6 @@ namespace Convenience.Models.Properties {
         public TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
 
         /// <summary>
-        /// AutoMapper
-        /// </summary>
-        private IMapper _mapper;
-
-        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="context"></param>
@@ -53,7 +48,7 @@ namespace Convenience.Models.Properties {
             if (!ISharedTools.IsExistCheck(maxTentoHaraidashiId)) {
                 seq = 1;
             } else {
-                seq = uint.Parse(maxTentoHaraidashiId.Substring(12, 3)) + 1;
+                seq = uint.Parse(maxTentoHaraidashiId!.Substring(12, 3)) + 1;
             }
             return $"{dateArea}-{seq:000}";
         }
@@ -140,7 +135,7 @@ namespace Convenience.Models.Properties {
             /*
              * 店頭払出コードより店頭払出ヘッダー以下を検索
              */
-            this.TentoHaraidashiHeader =
+            TentoHaraidashiHeader? tentoHaraidashiHeader =
                 await _context.TentoHaraidashiHearder
                 .Where(tentoheader => tentoheader.TentoHaraidashiId == argTentoHaraidashiId)
                 //仕入マスタ→倉庫在庫
@@ -153,6 +148,12 @@ namespace Convenience.Models.Properties {
                         .ThenInclude(shiiremaster => shiiremaster!.ShohinMaster)
                             .ThenInclude(x => x!.TentoZaiko)
                 .FirstOrDefaultAsync();
+
+            if (ISharedTools.IsExistCheck(tentoHaraidashiHeader)){
+                this.TentoHaraidashiHeader = tentoHaraidashiHeader!;
+            } else {
+                this.TentoHaraidashiHeader = new TentoHaraidashiHeader();
+            }
 
             return this.TentoHaraidashiHeader;
         }
@@ -181,12 +182,12 @@ namespace Convenience.Models.Properties {
              */
             //引数で渡された注文実績をDBから読み込んだ注文実績に上書きする
 
-            _mapper = new MapperConfiguration(cfg => {
+            IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
                 cfg.AddProfile(new TentoHaraidashiPostToDTOAutoMapperProfile());
             }).CreateMapper();
 
-            _mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
+            mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
 
             return this.TentoHaraidashiHeader.TentoHaraidashiJissekis = settingTentoHaraidashiJissekis;
         }
