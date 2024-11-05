@@ -47,6 +47,7 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                         new List<SelectListItem>
                         {
                             new() { Value = nameof(KaikeiJissekiLineClass.ShohinId), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.ShohinId)) },
+                            new() { Value = nameof(KaikeiJissekiLineClass.ShohinName), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.ShohinName)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.UriageDatetime), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageDatetime)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.UriageSu), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageSu)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.UriageKingaku), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageKingaku)) },
@@ -128,6 +129,7 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                     SelectWhereLeftSideList = new SelectList(
                     new List<SelectListItem>{
                         new() { Value = nameof(KaikeiJissekiLineClass.ShohinId), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass),nameof(KaikeiJissekiLineClass.ShohinId)) },
+                        new() { Value = nameof(KaikeiJissekiLineClass.ShohinName), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass),nameof(KaikeiJissekiLineClass.ShohinName)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.UriageDatetime), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageDatetime)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.UriageSu), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageSu)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.UriageKingaku), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageKingaku)) },
@@ -174,7 +176,14 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                 [Required]
                 public string NaigaiClassName { get; set; }
 
+                public KaikeiJissekiLineClass() {
+                    ShohinName = string.Empty;
+                    NaigaiClassName = string.Empty;
+                }
+
+
             }
+
 
         }
 
