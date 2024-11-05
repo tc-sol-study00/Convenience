@@ -1,11 +1,6 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
-using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
-using Convenience.Models.ViewModels.Shiire;
-using Convenience.Models.ViewModels.TentoHaraidashi;
-using Convenience.Models.ViewModels.TentoZaiko;
+using Convenience.Models.ViewModels.KaikeiJisseki;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -14,7 +9,7 @@ namespace Convenience.Controllers {
     /// 店頭払出コントローラ
     /// </summary>
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-    public class TentoZaikoController : Controller, ISharedTools {
+    public class KaikeiJissekiController : Controller, ISharedTools {
         /// <summary>
         /// DBコンテキスト
         /// </summary>
@@ -23,17 +18,17 @@ namespace Convenience.Controllers {
         /// <summary>
         /// サービスクラス引継ぎ用キーワード
         /// </summary>
-        private static readonly string IndexName = "TentoZaikoViewModel";
+        private static readonly string IndexName = "KaikeiJissekiViewModel";
 
         /// <summary>
         /// 注文サービスクラス（ＤＩ用）
         /// </summary>
-        private readonly ITentoZaikoService tentoZaikoService;
+        private readonly IKaikeiJissekiService kaikeiJissekiService;
 
         /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private TentoZaikoViewModel tentoZaikoViewModel;
+        private KaikeiJissekiViewModel kaikeiJissekiViewModel;
         /// <summary>
         /// １ページの行数
         /// </summary>
@@ -44,10 +39,10 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
-        public TentoZaikoController(ConvenienceContext context, ITentoZaikoService tentoZaikoService) {
+        public KaikeiJissekiController(ConvenienceContext context, IKaikeiJissekiService kaikeiJissekiService) {
             this._context = context;
-            this.tentoZaikoService = tentoZaikoService;
-            this.tentoZaikoViewModel = new TentoZaikoViewModel();
+            this.kaikeiJissekiService = kaikeiJissekiService;
+            this.kaikeiJissekiViewModel = new KaikeiJissekiViewModel();
         }
 
         /// <summary>
@@ -62,7 +57,7 @@ namespace Convenience.Controllers {
             ViewBag.FocusPosition = "#KeywordArea_KeyArea_SelecteWhereItemArray_0__LeftSide";
 
             //最初のカーソル位置
-            return Task.FromResult<IActionResult>(View("Index", tentoZaikoViewModel));
+            return Task.FromResult<IActionResult>(View("Index", kaikeiJissekiViewModel));
         }
 
         /// <summary>
@@ -72,18 +67,18 @@ namespace Convenience.Controllers {
         /// <returns>店頭在庫ビューモデル</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Result(TentoZaikoViewModel postedTentoZaikoViewModel, int page = 1
+        public async Task<IActionResult> Result(KaikeiJissekiViewModel postedKaikeiJissekiViewModel, int page = 1
             ) {
-            return await ProcessResult(postedTentoZaikoViewModel, page, PageSize);
+            return await ProcessResult(postedKaikeiJissekiViewModel, page, PageSize);
         }
 
         [HttpGet]
         public async Task<IActionResult> Result(int page) {
             if (TempData.Peek(IndexName) is string tempDataStr) {
-                TentoZaikoViewModel.KeywordAreaClass keyArea = ISharedTools.ConvertFromSerial<TentoZaikoViewModel.KeywordAreaClass>(tempDataStr);
-                tentoZaikoViewModel.KeywordArea = keyArea;
+                KaikeiJissekiViewModel.KeywordAreaClass keyArea = ISharedTools.ConvertFromSerial<KaikeiJissekiViewModel.KeywordAreaClass>(tempDataStr);
+                kaikeiJissekiViewModel.KeywordArea = keyArea;
 
-                return await ProcessResult(tentoZaikoViewModel, page, PageSize);
+                return await ProcessResult(kaikeiJissekiViewModel, page, PageSize);
             }
             else {
                 // TempDataがない場合、初期ページにリダイレクト
@@ -91,26 +86,26 @@ namespace Convenience.Controllers {
             }
         }
 
-        private async Task<IActionResult> ProcessResult(TentoZaikoViewModel tentoZaikoViewModel, int page, int pageSize) {
+        private async Task<IActionResult> ProcessResult(KaikeiJissekiViewModel kaikeiJissekiViewModel, int page, int pageSize) {
             // 店頭在庫検索
-            TentoZaikoViewModel createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
+            KaikeiJissekiViewModel createdKaikeiJissekiViewModel = await kaikeiJissekiService.KaikeiJissekiRetrival(kaikeiJissekiViewModel);
 
             // ページング処理
-            int totalLines = createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Count();
+            int totalLines = createdKaikeiJissekiViewModel.DataArea.KaikeiJissekiLines.Count();
             ViewBag.TotalPages = Math.Ceiling((double)totalLines / pageSize);
             ViewBag.CurrentPage = page;
 
-            createdTentoZaikoViewModel.DataArea.TentoZaIkoLines =
-                createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            createdKaikeiJissekiViewModel.DataArea.KaikeiJissekiLines =
+                createdKaikeiJissekiViewModel.DataArea.KaikeiJissekiLines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             // キーワードエリアの保存
-            TempData[IndexName] = ISharedTools.ConvertToSerial(createdTentoZaikoViewModel.KeywordArea);
+            TempData[IndexName] = ISharedTools.ConvertToSerial(createdKaikeiJissekiViewModel.KeywordArea);
 
             //最初のカーソル位置
             ViewBag.FocusPosition = "#KeywordArea_KeyArea_SelecteWhereItemArray_0__LeftSide";
             // 結果をビューに返す
             ViewBag.HandlingFlg = "SecondDisplay";
-            return View("Index", createdTentoZaikoViewModel);
+            return View("Index", createdKaikeiJissekiViewModel);
         }
 
     }

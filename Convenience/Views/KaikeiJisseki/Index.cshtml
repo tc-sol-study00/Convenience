@@ -1,0 +1,215 @@
+﻿@model Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel
+@{
+    ViewData["Title"] = "会計実績";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="form-group">
+        <form asp-action="Result" id="need-collapse-at-retrival">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="accordion">
+                <div class="accordion-item">
+                    <h5 class="accordion-header" id="headingOne">
+                        <button class="accordion-button bg-light text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h3>キー入力</h3>
+                        </button>
+                    </h5>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                        <div class="accordion-body">
+                            <div class="d-md-flex justify-content-between">
+                                <div class="col-md-6 mb-3">
+                                    <div class="row">
+                                        <div class="col-2 text-center">
+                                            <p>ソート順位</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <label asp-for="@Model.KeywordArea.SortArea.KeyEventList.FirstOrDefault()!.KeyEventData" class="control-label"></label>
+                                        </div>
+                                        <div class="col-2">
+                                            <label asp-for="@Model.KeywordArea.SortArea.KeyEventList.FirstOrDefault()!.Descending" class="control-label"></label>
+                                        </div>
+                                        <div class="col-2">
+                                        </div>
+                                    </div>
+                                    @for (int i = 0; i < @Model.KeywordArea.SortArea.KeyEventList.Length; i++) {
+                                        <div class="row mb-1">
+                                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                                @(i + 1)
+                                            </div>
+                                            <div class="col-4">
+                                                <select asp-for="@Model.KeywordArea.SortArea.KeyEventList[i].KeyEventData" asp-items="@Model.KeywordArea.SortArea.KeyList" class="form-control">
+                                                    <option value="">-- 選択してください --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2 d-flex justify-content-center align-items-center form-check form-switch">
+                                                <input asp-for="@Model.KeywordArea.SortArea.KeyEventList[i].Descending" type="checkbox" class="form-check-input" />
+                                            </div>
+                                            <div class="col-2">
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="row">
+                                        <div class="col-2 text-center">
+                                            <p>検索キー</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <label asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray.FirstOrDefault()!.LeftSide" class="control-label"></label>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <label asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray.FirstOrDefault()!.ComparisonOperator" class="control-label"></label>
+                                        </div>
+                                        <div class="col-4">
+                                            <label asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray.FirstOrDefault()!.RightSide" class="control-label"></label>
+                                        </div>
+                                    </div>
+                                    @for (int i = 0; i < @Model.KeywordArea.KeyArea.SelecteWhereItemArray.Length; i++) {
+                                        <div class="row mb-1">
+                                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                                @(i + 1)
+                                            </div>
+                                            <div class="col-4">
+                                                <select asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray[i].LeftSide" asp-items="@Model.KeywordArea.KeyArea.SelectWhereLeftSideList" class="form-control">
+                                                    <option value="">-- 選択してください --</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2">
+                                                <select asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray[i].ComparisonOperator" asp-items="@Model.KeywordArea.KeyArea.ComparisonOperatorList" class="form-control text-center">
+                                                </select>
+                                            </div>
+                                            <div class="col-4">
+                                                <input asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray[i].RightSide" class="form-control">
+                                                </input>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <input id="submit_btn_for_retrival" type="submit" value="検索" class="btn btn-primary" /></input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if ((Model.DataArea.KaikeiJissekiLines?.Count() ?? 0) > 0) {
+        <div class="list-group mt-1">
+            <table class="table table-striped table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.UriageDatetime" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.UriageSu" class="control-label text-end"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.UriageKingaku" class="control-label text-end"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ZeikomiKingaku" class="control-label text-end"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohinTanka" class="control-label text-end"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohiZeiritsu" class="control-label text-end"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.NaigaiClass" class="control-label"></label>
+                        </th>
+                        <th>
+                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.NaigaiClassName" class="control-label"></label>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.DataArea.KaikeiJissekiLines!) {
+                        <tr>
+                            <td>
+                                @item.ShohinId
+                            </td>
+                            <td>
+                                @item.ShohinName
+                            </td>
+                            <td>
+                                @item.UriageDatetime
+                            </td>
+                            <td class="text-end">
+                                @item.UriageSu
+                            </td>
+                            <td class="text-end">
+                                @item.UriageKingaku
+                            </td>
+                            <td class="text-end">
+                                @item.ZeikomiKingaku
+                            </td>
+                            <td class="text-end">
+                                @item.ShohinTanka
+                            </td>
+                            <td class="text-end">
+                                @item.ShohiZeiritsu
+                            </td>
+                            <td>
+                                @item.NaigaiClass
+                            </td>
+                            <td>
+                                @item.NaigaiClassName
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination justify-content-center">
+            @if (ViewBag.CurrentPage > 1) {
+                <a href="@Url.Action("Result", "KaikeiJisseki", new { page = ViewBag.CurrentPage - 1 })" class="page-link">前へ</a>
+            }
+
+            <ul class="pagination">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++) {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a href="@Url.Action("Result", "KaikeiJisseki", new { page = i })" class="page-link">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages) {
+                <a href="@Url.Action("Result", "KaikeiJisseki", new { page = ViewBag.CurrentPage + 1 })" class="page-link">次へ</a>
+            }
+        </div>
+    }
+</div>
+<!-- 初期表示か・更新後の再表示か-->
+<div id="handlingFlg" data-message="@ViewBag.HandlingFlg"></div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/sites.js"></script>
+    <script>
+        $(document).ready(function () {
+            AccordionHandller();
+            RendaSolution();
+            GetShohinName();
+            FirstFocus('@ViewBag.FocusPosition');
+            //ResetForm("need-collapse-at-retrival");
+            //PreventModoru();
+        });
+    </script>
+}
+

@@ -1,5 +1,7 @@
 ﻿using Convenience.Models.ViewModels.Chumon;
 using Newtonsoft.Json;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
@@ -44,6 +46,17 @@ namespace Convenience.Models.Interfaces {
                 return ((IEnumerable<object>)checkdata).Any(); // リストの場合は要素があるかどうかを確認
             }
             return true;
+        }
+
+        public static string? GetDisplayName(Type type, string propertyName) {
+            var property = type.GetProperty(propertyName);
+            if (property != null) {
+                var displayNameAttribute = property.GetCustomAttribute<DisplayNameAttribute>();
+                if (displayNameAttribute != null) {
+                    return displayNameAttribute.DisplayName;
+                }
+            }
+            return null; // DisplayNameが存在しない場合はnullを返す
         }
     }
 }
