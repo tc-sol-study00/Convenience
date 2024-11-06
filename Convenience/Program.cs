@@ -5,7 +5,7 @@ using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ConvenienceContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConvenienceContext") ?? throw new InvalidOperationException("Connection string 'ConvenienceContext' not found.")));
 
@@ -23,6 +23,8 @@ builder.Services.AddScoped<ITentoHaraidashiService, TentoHaraidashiService>();
 builder.Services.AddScoped<IKaikeiService, KaikeiService>();
 builder.Services.AddScoped<ITentoZaikoService,TentoZaikoService>();
 builder.Services.AddScoped<IKaikeiJissekiService, KaikeiJissekiService>();
+builder.Services.AddScoped<IChumonJissekiService, ChumonJissekiService>();
+builder.Services.AddScoped<IShiireJissekiService, ShiireJissekiService>();
 //プロパティ
 builder.Services.AddScoped<IChumon, Chumon>();
 builder.Services.AddScoped<IShiire,Shiire>();
@@ -38,7 +40,7 @@ builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 builder.Services.AddSession();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {

@@ -6,7 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 店頭払出コントローラ
+    /// 会計実績検索コントローラ
     /// </summary>
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class KaikeiJissekiController : Controller, ISharedTools {
@@ -21,14 +21,14 @@ namespace Convenience.Controllers {
         private static readonly string IndexName = "KaikeiJissekiViewModel";
 
         /// <summary>
-        /// 注文サービスクラス（ＤＩ用）
+        /// 会計実績検索サービスクラス（ＤＩ用）
         /// </summary>
         private readonly IKaikeiJissekiService kaikeiJissekiService;
 
         /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private KaikeiJissekiViewModel kaikeiJissekiViewModel;
+        private readonly KaikeiJissekiViewModel kaikeiJissekiViewModel;
         /// <summary>
         /// １ページの行数
         /// </summary>
@@ -38,7 +38,7 @@ namespace Convenience.Controllers {
         /// コンストラクター
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
-        /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
+        /// <param name="kaikeiJissekiService">会計実績検索サービスクラスＤＩ注入用</param>
         public KaikeiJissekiController(ConvenienceContext context, IKaikeiJissekiService kaikeiJissekiService) {
             this._context = context;
             this.kaikeiJissekiService = kaikeiJissekiService;
@@ -46,12 +46,12 @@ namespace Convenience.Controllers {
         }
 
         /// <summary>
-        /// 店頭在庫検索１枚目の初期表示処理
+        /// 会計実績検索１枚目の初期表示処理
         /// </summary>
-        /// <returns>店頭在庫ビューモデル（初期表示）</returns>
+        /// <returns>会計実績ビューモデル（初期表示）</returns>
         /// 
         [HttpGet]
-        public Task<IActionResult> Index(string id) {
+        public Task<IActionResult> Index() {
             ViewBag.HandlingFlg = "FirstDisplay";
             //最初のカーソル位置
             ViewBag.FocusPosition = "#KeywordArea_KeyArea_SelecteWhereItemArray_0__LeftSide";
@@ -61,10 +61,10 @@ namespace Convenience.Controllers {
         }
 
         /// <summary>
-        /// 店頭在庫検索キー入力後
+        /// 会計実績検索キー入力後
         /// </summary>
         /// <param name="postedTentoZaikoViewModel"></param>
-        /// <returns>店頭在庫ビューモデル</returns>
+        /// <returns>会計実績ビューモデル</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Result(KaikeiJissekiViewModel postedKaikeiJissekiViewModel, int page = 1
@@ -72,6 +72,11 @@ namespace Convenience.Controllers {
             return await ProcessResult(postedKaikeiJissekiViewModel, page, PageSize);
         }
 
+        /// <summary>
+        /// 検索結果
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns>会計実績検索ビュー</returns>
         [HttpGet]
         public async Task<IActionResult> Result(int page) {
             if (TempData.Peek(IndexName) is string tempDataStr) {
@@ -86,8 +91,15 @@ namespace Convenience.Controllers {
             }
         }
 
+        /// <summary>
+        /// 検索データ作成
+        /// </summary>
+        /// <param name="kaikeiJissekiViewModel">会計実績検索ビューモデル</param>
+        /// <param name="page">ページ番号</param>
+        /// <param name="pageSize">行数／ページ</param>
+        /// <returns>会計実績検索ビュー</returns>
         private async Task<IActionResult> ProcessResult(KaikeiJissekiViewModel kaikeiJissekiViewModel, int page, int pageSize) {
-            // 店頭在庫検索
+            // 会計実績検索
             KaikeiJissekiViewModel createdKaikeiJissekiViewModel = await kaikeiJissekiService.KaikeiJissekiRetrival(kaikeiJissekiViewModel);
 
             // ページング処理

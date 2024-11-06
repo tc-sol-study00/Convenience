@@ -7,8 +7,12 @@ using Newtonsoft.Json;
 using static Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel.DataAreaClass;
 using System.Reflection;
 using Convenience.Models.Interfaces;
+using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 
 namespace Convenience.Models.ViewModels.KaikeiJisseki {
+    /// <summary>
+    /// 会計実績検索ビューモデル
+    /// </summary>
     public class KaikeiJissekiViewModel : ISharedTools {
 
         public KeywordAreaClass KeywordArea { get; set; }
@@ -39,16 +43,22 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                 /// </summary>
                 const int LineCountForSelectorOfOrder = 6; //Order入力６行
 
-
                 public SortAreaClass() {
-                    KeyEventList = Enumerable.Range(0, LineCountForSelectorOfOrder).Select(_ => new SortEventRec()).ToArray();
+
+                    //ソート初期設定
+                    static SortEventRec getEvent(int number) => number switch {
+                        0 => new SortEventRec(nameof(KaikeiJissekiLineClass.UriageDatetime), false),
+                        _ => new SortEventRec()
+                    };
+
+                    KeyEventList = Enumerable.Range(0, LineCountForSelectorOfOrder).Select(x => getEvent(x)).ToArray();
 
                     KeyList = new SelectList(
                         new List<SelectListItem>
                         {
+                            new() { Value = nameof(KaikeiJissekiLineClass.UriageDatetime), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageDatetime)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.ShohinId), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.ShohinId)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.ShohinName), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.ShohinName)) },
-                            new() { Value = nameof(KaikeiJissekiLineClass.UriageDatetime), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageDatetime)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.UriageSu), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageSu)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.UriageKingaku), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageKingaku)) },
                             new() { Value = nameof(KaikeiJissekiLineClass.ZeikomiKingaku), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.ZeikomiKingaku)) },
@@ -66,6 +76,12 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                     public string? KeyEventData { get; set; }
                     [DisplayName("昇順・降順")]
                     public bool Descending { get; set; } = false;
+                    public SortEventRec(string? KeyEventData, bool Descending) {
+                        this.KeyEventData = KeyEventData;
+                        this.Descending = Descending;
+                    }
+                    public SortEventRec() {
+                    }
                 }
             }
 
@@ -128,9 +144,9 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                     /// </summary>
                     SelectWhereLeftSideList = new SelectList(
                     new List<SelectListItem>{
+                        new() { Value = nameof(KaikeiJissekiLineClass.UriageDatetime), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageDatetime)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.ShohinId), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass),nameof(KaikeiJissekiLineClass.ShohinId)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.ShohinName), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass),nameof(KaikeiJissekiLineClass.ShohinName)) },
-                        new() { Value = nameof(KaikeiJissekiLineClass.UriageDatetime), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageDatetime)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.UriageSu), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageSu)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.UriageKingaku), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.UriageKingaku)) },
                         new() { Value = nameof(KaikeiJissekiLineClass.ZeikomiKingaku), Text = ISharedTools.GetDisplayName(typeof(KaikeiJissekiLineClass), nameof(KaikeiJissekiLineClass.ZeikomiKingaku)) },

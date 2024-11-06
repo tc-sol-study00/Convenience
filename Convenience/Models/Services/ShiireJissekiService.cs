@@ -3,17 +3,17 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
-using Convenience.Models.ViewModels.TentoZaiko;
+using Convenience.Models.ViewModels.ShiireJisseki;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel;
+using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel;
 
 namespace Convenience.Models.Services {
     /// <summary>
-    /// 店頭在庫検索サービス
+    /// 仕入実績検索サービス
     /// </summary>
-    public class TentoZaikoService : ITentoZaikoService, ISharedTools {
+    public class ShiireJissekiService : IShiireJissekiService, ISharedTools {
 
         /// <summary>
         /// DBコンテクスト
@@ -24,72 +24,78 @@ namespace Convenience.Models.Services {
         /// コンストラクタ
         /// </summary>
         /// <param name="context">ＤＢコンテキストＤＩ</param>
-        public TentoZaikoService(ConvenienceContext context) {
+        public ShiireJissekiService(ConvenienceContext context) {
             this._context = context;
         }
         /// <summary>
-        /// 店頭在庫検索
+        /// 仕入実績検索
         /// </summary>
-        /// <param name="argTentoZaikoViewModel">店頭在庫検索ビューモデル</param>
-        /// <returns>店頭在庫ビューモデル（検索内容含む）</returns>
-        public async Task<TentoZaikoViewModel> TentoZaikoRetrival(TentoZaikoViewModel argTentoZaikoViewModel) {
+        /// <param name="argShiireJissekiViewModel">仕入実績検索ビューモデル</param>
+        /// <returns>仕入実績ビューモデル（検索内容含む）</returns>
+        public async Task<ShiireJissekiViewModel> ShiireJissekiRetrival(ShiireJissekiViewModel argShiireJissekiViewModel) {
 
             /*
-             *  店頭在庫のクエリを初期セット。OrderbyやWhereを追加するから、
+             *  仕入実績のクエリを初期セット。OrderbyやWhereを追加するから、
              *  IQueryable型としている
              */
-            IQueryable<TentoZaiko> queriedTentoZaiko = _context.TentoZaiko.AsNoTracking()
-                .Include(tz => tz.ShohinMaster)
+            IQueryable<ShiireJisseki> queried = 
+                _context.ShiireJisseki.AsNoTracking()
+                    .Include(sj => sj.ChumonJissekiMeisaii)
+                    .ThenInclude(cm => cm!.ShiireMaster)
+                    .ThenInclude(sm => sm!.ShiireSakiMaster)
+                    .Include(sj => sj.ChumonJissekiMeisaii)
+                    .ThenInclude(cm => cm!.ShiireMaster)
+                    .ThenInclude(sm => sm!.ShohinMaster)
             ;
             /*
-             * 画面上の検索キーの指示を店頭在庫クエリに追加
+             * 画面上の検索キーの指示を仕入実績クエリに追加
              */
-            queriedTentoZaiko = SearchItemRecognizer(argTentoZaikoViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, queriedTentoZaiko);
+            queried = SearchItemRecognizer(argShiireJissekiViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, queried);
 
             /*
              * クエリの結果を画面に反映する
              */
-            //Mapping クエリの結果 to　店頭在庫ビューモデル
+            //Mapping クエリの結果 to　仕入実績ビューモデル
 
             IMapper mapper = new MapperConfiguration(cfg => {
-                cfg.AddProfile(new TentoZaikoPostdataToTentoZaikoViewModel());
+                cfg.AddProfile(new ShiireJissekiPostdataToShiireJissekiViewModel());
             }).CreateMapper();
 
             //キー入力、ソート指示部分をマッピング
-            TentoZaikoViewModel tentoZaikoViewModel =
-                mapper.Map<TentoZaikoViewModel>(argTentoZaikoViewModel);
+            ShiireJissekiViewModel ShiireJissekiViewModel =
+                mapper.Map<ShiireJissekiViewModel>(argShiireJissekiViewModel);
 
             //クエリ結果のマッピング
 
-            IEnumerable<TentoZaiko> instanceTentoZaiko = await queriedTentoZaiko.ToListAsync();
-            tentoZaikoViewModel.DataArea.TentoZaIkoLines =
-                mapper.Map<IEnumerable<DataAreaClass.TentoZaIkoLine>>(instanceTentoZaiko);
+            IEnumerable<ShiireJisseki> instanceShiireJisseki = await queried.ToListAsync();
+            ShiireJissekiViewModel.DataArea.ShiireJissekiLines =
+                mapper.Map<IEnumerable<DataAreaClass.ShiireJissekiLineClass>>(instanceShiireJisseki);
 
             /*
-             *  マップされた店頭在庫の表情報を画面上のソート指示によりソートする
+             *  マップされた仕入実績の表情報を画面上のソート指示によりソートする
              */
             //ソートするために表情報を取り出す
-            IEnumerable<DataAreaClass.TentoZaIkoLine> beforeDisplayForTentoZaIkoLines =
-                tentoZaikoViewModel.DataArea.TentoZaIkoLines;
+            IEnumerable<DataAreaClass.ShiireJissekiLineClass> beforeDisplayForShiireJissekiLines =
+                ShiireJissekiViewModel.DataArea.ShiireJissekiLines;
             //ソートする
-            IEnumerable<DataAreaClass.TentoZaIkoLine> SortedTentoZaikoLines =
-                SetSortKey(argTentoZaikoViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForTentoZaIkoLines);
+            IEnumerable<DataAreaClass.ShiireJissekiLineClass> SortedShiireJissekiLines =
+                SetSortKey(argShiireJissekiViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForShiireJissekiLines);
 
             /*
              * 表情報をセットし返却
              */
-            tentoZaikoViewModel.DataArea.TentoZaIkoLines = SortedTentoZaikoLines;
-            return tentoZaikoViewModel;
+            ShiireJissekiViewModel.DataArea.ShiireJissekiLines = SortedShiireJissekiLines;
+            return ShiireJissekiViewModel;
         }
 
         /// <summary>
         /// 画面で指示されたソート指示を元に表情報に対しソートする
         /// </summary>
         /// <param name="argSortEventRec">ソート指示部</param>
-        /// <param name="argTentoZaikos">ソート対象となる表示用店頭在庫データ</param>
+        /// <param name="argShiireJissekis">ソート対象となる表示用仕入実績データ</param>
         /// <returns></returns>
-        private static IEnumerable<DataAreaClass.TentoZaIkoLine> SetSortKey
-            (KeywordAreaClass.SortAreaClass.SortEventRec[] argSortEventRec, IEnumerable<DataAreaClass.TentoZaIkoLine> argTentoZaikos) {
+        private static IEnumerable<DataAreaClass.ShiireJissekiLineClass> SetSortKey
+            (KeywordAreaClass.SortAreaClass.SortEventRec[] argSortEventRec, IEnumerable<DataAreaClass.ShiireJissekiLineClass> argShiireJissekis) {
 
             //OrderByのときはtrue、ThenByのときはfalse
             bool IsOrderBy = true;
@@ -104,29 +110,47 @@ namespace Convenience.Models.Services {
 
                     //Linqの組み立て
                     if (IsOrderBy) {
-                        argTentoZaikos = argTentoZaikos.AsQueryable().OrderBy(sortKey + (descending ? " descending" : ""));
+                        argShiireJissekis = argShiireJissekis.AsQueryable().OrderBy(sortKey + (descending ? " descending" : ""));
                         IsOrderBy = false;
-                    }
-                    else {
-                        argTentoZaikos = ((IOrderedQueryable<DataAreaClass.TentoZaIkoLine>)argTentoZaikos).ThenBy(sortKey + (descending ? " descending" : ""));
+                    } else {
+                        argShiireJissekis = ((IOrderedQueryable<DataAreaClass.ShiireJissekiLineClass>)argShiireJissekis).ThenBy(sortKey + (descending ? " descending" : ""));
                     }
                 }
             }
 
-            return argTentoZaikos;
+            return argShiireJissekis;
         }
 
         /// <summary>
         /// 検索指示項目を認識しラムダ式を作る
         /// </summary>
         /// <param name="argSelecteWhereItemArray">検索指示項目</param>
-        /// <param name="tentoZaiko">店頭在庫クエリ</param>
-        /// <returns>店頭在庫問い合わせ結果（遅延実行）</returns>
-        private static IQueryable<TentoZaiko> SearchItemRecognizer
-            (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IQueryable<TentoZaiko> tentoZaiko) {
+        /// <param name="tentoZaiko">仕入実績クエリ</param>
+        /// <returns></returns>
+        private static IQueryable<ShiireJisseki> SearchItemRecognizer
+            (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IQueryable<ShiireJisseki> s) {
 
             bool needAnd = false;
-            Expression<Func<TentoZaiko, bool>>? setExpression = default; //初期化
+            Expression<Func<ShiireJisseki, bool>>? setExpression = default; //初期化
+
+
+            const string shiireSakiKaisyaPath = 
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii)}."+
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster)}."+
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShiireSakiMaster)}."+
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShiireSakiMaster.ShiireSakiKaisya)}";
+
+            const string shiirePrdNamePath =
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii)}." +
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster)}." +
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShiirePrdName)}";
+
+
+            const string shohinNamePath =
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii)}." +
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster)}." +
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShohinMaster)}." +
+                $"{nameof(ShiireJisseki.ChumonJissekiMeisaii.ShiireMaster.ShohinMaster.ShohinName)}";
 
             //検索指示項目行を処理する
             for (int i = 0; i < argSelecteWhereItemArray.Length; i++) {
@@ -136,29 +160,35 @@ namespace Convenience.Models.Services {
                     if (ISharedTools.IsExistCheck(rightSide = argSelecteWhereItemArray[i].RightSide)) {
                         if (ISharedTools.IsExistCheck(comparison = argSelecteWhereItemArray[i].ComparisonOperator)) {
                             /* Where系ラムダ式を作る */
-                            Expression<Func<TentoZaiko, bool>> lambda = leftSide switch {
-                                nameof(DataAreaClass.TentoZaIkoLine.ShohinId) => BuildComparison<TentoZaiko>(nameof(TentoZaiko.ShohinId), comparison!, rightSide!),
-                                nameof(DataAreaClass.TentoZaIkoLine.ShohinName) =>
-                                    BuildComparison<TentoZaiko>
-                                        ($"{nameof(TentoZaiko.ShohinMaster)}.{nameof(TentoZaiko.ShohinMaster.ShohinName)}",
-                                        comparison!,
-                                        rightSide!
-                                    ),
-                                nameof(DataAreaClass.TentoZaIkoLine.ZaikoSu) =>
-                                    BuildComparison<TentoZaiko>(nameof(TentoZaiko.ZaikoSu), comparison!, decimal.Parse(rightSide!)),
-                                nameof(DataAreaClass.TentoZaIkoLine.LastShireDateTime) =>
-                                    BuildComparison<TentoZaiko>(nameof(TentoZaiko.LastShireDateTime), comparison!, DateOnly.Parse(rightSide!)),
-                                nameof(DataAreaClass.TentoZaIkoLine.LastHaraidashiDate) =>
-                                    BuildComparison<TentoZaiko>(nameof(TentoZaiko.LastHaraidashiDate), comparison!, DateTime.Parse(rightSide!)),
-                                nameof(DataAreaClass.TentoZaIkoLine.LastUriageDatetime) =>
-                                    BuildComparison<TentoZaiko>(nameof(TentoZaiko.LastUriageDatetime), comparison!, DateTime.Parse(rightSide!)),
+                            Expression<Func<ShiireJisseki, bool>> lambda = leftSide switch {
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ChumonId) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.ChumonId), comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShiireDate) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.ShiireDate), comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.SeqByShiireDate) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.SeqByShiireDate), comparison!, uint.Parse(rightSide!)),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShiireDateTime) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.ShiireDateTime), comparison!, DateTime.Parse(rightSide!)),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShiireSakiId) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.ShiireSakiId), comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShiirePrdId) =>
+                                BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.ShiirePrdId), comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShohinId) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.ShohinId), comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.NonyuSu) =>
+                                    BuildComparison<ShiireJisseki>(nameof(ShiireJisseki.NonyuSu), comparison!, decimal.Parse(rightSide!)),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShiireSakiKaisya) =>
+                                BuildComparison<ShiireJisseki>(shiireSakiKaisyaPath, comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShiirePrdName) =>
+                                    BuildComparison<ShiireJisseki>(shiirePrdNamePath, comparison!, rightSide!),
+                                nameof(DataAreaClass.ShiireJissekiLineClass.ShohinName) =>
+                                    BuildComparison<ShiireJisseki>(shohinNamePath, comparison!, rightSide!),
                                 _ => throw new Exception("検索キー指示エラー({leftSide})")
-                            };
-                            if(needAnd){
+                            };; 
+                            if (needAnd) {
                                 //2回目以降はAnd定義を追加
                                 setExpression = CombineExpressions(setExpression!, lambda);
-                            }
-                            else {
+                            } else {
                                 //初回はセットのみ
                                 setExpression = lambda;
                                 needAnd = true;
@@ -169,21 +199,17 @@ namespace Convenience.Models.Services {
             }
 
             /*
-             *    店頭在庫クエリにWhere文追加
+             *    仕入実績クエリにWhere文追加
              */
             if (ISharedTools.IsExistCheck(setExpression)) {
-                tentoZaiko = tentoZaiko.Where(setExpression!);
+                s = s.Where(setExpression!);
             }
-            return tentoZaiko;
+            return s;
         }
 
-        /// <summary>
-        ///  複数のWhere系ラムダ式をAndで結ぶ
-        /// </summary>
-        /// <typeparam name="T">lambaの対象タイプ</typeparam>
-        /// <param name="expr1">式に追加される先</param>
-        /// <param name="expr2">式に追加する元</param>
-        /// <returns>Andで式に追加された先</returns>
+        /*
+         * 複数のWhere系ラムダ式をAndで結ぶ
+         */
         private static Expression<Func<T, bool>> CombineExpressions<T>(Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2) {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
             BinaryExpression combined = Expression.AndAlso(
@@ -193,15 +219,9 @@ namespace Convenience.Models.Services {
             return Expression.Lambda<Func<T, bool>>(combined, parameter);
         }
 
-        /// <summary>
-        /// Where系ラムダ式を作る
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName">左辺</param>
-        /// <param name="strComparisonType">比較演算子に対する指示</param>
-        /// <param name="value">右辺</param>
-        /// <returns>Where系ラムダ式</returns>
-        /// <exception cref="NotSupportedException"></exception>
+        /*
+         * Where系ラムダ式を作る
+         */
         private static Expression<Func<T, bool>> BuildComparison<T>(
             string propertyName,
             string strComparisonType,
@@ -242,8 +262,7 @@ namespace Convenience.Models.Services {
                     KeywordAreaClass.KeyAreaClass.Comparisons.LessThan => Expression.LessThan(compareExpression, Expression.Constant(0)),
                     _ => throw new NotSupportedException($"Comparison type {comparisonType} is not supported.")
                 };
-            }
-            else {
+            } else {
                 // 非文字列の場合、通常の比較演算を使用する
                 comparison = comparisonType switch {
                     KeywordAreaClass.KeyAreaClass.Comparisons.Equal => Expression.Equal(property, constant),

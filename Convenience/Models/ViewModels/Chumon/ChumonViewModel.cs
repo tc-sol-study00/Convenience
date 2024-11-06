@@ -10,7 +10,7 @@ namespace Convenience.Models.ViewModels.Chumon {
         /// <summary>
         /// 注文実績
         /// </summary>
-        public ChumonJisseki ChumonJisseki { get; set; }
+        public DataModels.ChumonJisseki ChumonJisseki { get; set; }
         /// <summary>
         /// 処理が正常がどうか（正常=true)
         /// </summary>

@@ -11,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 店頭払出コントローラ
+    /// 店頭在庫検索コントローラ
     /// </summary>
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class TentoZaikoController : Controller, ISharedTools {
@@ -26,14 +26,14 @@ namespace Convenience.Controllers {
         private static readonly string IndexName = "TentoZaikoViewModel";
 
         /// <summary>
-        /// 注文サービスクラス（ＤＩ用）
+        /// 店頭在庫検索サービスクラス（ＤＩ用）
         /// </summary>
         private readonly ITentoZaikoService tentoZaikoService;
 
         /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private TentoZaikoViewModel tentoZaikoViewModel;
+        private readonly TentoZaikoViewModel tentoZaikoViewModel;
         /// <summary>
         /// １ページの行数
         /// </summary>
@@ -43,7 +43,7 @@ namespace Convenience.Controllers {
         /// コンストラクター
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
-        /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
+        /// <param name="tentoZaikoService">店頭在庫検索サービスクラスＤＩ注入用</param>
         public TentoZaikoController(ConvenienceContext context, ITentoZaikoService tentoZaikoService) {
             this._context = context;
             this.tentoZaikoService = tentoZaikoService;
@@ -54,9 +54,8 @@ namespace Convenience.Controllers {
         /// 店頭在庫検索１枚目の初期表示処理
         /// </summary>
         /// <returns>店頭在庫ビューモデル（初期表示）</returns>
-        /// 
         [HttpGet]
-        public Task<IActionResult> Index(string id) {
+        public Task<IActionResult> Index() {
             ViewBag.HandlingFlg = "FirstDisplay";
             //最初のカーソル位置
             ViewBag.FocusPosition = "#KeywordArea_KeyArea_SelecteWhereItemArray_0__LeftSide";
@@ -68,7 +67,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 店頭在庫検索キー入力後
         /// </summary>
-        /// <param name="postedTentoZaikoViewModel"></param>
+        /// <param name="postedTentoZaikoViewModel">店頭在庫ビューモデル(post)</param>
         /// <returns>店頭在庫ビューモデル</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -77,6 +76,11 @@ namespace Convenience.Controllers {
             return await ProcessResult(postedTentoZaikoViewModel, page, PageSize);
         }
 
+        /// <summary>
+        /// 検索結果
+        /// </summary>
+        /// <param name="page">ページ番号</param>
+        /// <returns>店頭在庫検索ビュー</returns>
         [HttpGet]
         public async Task<IActionResult> Result(int page) {
             if (TempData.Peek(IndexName) is string tempDataStr) {
@@ -90,7 +94,13 @@ namespace Convenience.Controllers {
                 return RedirectToAction("Index");
             }
         }
-
+        /// <summary>
+        ///  検索データ作成
+        /// </summary>
+        /// <param name="tentoZaikoViewModel">店頭在庫ビューモデル</param>
+        /// <param name="page">ページ番号</param>
+        /// <param name="pageSize">行数/ページ</param>
+        /// <returns></returns>
         private async Task<IActionResult> ProcessResult(TentoZaikoViewModel tentoZaikoViewModel, int page, int pageSize) {
             // 店頭在庫検索
             TentoZaikoViewModel createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
