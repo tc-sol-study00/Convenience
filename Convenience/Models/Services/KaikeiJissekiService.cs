@@ -11,7 +11,7 @@ using static Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel;
 
 namespace Convenience.Models.Services {
     /// <summary>
-    /// 店頭在庫検索サービス
+    /// 会計実績検索サービス
     /// </summary>
     public class KaikeiJissekiService : IKaikeiJissekiService, ISharedTools {
 
@@ -28,10 +28,10 @@ namespace Convenience.Models.Services {
             this._context = context;
         }
         /// <summary>
-        /// 店頭在庫検索
+        /// 会計実績検索
         /// </summary>
-        /// <param name="argTentoZaikoViewModel">店頭在庫検索ビューモデル</param>
-        /// <returns>店頭在庫ビューモデル（検索内容含む）</returns>
+        /// <param name="argKaikeiJissekiViewModel">会計実績検索ビューモデル</param>
+        /// <returns>会計実績ビューモデル（検索内容含む）</returns>
         public async Task<KaikeiJissekiViewModel> KaikeiJissekiRetrival(KaikeiJissekiViewModel argKaikeiJissekiViewModel) {
 
             /*
@@ -44,14 +44,14 @@ namespace Convenience.Models.Services {
                 .Include(kj => kj.NaigaiClassMaster)
             ;
             /*
-             * 画面上の検索キーの指示を店頭在庫クエリに追加
+             * 画面上の検索キーの指示を会計実績クエリに追加
              */
             queriedKaikeiJisseki = SearchItemRecognizer(argKaikeiJissekiViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, queriedKaikeiJisseki);
 
             /*
              * クエリの結果を画面に反映する
              */
-            //Mapping クエリの結果 to　店頭在庫ビューモデル
+            //Mapping クエリの結果 to　会計実績ビューモデル
 
             IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.AddProfile(new KaikeiJissekiPostdataToKaikeiJissekiViewModel());
@@ -68,7 +68,7 @@ namespace Convenience.Models.Services {
                 mapper.Map<IEnumerable<DataAreaClass.KaikeiJissekiLineClass>>(instanceKaikeiJisseki);
 
             /*
-             *  マップされた店頭在庫の表情報を画面上のソート指示によりソートする
+             *  マップされた会計実績の表情報を画面上のソート指示によりソートする
              */
             //ソートするために表情報を取り出す
             IEnumerable<DataAreaClass.KaikeiJissekiLineClass> beforeDisplayForKaikeiJissekiLines =
@@ -88,7 +88,7 @@ namespace Convenience.Models.Services {
         /// 画面で指示されたソート指示を元に表情報に対しソートする
         /// </summary>
         /// <param name="argSortEventRec">ソート指示部</param>
-        /// <param name="argTentoZaikos">ソート対象となる表示用店頭在庫データ</param>
+        /// <param name="argKaikeijissekis">ソート対象となる表示用会計実績データ</param>
         /// <returns></returns>
         private static IEnumerable<DataAreaClass.KaikeiJissekiLineClass> SetSortKey
             (KeywordAreaClass.SortAreaClass.SortEventRec[] argSortEventRec, IEnumerable<DataAreaClass.KaikeiJissekiLineClass> argKaikeijissekis) {
@@ -121,7 +121,7 @@ namespace Convenience.Models.Services {
         /// 検索指示項目を認識しラムダ式を作る
         /// </summary>
         /// <param name="argSelecteWhereItemArray">検索指示項目</param>
-        /// <param name="tentoZaiko">店頭在庫クエリ</param>
+        /// <param name="kaikeiJissekis">会計実績クエリ</param>
         /// <returns></returns>
         private static IQueryable<KaikeiJisseki> SearchItemRecognizer
             (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IQueryable<KaikeiJisseki> kaikeiJissekis) {
@@ -141,7 +141,11 @@ namespace Convenience.Models.Services {
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.ShohinId) => 
                                     BuildComparison<KaikeiJisseki>(nameof(KaikeiJisseki.ShohinId), comparison!, rightSide!),
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.ShohinName) =>
-                                    BuildComparison<KaikeiJisseki>(nameof(KaikeiJisseki.ShohinMaster.ShohinName), comparison!, rightSide!),
+                                    BuildComparison<KaikeiJisseki>
+                                        ($"{nameof(KaikeiJisseki.ShohinMaster)}.{nameof(KaikeiJisseki.ShohinMaster.ShohinName)}",
+                                        comparison!,
+                                        rightSide!
+                                    ),
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.UriageDatetime) =>
                                     BuildComparison<KaikeiJisseki>(nameof(KaikeiJisseki.UriageDatetime), comparison!, DateTime.Parse(rightSide!)),
                                 nameof(DataAreaClass.KaikeiJissekiLineClass.UriageSu) =>
@@ -172,7 +176,7 @@ namespace Convenience.Models.Services {
             }
 
             /*
-             *    店頭在庫クエリにWhere文追加
+             *    会計実績クエリにWhere文追加
              */
             if (ISharedTools.IsExistCheck(setExpression)) {
                 kaikeiJissekis = kaikeiJissekis.Where(setExpression!);
@@ -180,9 +184,13 @@ namespace Convenience.Models.Services {
             return kaikeiJissekis;
         }
 
-        /*
-         * 複数のWhere系ラムダ式をAndで結ぶ
-         */
+        /// <summary>
+        ///  複数のWhere系ラムダ式をAndで結ぶ
+        /// </summary>
+        /// <typeparam name="T">lambaの対象タイプ</typeparam>
+        /// <param name="expr1">式に追加される先</param>
+        /// <param name="expr2">式に追加する元</param>
+        /// <returns>Andで式に追加された先</returns>
         private static Expression<Func<T, bool>> CombineExpressions<T>(Expression<Func<T, bool>> expr1, Expression<Func<T, bool>> expr2) {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
             BinaryExpression combined = Expression.AndAlso(
@@ -192,9 +200,15 @@ namespace Convenience.Models.Services {
             return Expression.Lambda<Func<T, bool>>(combined, parameter);
         }
 
-        /*
-         * Where系ラムダ式を作る
-         */
+        /// <summary>
+        /// Where系ラムダ式を作る
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName">左辺</param>
+        /// <param name="strComparisonType">比較演算子に対する指示</param>
+        /// <param name="value">右辺</param>
+        /// <returns>Where系ラムダ式</returns>
+        /// <exception cref="NotSupportedException"></exception>
         private static Expression<Func<T, bool>> BuildComparison<T>(
             string propertyName,
             string strComparisonType,

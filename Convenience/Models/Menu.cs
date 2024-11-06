@@ -33,7 +33,9 @@ namespace Convenience.Models {
             new (){ Name = "店頭払出", Url = "/TentoHaraidashi/KeyInput" , Description = "倉庫在庫を店頭に払い出して店頭在庫にします"},
             new (){ Name = "会計入力", Url = "/Kaikei/KeyInput" , Description = "お客様へ会計を行います"},
             new (){ Name = "店頭在庫検索", Url = "/TentoZaiko/Index" , Description = "店頭在庫が検索できます" },
-            new (){ Name = "会計実績検索", Url = "/KaikeiJisseki/Index" , Description = "会計実績が検索できます"}
+            new (){ Name = "会計実績検索", Url = "/KaikeiJisseki/Index" , Description = "会計実績が検索できます"},
+            new (){ Name = "注文実績検索", Url = "/ChumonJisseki/Index" , Description = "注文実績が検索できます"},
+            new (){ Name = "仕入実績検索", Url = "/ShiireJisseki/Index" , Description = "仕入実績が検索できます"}
         };
     } 
 }

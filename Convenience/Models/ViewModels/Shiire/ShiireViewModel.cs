@@ -34,7 +34,7 @@ namespace Convenience.Models.ViewModels.Shiire {
         /// <summary>
         /// 仕入実績
         /// </summary>
-        public IList<ShiireJisseki> ShiireJissekis { get; set; }
+        public IList<DataModels.ShiireJisseki> ShiireJissekis { get; set; }
         /// <summary>
         /// 処理が正常がどうか（正常=true)
         /// </summary>

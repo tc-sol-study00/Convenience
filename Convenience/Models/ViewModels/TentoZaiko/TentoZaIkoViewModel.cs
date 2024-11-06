@@ -59,9 +59,9 @@ namespace Convenience.Models.ViewModels.TentoZaiko {
                 }
 
                 public static string? GetDisplayName(Type type, string propertyName) {
-                    var property = type.GetProperty(propertyName);
+                    PropertyInfo? property = type.GetProperty(propertyName);
                     if (property != null) {
-                        var displayNameAttribute = property.GetCustomAttribute<DisplayNameAttribute>();
+                        DisplayNameAttribute? displayNameAttribute = property.GetCustomAttribute<DisplayNameAttribute>();
                         if (displayNameAttribute != null) {
                             return displayNameAttribute.DisplayName;
                         }

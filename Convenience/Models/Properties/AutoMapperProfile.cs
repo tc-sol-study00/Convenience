@@ -3,7 +3,9 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.ViewModels.ChumonJisseki;
 using Convenience.Models.ViewModels.KaikeiJisseki;
+using Convenience.Models.ViewModels.ShiireJisseki;
 using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
@@ -203,7 +205,36 @@ namespace Convenience.Models.Properties {
         }
     }
 
-    public class AutoMapperSharedProfile : Profile
+    public class ChumonJissekiPostdataToChumonJissekiViewModel : Profile {
+
+        public ChumonJissekiPostdataToChumonJissekiViewModel() {
+            CreateMap<ChumonJissekiViewModel, ChumonJissekiViewModel>();
+            CreateMap<ChumonJissekiViewModel.DataAreaClass, ChumonJissekiViewModel.DataAreaClass>();
+            CreateMap<ChumonJissekiMeisai, ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>()
+            .ForMember(dest => dest.ShiireSakiKaisya, opt => opt.MapFrom(src => src.ShiireMaster!.ShiireSakiMaster!.ShiireSakiKaisya))
+            .ForMember(dest => dest.ShiirePrdName, opt => opt.MapFrom(src => src.ShiireMaster!.ShiirePrdName))
+            .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShiireMaster!.ShohinMaster!.ShohinName))
+            .ForMember(dest => dest.ChumonKingaku, opt => opt.MapFrom(src => src.ChumonSu * src.ShiireMaster!.ShireTanka))
+            .ForMember(dest => dest.ChumonZanKingaku, opt => opt.MapFrom(src => src.ChumonZan * src.ShiireMaster!.ShireTanka))
+            .ForMember(dest => dest.ShiireZumiSu, opt => opt.MapFrom(src => src.ChumonSu - src.ChumonZan ))
+            .ForMember(dest => dest.ShiireZumiKingaku,opt => opt.MapFrom(src => (src.ChumonSu - src.ChumonZan)*src.ShiireMaster!.ShireTanka))
+            ;
+        }
+    }
+
+    public class ShiireJissekiPostdataToShiireJissekiViewModel : Profile {
+        public ShiireJissekiPostdataToShiireJissekiViewModel() {
+            CreateMap<ShiireJissekiViewModel, ShiireJissekiViewModel>();
+            CreateMap<ShiireJissekiViewModel.DataAreaClass, ShiireJissekiViewModel.DataAreaClass>();
+            CreateMap<ShiireJisseki, ShiireJissekiViewModel.DataAreaClass.ShiireJissekiLineClass>()
+            .ForMember(dest => dest.ShiireSakiKaisya, opt => opt.MapFrom(src => src.ChumonJissekiMeisaii.ShiireMaster!.ShiireSakiMaster!.ShiireSakiKaisya))
+            .ForMember(dest => dest.ShiirePrdName, opt => opt.MapFrom(src => src.ChumonJissekiMeisaii.ShiireMaster!.ShiirePrdName))
+            .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ChumonJissekiMeisaii.ShiireMaster!.ShohinMaster!.ShohinName))
+            ;
+        }
+    }
+
+        public class AutoMapperSharedProfile : Profile
     {
         public AutoMapperSharedProfile()
         {
