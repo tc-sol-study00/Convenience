@@ -99,10 +99,21 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
 
                     [DisplayName("比較")]
                     [MaxLength(2)]
-                    public string? ComparisonOperator { get; set; } = "==";
+                    public string? ComparisonOperator { get; set; }
 
                     [DisplayName("検索キー")]
                     public string? RightSide { get; set; }
+
+                    public SelecteWhereItem(string leftSide, string comparisonOperator, string rightSide) {
+                        LeftSide = leftSide;
+                        ComparisonOperator = comparisonOperator;
+                        RightSide = rightSide;
+                    }
+
+                    public SelecteWhereItem() {
+
+                    }
+
                 }
 
                 /// <summary>
@@ -152,24 +163,34 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
                     SelectWhereLeftSideList = new SelectList(
                     new List<SelectListItem>{
                         new() { Value = nameof(ChumonJissekiLineClass.ChumonId), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass),nameof(ChumonJissekiLineClass.ChumonId)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ChumonDate), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass),nameof(ChumonJissekiLineClass.ChumonDate)) },
                         new() { Value = nameof(ChumonJissekiLineClass.ShiireSakiId), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass),nameof(ChumonJissekiLineClass.ShiireSakiId)) },
-                        new() { Value = nameof(ChumonJissekiLineClass.ShiirePrdId), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShiirePrdId)) },
-                        new() { Value = nameof(ChumonJissekiLineClass.ShohinId), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShohinId)) },
-                        new() { Value = nameof(ChumonJissekiLineClass.ChumonSu), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ChumonSu)) },
-                        new() { Value = nameof(ChumonJissekiLineClass.ChumonZan), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ChumonZan)) },
                         new() { Value = nameof(ChumonJissekiLineClass.ShiireSakiKaisya), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShiireSakiKaisya)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ShiirePrdId), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShiirePrdId)) },
                         new() { Value = nameof(ChumonJissekiLineClass.ShiirePrdName), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShiirePrdName)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ShohinId), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShohinId)) },
                         new() { Value = nameof(ChumonJissekiLineClass.ShohinName), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShohinName)) },
-
+                        new() { Value = nameof(ChumonJissekiLineClass.ChumonSu), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ChumonSu)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ShiireZumiSu), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShiireZumiSu)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ChumonZan), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ChumonZan)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ChumonKingaku), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ChumonKingaku)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ShiireZumiKingaku), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ShiireZumiKingaku)) },
+                        new() { Value = nameof(ChumonJissekiLineClass.ChumonZanKingaku), Text = ISharedTools.GetDisplayName(typeof(ChumonJissekiLineClass), nameof(ChumonJissekiLineClass.ChumonZanKingaku)) },
                     },
                     "Value",
                     "Text"
                 );
+
+                    //ソート初期設定
+                    static SelecteWhereItem getEvent(int number) => number switch {
+                        0 => new SelecteWhereItem(nameof(ChumonJissekiLineClass.ChumonDate), Comparisons.GreaterThanOrEqual.ToString(), (new DateOnly(DateTime.Now.AddMonths(-6).Year, DateTime.Now.AddMonths(-6).Month, 1)).ToString()),
+                        _ => new SelecteWhereItem()
+                    };
                     /// <summary>
                     /// Where入力リスト初期化
                     /// </summary>
                     SelecteWhereItemArray
-                        = Enumerable.Range(0, LineCountForSelectorOfWhere).Select(_ => new SelecteWhereItem()).ToArray();
+                        = Enumerable.Range(0, LineCountForSelectorOfWhere).Select(x => getEvent(x)).ToArray();
                 }
                 public enum Comparisons {
                     Equal,              //  ==
@@ -191,6 +212,10 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
                 this.ChumonJissekiLines = new List<ChumonJissekiLineClass>();
             }
             public class ChumonJissekiLineClass : Convenience.Models.DataModels.ChumonJissekiMeisai {
+
+                [DisplayName("注文日")]
+                [Required]
+                public DateOnly ChumonDate { get; set; }
 
                 [DisplayName("仕入先会社")]
                 [Required]
