@@ -5,9 +5,14 @@ using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.ChumonJisseki;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using System;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 
 namespace Convenience.Models.Services {
     /// <summary>
@@ -38,7 +43,7 @@ namespace Convenience.Models.Services {
              *  注文実績のクエリを初期セット。OrderbyやWhereを追加するから、
              *  IQueryable型としている
              */
-            IQueryable<ChumonJissekiMeisai> queriedMeisai = 
+            IEnumerable<ChumonJissekiMeisai> queriedMeisai =
                 _context.ChumonJissekiMeisai.AsNoTracking()
                     .Include(cjm => cjm.ChumonJisseki)
                     .Include(cjm => cjm.ShiireMaster)
@@ -47,7 +52,7 @@ namespace Convenience.Models.Services {
                         .ThenInclude(sm => sm!.ShiireSakiMaster)
             ;
             /*
-             * 画面上の検索キーの指示を注文実績クエリに追加
+             * 画面上の検索キーの指示を注文実績クエリに追加（DBにある項目だけ）
              */
             queriedMeisai = SearchItemRecognizer(argChumonJissekiViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, queriedMeisai);
 
@@ -66,9 +71,18 @@ namespace Convenience.Models.Services {
 
             //クエリ結果のマッピング
 
-            IEnumerable<ChumonJissekiMeisai> instanceChumonJisseki = await queriedMeisai.ToListAsync();
-            ChumonJissekiViewModel.DataArea.ChumonJissekiLines =
-                mapper.Map<IEnumerable<DataAreaClass.ChumonJissekiLineClass>>(instanceChumonJisseki);
+            IEnumerable<ChumonJissekiMeisai> instanceChumonJisseki = await queriedMeisai.AsQueryable().ToListAsync();
+
+            IEnumerable<ChumonJissekiLineClass> chumonJissekiLines =
+               mapper.Map<IEnumerable<DataAreaClass.ChumonJissekiLineClass>>(instanceChumonJisseki);
+
+            /*
+             * 画面上の検索キーの指示を注文実績クエリに追加（DBにない項目だけ）
+             */
+            chumonJissekiLines = SearchItemRecognizer<ChumonJissekiLineClass>(argChumonJissekiViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, chumonJissekiLines);
+
+
+            ChumonJissekiViewModel.DataArea.ChumonJissekiLines = chumonJissekiLines;
 
             /*
              *  マップされた注文実績の表情報を画面上のソート指示によりソートする
@@ -125,12 +139,30 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argSelecteWhereItemArray">検索指示項目</param>
         /// <param name="Meisais">注文実績クエリ</param>
-        /// <returns></returns>
-        private static IQueryable<ChumonJissekiMeisai> SearchItemRecognizer
-            (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IQueryable<ChumonJissekiMeisai> Meisais) {
+        /// <returns>ラムダ式で処理された検索結果（注文実績明細が渡されたら遅延実行）</returns>
+        private static IEnumerable<T> SearchItemRecognizer<T>
+            (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IEnumerable<T> Meisais) {
 
             bool needAnd = false;
-            Expression<Func<ChumonJissekiMeisai, bool>>? setExpression = default; //初期化
+            Expression<Func<T, bool>>? setExpression = default; //初期化
+
+            string shiireSakiKaisya =
+                $"{nameof(ChumonJissekiMeisai)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShiireSakiMaster)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShiireSakiMaster.ShiireSakiKaisya)}";
+
+            string shiirePrdName =
+                $"{nameof(ChumonJissekiMeisai)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShiirePrdName)}";
+
+            string shohinName =
+                $"{nameof(ChumonJissekiMeisai)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShohinMaster)}." +
+                $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShohinMaster.ShohinName)}";
+
 
             //検索指示項目行を処理する
             for (int i = 0; i < argSelecteWhereItemArray.Length; i++) {
@@ -140,34 +172,55 @@ namespace Convenience.Models.Services {
                     if (ISharedTools.IsExistCheck(rightSide = argSelecteWhereItemArray[i].RightSide)) {
                         if (ISharedTools.IsExistCheck(comparison = argSelecteWhereItemArray[i].ComparisonOperator)) {
                             /* Where系ラムダ式を作る */
-                            Expression<Func<ChumonJissekiMeisai, bool>> lambda = leftSide switch {
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ChumonId) =>
-                                    BuildComparison<ChumonJissekiMeisai>(nameof(ChumonJissekiMeisai.ChumonId), comparison!, rightSide!),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ShiireSakiId) =>
-                                    BuildComparison<ChumonJissekiMeisai>(nameof(ChumonJissekiMeisai.ShiireSakiId), comparison!, rightSide!),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ShiirePrdId) =>
-                                    BuildComparison<ChumonJissekiMeisai>(nameof(ChumonJissekiMeisai.ShiirePrdId), comparison!, rightSide!),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ShohinId) =>
-                                    BuildComparison<ChumonJissekiMeisai>(nameof(ChumonJissekiMeisai.ShohinId), comparison!, rightSide!),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ChumonSu) =>
-                                    BuildComparison<ChumonJissekiMeisai>(nameof(ChumonJissekiMeisai.ChumonSu), comparison!, decimal.Parse(rightSide!)),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ChumonZan) =>
-                                    BuildComparison<ChumonJissekiMeisai>(nameof(ChumonJissekiMeisai.ChumonZan), comparison!, decimal.Parse(rightSide!)),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ShiireSakiKaisya) => 
-                                    BuildComparison<ChumonJissekiMeisai>($"{nameof(ChumonJissekiMeisai)}.{nameof(ChumonJissekiMeisai.ShiireMaster)}.{nameof(ChumonJissekiMeisai.ShiireMaster.ShiireSakiMaster)}.{nameof(ChumonJissekiMeisai.ShiireMaster.ShiireSakiMaster.ShiireSakiKaisya)}", comparison!, rightSide!),
-                                nameof(DataAreaClass.ChumonJissekiLineClass.ShiirePrdName) =>
-                                    BuildComparison<ChumonJissekiMeisai>($"{nameof(ChumonJissekiMeisai)}.{nameof(ChumonJissekiMeisai.ShiireMaster)}.{nameof(ChumonJissekiMeisai.ShiireMaster.ShiirePrdName)}", comparison!, rightSide!),
-                                nameof (DataAreaClass.ChumonJissekiLineClass.ShohinName) =>
-                                    BuildComparison<ChumonJissekiMeisai>($"{nameof(ChumonJissekiMeisai)}.{nameof(ChumonJissekiMeisai.ShiireMaster)}.{nameof(ChumonJissekiMeisai.ShiireMaster.ShohinMaster)}.{nameof(ChumonJissekiMeisai.ShiireMaster.ShohinMaster.ShohinName)}", comparison!, rightSide!),
-                                _ => throw new Exception("検索キー指示エラー({leftSide})")
-                            }; 
-                            if (needAnd) {
-                                //2回目以降はAnd定義を追加
-                                setExpression = CombineExpressions(setExpression!, lambda);
+                            Expression<Func<T, bool>>? lambda = default;
+
+                            if ( typeof(T) ==  typeof(ChumonJissekiMeisai)) {
+                                lambda = leftSide switch {
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ChumonId) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiMeisai.ChumonId), comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShiireSakiId) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiMeisai.ShiireSakiId), comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShiirePrdId) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiMeisai.ShiirePrdId), comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShohinId) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiMeisai.ShohinId), comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ChumonSu) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiMeisai.ChumonSu), comparison!, decimal.Parse(rightSide!)),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ChumonZan) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiMeisai.ChumonZan), comparison!, decimal.Parse(rightSide!)),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShiireSakiKaisya) =>
+                                        BuildComparison<T>(shiireSakiKaisya, comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShiirePrdName) =>
+                                        BuildComparison<T>(shiirePrdName, comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShohinName) =>
+                                        BuildComparison<T>(shohinName, comparison!, rightSide!),
+                                _ => null
+                                };
+                            } else if (typeof(T) == typeof(ChumonJissekiLineClass)){
+                                lambda = leftSide switch {
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShiireZumiSu) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiLineClass.ShiireZumiSu), comparison!, decimal.Parse(rightSide!)),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ChumonKingaku) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiLineClass.ChumonKingaku), comparison!, decimal.Parse(rightSide!)),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ShiireZumiKingaku) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiLineClass.ShiireZumiKingaku), comparison!, decimal.Parse(rightSide!)),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ChumonZanKingaku) =>
+                                        BuildComparison<T>(nameof(ChumonJissekiLineClass.ChumonZanKingaku), comparison!, decimal.Parse(rightSide!)),
+                                    _ => null
+                                };
                             } else {
-                                //初回はセットのみ
-                                setExpression = lambda;
-                                needAnd = true;
+                                throw new Exception("タイプエラー");
+                            }
+
+                            if (ISharedTools.IsExistCheck(lambda)) {
+                                if (needAnd) {
+                                    //2回目以降はAnd定義を追加
+                                    setExpression = CombineExpressions<T>(setExpression!, lambda!);
+                                } else {
+                                    //初回はセットのみ
+                                    setExpression = lambda;
+                                    needAnd = true;
+                                }
                             }
                         }
                     }
@@ -178,10 +231,11 @@ namespace Convenience.Models.Services {
              *    注文実績クエリにWhere文追加
              */
             if (ISharedTools.IsExistCheck(setExpression)) {
-                Meisais = Meisais.Where(setExpression!);
+                Meisais = Meisais.AsQueryable().Where(setExpression!);
             }
             return Meisais;
         }
+
 
         /// <summary>
         ///  複数のWhere系ラムダ式をAndで結ぶ

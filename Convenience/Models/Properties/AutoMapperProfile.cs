@@ -211,6 +211,7 @@ namespace Convenience.Models.Properties {
             CreateMap<ChumonJissekiViewModel, ChumonJissekiViewModel>();
             CreateMap<ChumonJissekiViewModel.DataAreaClass, ChumonJissekiViewModel.DataAreaClass>();
             CreateMap<ChumonJissekiMeisai, ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>()
+            .ForMember(dest => dest.ChumonDate, opt => opt.MapFrom(src => src.ChumonJisseki!.ChumonDate))
             .ForMember(dest => dest.ShiireSakiKaisya, opt => opt.MapFrom(src => src.ShiireMaster!.ShiireSakiMaster!.ShiireSakiKaisya))
             .ForMember(dest => dest.ShiirePrdName, opt => opt.MapFrom(src => src.ShiireMaster!.ShiirePrdName))
             .ForMember(dest => dest.ShohinName, opt => opt.MapFrom(src => src.ShiireMaster!.ShohinMaster!.ShohinName))
