@@ -103,12 +103,12 @@ namespace Convenience.Controllers {
             ShiireJissekiViewModel createdShiireJissekiViewModel = await shiireJissekiService.ShiireJissekiRetrival(shiireJissekiViewModel);
 
             // ページング処理
-            int totalLines = createdShiireJissekiViewModel.DataArea.ShiireJissekiLines.Count();
+            int totalLines = createdShiireJissekiViewModel.DataArea.Lines.Count();
             ViewBag.TotalPages = Math.Ceiling((double)totalLines / pageSize);
             ViewBag.CurrentPage = page;
 
-            createdShiireJissekiViewModel.DataArea.ShiireJissekiLines =
-                createdShiireJissekiViewModel.DataArea.ShiireJissekiLines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            createdShiireJissekiViewModel.DataArea.Lines =
+                createdShiireJissekiViewModel.DataArea.Lines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             // キーワードエリアの保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(createdShiireJissekiViewModel.KeywordArea);

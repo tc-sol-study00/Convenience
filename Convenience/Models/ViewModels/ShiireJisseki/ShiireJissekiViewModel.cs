@@ -1,62 +1,106 @@
-﻿using Convenience.Models.DataModels;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
-using System.Reflection;
 using Convenience.Models.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass.ShiireJissekiLineClass>;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass.ShiireJissekiLineClass>.IKeywordAreaClass;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass.ShiireJissekiLineClass>.IKeywordAreaClass.ISortAreaClass;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass.ShiireJissekiLineClass>.IKeywordAreaClass.IKeyAreaClass;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.ViewModels.ShiireJisseki {
     /// <summary>
     /// 仕入実績検索ビューモデル
     /// </summary>
-    public class ShiireJissekiViewModel : ISharedTools {
+    public class ShiireJissekiViewModel : IRetrivalViewModel<ShiireJissekiLineClass> {
 
-        public KeywordAreaClass KeywordArea { get; set; }
-        public DataAreaClass DataArea { get; set; }
+        /// <summary>
+        /// ソートキー・検索キーエリア管理用
+        /// </summary>
+        public IKeywordAreaClass KeywordArea { get; set; }
+        /// <summary>
+        /// データ表示管理用
+        /// </summary>
+        public IDataAreaClass DataArea { get; set; }
 
+        /// <summary>
+        /// コンストラクタ
+        /// ソート・検索キーエリア管理用オブジェクト初期化
+        /// </summary>
         public ShiireJissekiViewModel() {
             this.KeywordArea = new KeywordAreaClass();
             this.DataArea = new DataAreaClass();
         }
-        public class KeywordAreaClass : Convenience.Models.DataModels.ShiireJisseki {
-            public SortAreaClass SortArea { get; set; }
-            public KeyAreaClass KeyArea { get; set; }
+        /// <summary>
+        /// ソートキー・検索キーエリア管理用クラス
+        /// </summary>
+        public class KeywordAreaClass : IKeywordAreaClass {
+            /// <summary>
+            /// ソートキーエリア管理用
+            /// </summary>
+            public ISortAreaClass SortArea { get; set; }
+            /// <summary>
+            /// 検索キーエリア管理用
+            /// </summary>
+            public IKeyAreaClass KeyArea { get; set; }
 
+            /// <summary>
+            /// コンストラクター
+            /// ソートキーエリア・検索キーエリア管理用オブジェクト初期化
+            /// </summary>
             public KeywordAreaClass() {
                 this.SortArea = new SortAreaClass();
                 this.KeyArea = new KeyAreaClass();
             }
 
-            public class SortAreaClass {
+            /// <summary>
+            /// ソートエリア管理用クラス
+            /// </summary>
+            public class SortAreaClass : ISortAreaClass {
 
+                /// <summary>
+                /// ソートキー指示データ管理用
+                /// </summary>
                 public SortEventRec[] KeyEventList { get; set; }
 
+                /// <summary>
+                /// ソートキー一覧表示用
+                /// </summary>
                 [JsonIgnore]
                 public SelectList KeyList { get; set; }
 
                 /// <summary>
-                /// Where入力行数
+                /// ソートキー指示データ初期データセット
+                /// 仕入日付（昇順）・仕入SEQ（昇順）でセット
                 /// </summary>
-                const int LineCountForSelectorOfOrder = 6; //Order入力６行
-
-
-
-                public SortAreaClass() {
-
-                    //ソート初期設定
-                    static SortEventRec getEvent(int number) => number switch {
+                public SortEventRec GetDefaltSortForSort(int index) {
+                    return index switch {
                         0 => new SortEventRec(nameof(ShiireJissekiLineClass.ShiireDate), false),
                         1 => new SortEventRec(nameof(ShiireJissekiLineClass.SeqByShiireDate), false),
                         _ => new SortEventRec()
                     };
+                }
 
-                    KeyEventList = Enumerable.Range(0, LineCountForSelectorOfOrder).Select(x => getEvent(x)).ToArray();
+                /// <summary>
+                /// ソートキー入力最大行数
+                /// </summary>
+                public int LineCountForSelectorOfOrder { get; set; } = 6; //Order入力６行
 
+
+                /// <summary>
+                /// ソートキーエリア管理用クラス
+                /// </summary>
+                public SortAreaClass() {
+                    /*
+                     * 初期化
+                     */
+                    KeyEventList = new SortEventRec[LineCountForSelectorOfOrder];
+
+                    /*
+                     *  ソートキー一覧表示セット
+                     */
                     KeyList = new SelectList(
                         new List<SelectListItem>
                         {
@@ -76,34 +120,29 @@ namespace Convenience.Models.ViewModels.ShiireJisseki {
                         "Value",
                         "Text"
                     );
+                    /*
+                     * ソートキー指示データセット
+                     */
+                    ((ISortAreaClass)this).InitSortArea();
                 }
-                public class SortEventRec {
-                    [DisplayName("ソート項目")]
-                    public string? KeyEventData { get; set; }
-                    [DisplayName("昇順・降順")]
-                    public bool Descending { get; set; } = false;
 
-                    public SortEventRec(string? KeyEventData, bool Descending) {
-                        this.KeyEventData = KeyEventData;
-                        this.Descending = Descending;
-                    }
-                    public SortEventRec() {
-                    }
-                }
             }
 
-            public class KeyAreaClass {
-                public class SelecteWhereItem {
-                    [DisplayName("検索項目項目")]
-                    public string? LeftSide { get; set; }
+            /// <summary>
+            /// 検索キー管理用クラス
+            /// </summary>
+            public class KeyAreaClass : IKeyAreaClass {
 
-                    [DisplayName("比較")]
-                    [MaxLength(2)]
-                    public string? ComparisonOperator { get; set; } = "==";
+                /// <summary>
+                /// Where入力リスト初期化
+                /// </summary>
+                public SelecteWhereItem[] SelecteWhereItemArray { get; set; }
 
-                    [DisplayName("検索キー")]
-                    public string? RightSide { get; set; }
-                }
+                /// <summary>
+                /// 検索キー入力最大行数
+                /// </summary>
+                [JsonIgnore]
+                public int LineCountForSelectorOfWhere { get; set; } = 6; //Where入力６行
 
                 /// <summary>
                 /// 比較演算子選択用
@@ -113,42 +152,36 @@ namespace Convenience.Models.ViewModels.ShiireJisseki {
                 public SelectList ComparisonOperatorList { get; set; }
 
                 /// <summary>
-                /// Where入力行数
-                /// </summary>
-                [JsonIgnore]
-                const int LineCountForSelectorOfWhere = 6; //Where入力６行
-
-                /// <summary>
-                /// Where入力リスト初期化
-                /// </summary>
-                [JsonIgnore]
-                public SelecteWhereItem[] SelecteWhereItemArray { get; set; }
-
-                /// <summary>
                 /// Where左辺用カラムセット用
                 /// </summary>
                 /// 
                 [JsonIgnore]
                 public SelectList SelectWhereLeftSideList { get; set; }
 
+                /// <summary>
+                /// 検索キー指示データ初期データセット
+                /// 仕入日（6か月前以降）でセット
+                /// </summary>
+                public SelecteWhereItem GetDefaltSortForWhere(int index) {
+                    return index switch {
+                        0 => new SelecteWhereItem(nameof(ShiireJissekiLineClass.ShiireDate), Comparisons.GreaterThanOrEqual.ToString(), (new DateOnly(DateTime.Now.AddMonths(-6).Year, DateTime.Now.AddMonths(-6).Month, 1)).ToString()),
+                        _ => new SelecteWhereItem()
+                    };
+                }
+                /// <summary>
+                /// 検索キーエリア管理用クラス
+                /// </summary>
                 public KeyAreaClass() {
 
-                    ComparisonOperatorList = new SelectList(
-                    new List<SelectListItem> {
-                        new (){ Value = Comparisons.Equal.ToString(), Text = "=" },
-                        new (){ Value = Comparisons.NotEqual.ToString(), Text = "!=" },
-                        new (){ Value = Comparisons.GreaterThanOrEqual.ToString(), Text = ">=" },
-                        new (){ Value = Comparisons.GreaterThan.ToString(), Text = ">" },
-                        new (){ Value = Comparisons.LessThanOrEqual.ToString(), Text = "<=" },
-                        new (){ Value = Comparisons.LessThan.ToString(), Text = "<" },
-                    },
-                    "Value",
-                    "Text"
-                );
+                    /*
+                     * 初期化
+                     */
+                    SelecteWhereItemArray = new SelecteWhereItem[LineCountForSelectorOfWhere];
+                    ComparisonOperatorList = new SelectList(new List<SelectListItem>());
 
-                    /// <summary>
-                    /// Where左辺用カラムセット用
-                    /// </summary>
+                    /*
+                     *  検索キー一覧表示セット
+                     */
                     SelectWhereLeftSideList = new SelectList(
                     new List<SelectListItem>{
                         new() { Value = nameof(ShiireJissekiLineClass.ShiireDate), Text = ISharedTools.GetDisplayName(typeof(ShiireJissekiLineClass),nameof(ShiireJissekiLineClass.ShiireDate)) },
@@ -166,31 +199,38 @@ namespace Convenience.Models.ViewModels.ShiireJisseki {
                     "Value",
                     "Text"
                 );
-                    /// <summary>
-                    /// Where入力リスト初期化
-                    /// </summary>
-                    SelecteWhereItemArray
-                        = Enumerable.Range(0, LineCountForSelectorOfWhere).Select(_ => new SelecteWhereItem()).ToArray();
-                }
-                public enum Comparisons {
-                    Equal,              //  ==
-                    NotEqual,           //  !=
-                    GreaterThanOrEqual, //  >=
-                    GreaterThan,        //  >
-                    LessThanOrEqual,    //  <=
-                    LessThan            //  <
-                }
 
+                    /*
+                     * 比較演算子一覧のセット
+                     * 検索キーキー指示データセット
+                     */
+                    ((IKeyAreaClass)this).InitKeyArea();
+
+                }
             }
-
         }
-        public class DataAreaClass {
 
-            public IEnumerable<ShiireJissekiLineClass> ShiireJissekiLines { get; set; }
+        /// <summary>
+        /// データ表示管理用クラス
+        /// </summary>
+        public class DataAreaClass : IDataAreaClass {
 
+            /// <summary>
+            /// データ表示用リスト
+            /// </summary>
+            public IEnumerable<ShiireJissekiLineClass> Lines { get; set; }
+
+            /// <summary>
+            /// コンストラクタ
+            ///  データ表示用リストの初期化
+            /// </summary>
             public DataAreaClass() {
-                this.ShiireJissekiLines = new List<ShiireJissekiLineClass>();
+                this.Lines = new List<ShiireJissekiLineClass>();
             }
+
+            /// <summary>
+            /// データ表示用リストの１レコード定義
+            /// </summary>
             public class ShiireJissekiLineClass : Convenience.Models.DataModels.ShiireJisseki {
 
                 [DisplayName("仕入先会社")]

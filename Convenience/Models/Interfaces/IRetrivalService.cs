@@ -1,8 +1,5 @@
-﻿using Convenience.Models.DataModels;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
-using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel;
-using System.Numerics;
 
 namespace Convenience.Models.Interfaces {
     public interface IRetrivalService : ISharedTools {
@@ -48,7 +45,16 @@ namespace Convenience.Models.Interfaces {
         /// <param name="comparisonOperator">比較演算子</param>
         /// <param name="rightSide">右辺</param>
         /// <returns></returns>
-        public Expression<Func<T, bool>>? WhereLambda<T>(string leftSide, string comparisonOperator, string rightSide);
+        /// 
+        /*
+         * エンティティに対する条件処理
+         */
+        public Expression<Func<T, bool>>? WhereLambda1<T>(string leftSide, string comparison, string rightSide);
+        
+        /*
+         * 表示用データエリアに対する条件処理
+         */
+        public Expression<Func<T, bool>>? WhereLambda2<T>(string leftSide, string comparison, string rightSide);
 
         /// <summary>
         /// 検索指示項目を認識しラムダ式を作る
@@ -70,10 +76,13 @@ namespace Convenience.Models.Interfaces {
                     if (ISharedTools.IsExistCheck(rightSide = argSelecteWhereItemArray[i].RightSide)) {
                         if (ISharedTools.IsExistCheck(comparison = argSelecteWhereItemArray[i].ComparisonOperator)) {
                             /* Where系ラムダ式を作る */
-                            Expression<Func<T1, bool>>? lambda = default;
+                            Expression<Func<T1, bool>>? lambda;
 
-                            lambda = ((IRetrivalService)this).WhereLambda<T1>(leftSide, comparison, rightSide);
-
+                            if (typeof(T1) != typeof(T2)) {
+                                lambda = ((IRetrivalService)this).WhereLambda1<T1>(leftSide!, comparison!, rightSide!);
+                            } else {
+                                lambda = ((IRetrivalService)this).WhereLambda2<T1>(leftSide!, comparison!, rightSide!);
+                            }
                             if (ISharedTools.IsExistCheck(lambda)) {
                                 if (needAnd) {
                                     //2回目以降はAnd定義を追加
@@ -96,7 +105,6 @@ namespace Convenience.Models.Interfaces {
             }
             return Meisais;
         }
-        
 
 
         /// <summary>

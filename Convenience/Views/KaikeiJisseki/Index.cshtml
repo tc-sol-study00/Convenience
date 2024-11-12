@@ -95,46 +95,46 @@
         </form>
     </div>
 
-    @if ((Model.DataArea.KaikeiJissekiLines?.Count() ?? 0) > 0) {
+    @if ((Model.DataArea.Lines?.Count() ?? 0) > 0) {
         <div class="list-group mt-1">
             <table class="table table-striped table-bordered">
                 <thead class="table-primary">
                     <tr>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.UriageDatetime" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.UriageDatetime" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.UriageSu" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.UriageSu" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.UriageKingaku" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.UriageKingaku" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ZeikomiKingaku" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ZeikomiKingaku" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohinTanka" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinTanka" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.ShohiZeiritsu" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohiZeiritsu" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.NaigaiClass" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.NaigaiClass" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.KaikeiJissekiLines!.FirstOrDefault()!.NaigaiClassName" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.NaigaiClassName" class="control-label"></label>
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var item in Model.DataArea.KaikeiJissekiLines!) {
+                    @foreach (var item in Model.DataArea.Lines!) {
                         <tr>
                             <td>
                                 @item.UriageDatetime
