@@ -3,6 +3,7 @@ using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ChumonJisseki;
 using Convenience.Models.ViewModels.KaikeiJisseki;
 using Microsoft.AspNetCore.Mvc;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
@@ -106,12 +107,12 @@ namespace Convenience.Controllers {
             ChumonJissekiViewModel createdChumonJissekiViewModel = await chumonJissekiService.ChumonJissekiRetrival(chumonJissekiViewModel);
 
             // ページング処理
-            int totalLines = createdChumonJissekiViewModel.DataArea.ChumonJissekiLines.Count();
+            int totalLines = createdChumonJissekiViewModel.DataArea.Lines.Count();
             ViewBag.TotalPages = Math.Ceiling((double)totalLines / pageSize);
             ViewBag.CurrentPage = page;
 
-            createdChumonJissekiViewModel.DataArea.ChumonJissekiLines =
-                createdChumonJissekiViewModel.DataArea.ChumonJissekiLines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            createdChumonJissekiViewModel.DataArea.Lines =
+                createdChumonJissekiViewModel.DataArea.Lines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             // キーワードエリアの保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(createdChumonJissekiViewModel.KeywordArea);

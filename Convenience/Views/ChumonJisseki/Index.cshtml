@@ -95,55 +95,55 @@
         </form>
     </div>
 
-    @if ((Model.DataArea.ChumonJissekiLines?.Count() ?? 0) > 0) {
+    @if ((Model.DataArea.Lines?.Count() ?? 0) > 0) {
         <div class="list-group mt-1">
             <table class="table table-striped table-bordered">
                 <thead class="table-primary">
                     <tr>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ChumonId" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ChumonId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShiireSakiId" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShiireSakiId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShiireSakiKaisya" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShiireSakiKaisya" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShiirePrdId" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShiirePrdId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShiirePrdName" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShiirePrdName" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ChumonSu" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ChumonSu" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShiireZumiSu" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShiireZumiSu" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ChumonZan" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ChumonZan" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ChumonKingaku" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ChumonKingaku" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ShiireZumiKingaku" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShiireZumiKingaku" class="control-label text-end"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.ChumonJissekiLines!.FirstOrDefault()!.ChumonZanKingaku" class="control-label text-end"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ChumonZanKingaku" class="control-label text-end"></label>
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var item in Model.DataArea.ChumonJissekiLines!) {
+                    @foreach (var item in Model.DataArea.Lines!) {
                         <tr>
                             <td>
                                 @item.ChumonId

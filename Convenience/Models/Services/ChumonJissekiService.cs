@@ -11,6 +11,9 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>.IKeywordAreaClass.IKeyAreaClass;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>.IKeywordAreaClass.ISortAreaClass;
+using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>.IKeywordAreaClass;
 using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel;
 using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 
@@ -82,22 +85,24 @@ namespace Convenience.Models.Services {
             chumonJissekiLines = SearchItemRecognizer<ChumonJissekiLineClass>(argChumonJissekiViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, chumonJissekiLines);
 
 
-            ChumonJissekiViewModel.DataArea.ChumonJissekiLines = chumonJissekiLines;
+            ChumonJissekiViewModel.DataArea.Lines = chumonJissekiLines;
 
             /*
              *  マップされた注文実績の表情報を画面上のソート指示によりソートする
              */
             //ソートするために表情報を取り出す
             IEnumerable<DataAreaClass.ChumonJissekiLineClass> beforeDisplayForChumonJissekiLines =
-                ChumonJissekiViewModel.DataArea.ChumonJissekiLines;
+                ChumonJissekiViewModel.DataArea.Lines;
             //ソートする
+
+
             IEnumerable<DataAreaClass.ChumonJissekiLineClass> SortedChumonJissekiLines =
                 SetSortKey(argChumonJissekiViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForChumonJissekiLines);
 
             /*
              * 表情報をセットし返却
              */
-            ChumonJissekiViewModel.DataArea.ChumonJissekiLines = SortedChumonJissekiLines;
+            ChumonJissekiViewModel.DataArea.Lines = SortedChumonJissekiLines;
             return ChumonJissekiViewModel;
         }
 
@@ -108,7 +113,7 @@ namespace Convenience.Models.Services {
         /// <param name="argChumonJissekis">ソート対象となる表示用注文実績データ</param>
         /// <returns></returns>
         private static IEnumerable<DataAreaClass.ChumonJissekiLineClass> SetSortKey
-            (KeywordAreaClass.SortAreaClass.SortEventRec[] argSortEventRec, IEnumerable<DataAreaClass.ChumonJissekiLineClass> argChumonJissekis) {
+            (ISortAreaClass.SortEventRec[] argSortEventRec, IEnumerable<DataAreaClass.ChumonJissekiLineClass> argChumonJissekis) {
 
             //OrderByのときはtrue、ThenByのときはfalse
             bool IsOrderBy = true;
@@ -116,7 +121,7 @@ namespace Convenience.Models.Services {
             //画面のソート指示行を処理する
             for (int i = 0; i < argSortEventRec.Length; i++) {
 
-                KeywordAreaClass.SortAreaClass.SortEventRec aSortEventRec = argSortEventRec[i];
+                ISortAreaClass.SortEventRec aSortEventRec = argSortEventRec[i];
                 if (ISharedTools.IsExistCheck(aSortEventRec.KeyEventData)) {     //指示がない場合があるので、チェック
                     string sortKey = aSortEventRec.KeyEventData!;
                     bool descending = aSortEventRec.Descending!;
@@ -141,27 +146,28 @@ namespace Convenience.Models.Services {
         /// <param name="Meisais">注文実績クエリ</param>
         /// <returns>ラムダ式で処理された検索結果（注文実績明細が渡されたら遅延実行）</returns>
         private static IEnumerable<T> SearchItemRecognizer<T>
-            (KeywordAreaClass.KeyAreaClass.SelecteWhereItem[] argSelecteWhereItemArray, IEnumerable<T> Meisais) {
+            (SelecteWhereItem[] argSelecteWhereItemArray, IEnumerable<T> Meisais) {
 
             bool needAnd = false;
             Expression<Func<T, bool>>? setExpression = default; //初期化
 
             string shiireSakiKaisya =
-                $"{nameof(ChumonJissekiMeisai)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShiireSakiMaster)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShiireSakiMaster.ShiireSakiKaisya)}";
 
             string shiirePrdName =
-                $"{nameof(ChumonJissekiMeisai)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShiirePrdName)}";
 
             string shohinName =
-                $"{nameof(ChumonJissekiMeisai)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShohinMaster)}." +
                 $"{nameof(ChumonJissekiMeisai.ShiireMaster.ShohinMaster.ShohinName)}";
+
+            string chumonDate =
+                $"{nameof(ChumonJissekiMeisai.ChumonJisseki)}." +
+                $"{nameof(ChumonJissekiMeisai.ChumonJisseki.ChumonDate)}";
 
 
             //検索指示項目行を処理する
@@ -178,6 +184,8 @@ namespace Convenience.Models.Services {
                                 lambda = leftSide switch {
                                     nameof(DataAreaClass.ChumonJissekiLineClass.ChumonId) =>
                                         BuildComparison<T>(nameof(ChumonJissekiMeisai.ChumonId), comparison!, rightSide!),
+                                    nameof(DataAreaClass.ChumonJissekiLineClass.ChumonDate) =>
+                                        BuildComparison<T>(chumonDate, comparison!, DateOnly.Parse(rightSide!)),
                                     nameof(DataAreaClass.ChumonJissekiLineClass.ShiireSakiId) =>
                                         BuildComparison<T>(nameof(ChumonJissekiMeisai.ShiireSakiId), comparison!, rightSide!),
                                     nameof(DataAreaClass.ChumonJissekiLineClass.ShiirePrdId) =>
@@ -284,7 +292,7 @@ namespace Convenience.Models.Services {
             }
 
             // 比較演算子のenumの値に変換
-            KeywordAreaClass.KeyAreaClass.Comparisons comparisonType = (KeywordAreaClass.KeyAreaClass.Comparisons)Enum.Parse(typeof(KeywordAreaClass.KeyAreaClass.Comparisons), strComparisonType);
+            Comparisons comparisonType = (Comparisons)Enum.Parse(typeof(Comparisons), strComparisonType);
 
             // 比較演算子をラムダ式に組み込む
             Expression comparison;
@@ -294,23 +302,23 @@ namespace Convenience.Models.Services {
                 MethodCallExpression compareExpression = Expression.Call(compareMethod!, property, constant);
 
                 comparison = comparisonType switch {
-                    KeywordAreaClass.KeyAreaClass.Comparisons.Equal => Expression.Equal(compareExpression, Expression.Constant(0)),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.NotEqual => Expression.NotEqual(compareExpression, Expression.Constant(0)),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.GreaterThanOrEqual => Expression.GreaterThanOrEqual(compareExpression, Expression.Constant(0)),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.GreaterThan => Expression.GreaterThan(compareExpression, Expression.Constant(0)),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.LessThanOrEqual => Expression.LessThanOrEqual(compareExpression, Expression.Constant(0)),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.LessThan => Expression.LessThan(compareExpression, Expression.Constant(0)),
+                    Comparisons.Equal => Expression.Equal(compareExpression, Expression.Constant(0)),
+                    Comparisons.NotEqual => Expression.NotEqual(compareExpression, Expression.Constant(0)),
+                    Comparisons.GreaterThanOrEqual => Expression.GreaterThanOrEqual(compareExpression, Expression.Constant(0)),
+                    Comparisons.GreaterThan => Expression.GreaterThan(compareExpression, Expression.Constant(0)),
+                    Comparisons.LessThanOrEqual => Expression.LessThanOrEqual(compareExpression, Expression.Constant(0)),
+                    Comparisons.LessThan => Expression.LessThan(compareExpression, Expression.Constant(0)),
                     _ => throw new NotSupportedException($"Comparison type {comparisonType} is not supported.")
                 };
             } else {
                 // 非文字列の場合、通常の比較演算を使用する
                 comparison = comparisonType switch {
-                    KeywordAreaClass.KeyAreaClass.Comparisons.Equal => Expression.Equal(property, constant),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.NotEqual => Expression.NotEqual(property, constant),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, constant),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.GreaterThan => Expression.GreaterThan(property, constant),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.LessThanOrEqual => Expression.LessThanOrEqual(property, constant),
-                    KeywordAreaClass.KeyAreaClass.Comparisons.LessThan => Expression.LessThan(property, constant),
+                    Comparisons.Equal => Expression.Equal(property, constant),
+                    Comparisons.NotEqual => Expression.NotEqual(property, constant),
+                    Comparisons.GreaterThanOrEqual => Expression.GreaterThanOrEqual(property, constant),
+                    Comparisons.GreaterThan => Expression.GreaterThan(property, constant),
+                    Comparisons.LessThanOrEqual => Expression.LessThanOrEqual(property, constant),
+                    Comparisons.LessThan => Expression.LessThan(property, constant),
                     _ => throw new NotSupportedException($"Comparison type {comparisonType} is not supported.")
                 };
             }

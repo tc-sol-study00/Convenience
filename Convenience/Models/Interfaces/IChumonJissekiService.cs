@@ -2,6 +2,7 @@
 using Convenience.Models.ViewModels.ChumonJisseki;
 using Convenience.Models.ViewModels.TentoZaiko;
 using System.Linq.Expressions;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 
 namespace Convenience.Models.Interfaces {
     public interface IChumonJissekiService {
