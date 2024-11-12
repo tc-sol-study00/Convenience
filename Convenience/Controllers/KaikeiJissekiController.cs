@@ -103,12 +103,12 @@ namespace Convenience.Controllers {
             KaikeiJissekiViewModel createdKaikeiJissekiViewModel = await kaikeiJissekiService.KaikeiJissekiRetrival(kaikeiJissekiViewModel);
 
             // ページング処理
-            int totalLines = createdKaikeiJissekiViewModel.DataArea.KaikeiJissekiLines.Count();
+            int totalLines = createdKaikeiJissekiViewModel.DataArea.Lines.Count();
             ViewBag.TotalPages = Math.Ceiling((double)totalLines / pageSize);
             ViewBag.CurrentPage = page;
 
-            createdKaikeiJissekiViewModel.DataArea.KaikeiJissekiLines =
-                createdKaikeiJissekiViewModel.DataArea.KaikeiJissekiLines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            createdKaikeiJissekiViewModel.DataArea.Lines =
+                createdKaikeiJissekiViewModel.DataArea.Lines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             // キーワードエリアの保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(createdKaikeiJissekiViewModel.KeywordArea);

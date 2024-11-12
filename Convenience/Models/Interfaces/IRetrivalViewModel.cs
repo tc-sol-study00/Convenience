@@ -67,8 +67,7 @@ namespace Convenience.Models.Interfaces {
                 /// <summary>
                 /// ソートキー指示データ初期データセット
                 /// </summary>
-                [JsonIgnore]
-                public Func<int, SortEventRec> GetDefaltSortForSort { get; set; }
+                public SortEventRec GetDefaltSortForSort(int index);
 
                 /// <summary>
                 /// ソートキーエリア管理用クラス
@@ -156,8 +155,8 @@ namespace Convenience.Models.Interfaces {
                 /// <summary>
                 /// 検索キー指示データ初期データセット
                 /// </summary>
-                [JsonIgnore]
-                public Func<int, SelecteWhereItem> GetDefaltSortForWhere { get; set; }
+                public SelecteWhereItem GetDefaltSortForWhere(int index);
+
 
                 /// <summary>
                 /// 比較演算子一覧のセット
@@ -184,14 +183,11 @@ namespace Convenience.Models.Interfaces {
                     /*
                      *  検索キーキー指示データセット
                      */
+
                     SelecteWhereItemArray
                         = Enumerable.Range(0, LineCountForSelectorOfWhere).Select(x => GetDefaltSortForWhere(x)).ToArray();
                 }
-
-
-
             }
-
         }
 
         /// <summary>

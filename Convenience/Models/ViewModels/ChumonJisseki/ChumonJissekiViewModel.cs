@@ -11,6 +11,7 @@ using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models
 using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>.IKeywordAreaClass.ISortAreaClass;
 using static Convenience.Models.Interfaces.IRetrivalViewModel<Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass.ChumonJissekiLineClass>.IKeywordAreaClass.IKeyAreaClass;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.ViewModels.ChumonJisseki {
     /// <summary>
@@ -75,10 +76,14 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
 
                 /// <summary>
                 /// ソートキー指示データ初期データセット
+                /// 注文コード（昇順）でセット
                 /// </summary>
-                [JsonIgnore]
-                public Func<int, SortEventRec> GetDefaltSortForSort { get; set; }
-
+                public SortEventRec GetDefaltSortForSort(int index) {
+                    return index switch {
+                        0 => new SortEventRec(nameof(ChumonJissekiLineClass.ChumonId), false),
+                        _ => new SortEventRec()
+                    };
+                }
 
                 /// <summary>
                 /// ソートキー入力最大行数
@@ -93,15 +98,6 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
                      * 初期化
                      */
                     KeyEventList = new SortEventRec[LineCountForSelectorOfOrder];
-
-                    /*
-                     * ソートキー指示データ初期データセット
-                     * 注文コード（昇順）でセット
-                     */
-                    GetDefaltSortForSort = number => number switch {
-                        0 => new SortEventRec(nameof(ChumonJissekiLineClass.ChumonId), false),
-                        _ => new SortEventRec()
-                    };
 
                     /*
                      *  ソートキー一覧表示セット
@@ -170,10 +166,15 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
 
                 /// <summary>
                 /// 検索キー指示データ初期データセット
+                /// 注文日（6か月前以降）でセット
                 /// </summary>
-                [JsonIgnore]
-                public Func<int, SelecteWhereItem> GetDefaltSortForWhere { get; set; }
 
+                public SelecteWhereItem GetDefaltSortForWhere(int index) {
+                    return  index switch {
+                        0 => new SelecteWhereItem(nameof(ChumonJissekiLineClass.ChumonDate), Comparisons.GreaterThanOrEqual.ToString(), (new DateOnly(DateTime.Now.AddMonths(-6).Year, DateTime.Now.AddMonths(-6).Month, 1)).ToString()),
+                        _ => new SelecteWhereItem()
+                    };
+                }
                 /// <summary>
                 /// 検索キーエリア管理用クラス
                 /// </summary>
@@ -184,15 +185,6 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
                      */
                     SelecteWhereItemArray = new SelecteWhereItem[LineCountForSelectorOfWhere];
                     ComparisonOperatorList = new SelectList(new List<SelectListItem>());
-
-                    /*
-                     * 検索キー指示データ初期データセット
-                     * 注文日（6か月前以降）でセット
-                     */
-                    GetDefaltSortForWhere = number => number switch {
-                        0 => new SelecteWhereItem(nameof(ChumonJissekiLineClass.ChumonDate), Comparisons.GreaterThanOrEqual.ToString(), (new DateOnly(DateTime.Now.AddMonths(-6).Year, DateTime.Now.AddMonths(-6).Month, 1)).ToString()),
-                        _ => new SelecteWhereItem()
-                    };
 
                     /*
                      *  検索キー一覧表示セット
@@ -293,13 +285,8 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
                     ShiirePrdName = string.Empty;
                     ShohinName = string.Empty;
                 }
-
-
             }
-
         }
-
     }
-
 }
 

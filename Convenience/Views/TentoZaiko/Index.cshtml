@@ -96,34 +96,34 @@
         </form>
     </div>
 
-    @if ((Model.DataArea.TentoZaIkoLines?.Count() ?? 0) > 0) {
+    @if ((Model.DataArea.Lines?.Count() ?? 0) > 0) {
         <div class="list-group mt-1">
             <table class="table table-striped table-bordered">
                 <thead class="table-primary">
                     <tr>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinId" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ShohinName" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.ZaikoSu" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.ZaikoSu" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastShireDateTime" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.LastShireDateTime" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastHaraidashiDate" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.LastHaraidashiDate" class="control-label"></label>
                         </th>
                         <th>
-                            <label asp-for="@Model.DataArea.TentoZaIkoLines!.FirstOrDefault()!.LastUriageDatetime" class="control-label"></label>
+                            <label asp-for="@Model.DataArea.Lines!.FirstOrDefault()!.LastUriageDatetime" class="control-label"></label>
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var item in Model.DataArea.TentoZaIkoLines!) {
+                    @foreach (var item in Model.DataArea.Lines!) {
                         <tr>
                         <td>
                             @item.ShohinId

@@ -106,12 +106,12 @@ namespace Convenience.Controllers {
             TentoZaikoViewModel createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
 
             // ページング処理
-            int totalLines = createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Count();
+            int totalLines = createdTentoZaikoViewModel.DataArea.Lines.Count();
             ViewBag.TotalPages = Math.Ceiling((double)totalLines / pageSize);
             ViewBag.CurrentPage = page;
 
-            createdTentoZaikoViewModel.DataArea.TentoZaIkoLines =
-                createdTentoZaikoViewModel.DataArea.TentoZaIkoLines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            createdTentoZaikoViewModel.DataArea.Lines =
+                createdTentoZaikoViewModel.DataArea.Lines.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             // キーワードエリアの保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(createdTentoZaikoViewModel.KeywordArea);
