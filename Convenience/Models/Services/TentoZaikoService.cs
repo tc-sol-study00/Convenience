@@ -7,6 +7,7 @@ using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel;
 using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel.DataAreaClass;
 
@@ -14,7 +15,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 店頭在庫検索サービス
     /// </summary>
-    public class TentoZaikoService : ITentoZaikoService, IRetrivalService, ISharedTools {
+    public class TentoZaikoService : ITentoZaikoService, IRetrivalService, ITotalSummaryRetrival,ISharedTools {
 
         /// <summary>
         /// DBコンテクスト
@@ -79,9 +80,17 @@ namespace Convenience.Models.Services {
                 t.SetSortKey(argTentoZaikoViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForTentoZaIkoLines);
 
             /*
+             * 総合計
+             */
+            TentoZaIkoLine summaryTentoZaIkoLine = new TentoZaIkoLine();
+            summaryTentoZaIkoLine =
+                ((ITotalSummaryRetrival)this).TotalSummary(SortedTentoZaikoLines, summaryTentoZaIkoLine, nameof(summaryTentoZaIkoLine.ShohinName));
+
+            /*
              * 表情報をセットし返却
              */
             tentoZaikoViewModel.DataArea.Lines = SortedTentoZaikoLines;
+            tentoZaikoViewModel.DataArea.SummaryLine = summaryTentoZaIkoLine;
             return tentoZaikoViewModel;
         }
 

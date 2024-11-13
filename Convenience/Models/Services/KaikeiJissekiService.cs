@@ -6,6 +6,7 @@ using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.KaikeiJisseki;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 using static Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel;
 using static Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel.DataAreaClass;
 
@@ -13,7 +14,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 会計実績検索サービス
     /// </summary>
-    public class KaikeiJissekiService : IKaikeiJissekiService, IRetrivalService, ISharedTools {
+    public class KaikeiJissekiService : IKaikeiJissekiService, IRetrivalService, ITotalSummaryRetrival,ISharedTools {
 
         /// <summary>
         /// DBコンテクスト
@@ -80,9 +81,17 @@ namespace Convenience.Models.Services {
                 t.SetSortKey(argKaikeiJissekiViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForKaikeiJissekiLines);
 
             /*
+             * 総合計
+             */
+            KaikeiJissekiLineClass summaryKaikeiJissekiLine = new KaikeiJissekiLineClass();
+            summaryKaikeiJissekiLine =
+                ((ITotalSummaryRetrival)this).TotalSummary(SortedKaikeiJissekiLines, summaryKaikeiJissekiLine, nameof(summaryKaikeiJissekiLine.ShohinName));
+
+            /*
              * 表情報をセットし返却
              */
             kaikeiJissekiViewModel.DataArea.Lines = SortedKaikeiJissekiLines;
+            kaikeiJissekiViewModel.DataArea.SummaryLine = summaryKaikeiJissekiLine;
             return kaikeiJissekiViewModel;
         }
 

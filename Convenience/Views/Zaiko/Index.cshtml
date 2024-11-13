@@ -27,9 +27,9 @@
                             <div class="col-2 text-center">
                                 @(i + 1)
                             </div>
-                                @{
-                                    var a = @Model.KeyEventList[i];
-                                }
+                            @{
+                                var a = @Model.KeyEventList[i];
+                            }
                             <div class="col-4">
                                 <select asp-for="@Model.KeyEventList[i].KeyEventData" asp-items="@Model.KeyList" class="form-control">
                                     <option value="">-- 選択してください --</option>
@@ -156,6 +156,37 @@
                             </td>
                         </tr>
                     }
+                    <tr class="light-pink">
+                        @{
+                            var zk = Model.ZaikoLine;
+                        }
+                        <td>
+                           合計
+                        </td>
+                        <td>
+                            @zk.ShiirePrdId
+                        </td>
+                        <td>
+                            @zk.ShohinId
+                        </td>
+                        <td class="text-end">
+                            @zk.ShohinName
+                            件
+                        </td>
+                        <td>
+                            @zk.ChumonZan
+                        </td>
+                        <td>
+                            @zk.SokoZaikoCaseSu
+                        </td>
+                        <td>
+                            @zk.SokoZaikoSu
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

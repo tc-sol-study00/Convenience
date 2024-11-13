@@ -34,9 +34,9 @@ namespace Convenience.Controllers {
             var keydata = inZaikoModel.KeyEventList;
             var selecteWhereItemArray = inZaikoModel.SelecteWhereItemArray;
 
-            ZaikoViewModel zaikoViewModel = new () {
-                ZaikoListLines = await zaikoService.KeyInput(keydata, selecteWhereItemArray)
-            };
+            ZaikoViewModel zaikoViewModel =
+                await zaikoService.KeyInput(keydata, selecteWhereItemArray);
+
             return View(zaikoViewModel);
         }
     }

@@ -220,12 +220,15 @@ namespace Convenience.Models.ViewModels.ShiireJisseki {
             /// </summary>
             public IEnumerable<ShiireJissekiLineClass> Lines { get; set; }
 
+            public ShiireJissekiLineClass SummaryLine { get; set; }
+
             /// <summary>
             /// コンストラクタ
             ///  データ表示用リストの初期化
             /// </summary>
             public DataAreaClass() {
                 this.Lines = new List<ShiireJissekiLineClass>();
+                this.SummaryLine = new ShiireJissekiLineClass();
             }
 
             /// <summary>

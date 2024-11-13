@@ -205,12 +205,15 @@ namespace Convenience.Models.ViewModels.TentoZaiko {
             /// </summary>
             public IEnumerable<TentoZaIkoLine> Lines { get; set; }
 
+            public TentoZaIkoLine SummaryLine { get; set; }
+
             /// <summary>
             /// コンストラクタ
             ///  データ表示用リストの初期化
             /// </summary>
             public DataAreaClass() {
                 Lines = new List<TentoZaIkoLine>();
+                SummaryLine = new TentoZaIkoLine();
             }
 
             /// <summary>

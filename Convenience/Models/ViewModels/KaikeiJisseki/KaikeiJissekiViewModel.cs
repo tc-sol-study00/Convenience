@@ -201,12 +201,15 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
             /// </summary>
             public IEnumerable<KaikeiJissekiLineClass> Lines { get; set; }
 
+            public KaikeiJissekiLineClass SummaryLine { get; set; }
+
             /// <summary>
             /// コンストラクタ
             ///  データ表示用リストの初期化
             /// </summary>
             public DataAreaClass() {
                 this.Lines = new List<KaikeiJissekiLineClass>();
+                this.SummaryLine = new KaikeiJissekiLineClass();
             }
 
             /// <summary>

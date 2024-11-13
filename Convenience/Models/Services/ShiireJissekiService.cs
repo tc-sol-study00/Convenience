@@ -7,6 +7,7 @@ using Convenience.Models.ViewModels.ShiireJisseki;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel;
 using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 
@@ -14,7 +15,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 仕入実績検索サービス
     /// </summary>
-    public class ShiireJissekiService : IShiireJissekiService, IRetrivalService, ISharedTools {
+    public class ShiireJissekiService : IShiireJissekiService, IRetrivalService, ITotalSummaryRetrival, ISharedTools {
 
         /// <summary>
         /// DBコンテクスト
@@ -85,9 +86,17 @@ namespace Convenience.Models.Services {
                 t.SetSortKey(argShiireJissekiViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForShiireJissekiLines);
 
             /*
+             * 総合計
+             */
+            ShiireJissekiLineClass summaryShiireJissekiLine = new ShiireJissekiLineClass();
+            summaryShiireJissekiLine =
+                ((ITotalSummaryRetrival)this).TotalSummary(SortedShiireJissekiLines, summaryShiireJissekiLine, nameof(summaryShiireJissekiLine.ShohinName));
+
+            /*
              * 表情報をセットし返却
              */
             ShiireJissekiViewModel.DataArea.Lines = SortedShiireJissekiLines;
+            ShiireJissekiViewModel.DataArea.SummaryLine = summaryShiireJissekiLine;
             return ShiireJissekiViewModel;
         }
 
