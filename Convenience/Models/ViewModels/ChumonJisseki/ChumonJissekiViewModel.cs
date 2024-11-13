@@ -231,12 +231,15 @@ namespace Convenience.Models.ViewModels.ChumonJisseki {
             /// </summary>
             public IEnumerable<ChumonJissekiLineClass> Lines { get; set; }
 
+            public ChumonJissekiLineClass SummaryLine { get; set; }
+
             /// <summary>
             /// コンストラクタ
             ///  データ表示用リストの初期化
             /// </summary>
             public DataAreaClass() {
                 Lines = new List<ChumonJissekiLineClass>();
+                SummaryLine = new ChumonJissekiLineClass();
             }
 
             /// <summary>

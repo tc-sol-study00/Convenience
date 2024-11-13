@@ -81,7 +81,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-4">
-                                                <input asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray[i].RightSide" class="form-control">
+                                                    <input asp-for="@Model.KeywordArea.KeyArea.SelecteWhereItemArray[i].RightSide" class="form-control">
                                                 </input>
                                             </div>
                                         </div>
@@ -125,27 +125,49 @@
                 <tbody>
                     @foreach (var item in Model.DataArea.Lines!) {
                         <tr>
+                            <td>
+                                @item.ShohinId
+                            </td>
+                            <td>
+                                @item.ShohinName
+                            </td>
+                            <td>
+                                @item.ZaikoSu
+                            </td>
+                            <td>
+                                @item.LastShireDateTime
+                            </td>
+                            <td>
+                                @item.LastHaraidashiDate
+                            </td>
+                            <td>
+                                @item.LastUriageDatetime
+                            </td>
+
+                        </tr>
+                    }
+                    @{
+                        var tz = Model.DataArea.SummaryLine;
+                    }
+                    <tr class="light-pink">
                         <td>
-                            @item.ShohinId
+                            合計
                         </td>
                         <td>
-                            @item.ShohinName
+                            @tz.ShohinName
+                            件
                         </td>
                         <td>
-                            @item.ZaikoSu
+                            @tz.ZaikoSu
                         </td>
                         <td>
-                            @item.LastShireDateTime
                         </td>
                         <td>
-                            @item.LastHaraidashiDate
                         </td>
                         <td>
-                            @item.LastUriageDatetime
                         </td>
 
-                </tr>
-                    }
+                    </tr>
             </tbody>
         </table>
     </div>

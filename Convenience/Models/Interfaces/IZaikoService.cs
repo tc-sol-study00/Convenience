@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.DataModels;
+using Convenience.Models.ViewModels.Zaiko;
 using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 
 namespace Convenience.Models.Interfaces {
@@ -12,6 +13,6 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inKeySetOrderArray"></param>
         /// <param name="inSelectWhereItemArray"></param>
         /// <returns></returns>
-        public Task<IList<ZaikoListLine>> KeyInput(KeyEventRec[] keydata, SelecteWhereItem[] selecteWhereItemArray);
+        public Task<ZaikoViewModel> KeyInput(KeyEventRec[] keydata, SelecteWhereItem[] selecteWhereItemArray);
     }
 }

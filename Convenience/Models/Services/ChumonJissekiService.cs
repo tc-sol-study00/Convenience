@@ -13,7 +13,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 注文実績検索サービス
     /// </summary>
-    public class ChumonJissekiService : IChumonJissekiService, IRetrivalService, ISharedTools {
+    public class ChumonJissekiService : IChumonJissekiService, IRetrivalService, ITotalSummaryRetrival,ISharedTools {
 
         /// <summary>
         /// DBコンテクスト
@@ -81,6 +81,7 @@ namespace Convenience.Models.Services {
                 (argChumonJissekiViewModel.KeywordArea.KeyArea.SelecteWhereItemArray, chumonJissekiLines);
             ChumonJissekiViewModel.DataArea.Lines = chumonJissekiLines;
 
+
             /*
              *  マップされた注文実績の表情報を画面上のソート指示によりソートする
              */
@@ -93,9 +94,17 @@ namespace Convenience.Models.Services {
                 t.SetSortKey(argChumonJissekiViewModel.KeywordArea.SortArea.KeyEventList, beforeDisplayForChumonJissekiLines);
 
             /*
+             * 総合計
+             */
+            ChumonJissekiLineClass summaryChumonJissekiLine = new ChumonJissekiLineClass();
+            summaryChumonJissekiLine =
+                ((ITotalSummaryRetrival)this).TotalSummary(SortedChumonJissekiLines, summaryChumonJissekiLine, nameof(summaryChumonJissekiLine.ShohinName));
+
+            /*
              * 表情報をセットし返却
              */
             ChumonJissekiViewModel.DataArea.Lines = SortedChumonJissekiLines;
+            ChumonJissekiViewModel.DataArea.SummaryLine = summaryChumonJissekiLine;
             return ChumonJissekiViewModel;
         }
 

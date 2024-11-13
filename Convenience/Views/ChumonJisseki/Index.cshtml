@@ -1,4 +1,5 @@
-﻿@model Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel
+﻿@using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel
+@model Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel
 @{
     ViewData["Title"] = "注文実績検索";
 }
@@ -187,6 +188,52 @@
 
                         </tr>
                     }
+                    <tr class="light-pink">
+                        @{
+                            var sl=Model.DataArea.SummaryLine;
+                        }
+                        <td>
+                            合計  
+                        </td>
+                        <td>
+                            @sl.ShiireSakiId
+                        </td>
+                        <td>
+                            @sl.ShiireSakiKaisya
+                        </td>
+                        <td>
+                            @sl.ShiirePrdId
+                        </td>
+                        <td>
+                            @sl.ShiirePrdName
+                        </td>
+                        <td>
+                            @sl.ShohinId
+                        </td>
+                        <td class="text-end">
+                            @sl.ShohinName
+                            件
+                        </td>
+                        <td class="text-end">
+                            @sl.ChumonSu
+                        </td>
+                        <td class="text-end">
+                            @sl.ShiireZumiSu
+                        </td>
+                        <td class="text-end">
+                            @sl.ChumonZan
+                        </td>
+                        <td class="text-end">
+                            @sl.ChumonKingaku.ToString("F0")
+                        </td>
+                        <td class="text-end">
+                            @sl.ShiireZumiKingaku.ToString("F0")
+                        </td>
+                        <td class="text-end">
+                            @sl.ChumonZanKingaku.ToString("F0")
+                        </td>
+
+                    </tr>
                 </tbody>
             </table>
         </div>

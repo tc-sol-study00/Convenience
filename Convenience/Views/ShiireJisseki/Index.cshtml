@@ -175,6 +175,43 @@
                             </td>
                         </tr>
                     }
+                    @{
+                        var sl = Model.DataArea.SummaryLine;
+                    }
+                    <tr class="light-pink">
+                        <td>
+                            合計
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @sl.ChumonId
+                        </td>
+                        <td>
+                            @sl.ShiireSakiId
+                        </td>
+                        <td>
+                            @sl.ShiireSakiKaisya
+                        </td>
+                        <td>
+                            @sl.ShiirePrdId
+                        </td>
+                        <td>
+                            @sl.ShiirePrdName
+                        </td>
+                        <td>
+                            @sl.ShohinId
+                        </td>
+                        <td class="text-end">
+                            @sl.ShohinName
+                            件
+                        </td>
+                        <td class="text-end">
+                            @sl.NonyuSu
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

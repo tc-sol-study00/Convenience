@@ -8,6 +8,8 @@ using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
+using Convenience.Models.ViewModels.Zaiko;
+using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 
 
 namespace Convenience.Models.Services {
@@ -15,7 +17,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 倉庫在庫検索（サービス） 
     /// </summary>
-    public class ZaikoService : IZaikoService {
+    public class ZaikoService : IZaikoService, ITotalSummaryRetrival {
         //DBコンテキスト
         private readonly ConvenienceContext _context;
         //在庫クラス（プロパティレイヤ）用変数
@@ -56,7 +58,7 @@ namespace Convenience.Models.Services {
         /// <param name="inKeySetOrderArray"></param>
         /// <param name="inSelectWhereItemArray"></param>
         /// <returns></returns>
-        public async Task<IList<ZaikoListLine>> KeyInput(KeyEventRec[] inKeySetOrderArray, SelecteWhereItem[] inSelectWhereItemArray) {
+        public async Task<ZaikoViewModel> KeyInput(KeyEventRec[] inKeySetOrderArray, SelecteWhereItem[] inSelectWhereItemArray) {
 
             const string doubleQuotation = "\"";
             string lambdaString = string.Empty;
@@ -136,12 +138,29 @@ namespace Convenience.Models.Services {
                 }
             }
 
+
+
             //機能（３）  ：倉庫在庫・注文実績明細実際の問い合わせ実行
             //入力        ：倉庫在庫・注文実績明細検索用のQueryable
             //出力        ：入力の内容の実行結果（リスト）
 
             //上記までのQueryableで実際にＤＢ問い合わせを行い、リスト化
-            return await sokoZaikos.ToListAsync();
+
+            IList<ZaikoListLine> instSokoZaiko = await sokoZaikos.ToListAsync();
+
+            //機能（４）  ：倉庫在庫・注文実績明細実際の合計集計
+            //入力        ：入力の内容の実行結果（リスト）
+            //出力        ：合計集計の実行結果
+
+            ZaikoListLine summarySokoZaikoLine = new ZaikoListLine();
+            summarySokoZaikoLine =
+                ((ITotalSummaryRetrival)this).TotalSummary(instSokoZaiko, summarySokoZaikoLine, nameof(summarySokoZaikoLine.ShohinName));
+
+            ZaikoViewModel zaikoViewModel = new() {
+                ZaikoListLines = instSokoZaiko,
+                ZaikoLine = summarySokoZaikoLine
+            };
+            return zaikoViewModel;
         }
     }
 }

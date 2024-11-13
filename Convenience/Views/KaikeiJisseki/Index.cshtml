@@ -169,6 +169,42 @@
                         </tr>
                     }
                 </tbody>
+                @{
+                    var kj = Model.DataArea.SummaryLine;
+                }
+                <tr class="light-pink">
+                    <td>
+                      合計
+                    </td>
+                    <td>
+                        @kj.ShohinId
+                    </td>
+                    <td class="text-end">
+                        @kj.ShohinName
+                        件
+                    </td>
+                    <td class="text-end">
+                        @kj.UriageSu
+                    </td>
+                    <td class="text-end">
+                        @kj.UriageKingaku
+                    </td>
+                    <td class="text-end">
+                        @kj.ZeikomiKingaku
+                    </td>
+                    <td class="text-end">
+                        @kj.ShohinTanka
+                    </td>
+                    <td class="text-end">
+                        @kj.ShohiZeiritsu
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        @kj.NaigaiClassName
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="pagination justify-content-center">
