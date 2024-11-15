@@ -1,13 +1,17 @@
 ﻿using Convenience.Data;
+using Convenience.Models.DataModels;
 using Convenience.Models.Properties;
+using Convenience.Models.ViewModels.ShiireMaster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq.Dynamic.Core;
 using static Convenience.Models.Properties.Message;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.Interfaces {
-    public interface IMasterRegistrationService<TKeepMasterData, TPostMasterData, TMasterRegistrationViewModel>: ISharedTools {
+    public interface IMasterRegistrationService<TKeepMasterData, TPostMasterData, TMasterRegistrationViewModel> : ISharedTools {
 
         public ConvenienceContext _context { get; set; }
 
@@ -45,14 +49,14 @@ namespace Convenience.Models.Interfaces {
         /// <returns></returns>
         public IMasterRegistrationViewModel DefaultMakeViewModel() {
             // マスタデータ問い合わせ
-            KeepMasterDatas=QueryMasterData();
+            KeepMasterDatas = QueryMasterData();
 
             //表示用データ(Post用データ）セット
-            PostedMasterDatas =MapFromKeepMasterDataToPostData(KeepMasterDatas);
+            PostedMasterDatas = MapFromKeepMasterDataToPostData(KeepMasterDatas);
 
             //ビューモデルセット
             //MasterRegisiationViewModel = argMasterRegistrationViewModel;
-            MasterRegisiationViewModel.PostMasterDatas=PostedMasterDatas;
+            MasterRegisiationViewModel.PostMasterDatas = PostedMasterDatas;
 
             return MasterRegisiationViewModel;
         }
@@ -62,11 +66,11 @@ namespace Convenience.Models.Interfaces {
             KeepMasterDatas = QueryMasterData();
 
             //削除データチェック
-            IList<TPostMasterData> postMasterDatas =argMasterRegistrationViewModel.PostMasterDatas;
+            IList<TPostMasterData> postMasterDatas = argMasterRegistrationViewModel.PostMasterDatas;
 
             IList<TPostMasterData> remainPostMasterData = DeleteData<TPostMasterData>(postMasterDatas.Cast<IPostMasterData>().ToList());
 
-            KeepMasterDatas=MapFromPostDataToKeepMasterData(remainPostMasterData);
+            KeepMasterDatas = MapFromPostDataToKeepMasterData(remainPostMasterData);
 
             var entities = _context.ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)
@@ -101,8 +105,8 @@ namespace Convenience.Models.Interfaces {
         private IList<T> DeleteData<T>(IEnumerable<IPostMasterData> indatas) {
             var remainPostMasterData = indatas.Cast<IPostMasterData>()
                 .Where(x => !x.DeleteFlag)
-                .OfType<T>() 
-                .ToList(); 
+                .OfType<T>()
+                .ToList();
 
             return remainPostMasterData;
         }
@@ -111,7 +115,8 @@ namespace Convenience.Models.Interfaces {
             PostMasterDatas.Insert(index + 1, PostMasterDatas[index]);
             return PostMasterDatas;
         }
-            
+
+
         public IList<TKeepMasterData> MapFromPostDataToKeepMasterData(IList<TPostMasterData> argDatas);
 
         public IList<TPostMasterData> MapFromKeepMasterDataToPostData(IList<TKeepMasterData> argDatas);
@@ -121,7 +126,7 @@ namespace Convenience.Models.Interfaces {
         }
         public interface IDeleteFlag {
             public bool DeleteFlag { get; set; }
-        } 
+        }
         public interface IMasterRegistrationViewModel {
             public IList<TPostMasterData> PostMasterDatas { get; set; }
 
@@ -134,5 +139,30 @@ namespace Convenience.Models.Interfaces {
             /// </summary>
             public string? Remark { get; set; }
         }
+
+        public interface IMasterRegistrationSelectList {
+            public ConvenienceContext _context { get; set; }
+
+            public IList<SelectListItem> SetSelectList<T>() {
+
+                IList<SelectListItem> result = new List<SelectListItem>();
+
+                if (typeof(T) == typeof(ShiireSakiMaster)) {
+                    result = _context.ShiireSakiMaster.AsNoTracking()
+                        .OrderBy(x => x.ShiireSakiId)
+                        .Select(x => new SelectListItem { Value = x.ShiireSakiId, Text = $"{x.ShiireSakiId}:{x.ShiireSakiKaisya}" })
+                        .ToList();
+                } else if (typeof(T) == typeof(ShohinMaster)) {
+                    result = _context.ShohinMaster.AsNoTracking()
+                    .OrderBy(x => x.ShohinId)
+                    .Select(x => new SelectListItem { Value = x.ShohinId, Text = $"{x.ShohinId}:{x.ShohinName}" })
+                    .ToList();
+                }
+
+                return result;
+            }
+
+        }
+
     }
 }
