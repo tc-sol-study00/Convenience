@@ -15,7 +15,7 @@ namespace Convenience.Models.ViewModels.TentoHaraidashi {
         /// 
         [DisplayName("店頭払出日時＋コード")]
         public string? HaraidashiDateAndId { get; set; } 
-        public IList<ShohinMaster>? ShohinMasters { get; set; }
+        public IList<DataModels.ShohinMaster>? ShohinMasters { get; set; }
         public bool? IsNormal { get; set; }
         public string? Remark { get; set; } = string.Empty;
 
