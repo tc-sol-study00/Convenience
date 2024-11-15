@@ -1,7 +1,7 @@
 html {
   font-size: 14px;
 }
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   html {
     font-size: 16px;
   }
@@ -32,4 +32,11 @@ body {
 
 .light-pink {
     background-color: #ffe6e6;
+}
+
+.custom-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }

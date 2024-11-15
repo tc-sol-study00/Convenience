@@ -59,7 +59,7 @@ namespace Convenience.Models.ViewModels.Kaikei {
         public decimal UriageKingaku { get; set; }
         public string NaigaiClass { get; set; }
         public DateTime UriageDatetime { get; set; }
-        public ShohinMaster? ShohinMaster { get; set; }
+        public DataModels.ShohinMaster? ShohinMaster { get; set; }
         public IEnumerable<SelectListItem> NaigaiClassListItems { get; set; }
 
         private void Initial() {
