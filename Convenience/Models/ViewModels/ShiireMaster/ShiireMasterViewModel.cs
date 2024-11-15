@@ -50,18 +50,6 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
             ShiireSakiList = my.SetSelectList<ShiireSakiMaster>();
             ShohinList = my.SetSelectList<DataModels.ShohinMaster>();
 
-            /*
-            // SelectList の初期化
-            ShiireSakiList = _context.ShiireSakiMaster.AsNoTracking()
-                .OrderBy(x => x.ShiireSakiId)
-                .Select(x => new SelectListItem { Value = x.ShiireSakiId, Text = $"{x.ShiireSakiId}:{x.ShiireSakiKaisya}" })
-                .ToList();
-
-            ShohinList = _context.ShohinMaster.AsNoTracking()
-                .OrderBy(x => x.ShohinId)
-                .Select(x => new SelectListItem { Value = x.ShohinId, Text = $"{x.ShohinId}:{x.ShohinName}" })
-                .ToList();
-            */
         }
     }
 }
