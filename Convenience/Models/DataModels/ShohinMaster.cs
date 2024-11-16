@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Convenience.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
 
 #pragma warning disable CS8618
 
@@ -13,7 +15,7 @@ namespace Convenience.Models.DataModels {
     /// 主キー：商品コード
     /// </Remarks>
     [Table("shohin_master")]
-    public class ShohinMaster {
+    public class ShohinMaster : ISelectList {
 
         [Column("shohin_code")]
         [DisplayName("商品コード")]
@@ -49,5 +51,12 @@ namespace Convenience.Models.DataModels {
         public virtual IList<ShiireMaster>? ShiireMasters { get; set; }
 
         public virtual TentoZaiko? TentoZaiko { get; set; }
+
+        //SelectLsit用
+
+        public string Value => ShohinId;
+        public string Text => ShohinName;
+
+        public string[] OrderKey { get; } = { nameof(ShohinId) };
     }
 }

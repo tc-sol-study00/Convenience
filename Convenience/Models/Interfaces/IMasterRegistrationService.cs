@@ -7,8 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using static Convenience.Models.Properties.Message;
+using System.Linq.Dynamic.Core;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace Convenience.Models.Interfaces {
     public interface IMasterRegistrationService<TKeepMasterData, TPostMasterData, TMasterRegistrationViewModel> : ISharedTools {
@@ -76,9 +80,6 @@ namespace Convenience.Models.Interfaces {
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)
             .Select(e => e.Entity).Count();
 
-
-            var entities2 = _context.ChangeTracker.Entries();
-
             _context.SaveChanges();
 
             ErrDef errCd = ErrDef.DataValid;
@@ -143,26 +144,33 @@ namespace Convenience.Models.Interfaces {
         public interface IMasterRegistrationSelectList {
             public ConvenienceContext _context { get; set; }
 
-            public IList<SelectListItem> SetSelectList<T>() {
+            public IList<SelectListItem> SetSelectList<T>() where T : class,ISelectList, new() {
 
-                IList<SelectListItem> result = new List<SelectListItem>();
+                T attr = new T();
 
-                if (typeof(T) == typeof(ShiireSakiMaster)) {
-                    result = _context.ShiireSakiMaster.AsNoTracking()
-                        .OrderBy(x => x.ShiireSakiId)
-                        .Select(x => new SelectListItem { Value = x.ShiireSakiId, Text = $"{x.ShiireSakiId}:{x.ShiireSakiKaisya}" })
-                        .ToList();
-                } else if (typeof(T) == typeof(ShohinMaster)) {
-                    result = _context.ShohinMaster.AsNoTracking()
-                    .OrderBy(x => x.ShohinId)
-                    .Select(x => new SelectListItem { Value = x.ShohinId, Text = $"{x.ShohinId}:{x.ShohinName}" })
-                    .ToList();
+                IQueryable<T> query = _context.Set<T>();
+
+                string orderByName=attr.OrderKey.First();
+                query = query.OrderBy(orderByName);
+
+                foreach (string orderby in attr.OrderKey.Skip(1)) {
+                        ((IOrderedQueryable<T>)query).ThenBy(orderby);
                 }
 
-                return result;
+                IQueryable<SelectListItem> result = query.Select(x => new SelectListItem {
+                    Value = x.Value,
+                    Text = $"{x.Value}:{x.Text}"
+                });
+
+                return result.ToList();
             }
 
         }
 
+    }
+    public interface ISelectList {
+        public string Value { get; }
+        public string Text { get; }
+        public string[] OrderKey { get; } 
     }
 }
