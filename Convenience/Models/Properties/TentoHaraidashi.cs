@@ -152,7 +152,7 @@ namespace Convenience.Models.Properties {
             if (ISharedTools.IsExistCheck(tentoHaraidashiHeader)){
                 this.TentoHaraidashiHeader = tentoHaraidashiHeader!;
             } else {
-                this.TentoHaraidashiHeader = new TentoHaraidashiHeader();
+                this.TentoHaraidashiHeader = null;
             }
 
             return this.TentoHaraidashiHeader;
