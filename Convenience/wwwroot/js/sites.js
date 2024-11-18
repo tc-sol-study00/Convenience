@@ -1,75 +1,79 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Write your JavaScript code.
-
+// アコーデオンの状態を制御する関数
 function AccordionHandller() {
 
-    //初期画面の場合は、アコーデオンは開いた状態にする
-    //その判断は、ContollerからViewBagに設定してもらう
+    // 初期画面の場合は、アコーデオンは開いた状態にする
+    // その判断は、ControllerからViewBagに設定してもらう
     if ($('#handlingFlg').data("message") == "FirstDisplay") {
         console.log($.cookie("AccordionOpenStatus"));
 
+        // 既存のアコーデオン状態のクッキーを削除
         document.cookie = "cookieAccordionOpenStatus=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 
+        // アコーデオン状態を"Show"として設定
         $.cookie("AccordionOpenStatus", "Show");
 
         console.log($.cookie("AccordionOpenStatus"));
     }
-    //アコ―デオン制御
+
+    // アコーデオン制御
     let accordion = document.getElementById('accordion');
 
+    // クッキーが"Show"の場合、アコーデオンを開く
     if ($.cookie("AccordionOpenStatus") == "Show") {
         let activeCollapse = accordion.querySelector('.accordion-collapse');
         if (activeCollapse) {
             activeCollapse.classList.add('show');
         }
-    } else if ($.cookie("AccordionOpenStatus") == "Hide") {
+    }
+    // クッキーが"Hide"の場合、アコーデオンを閉じる
+    else if ($.cookie("AccordionOpenStatus") == "Hide") {
         let activeCollapse = accordion.querySelector('.accordion-collapse.show');
         if (activeCollapse) {
             activeCollapse.classList.remove('show');
         }
     }
-    //画面を表示する
+
+    // コンテンツ表示
     $('#content').show();
 
-    //アコ―デオンリサイズ
+    // アコーデオンリサイズ
     let breakpoint = 576; // 閉じるブレークポイント
 
-    //ブラウザの大きさを変えられた時にコールされる
+    // ブラウザのサイズを変えられた時にコールされる
     function closeAccordionIfSmallScreen() {
-        //スマホサイズになったら
+        // スマホサイズになったら
         if (window.innerWidth <= breakpoint) {
-            //アコーデオンが開いている状態か
+            // アコーデオンが開いている状態か
             let activeCollapse = accordion.querySelector('.accordion-collapse.show');
             if (activeCollapse) {
-                //アコーデオンを閉じる
+                // アコーデオンを閉じる
                 activeCollapse.classList.remove('show');
-                //閉じた状態であることをクッキーに保存
+                // 閉じた状態であることをクッキーに保存
                 $.cookie("AccordionOpenStatus", "Hide");
             }
         }
-        //スマホサイズを超えたら
+        // スマホサイズを超えたら
         if (window.innerWidth > breakpoint) {
-            //アコーデオンが閉じている状態か
+            // アコーデオンが閉じている状態か
             let activeCollapse = accordion.querySelector('.accordion-collapse');
             if (activeCollapse) {
-                //アコーディオンを開く
+                // アコーディオンを開く
                 activeCollapse.classList.add('show');
-                //開いた状態であることをクッキーに保存
+                // 開いた状態であることをクッキーに保存
                 $.cookie("AccordionOpenStatus", "Show");
             }
         }
     }
 
-    //リスナー設定
-
-    //リサイズされたとき
+    // リサイズ時にアコーデオンを制御するイベントリスナー設定
     $(window).on('resize', function () {
         closeAccordionIfSmallScreen();
     });
 
-    //店頭在庫検索用
+    // 店頭在庫検索時、アコーデオンの状態を更新する
     $('#need-collapse-at-retrival').on('submit', function () {
         if (window.innerWidth <= breakpoint) {
             $.cookie("AccordionOpenStatus", "Hide", { path: '/' });
@@ -78,21 +82,25 @@ function AccordionHandller() {
         }
     });
 
-    //アコーデオンが開かれたとき
+    // アコーデオンが開かれたときの処理
     $('#accordion').on('show.bs.collapse', function () {
         $.cookie("AccordionOpenStatus", "Show", { path: '/' });
     });
 
-    //アコーデオンが閉じられた時
+    // アコーデオンが閉じられたときの処理
     $('#accordion').on('hide.bs.collapse', function () {
         $.cookie("AccordionOpenStatus", "Hide", { path: '/' });
     });
 }
+
+// 連打防止および入力フォームの動作を制御する関数
 function RendaSolution() {
-    //連打対応
+    // 連打対応
     $('input').on('focus', function () {
         $('#remark').empty();
     });
+
+    // readonlyが設定されているカスタム要素に対する処理
     $('.custom-disabled').on('focus', function () {
         $(this).prop('readonly', true);
     });
@@ -102,17 +110,22 @@ function RendaSolution() {
     });
 }
 
+// 最初にフォーカスを指定した位置に移動させる関数
 function FirstFocus(firstPosition) {
 
+    // 指定した位置にフォーカスを当てる処理
     if (firstPosition && firstPosition.trim() !== "") {
         $(firstPosition).focus();
         $(firstPosition).select();
     };
 
 }
+
+// 商品名称を取得する関数（会計入力用）
 function GetShohinName() {
 
-    var shohinIdElement = $("#KaikeiJissekiforAdd_ShohinId");  // 引数で渡されたIDの要素を取得
+    // 商品IDの要素を取得
+    var shohinIdElement = $("#KaikeiJissekiforAdd_ShohinId");
     if (shohinIdElement.length > 0) {  // 要素が存在する場合のみ
         GetShohinNameWithAjax(shohinIdElement);
     }
@@ -120,12 +133,13 @@ function GetShohinName() {
     // ShohinIdの選択が変更されたときにイベントを発火
     $('#KaikeiJissekiforAdd_ShohinId').change(function () {
         GetShohinNameWithAjax(this);
-        $('#KaikeiJissekiforAdd_UriageSu').focus();     //売上数項目にジャンプ
+        $('#KaikeiJissekiforAdd_UriageSu').focus();     // 売上数項目にジャンプ
         $('#KaikeiJissekiforAdd_UriageSu').select();    // テキストを選択
     });
 
 }
 
+// Ajaxで商品名を取得する関数（会計入力用）
 function GetShohinNameWithAjax(item) {
 
     // CSRFトークンをAJAXリクエストのヘッダーに追加
@@ -134,6 +148,7 @@ function GetShohinNameWithAjax(item) {
             'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
         }
     });
+
     var selectedShohinId = $(item).val(); // 選択された商品IDを取得
 
     $.ajax({
@@ -145,7 +160,6 @@ function GetShohinNameWithAjax(item) {
         success: function (response) {
             // 成功時、ShohinNameのテキストフィールドに取得した商品名をセット
             $('#KaikeiJissekiforAdd_ShohinName').val(response);
-
         },
         error: function () {
             // エラー時、空の値をセット
@@ -154,13 +168,16 @@ function GetShohinNameWithAjax(item) {
     });
 }
 
+// フォームをリセットする関数
 function ResetForm(stringForm) {
-    document.getElementById(stringForm).reset();  // フォームをリセット
+    // 指定されたフォームをリセット
+    document.getElementById(stringForm).reset();
 }
 
+// 戻るボタンを無効化する関数
 function PreventModoru() {
+    // 戻るボタンが押されたときにアラートを表示
     window.onpopstate = function (event) {
-        // 戻るボタンが押されたとき
         alert("このページでは戻るボタンは無効です。");
         history.pushState(null, null, location.href); // 現在のURLを再度プッシュ
     };
