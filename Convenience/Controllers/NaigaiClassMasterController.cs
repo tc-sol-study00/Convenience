@@ -40,7 +40,7 @@ namespace Convenience.Controllers {
         /// <returns>ビューとビューモデルを返す</returns>
         [HttpGet]
         public async Task<IActionResult> Index(string id) {
-            var viewModel = naigaiClassMasterService.MakeViewModel(); // サービスで新しいビューモデルを生成
+            var viewModel = await naigaiClassMasterService.MakeViewModel(); // サービスで新しいビューモデルを生成
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel); // ビューモデルをシリアル化してTempDataに保存
             ViewBag.FocusPosition = $"#postMasterDatas_0__ShiireSakiId"; // 初期フォーカス位置を設定
             return View(viewModel); // ビューにビューモデルを渡して表示
@@ -56,7 +56,7 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Index(NaigaiClassMasterViewModel inNaigaiClassMasterViewModel) {
             ModelState.Clear(); // モデルの状態をクリア（再バリデーションを行う準備）
 
-            var viewModel = naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);    // POSTデータを基にDBを更新
+            var viewModel = await naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);    // POSTデータを基にDBを更新
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);                              // 更新されたビューモデルをTempDataに保存
             return View(viewModel);                                                                     // ビューに更新済みビューモデルを渡す
         }

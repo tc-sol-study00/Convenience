@@ -4,6 +4,7 @@ using Convenience.Data; // データベースコンテキスト
 using Convenience.Models.DataModels; // データモデル
 using Convenience.Models.Interfaces; // インターフェース
 using Convenience.Models.ViewModels.ShohinMaster; // ビューモデル
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel; // データ注釈属性
 
 namespace Convenience.Models.Services {
@@ -105,10 +106,10 @@ namespace Convenience.Models.Services {
         /// データベースから商品マスタデータを取得
         /// </summary>
         /// <returns>保持データリスト</returns>
-        public IList<ShohinMaster> QueryMasterData() {
-            KeepMasterDatas = _context.ShohinMaster
+        public async Task<IList<ShohinMaster>> QueryMasterData() {
+            KeepMasterDatas = await _context.ShohinMaster
                 .OrderBy(x => x.ShohinId) // 商品IDで並び替え
-                .ToList();
+                .ToListAsync();
             return KeepMasterDatas;
         }
 
@@ -116,9 +117,9 @@ namespace Convenience.Models.Services {
         /// ビューモデルを作成
         /// </summary>
         /// <returns>ビューモデル</returns>
-        public ShohinMasterViewModel MakeViewModel() {
+        public async Task<ShohinMasterViewModel> MakeViewModel() {
             var viewModel = this.MasterRegisiationViewModel;
-            return (ShohinMasterViewModel)my.DefaultMakeViewModel();
+            return (ShohinMasterViewModel)await my.DefaultMakeViewModel();
         }
 
         /// <summary>
@@ -126,8 +127,8 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argMasterRegistrationViewModel">更新用ビューモデル</param>
         /// <returns>更新後のビューモデル</returns>
-        public ShohinMasterViewModel UpdateMasterData(ShohinMasterViewModel argMasterRegistrationViewModel) {
-            return (ShohinMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
+        public async Task<ShohinMasterViewModel> UpdateMasterData(ShohinMasterViewModel argMasterRegistrationViewModel) {
+            return (ShohinMasterViewModel)await my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>

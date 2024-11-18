@@ -41,7 +41,7 @@ namespace Convenience.Controllers {
         [HttpGet]
         public async Task<IActionResult> Index(string id) {
             // サービスクラスで新しいビューモデルを生成
-            var viewModel = shiireSakiMasterService.MakeViewModel();
+            var viewModel = await shiireSakiMasterService.MakeViewModel();
             // ビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             // 初期フォーカス位置を設定（HTMLの特定フィールドを指定）
@@ -61,7 +61,7 @@ namespace Convenience.Controllers {
             ModelState.Clear();
 
             // サービスクラスでデータを更新
-            var viewModel = shiireSakiMasterService.UpdateMasterData(inShiireSakiMasterViewModel);
+            var viewModel = await shiireSakiMasterService.UpdateMasterData(inShiireSakiMasterViewModel);
             // 更新済みビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             return View(viewModel); // 更新されたビューモデルでビューを再表示

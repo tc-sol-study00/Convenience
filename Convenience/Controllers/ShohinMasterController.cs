@@ -41,7 +41,7 @@ namespace Convenience.Controllers {
         [HttpGet]
         public async Task<IActionResult> Index(string id) {
             // サービスクラスから新しいビューモデルを作成
-            var viewModel = shohinMasterService.MakeViewModel();
+            var viewModel = await shohinMasterService.MakeViewModel();
             // ビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             // 初期フォーカス位置を設定
@@ -61,7 +61,7 @@ namespace Convenience.Controllers {
             ModelState.Clear();
 
             // サービスクラスでビューモデルを更新
-            var viewModel = shohinMasterService.UpdateMasterData(inShohinMasterViewModel);
+            var viewModel = await shohinMasterService.UpdateMasterData(inShohinMasterViewModel);
             // 更新されたビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             return View(viewModel); // ビューを更新

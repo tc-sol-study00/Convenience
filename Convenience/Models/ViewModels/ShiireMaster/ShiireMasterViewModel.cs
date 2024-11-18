@@ -67,9 +67,11 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
             IsNormal = default;                             // 処理正常フラグ（初期状態は null）
             Remark = string.Empty;                          // 処理結果メッセージの初期化
             my = this;                                      // インターフェース型の自身を保持
-            // 選択リストの設定
-            ShiireSakiList = my.SetSelectList<DataModels.ShiireSakiMaster>();   // 仕入先マスタから選択リストを設定
-            ShohinList = my.SetSelectList<DataModels.ShohinMaster>();           // 商品マスタから選択リストを設定
+        }
+
+        public async Task InitialAsync() {
+            ShiireSakiList = await my.SetSelectList<DataModels.ShiireSakiMaster>();   // 仕入先マスタから選択リストを設定
+            ShohinList = await my.SetSelectList<DataModels.ShohinMaster>();           // 商品マスタから選択リストを設定
         }
     }
 }

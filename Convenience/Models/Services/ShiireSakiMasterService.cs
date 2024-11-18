@@ -4,6 +4,7 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ShiireSakiMaster;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 namespace Convenience.Models.Services {
@@ -105,10 +106,10 @@ namespace Convenience.Models.Services {
         /// データベースから仕入先マスタデータを取得
         /// </summary>
         /// <returns>保持データリスト</returns>
-        public IList<ShiireSakiMaster> QueryMasterData() {
-            KeepMasterDatas = _context.ShiireSakiMaster
+        public async Task<IList<ShiireSakiMaster>> QueryMasterData() {
+            KeepMasterDatas = await _context.ShiireSakiMaster
                 .OrderBy(x => x.ShiireSakiId) // 仕入先IDで並び替え
-                .ToList();
+                .ToListAsync();
             return KeepMasterDatas;
         }
 
@@ -116,8 +117,8 @@ namespace Convenience.Models.Services {
         /// ビューモデルを作成
         /// </summary>
         /// <returns>ビューモデル</returns>
-        public ShiireSakiMasterViewModel MakeViewModel() {
-            return (ShiireSakiMasterViewModel)my.DefaultMakeViewModel();
+        public async Task<ShiireSakiMasterViewModel> MakeViewModel() {
+            return (ShiireSakiMasterViewModel) await my.DefaultMakeViewModel();
         }
 
         /// <summary>
@@ -125,8 +126,8 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="argMasterRegistrationViewModel">更新用ビューモデル</param>
         /// <returns>更新後のビューモデル</returns>
-        public ShiireSakiMasterViewModel UpdateMasterData(ShiireSakiMasterViewModel argMasterRegistrationViewModel) {
-            return (ShiireSakiMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
+        public async Task<ShiireSakiMasterViewModel> UpdateMasterData(ShiireSakiMasterViewModel argMasterRegistrationViewModel) {
+            return (ShiireSakiMasterViewModel)await my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>
