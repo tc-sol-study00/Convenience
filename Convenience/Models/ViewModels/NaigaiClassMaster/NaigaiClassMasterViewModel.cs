@@ -1,4 +1,6 @@
 ﻿using Convenience.Data;
+using Convenience.Models.Interfaces;
+using Convenience.Models.Services;
 using Newtonsoft.Json;
 using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.NaigaiClassMaster, Convenience.Models.Services.NaigaiClassMasterService.PostMasterData, Convenience.Models.ViewModels.NaigaiClassMaster.NaigaiClassMasterViewModel>;
 using static Convenience.Models.Services.NaigaiClassMasterService;
@@ -7,7 +9,7 @@ namespace Convenience.Models.ViewModels.NaigaiClassMaster {
     /// <summary>
     /// 内外区分マスタのビューモデル
     /// </summary>
-    public class NaigaiClassMasterViewModel : IMasterRegistrationViewModel, IMasterRegistrationSelectList {
+    public class NaigaiClassMasterViewModel : IMasterRegistrationViewModel<PostMasterData>, IMasterRegistrationSelectList {
 
         /// <summary>
         /// データベースコンテキスト（注：JSONシリアライズ対象外）

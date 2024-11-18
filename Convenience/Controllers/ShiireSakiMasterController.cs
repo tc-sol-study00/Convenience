@@ -22,15 +22,15 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 仕入先マスターサービスクラス（依存性注入用）
         /// </summary>
-        private readonly ShiireSakiMasterService shiireSakiMasterService;
+        private readonly IShiireSakiMasterService shiireSakiMasterService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="context">データベースコンテキストのインスタンス</param>
-        public ShiireSakiMasterController(ConvenienceContext context) {
+        public ShiireSakiMasterController(ConvenienceContext context, IShiireSakiMasterService shiireSakiMasterService) {
             this._context = context;                                                // データベースコンテキストをフィールドに設定
-            this.shiireSakiMasterService = new ShiireSakiMasterService(context);    // サービスクラスのインスタンスを作成
+            this.shiireSakiMasterService = shiireSakiMasterService;    // サービスクラスのインスタンスを作成
         }
 
         /// <summary>

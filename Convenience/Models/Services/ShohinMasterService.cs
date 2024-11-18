@@ -4,16 +4,13 @@ using Convenience.Data; // データベースコンテキスト
 using Convenience.Models.DataModels; // データモデル
 using Convenience.Models.Interfaces; // インターフェース
 using Convenience.Models.ViewModels.ShohinMaster; // ビューモデル
-using Microsoft.EntityFrameworkCore; // Entity Framework Core
 using System.ComponentModel; // データ注釈属性
-using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.ShohinMaster, Convenience.Models.Services.ShohinMasterService.PostMasterData, Convenience.Models.ViewModels.ShohinMaster.ShohinMasterViewModel>;
-using static Convenience.Models.Services.ShohinMasterService;
 
 namespace Convenience.Models.Services {
     /// <summary>
     /// 商品マスタを管理するサービスクラス
     /// </summary>
-    public class ShohinMasterService : IMasterRegistrationService<ShohinMaster, PostMasterData, ShohinMasterViewModel> {
+    public class ShohinMasterService : IShohinMasterService {
 
         /// <summary>
         /// データベースコンテキスト
@@ -21,7 +18,7 @@ namespace Convenience.Models.Services {
         public ConvenienceContext _context { get; set; }
 
         // 自身をインターフェース型として保持
-        private readonly IMasterRegistrationService<ShohinMaster, PostMasterData, ShohinMasterViewModel> my;
+        private readonly IShohinMasterService my;
 
         /// <summary>
         /// 現在保持しているマスタデータ
@@ -36,7 +33,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// ビューモデル
         /// </summary>
-        public IMasterRegistrationViewModel MasterRegisiationViewModel { get; set; }
+        public IMasterRegistrationViewModel<PostMasterData> MasterRegisiationViewModel { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -130,7 +127,7 @@ namespace Convenience.Models.Services {
         /// <param name="argMasterRegistrationViewModel">更新用ビューモデル</param>
         /// <returns>更新後のビューモデル</returns>
         public ShohinMasterViewModel UpdateMasterData(ShohinMasterViewModel argMasterRegistrationViewModel) {
-            return (ShohinMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel)argMasterRegistrationViewModel);
+            return (ShohinMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>

@@ -25,6 +25,11 @@ builder.Services.AddScoped<ITentoZaikoService,TentoZaikoService>();
 builder.Services.AddScoped<IKaikeiJissekiService, KaikeiJissekiService>();
 builder.Services.AddScoped<IChumonJissekiService, ChumonJissekiService>();
 builder.Services.AddScoped<IShiireJissekiService, ShiireJissekiService>();
+builder.Services.AddScoped<INaigaiClassMasterService,NaigaiClassMasterService>();
+builder.Services.AddScoped<IShiireMasterService,ShiireMasterService>();
+builder.Services.AddScoped<IShiireSakiMasterService,ShiireSakiMasterService>();
+builder.Services.AddScoped<IShohinMasterService, ShohinMasterService>();
+
 //プロパティ
 builder.Services.AddScoped<IChumon, Chumon>();
 builder.Services.AddScoped<IShiire,Shiire>();

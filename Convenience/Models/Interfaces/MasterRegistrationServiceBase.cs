@@ -2,8 +2,8 @@
 using Convenience.Models.Properties;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Dynamic.Core;
 using static Convenience.Models.Properties.Message;
+using System.Linq.Dynamic.Core;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
@@ -12,7 +12,7 @@ namespace Convenience.Models.Interfaces {
     /// <typeparam name="TKeepMasterData">更新されるマスタデータの型</typeparam>
     /// <typeparam name="TPostMasterData">Postされるデータの型</typeparam>
     /// <typeparam name="TMasterRegistrationViewModel"> 登録用ビューモデルの型</typeparam>
-    public interface IMasterRegistrationService<TKeepMasterData, TPostMasterData, TMasterRegistrationViewModel> : ISharedTools {
+    public abstract class MasterRegistrationServiceBase<TKeepMasterData, TPostMasterData, TMasterRegistrationViewModel> : ISharedTools {
 
         /// <summary>
         /// データベースコンテキスト
@@ -38,20 +38,20 @@ namespace Convenience.Models.Interfaces {
         /// データベースからマスタデータを問い合わせる抽象メソッド
         /// </summary>
         /// <returns>取得されたマスタデータ</returns>
-        public IList<TKeepMasterData> QueryMasterData();
+        public abstract IList<TKeepMasterData> QueryMasterData();
 
         /// <summary>
         /// ビューモデルを作成
         /// </summary>
         /// <returns>生成されたビューモデル</returns>
-        public TMasterRegistrationViewModel MakeViewModel();
+        public abstract TMasterRegistrationViewModel MakeViewModel();
 
         /// <summary>
         /// ビューモデルを基にマスタデータを更新
         /// </summary>
         /// <param name="arg3">更新対象のビューモデル</param>
         /// <returns>更新されたビューモデル</returns>
-        public TMasterRegistrationViewModel UpdateMasterData(TMasterRegistrationViewModel arg3);
+        public abstract TMasterRegistrationViewModel UpdateMasterData(TMasterRegistrationViewModel arg3);
 
         /// <summary>
         /// 新しい行を挿入
@@ -59,7 +59,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="PostMasterDatas">現在の投稿データリスト</param>
         /// <param name="index">挿入位置のインデックス</param>
         /// <returns>更新後のデータリスト</returns>
-        public IList<TPostMasterData> InsertRow(IList<TPostMasterData> PostMasterDatas, int index);
+        public abstract IList<TPostMasterData> InsertRow(IList<TPostMasterData> PostMasterDatas, int index);
 
         /// <summary>
         /// デフォルトのビューモデル作成処理
@@ -137,13 +137,12 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// Postデータから更新用データモデルへの変換（実装強制用）
         /// </summary>
-        public IList<TKeepMasterData> MapFromPostDataToKeepMasterData(IList<TPostMasterData> argDatas);
+        public abstract IList<TKeepMasterData> MapFromPostDataToKeepMasterData(IList<TPostMasterData> argDatas);
 
         /// <summary>
         /// 更新用データモデルからPostデータへの変換（実装強制用）
         /// </summary>
-        public IList<TPostMasterData> MapFromKeepMasterDataToPostData(IList<TKeepMasterData> argDatas);
-
+        public abstract IList<TPostMasterData> MapFromKeepMasterDataToPostData(IList<TKeepMasterData> argDatas);
 
 
 
@@ -151,7 +150,7 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// 選択リスト作成のためのインターフェース
         /// </summary>
-        public interface IMasterRegistrationSelectList {
+        public abstract class IMasterRegistrationSelectList {
             public ConvenienceContext _context { get; }
 
             /// <summary>
@@ -178,34 +177,5 @@ namespace Convenience.Models.Interfaces {
                 return result.ToList();
             }
         }
-    }
-    /// <summary>
-    /// 選択リストアイテムのインターフェース
-    /// </summary>
-    public interface ISelectList {
-        public string Value { get; }
-        public string Text { get; }
-        public string[] OrderKey { get; }
-    }
-    /// <summary>
-    /// マスター登録用ビューモデルのインターフェース
-    /// </summary>
-    public interface IMasterRegistrationViewModel<T> {
-        public IList<T> PostMasterDatas { get; set; }
-        public bool? IsNormal { get; set; } // 処理の正常性
-        public string? Remark { get; set; } // 処理結果のコメント
-    }
-
-    /// <summary>
-    /// Postデータのインターフェース
-    /// </summary>
-    public interface IPostMasterData : IDeleteFlag {
-    }
-
-    /// <summary>
-    /// 削除フラグ不可設定用インターフェース
-    /// </summary>
-    public interface IDeleteFlag {
-        public bool DeleteFlag { get; set; }
     }
 }

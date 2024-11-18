@@ -5,14 +5,12 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ShiireSakiMaster;
 using System.ComponentModel;
-using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.ShiireSakiMaster, Convenience.Models.Services.ShiireSakiMasterService.PostMasterData, Convenience.Models.ViewModels.ShiireSakiMaster.ShiireSakiMasterViewModel>;
-using static Convenience.Models.Services.ShiireSakiMasterService;
 
 namespace Convenience.Models.Services {
     /// <summary>
     /// 仕入先マスタを管理するサービスクラス
     /// </summary>
-    public class ShiireSakiMasterService : IMasterRegistrationService<ShiireSakiMaster, PostMasterData, ShiireSakiMasterViewModel> {
+    public class ShiireSakiMasterService : IShiireSakiMasterService {
 
         /// <summary>
         /// データベースコンテキスト
@@ -20,7 +18,7 @@ namespace Convenience.Models.Services {
         public ConvenienceContext _context { get; set; }
 
         // 自身をインターフェース型として保持
-        private readonly IMasterRegistrationService<ShiireSakiMaster, PostMasterData, ShiireSakiMasterViewModel> my;
+        private readonly IShiireSakiMasterService my;
 
         /// <summary>
         /// 現在保持しているマスタデータ
@@ -35,7 +33,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// ビューモデル
         /// </summary>
-        public IMasterRegistrationViewModel MasterRegisiationViewModel { get; set; }
+        public IMasterRegistrationViewModel<PostMasterData> MasterRegisiationViewModel { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -128,7 +126,7 @@ namespace Convenience.Models.Services {
         /// <param name="argMasterRegistrationViewModel">更新用ビューモデル</param>
         /// <returns>更新後のビューモデル</returns>
         public ShiireSakiMasterViewModel UpdateMasterData(ShiireSakiMasterViewModel argMasterRegistrationViewModel) {
-            return (ShiireSakiMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel)argMasterRegistrationViewModel);
+            return (ShiireSakiMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>

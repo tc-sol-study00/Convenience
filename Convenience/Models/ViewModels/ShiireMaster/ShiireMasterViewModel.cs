@@ -1,4 +1,5 @@
 ﻿using Convenience.Data;
+using Convenience.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.ShiireMaster, Convenience.Models.Services.ShiireMasterService.PostMasterData, Convenience.Models.ViewModels.ShiireMaster.ShiireMasterViewModel>;
@@ -8,7 +9,7 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
     /// <summary>
     /// 仕入マスタのビューモデル
     /// </summary>
-    public class ShiireMasterViewModel : IMasterRegistrationViewModel, IMasterRegistrationSelectList {
+    public class ShiireMasterViewModel : IMasterRegistrationViewModel<PostMasterData>, IMasterRegistrationSelectList {
 
         /// <summary>
         /// データベースコンテキスト（注：JSONシリアライズ対象外）
