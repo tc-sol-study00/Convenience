@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Services;
+using Convenience.Models.ViewModels.NaigaiClassMaster;
 using Convenience.Models.ViewModels.ShiireSakiMaster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +47,7 @@ namespace Convenience.Controllers {
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             // 初期フォーカス位置を設定（HTMLの特定フィールドを指定）
             ViewBag.FocusPosition = $"#postMasterDatas_0__ShiireSakiId";
-            return View(viewModel); // ビューにビューモデルを渡して表示
+            return View(viewModel);  // PRG対応
         }
 
         /// <summary>
@@ -64,7 +65,20 @@ namespace Convenience.Controllers {
             var viewModel = await shiireSakiMasterService.UpdateMasterData(inShiireSakiMasterViewModel);
             // 更新済みビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            return View(viewModel); // 更新されたビューモデルでビューを再表示
+            return RedirectToAction("Result");  // PRG対応
+        }
+
+        /// <summary>
+        /// PRG対応
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> Result() {
+            ShiireSakiMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireSakiMasterViewModel>(
+               TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
+           );
+            return View("Index", viewModel);
         }
 
         /// <summary>

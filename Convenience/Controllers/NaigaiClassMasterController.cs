@@ -56,9 +56,22 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Index(NaigaiClassMasterViewModel inNaigaiClassMasterViewModel) {
             ModelState.Clear(); // モデルの状態をクリア（再バリデーションを行う準備）
 
-            var viewModel = await naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);    // POSTデータを基にDBを更新
-            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);                              // 更新されたビューモデルをTempDataに保存
-            return View(viewModel);                                                                     // ビューに更新済みビューモデルを渡す
+            var viewModel = await naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);      // POSTデータを基にDBを更新
+            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);                                      // 更新されたビューモデルをTempDataに保存
+            return RedirectToAction("Result");                                                                  // PRG対応
+        }
+
+        /// <summary>
+        /// PRG対応
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> Result() {
+            NaigaiClassMasterViewModel viewModel = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(
+               TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
+           );
+            return View("Index", viewModel);
         }
 
         /// <summary>

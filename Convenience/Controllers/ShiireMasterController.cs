@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Services;
+using Convenience.Models.ViewModels.NaigaiClassMaster;
 using Convenience.Models.ViewModels.ShiireMaster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,7 +65,20 @@ namespace Convenience.Controllers {
             var viewModel = await shiireMasterService.UpdateMasterData(inShiireMasterViewModel);
             // 更新済みビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            return View(viewModel); // ビューに更新されたビューモデルを渡して表示
+            return RedirectToAction("Result");      // PRG対応
+        }
+
+        /// <summary>
+        /// PRG対応
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> Result() {
+            ShiireMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(
+               TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
+           );
+            return View("Index", viewModel);
         }
 
         /// <summary>
