@@ -113,27 +113,31 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// データベースから仕入マスタデータを取得
         /// </summary>
-        public IList<ShiireMaster> QueryMasterData() {
-            KeepMasterDatas = _context.ShiireMaster.OrderBy(x => x.ShiireSakiId)
+        public async Task<IList<ShiireMaster>> QueryMasterData() {
+            KeepMasterDatas = await _context.ShiireMaster.OrderBy(x => x.ShiireSakiId)
                 .ThenBy(x => x.ShiirePrdId)
                 .ThenBy(x => x.ShohinId)
                 .Include(x => x.ShiireSakiMaster) // ナビゲーションプロパティをロード
-                .ToList();
+                .ToListAsync();
             return KeepMasterDatas;
         }
 
         /// <summary>
         /// ビューモデルを作成
         /// </summary>
-        public ShiireMasterViewModel MakeViewModel() {
-            return (ShiireMasterViewModel)my.DefaultMakeViewModel();
+        public async Task<ShiireMasterViewModel> MakeViewModel() {
+            var viewmodel=(ShiireMasterViewModel)await my.DefaultMakeViewModel();
+            await viewmodel.InitialAsync(); //リストボックスセット
+            return (ShiireMasterViewModel)viewmodel;
         }
 
         /// <summary>
         /// ビューモデルを基にマスタデータを更新
         /// </summary>
-        public ShiireMasterViewModel UpdateMasterData(ShiireMasterViewModel argMasterRegistrationViewModel) {
-            return (ShiireMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
+        public async Task<ShiireMasterViewModel> UpdateMasterData(ShiireMasterViewModel argMasterRegistrationViewModel) {
+            var viewmodel=(ShiireMasterViewModel)await my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
+            await viewmodel.InitialAsync(); //リストボックスセット
+            return (ShiireMasterViewModel)viewmodel;
         }
 
         /// <summary>

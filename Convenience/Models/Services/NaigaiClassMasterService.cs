@@ -4,6 +4,7 @@ using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.NaigaiClassMaster;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 namespace Convenience.Models.Services {
@@ -97,23 +98,23 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// データベースからマスタデータを取得
         /// </summary>
-        public IList<NaigaiClassMaster> QueryMasterData() {
-            KeepMasterDatas = _context.NaigaiClassMaster.OrderBy(x => x.NaigaiClass).ToList();
+        public async Task<IList<NaigaiClassMaster>> QueryMasterData() {
+            KeepMasterDatas = await _context.NaigaiClassMaster.OrderBy(x => x.NaigaiClass).ToListAsync();
             return KeepMasterDatas;
         }
 
         /// <summary>
         /// ビューモデルを作成
         /// </summary>
-        public NaigaiClassMasterViewModel MakeViewModel() {
-            return (NaigaiClassMasterViewModel)my.DefaultMakeViewModel();
+        public async Task<NaigaiClassMasterViewModel> MakeViewModel() {
+            return (NaigaiClassMasterViewModel)await my.DefaultMakeViewModel();
         }
 
         /// <summary>
         /// ビューモデルを基にマスタデータを更新
         /// </summary>
-        public NaigaiClassMasterViewModel UpdateMasterData(NaigaiClassMasterViewModel argMasterRegistrationViewModel) {
-            return (NaigaiClassMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
+        public async Task<NaigaiClassMasterViewModel> UpdateMasterData(NaigaiClassMasterViewModel argMasterRegistrationViewModel) {
+            return  (NaigaiClassMasterViewModel) await my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>

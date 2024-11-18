@@ -38,20 +38,20 @@ namespace Convenience.Models.Interfaces {
         /// データベースからマスタデータを問い合わせる抽象メソッド
         /// </summary>
         /// <returns>取得されたマスタデータ</returns>
-        public IList<TKeepMasterData> QueryMasterData();
+        public Task<IList<TKeepMasterData>> QueryMasterData();
 
         /// <summary>
         /// ビューモデルを作成
         /// </summary>
         /// <returns>生成されたビューモデル</returns>
-        public TMasterRegistrationViewModel MakeViewModel();
+        public Task<TMasterRegistrationViewModel> MakeViewModel();
 
         /// <summary>
         /// ビューモデルを基にマスタデータを更新
         /// </summary>
         /// <param name="arg3">更新対象のビューモデル</param>
         /// <returns>更新されたビューモデル</returns>
-        public TMasterRegistrationViewModel UpdateMasterData(TMasterRegistrationViewModel arg3);
+        public Task<TMasterRegistrationViewModel> UpdateMasterData(TMasterRegistrationViewModel arg3);
 
         /// <summary>
         /// 新しい行を挿入
@@ -65,9 +65,9 @@ namespace Convenience.Models.Interfaces {
         /// デフォルトのビューモデル作成処理
         /// </summary>
         /// <returns>生成されたビューモデル</returns>
-        public IMasterRegistrationViewModel<TPostMasterData> DefaultMakeViewModel() {
+        public async Task<IMasterRegistrationViewModel<TPostMasterData>> DefaultMakeViewModel() {
             // データベースからマスタデータを取得
-            KeepMasterDatas = QueryMasterData();
+            KeepMasterDatas = await QueryMasterData();
 
             // マスタデータをPost用データに変換
             PostedMasterDatas = MapFromKeepMasterDataToPostData(KeepMasterDatas);
@@ -81,9 +81,9 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// デフォルトの更新処理
         /// </summary>
-        public IMasterRegistrationViewModel<TPostMasterData> DefaultUpdateMasterData(IMasterRegistrationViewModel<TPostMasterData> argMasterRegistrationViewModel) {
+        public async Task<IMasterRegistrationViewModel<TPostMasterData>> DefaultUpdateMasterData(IMasterRegistrationViewModel<TPostMasterData> argMasterRegistrationViewModel) {
             // データベースから再度マスタデータを取得
-            KeepMasterDatas = QueryMasterData();
+            KeepMasterDatas = await QueryMasterData();
 
             // 削除フラグのチェックと除外処理
             IList<TPostMasterData> postMasterDatas = argMasterRegistrationViewModel.PostMasterDatas;
@@ -96,14 +96,14 @@ namespace Convenience.Models.Interfaces {
             var entities = _context.ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)
                 .Select(e => e.Entity).Count();
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             // 結果の設定
             ErrDef errCd = ErrDef.DataValid;
             bool IsValid = true;
 
             // 最新のデータを取得
-            KeepMasterDatas = QueryMasterData();
+            KeepMasterDatas = await QueryMasterData();
             PostedMasterDatas = MapFromKeepMasterDataToPostData(KeepMasterDatas);
 
             // ビューモデルを更新
@@ -157,7 +157,7 @@ namespace Convenience.Models.Interfaces {
             /// <summary>
             /// 任意の型Tの選択リストを作成
             /// </summary>
-            public IList<SelectListItem> SetSelectList<T>() where T : class, ISelectList, new() {
+            public async Task<IList<SelectListItem>> SetSelectList<T>() where T : class, ISelectList, new() {
                 T attr = new T();
                 IQueryable<T> query = _context.Set<T>();
 
@@ -175,7 +175,7 @@ namespace Convenience.Models.Interfaces {
                     Text = $"{x.Value}:{x.Text}"
                 });
 
-                return result.ToList();
+                return await result.ToListAsync();
             }
         }
     }
