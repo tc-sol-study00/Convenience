@@ -52,7 +52,7 @@ namespace Convenience.Models.DataModels {
 
         public virtual TentoZaiko? TentoZaiko { get; set; }
 
-        //SelectLsit用
+        //SelectList用
 
         public string Value => ShohinId;
         public string Text => ShohinName;

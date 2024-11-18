@@ -1,16 +1,12 @@
 ﻿using Convenience.Data;
-using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
 using Convenience.Models.ViewModels.ShiireMaster;
 using Microsoft.AspNetCore.Mvc;
-using static Convenience.Models.Services.ShiireMasterService;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 注文コントローラ
+    /// 仕入マスターコントローラ
     /// </summary>
     public class ShiireMasterController : Controller, ISharedTools {
         /// <summary>
@@ -19,73 +15,82 @@ namespace Convenience.Controllers {
         private readonly ConvenienceContext _context;
 
         /// <summary>
-        /// サービスクラス引継ぎ用キーワード
+        /// サービスクラスのデータ保持用キー
         /// </summary>
         private static readonly string IndexName = "ShiireMasterViewModel";
 
         /// <summary>
-        /// 注文サービスクラス（ＤＩ用）
+        /// 仕入マスターサービスクラス（依存性注入用）
         /// </summary>
         private readonly ShiireMasterService shiireMasterService;
 
         /// <summary>
-        /// コンストラクター
+        /// コンストラクタ
         /// </summary>
-        /// <param name="context">DBコンテキスト</param>
-        /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
-        public ShiireMasterController(ConvenienceContext context ) {
-            this._context = context;
-            this.shiireMasterService = new ShiireMasterService(context);
-            //this.shohinMasterViewModel = new ShiireMasterViewModel(_context);
+        /// <param name="context">データベースコンテキストのインスタンス</param>
+        public ShiireMasterController(ConvenienceContext context) {
+            this._context = context;                                        // コンストラクタで受け取ったDBコンテキストをフィールドに設定
+            this.shiireMasterService = new ShiireMasterService(context);    // サービスクラスをインスタンス化
         }
 
         /// <summary>
-        /// 商品注文１枚目の初期表示処理
+        /// 初期表示処理（GETリクエスト）
         /// </summary>
-        /// <returns></returns>
+        /// <param name="id">識別子（オプションで使用可能）</param>
+        /// <returns>ビューとビューモデル</returns>
         [HttpGet]
         public async Task<IActionResult> Index(string id) {
-            var viewModel=shiireMasterService.MakeViewModel();
+            // サービスクラスを利用して新しいビューモデルを生成
+            var viewModel = shiireMasterService.MakeViewModel();
+            // ビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
+            // 初期フォーカス位置を設定
             ViewBag.FocusPosition = $"#postMasterDatas_0__ShiireSakiId";
-            return View(viewModel);
+            return View(viewModel); // ビューにビューモデルを渡して表示
         }
 
         /// <summary>
-        /// 商品注文１枚目のPost受信後処理
+        /// POSTリクエスト後の処理
         /// </summary>
-        /// <param name="inChumonKeysViewModel">注文キービューモデル</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
+        /// <param name="inShiireMasterViewModel">受信したビューモデル</param>
+        /// <returns>更新されたビューとビューモデル</returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // クロスサイトリクエストフォージェリ（CSRF）保護
         public async Task<IActionResult> Index(ShiireMasterViewModel inShiireMasterViewModel) {
-
+            // モデルの状態をクリア
             ModelState.Clear();
 
+            // サービスクラスでDBを更新
             var viewModel = shiireMasterService.UpdateMasterData(inShiireMasterViewModel);
+            // 更新済みビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            return View(viewModel);
+            return View(viewModel); // ビューに更新されたビューモデルを渡して表示
         }
 
         /// <summary>
-        /// 挿入時
+        /// 新しい行を挿入する処理（GETリクエスト）
         /// </summary>
-        /// <returns></returns>
+        /// <param name="index">挿入する位置のインデックス</param>
+        /// <returns>更新されたビューとビューモデル</returns>
         [HttpGet]
-        public async Task<IActionResult> InsertRow(int index ) {
-            ShiireMasterViewModel viewModel
-                   = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(TempData[IndexName]?.ToString() ?? throw new Exception("tempdataなし"));
+        public async Task<IActionResult> InsertRow(int index) {
+            // TempDataからビューモデルを復元
+            ShiireMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(
+                TempData[IndexName]?.ToString() ?? throw new Exception("TempDataが存在しません")
+            );
 
-            viewModel.IsNormal = default;
-            viewModel.Remark = string.Empty;
+            // ビューモデルの初期化
+            viewModel.IsNormal = default; // 通常フラグをデフォルト値に設定
+            viewModel.Remark = string.Empty; // 備考を空文字列で初期化
 
-            viewModel.PostMasterDatas=shiireMasterService.InsertRow(viewModel.PostMasterDatas, index);
+            // 指定したインデックス位置に新しい行を挿入
+            viewModel.PostMasterDatas = shiireMasterService.InsertRow(viewModel.PostMasterDatas, index);
 
+            // 更新済みビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
+            // フォーカス位置を新しい行に設定
             ViewBag.FocusPosition = $"#postMasterDatas_{index + 1}__ShiireSakiId";
-            return View("Index",viewModel);
+            return View("Index", viewModel); // Indexビューを更新されたビューモデルで再表示
         }
-
     }
 }
