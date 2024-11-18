@@ -12,7 +12,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 店頭払出サービスクラス
     /// </summary>
-    public class TentoHaraidashiService : ITentoHaraidashiService {
+    public class TentoHaraidashiService : ITentoHaraidashiService, ISharedTools {
 
         /// <summary>
         /// DBコンテキスト
@@ -158,11 +158,14 @@ namespace Convenience.Models.Services {
             /*
              * 店頭払出ヘッダ＋実績作成(Postデータ更新用ベース）
              */
-            settingTentoHaraidashiHearder ??= await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
 
+            if (ISharedTools.IsNotExistCheck(settingTentoHaraidashiHearder)) {
+                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+            }
             /*
              * Postデータから店頭払出実績を抽出する
              */
+
             List<TentoHaraidashiJisseki> postedTentoHaraidashiJissekis
                 = argTentoHaraidashiViewModel.ShohinMasters.SelectMany(sm => sm.ShiireMasters!.SelectMany(sim => sim.TentoHaraidashiJissekis!)).ToList();
 

@@ -48,6 +48,17 @@ namespace Convenience.Models.Interfaces {
             return true;
         }
 
+        /// <summary>
+        /// データがnullか、リスト形式ならば0件か
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="checkdata"></param>
+        /// <returns></returns>
+        protected static bool IsNotExistCheck<T>(T? checkdata) {
+            return !IsExistCheck(checkdata);
+        }
+
+
         public static string? GetDisplayName(Type type, string propertyName) {
             var property = type.GetProperty(propertyName);
             if (property != null) {
