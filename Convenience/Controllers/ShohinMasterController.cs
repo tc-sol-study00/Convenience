@@ -1,91 +1,96 @@
 ﻿using Convenience.Data;
-using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
 using Convenience.Models.ViewModels.ShohinMaster;
 using Microsoft.AspNetCore.Mvc;
-using static Convenience.Models.Services.ShohinMasterService;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 注文コントローラ
+    /// 商品マスターコントローラ
     /// </summary>
     public class ShohinMasterController : Controller, ISharedTools {
         /// <summary>
-        /// DBコンテキスト
+        /// データベースコンテキスト（依存性注入）
         /// </summary>
         private readonly ConvenienceContext _context;
 
         /// <summary>
-        /// サービスクラス引継ぎ用キーワード
+        /// ビューモデルを保存するためのTempDataキー
         /// </summary>
         private static readonly string IndexName = "ShohinMasterViewModel";
 
         /// <summary>
-        /// 注文サービスクラス（ＤＩ用）
+        /// 商品マスターサービスクラス（依存性注入用）
         /// </summary>
         private readonly ShohinMasterService shohinMasterService;
 
         /// <summary>
-        /// コンストラクター
+        /// コンストラクタ
         /// </summary>
-        /// <param name="context">DBコンテキスト</param>
-        /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
+        /// <param name="context">データベースコンテキストのインスタンス</param>
         public ShohinMasterController(ConvenienceContext context) {
-            this._context = context;
-            this.shohinMasterService = new ShohinMasterService(context);
+            this._context = context; // コンストラクタでDBコンテキストを初期化
+            this.shohinMasterService = new ShohinMasterService(context); // サービスクラスのインスタンスを作成
         }
 
         /// <summary>
-        /// 商品注文１枚目の初期表示処理
+        /// 商品マスターの初期表示（GETリクエスト）
         /// </summary>
-        /// <returns></returns>
+        /// <param name="id">識別子（必要に応じて使用）</param>
+        /// <returns>ビューとビューモデル</returns>
         [HttpGet]
         public async Task<IActionResult> Index(string id) {
-            var viewModel=shohinMasterService.MakeViewModel();
+            // サービスクラスから新しいビューモデルを作成
+            var viewModel = shohinMasterService.MakeViewModel();
+            // ビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
+            // 初期フォーカス位置を設定
             ViewBag.FocusPosition = $"#postMasterDatas_0__ShohinId";
-            return View(viewModel);
+            return View(viewModel); // ビューを表示
         }
 
         /// <summary>
-        /// 商品注文１枚目のPost受信後処理
+        /// 商品マスターのPostリクエスト処理
         /// </summary>
-        /// <param name="inChumonKeysViewModel">注文キービューモデル</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
+        /// <param name="inShohinMasterViewModel">受信した商品マスター用ビューモデル</param>
+        /// <returns>更新されたビューとビューモデル</returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // CSRF防止用
         public async Task<IActionResult> Index(ShohinMasterViewModel inShohinMasterViewModel) {
-
+            // モデルの状態をクリア（バリデーションエラーをリセット）
             ModelState.Clear();
 
+            // サービスクラスでビューモデルを更新
             var viewModel = shohinMasterService.UpdateMasterData(inShohinMasterViewModel);
+            // 更新されたビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            return View(viewModel);
+            return View(viewModel); // ビューを更新
         }
 
         /// <summary>
-        /// 挿入時
+        /// 新しい行を挿入する処理
         /// </summary>
-        /// <returns></returns>
+        /// <param name="index">挿入する行のインデックス</param>
+        /// <returns>更新されたビューとビューモデル</returns>
         [HttpGet]
-        public async Task<IActionResult> InsertRow(int index ) {
-            ShohinMasterViewModel viewModel
-                   = ISharedTools.ConvertFromSerial<ShohinMasterViewModel>(TempData[IndexName]?.ToString() ?? throw new Exception("tempdataなし"));
-            //var viewModel = shohinMasterService.MakeViewModel();
+        public async Task<IActionResult> InsertRow(int index) {
+            // TempDataからビューモデルを復元
+            ShohinMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShohinMasterViewModel>(
+                TempData[IndexName]?.ToString() ?? throw new Exception("TempDataが存在しません")
+            );
 
-            viewModel.PostMasterDatas=shohinMasterService.InsertRow(viewModel.PostMasterDatas, index);
+            // サービスクラスで新しい行を挿入
+            viewModel.PostMasterDatas = shohinMasterService.InsertRow(viewModel.PostMasterDatas, index);
 
-            viewModel.IsNormal = default;
-            viewModel.Remark = string.Empty;
+            // 新しい行に関連するプロパティを初期化
+            viewModel.IsNormal = default; // フラグをデフォルト値にリセット
+            viewModel.Remark = string.Empty; // 備考を初期化
 
+            // 更新されたビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
+            // 挿入した行にフォーカスを移動
             ViewBag.FocusPosition = $"#postMasterDatas_{index + 1}__ShohinId";
-            return View("Index",viewModel);
+            return View("Index", viewModel); // Indexビューを更新済みのビューモデルで再表示
         }
-
     }
 }

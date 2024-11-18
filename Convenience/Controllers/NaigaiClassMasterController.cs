@@ -1,16 +1,12 @@
 ﻿using Convenience.Data;
-using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
 using Convenience.Models.ViewModels.NaigaiClassMaster;
 using Microsoft.AspNetCore.Mvc;
-using static Convenience.Models.Services.NaigaiClassMasterService;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 注文コントローラ
+    /// 内外区分マスタコントローラ
     /// </summary>
     public class NaigaiClassMasterController : Controller, ISharedTools {
         /// <summary>
@@ -19,73 +15,73 @@ namespace Convenience.Controllers {
         private readonly ConvenienceContext _context;
 
         /// <summary>
-        /// サービスクラス引継ぎ用キーワード
+        /// サービスクラス引継ぎ用のキーとして利用
         /// </summary>
         private static readonly string IndexName = "NaigaiClassMasterViewModel";
 
         /// <summary>
-        /// 注文サービスクラス（ＤＩ用）
+        /// 内外区分マスタサービスクラス（依存性注入用）
         /// </summary>
         private readonly NaigaiClassMasterService naigaiClassMasterService;
 
         /// <summary>
-        /// コンストラクター
+        /// コンストラクタ
         /// </summary>
-        /// <param name="context">DBコンテキスト</param>
-        /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
-        public NaigaiClassMasterController(ConvenienceContext context ) {
-            this._context = context;
-            this.naigaiClassMasterService = new NaigaiClassMasterService(context);
-            //this.shohinMasterViewModel = new NaigaiClassMasterViewModel(_context);
+        /// <param name="context">データベースコンテキストのインスタンス</param>
+        public NaigaiClassMasterController(ConvenienceContext context) {
+            this._context = context; // コンストラクタで受け取ったDBコンテキストをフィールドに設定
+            this.naigaiClassMasterService = new NaigaiClassMasterService(context); // サービスクラスをインスタンス化
         }
 
         /// <summary>
-        /// 商品注文１枚目の初期表示処理
+        /// 初期表示処理（GETリクエストに対応）
         /// </summary>
-        /// <returns></returns>
+        /// <param name="id">任意の識別子（必要に応じて使用）</param>
+        /// <returns>ビューとビューモデルを返す</returns>
         [HttpGet]
         public async Task<IActionResult> Index(string id) {
-            var viewModel=naigaiClassMasterService.MakeViewModel();
-            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            ViewBag.FocusPosition = $"#postMasterDatas_0__ShiireSakiId";
-            return View(viewModel);
+            var viewModel = naigaiClassMasterService.MakeViewModel(); // サービスで新しいビューモデルを生成
+            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel); // ビューモデルをシリアル化してTempDataに保存
+            ViewBag.FocusPosition = $"#postMasterDatas_0__ShiireSakiId"; // 初期フォーカス位置を設定
+            return View(viewModel); // ビューにビューモデルを渡して表示
         }
 
         /// <summary>
-        /// 商品注文１枚目のPost受信後処理
+        /// POSTリクエスト後の処理
         /// </summary>
-        /// <param name="inChumonKeysViewModel">注文キービューモデル</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
+        /// <param name="inNaigaiClassMasterViewModel">POSTされたビューモデル</param>
+        /// <returns>更新されたビューモデル</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(NaigaiClassMasterViewModel inNaigaiClassMasterViewModel) {
+            ModelState.Clear(); // モデルの状態をクリア（再バリデーションを行う準備）
 
-            ModelState.Clear();
-
-            var viewModel = naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);
-            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            return View(viewModel);
+            var viewModel = naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);    // POSTデータを基にDBを更新
+            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);                              // 更新されたビューモデルをTempDataに保存
+            return View(viewModel);                                                                     // ビューに更新済みビューモデルを渡す
         }
 
         /// <summary>
-        /// 挿入時
+        /// 新しい行を挿入する処理（GETリクエストに対応）
         /// </summary>
-        /// <returns></returns>
+        /// <param name="index">挿入する位置のインデックス</param>
+        /// <returns>更新されたビューモデル</returns>
         [HttpGet]
-        public async Task<IActionResult> InsertRow(int index ) {
-            NaigaiClassMasterViewModel viewModel
-                   = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(TempData[IndexName]?.ToString() ?? throw new Exception("tempdataなし"));
+        public async Task<IActionResult> InsertRow(int index) {
+            // TempDataからビューモデルを復元
+            NaigaiClassMasterViewModel viewModel = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(
+                TempData[IndexName]?.ToString() ?? throw new Exception("TempDataが存在しません")
+            );
 
-            viewModel.IsNormal = default;
-            viewModel.Remark = string.Empty;
+            viewModel.IsNormal = default;       // 初期化: 通常フラグをデフォルト値(true)に設定
+            viewModel.Remark = string.Empty;    // 備考を空文字列で初期化
 
-            viewModel.PostMasterDatas=naigaiClassMasterService.InsertRow(viewModel.PostMasterDatas, index);
+            // 新しい行を指定したインデックス位置に挿入
+            viewModel.PostMasterDatas = naigaiClassMasterService.InsertRow(viewModel.PostMasterDatas, index);
 
-            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
-            ViewBag.FocusPosition = $"#postMasterDatas_{index + 1}__ShiireSakiId";
-            return View("Index",viewModel);
+            TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);          // 更新後のビューモデルをTempDataに保存
+            ViewBag.FocusPosition = $"#postMasterDatas_{index + 1}__ShiireSakiId";  // フォーカス位置を新しい行に設定
+            return View("Index", viewModel);                                        // Indexビューを更新されたビューモデルで再表示
         }
-
     }
 }

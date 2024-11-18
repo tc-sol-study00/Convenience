@@ -5,90 +5,151 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ShiireSakiMaster;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.ShiireSakiMaster, Convenience.Models.Services.ShiireSakiMasterService.PostMasterData, Convenience.Models.ViewModels.ShiireSakiMaster.ShiireSakiMasterViewModel>;
 using static Convenience.Models.Services.ShiireSakiMasterService;
-using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Models.Services {
+    /// <summary>
+    /// 仕入先マスタを管理するサービスクラス
+    /// </summary>
     public class ShiireSakiMasterService : IMasterRegistrationService<ShiireSakiMaster, PostMasterData, ShiireSakiMasterViewModel> {
 
+        /// <summary>
+        /// データベースコンテキスト
+        /// </summary>
         public ConvenienceContext _context { get; set; }
 
+        // 自身をインターフェース型として保持
         private readonly IMasterRegistrationService<ShiireSakiMaster, PostMasterData, ShiireSakiMasterViewModel> my;
+
+        /// <summary>
+        /// 現在保持しているマスタデータ
+        /// </summary>
         public IList<ShiireSakiMaster> KeepMasterDatas { get; set; }
 
+        /// <summary>
+        /// Postされたマスタデータ
+        /// </summary>
         public IList<PostMasterData> PostedMasterDatas { get; set; }
 
+        /// <summary>
+        /// ビューモデル
+        /// </summary>
         public IMasterRegistrationViewModel MasterRegisiationViewModel { get; set; }
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="context">データベースコンテキスト</param>
         public ShiireSakiMasterService(ConvenienceContext context) {
             _context = context;
             KeepMasterDatas = new List<ShiireSakiMaster>();
             PostedMasterDatas = new List<PostMasterData>();
             MasterRegisiationViewModel = new ShiireSakiMasterViewModel(_context);
-            my = this;
+            my = this; // 自身をインターフェース型として格納
         }
 
+        /// <summary>
+        /// Postデータを保持データにマッピング
+        /// </summary>
+        /// <param name="argDatas">Postデータリスト</param>
+        /// <returns>保持データリスト</returns>
         public IList<ShiireSakiMaster> MapFromPostDataToKeepMasterData(IList<PostMasterData> argDatas) {
 
+            // AutoMapperの設定
             IMapper mapper = new MapperConfiguration(cfg => {
-                cfg.AddCollectionMappers();
+                cfg.AddCollectionMappers(); // コレクションのマッピングを有効化
                 cfg.CreateMap<PostMasterData, ShiireSakiMaster>()
-                .EqualityComparison((src, dest) => src.ShiireSakiId == dest.ShiireSakiId)
-                .ForMember(dest => dest.ShireMasters, opt => opt.Ignore())
-                .ForMember(dest => dest.ChumonJissekis, opt => opt.Ignore())
-                ;
+                .EqualityComparison((src, dest) => src.ShiireSakiId == dest.ShiireSakiId) // 主キーで比較
+                .ForMember(dest => dest.ShireMasters, opt => opt.Ignore()) // ナビゲーションプロパティを無視
+                .ForMember(dest => dest.ChumonJissekis, opt => opt.Ignore());
             }).CreateMapper();
 
-            var itemsToAdd = argDatas.Where(a => !KeepMasterDatas.Any(cd => cd.ShiireSakiId == a.ShiireSakiId)).ToList();
+            // 新規アイテムを追加
+            var itemsToAdd = argDatas.Where(a =>
+                !KeepMasterDatas.Any(cd => cd.ShiireSakiId == a.ShiireSakiId)).ToList();
             foreach (var item in itemsToAdd) {
                 _context.Set<ShiireSakiMaster>().Add(mapper.Map<ShiireSakiMaster>(item));
             }
-            var itemsToRemove = KeepMasterDatas.Where(cd => !argDatas.Any(a => a.ShiireSakiId == cd.ShiireSakiId)).ToList();
+
+            // 不要なアイテムを削除
+            var itemsToRemove = KeepMasterDatas.Where(cd =>
+                !argDatas.Any(a => a.ShiireSakiId == cd.ShiireSakiId)).ToList();
             foreach (var item in itemsToRemove) {
                 _context.Set<ShiireSakiMaster>().Remove(item);
             }
 
+            // 保持データを更新
             mapper.Map(argDatas, KeepMasterDatas);
 
             return KeepMasterDatas;
         }
 
+        /// <summary>
+        /// 保持データをPostデータにマッピング
+        /// </summary>
+        /// <param name="argDatas">保持データリスト</param>
+        /// <returns>Postデータリスト</returns>
         public IList<PostMasterData> MapFromKeepMasterDataToPostData(IList<ShiireSakiMaster> argDatas) {
+            // AutoMapperの設定
             IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.CreateMap<ShiireSakiMaster, PostMasterData>()
-                .EqualityComparison((src, dest) => src.ShiireSakiId == dest.ShiireSakiId)
-                .ForMember(dest => dest.DeleteFlag, opt => opt.MapFrom(src => false));
+                .EqualityComparison((src, dest) => src.ShiireSakiId == dest.ShiireSakiId) // 主キーで比較
+                .ForMember(dest => dest.DeleteFlag, opt => opt.MapFrom(src => false)); // 削除フラグをfalseに設定
             }).CreateMapper();
 
+            // マッピングを実行
             mapper.Map(argDatas, PostedMasterDatas);
             return PostedMasterDatas;
         }
 
+        /// <summary>
+        /// データベースから仕入先マスタデータを取得
+        /// </summary>
+        /// <returns>保持データリスト</returns>
         public IList<ShiireSakiMaster> QueryMasterData() {
-            KeepMasterDatas = _context.ShiireSakiMaster.OrderBy(x => x.ShiireSakiId)
-                 .ToList();
+            KeepMasterDatas = _context.ShiireSakiMaster
+                .OrderBy(x => x.ShiireSakiId) // 仕入先IDで並び替え
+                .ToList();
             return KeepMasterDatas;
         }
+
+        /// <summary>
+        /// ビューモデルを作成
+        /// </summary>
+        /// <returns>ビューモデル</returns>
         public ShiireSakiMasterViewModel MakeViewModel() {
             return (ShiireSakiMasterViewModel)my.DefaultMakeViewModel();
         }
 
+        /// <summary>
+        /// ビューモデルを基にマスタデータを更新
+        /// </summary>
+        /// <param name="argMasterRegistrationViewModel">更新用ビューモデル</param>
+        /// <returns>更新後のビューモデル</returns>
         public ShiireSakiMasterViewModel UpdateMasterData(ShiireSakiMasterViewModel argMasterRegistrationViewModel) {
             return (ShiireSakiMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel)argMasterRegistrationViewModel);
         }
 
+        /// <summary>
+        /// Postデータに新しい行を挿入
+        /// </summary>
+        /// <param name="PostMasterDatas">Postデータリスト</param>
+        /// <param name="index">挿入位置</param>
+        /// <returns>更新後のPostデータリスト</returns>
         public IList<PostMasterData> InsertRow(IList<PostMasterData> PostMasterDatas, int index) {
             return my.DefaultInsertRow(PostMasterDatas, index);
         }
 
+        /// <summary>
+        /// Postデータ用の内部クラス
+        /// </summary>
         public class PostMasterData : ShiireSakiMaster, IPostMasterData {
-
+            /// <summary>
+            /// 削除フラグ
+            /// </summary>
             [DisplayName("削除")]
             public bool DeleteFlag { get; set; }
         }
-
     }
 }
