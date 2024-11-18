@@ -1,4 +1,5 @@
 ﻿using Convenience.Data;
+using Convenience.Models.Interfaces;
 using Newtonsoft.Json;
 using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.ShiireSakiMaster, Convenience.Models.Services.ShiireSakiMasterService.PostMasterData, Convenience.Models.ViewModels.ShiireSakiMaster.ShiireSakiMasterViewModel>;
 using static Convenience.Models.Services.ShiireSakiMasterService;
@@ -7,7 +8,7 @@ namespace Convenience.Models.ViewModels.ShiireSakiMaster {
     /// <summary>
     /// 仕入先マスタで使用されるビューモデル
     /// </summary>
-    public class ShiireSakiMasterViewModel : IMasterRegistrationViewModel, IMasterRegistrationSelectList {
+    public class ShiireSakiMasterViewModel : IMasterRegistrationViewModel<PostMasterData>, IMasterRegistrationSelectList {
 
         /// <summary>
         /// データベースコンテキスト

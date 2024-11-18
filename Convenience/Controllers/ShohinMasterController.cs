@@ -22,15 +22,15 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 商品マスターサービスクラス（依存性注入用）
         /// </summary>
-        private readonly ShohinMasterService shohinMasterService;
+        private readonly IShohinMasterService shohinMasterService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="context">データベースコンテキストのインスタンス</param>
-        public ShohinMasterController(ConvenienceContext context) {
-            this._context = context; // コンストラクタでDBコンテキストを初期化
-            this.shohinMasterService = new ShohinMasterService(context); // サービスクラスのインスタンスを作成
+        public ShohinMasterController(ConvenienceContext context, IShohinMasterService shohinMasterService) {
+            this._context = context;                            // コンストラクタでDBコンテキストを初期化
+            this.shohinMasterService = shohinMasterService;     // サービスクラスのインスタンスを作成
         }
 
         /// <summary>

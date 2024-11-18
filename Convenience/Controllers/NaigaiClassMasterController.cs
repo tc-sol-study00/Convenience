@@ -22,15 +22,15 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 内外区分マスタサービスクラス（依存性注入用）
         /// </summary>
-        private readonly NaigaiClassMasterService naigaiClassMasterService;
+        private readonly INaigaiClassMasterService naigaiClassMasterService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="context">データベースコンテキストのインスタンス</param>
-        public NaigaiClassMasterController(ConvenienceContext context) {
+        public NaigaiClassMasterController(ConvenienceContext context, INaigaiClassMasterService naigaiClassMasterService) {
             this._context = context; // コンストラクタで受け取ったDBコンテキストをフィールドに設定
-            this.naigaiClassMasterService = new NaigaiClassMasterService(context); // サービスクラスをインスタンス化
+            this.naigaiClassMasterService = naigaiClassMasterService; // サービスクラスをインスタンス化
         }
 
         /// <summary>

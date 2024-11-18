@@ -5,13 +5,12 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.NaigaiClassMaster;
 using System.ComponentModel;
-using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.NaigaiClassMaster, Convenience.Models.Services.NaigaiClassMasterService.PostMasterData, Convenience.Models.ViewModels.NaigaiClassMaster.NaigaiClassMasterViewModel>;using static Convenience.Models.Services.NaigaiClassMasterService;
 
 namespace Convenience.Models.Services {
     /// <summary>
     /// 内外区分マスタのサービスクラス
     /// </summary>
-    public class NaigaiClassMasterService : IMasterRegistrationService<NaigaiClassMaster, PostMasterData, NaigaiClassMasterViewModel> {
+    public class NaigaiClassMasterService : INaigaiClassMasterService {
 
         /// <summary>
         /// データベースコンテキスト
@@ -19,7 +18,7 @@ namespace Convenience.Models.Services {
         public ConvenienceContext _context { get; set; }
 
         // 自分自身をインターフェースとして参照
-        private readonly IMasterRegistrationService<NaigaiClassMaster, PostMasterData, NaigaiClassMasterViewModel> my;
+        private readonly INaigaiClassMasterService my;
 
         /// <summary>
         /// 現在保持しているマスタデータ
@@ -34,7 +33,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// ビューモデル
         /// </summary>
-        public IMasterRegistrationViewModel MasterRegisiationViewModel { get; set; }
+        public IMasterRegistrationViewModel<PostMasterData> MasterRegisiationViewModel { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -114,7 +113,7 @@ namespace Convenience.Models.Services {
         /// ビューモデルを基にマスタデータを更新
         /// </summary>
         public NaigaiClassMasterViewModel UpdateMasterData(NaigaiClassMasterViewModel argMasterRegistrationViewModel) {
-            return (NaigaiClassMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel)argMasterRegistrationViewModel);
+            return (NaigaiClassMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace Convenience.Models.ViewModels.ShohinMaster {
     /// <summary>
     /// 商品マスタのビューモデル
     /// </summary>
-    public class ShohinMasterViewModel : IMasterRegistrationViewModel {
+    public class ShohinMasterViewModel : IMasterRegistrationViewModel<PostMasterData> {
 
         /// <summary>
         /// Postされたマスタデータ

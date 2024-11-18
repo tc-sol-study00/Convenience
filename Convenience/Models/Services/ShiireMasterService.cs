@@ -6,14 +6,12 @@ using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ShiireMaster;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
-using static Convenience.Models.Interfaces.IMasterRegistrationService<Convenience.Models.DataModels.ShiireMaster, Convenience.Models.Services.ShiireMasterService.PostMasterData, Convenience.Models.ViewModels.ShiireMaster.ShiireMasterViewModel>;
-using static Convenience.Models.Services.ShiireMasterService;
 
 namespace Convenience.Models.Services {
     /// <summary>
     /// 仕入マスタの管理サービスクラス
     /// </summary>
-    public class ShiireMasterService : IMasterRegistrationService<ShiireMaster, PostMasterData, ShiireMasterViewModel> {
+    public class ShiireMasterService : IShiireMasterService {
 
         /// <summary>
         /// データベースコンテキスト
@@ -21,7 +19,7 @@ namespace Convenience.Models.Services {
         public ConvenienceContext _context { get; set; }
 
         // 自分自身をインターフェースとして参照
-        private readonly IMasterRegistrationService<ShiireMaster, PostMasterData, ShiireMasterViewModel> my;
+        private readonly IShiireMasterService my;
 
         /// <summary>
         /// 現在保持しているマスタデータ
@@ -36,7 +34,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// ビューモデル
         /// </summary>
-        public IMasterRegistrationViewModel MasterRegisiationViewModel { get; set; }
+        public IMasterRegistrationViewModel<PostMasterData> MasterRegisiationViewModel { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -135,7 +133,7 @@ namespace Convenience.Models.Services {
         /// ビューモデルを基にマスタデータを更新
         /// </summary>
         public ShiireMasterViewModel UpdateMasterData(ShiireMasterViewModel argMasterRegistrationViewModel) {
-            return (ShiireMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel)argMasterRegistrationViewModel);
+            return (ShiireMasterViewModel)my.DefaultUpdateMasterData((IMasterRegistrationViewModel<PostMasterData>)argMasterRegistrationViewModel);
         }
 
         /// <summary>
