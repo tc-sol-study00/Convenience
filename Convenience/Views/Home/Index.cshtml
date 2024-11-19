@@ -6,9 +6,29 @@
 }
 
 <div class="row">
-    @foreach (var menuItem in @Model.MenuList) {
-        <div class="col-md-4">
-            <div class="card mb-3">
+    @foreach (var menuItem in @Model.MenuList)
+    {
+        menuItem.Url = menuItem.Url.StartsWith("/") ? menuItem.Url : "/" + menuItem.Url;
+        // 条件に応じてカスタムクラスを切り替え
+        var cardClass = "card mb-3"; // デフォルトのクラス
+        if (menuItem.Name.Contains("マスタ"))
+        {
+            cardClass += " bg-master"; // マスタ: 薄い黄色
+        }
+        else if (menuItem.Name.Contains("検索"))
+        {
+            cardClass += " bg-performance"; // 実績: 薄い緑
+        }
+        else if (menuItem.Name.Contains("ホーム"))
+        {
+            cardClass += " bg-home"; // ホーム: 薄い青
+        }
+        else
+        {
+            cardClass += " bg-other"; // その他: 薄い灰色
+        }
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="@cardClass">
                 <div class="card-body">
                     <h5 class="card-title">@menuItem.Name</h5>
                     <p class="card-text">@menuItem.Description</p>
@@ -18,6 +38,9 @@
         </div>
     }
 </div>
+
+
+
 
 @section Scripts {
     @{
