@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.ViewModels.Chumon;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Reflection;
@@ -69,6 +70,8 @@ namespace Convenience.Models.Interfaces {
             }
             return null; // DisplayNameが存在しない場合はnullを返す
         }
+
+        //Task<IActionResult> InsertRow(int index);
     }
 }
 
