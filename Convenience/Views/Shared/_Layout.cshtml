@@ -15,23 +15,59 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" tabindex="-1">コンビニ在庫管理システム </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @{
                             var menu = new Menu();
-                            foreach (var menuitem in menu.MenuList){
 
-                                menuitem.Url = menuitem.Url.StartsWith("/") ? menuitem.Url : "/" + menuitem.Url;
-                                string[] urls=menuitem.Url.Split('/');
+                            foreach (var menuitem in menu.MenuList)
+                            {
+                                string cont = string.Empty;
+                                string action = string.Empty;
 
-                                var cont = urls.Length >= 2 ? urls[1] : string.Empty;
-                                var action = urls.Length >= 3 ? urls[2] : string.Empty;
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller=@cont asp-action=@action tabindex="-1">@menuitem.Name</a>
-                                </li>
+                                if (menuitem.Url != null)
+                                {
+                                    menuitem.Url = menuitem.Url.StartsWith("/") ? menuitem.Url : "/" + menuitem.Url;
+                                    string[] urls = menuitem.Url.Split('/');
+                                    cont = urls.Length >= 2 ? urls[1] : string.Empty;
+                                    action = urls.Length >= 3 ? urls[2] : string.Empty;
+                                }
+
+                                if (menuitem.ChildrenMenus != null && menuitem.ChildrenMenus.Count > 0)
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropdownMenu-@menuitem.Name.Replace(" ", "")"
+                                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            @menuitem.Name
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu-@menuitem.Name.Replace(" ", "")" style="background: linear-gradient(to right, #001F3F, #005F9E); border: 1px solid #005F9E;">
+                                            @foreach (var menuitem2 in menuitem.ChildrenMenus){
+                                                string cont2 = string.Empty;
+                                                string action2 = string.Empty;
+
+                                                if (menuitem2.Url != null){
+                                                    menuitem2.Url = menuitem2.Url.StartsWith("/") ? menuitem2.Url : "/" + menuitem2.Url;
+                                                    string[] urls2 = menuitem2.Url.Split('/');
+                                                    cont2 = urls2.Length >= 2 ? urls2[1] : string.Empty;
+                                                    action2 = urls2.Length >= 3 ? urls2[2] : string.Empty;
+                                                }
+                                            
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-light" asp-area="" asp-controller="@cont2" asp-action="@action2" tabindex="-1">@menuitem2.Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" asp-area="" asp-controller="@cont" asp-action="@action" tabindex="-1">@menuitem.Name</a>
+                                    </li>
+                                }
                             }
                         }
                     </ul>
