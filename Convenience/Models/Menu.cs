@@ -28,10 +28,10 @@ namespace Convenience.Models {
         /// </summary>
         public List<MenuItem> MenuList { get; set; } = new List<MenuItem>
         {
-            new MenuItem(){
+            new (){
                 Name = "ホーム", Url = "/Home/Index", Description="このページに戻ってきます"
             },
-            new MenuItem(){
+            new (){
                Name = "業務メニュー",
                ChildrenMenus = new List<MenuItem>() {
                         new (){ Name = "商品注文", Url = "/Chumon/KeyInput" , Description="仕入先毎に注文を作成します。一日一回注文を起こし仕入先単位で注文コードを発番します。注文番号を指定して注文内容を修正することもできます。" },
@@ -40,7 +40,7 @@ namespace Convenience.Models {
                         new (){ Name = "会計入力", Url = "/Kaikei/KeyInput" , Description = "お客様へ会計を行います。売り上げの分だけ店頭在庫が減ります。" }
                     }
                 },
-            new MenuItem(){
+            new (){
                Name = "検索メニュー",
                ChildrenMenus = new List<MenuItem>() {
                         new (){ Name = "倉庫在庫検索", Url = "/Zaiko/Index" , Description = "仕入後の商品出し前の倉庫在庫が検索できます" },
@@ -50,7 +50,7 @@ namespace Convenience.Models {
                         new (){ Name = "会計実績検索", Url = "/KaikeiJisseki/Index" , Description = "日々の会計実績が検索できます"},
                     }
                 },
-            new MenuItem(){
+            new (){
                 Name = "マスターメニュー",
                 ChildrenMenus = new List<MenuItem>() {
                     new (){ Name = "商品マスタメンテナンス", Url = "/ShohinMaster/Index" , Description = "商品マスタの登録・編集・削除ができます"},
