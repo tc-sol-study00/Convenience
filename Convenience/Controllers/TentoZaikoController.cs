@@ -4,9 +4,12 @@ using Convenience.Models.Properties;
 using Convenience.Models.Services;
 using Convenience.Models.ViewModels.Chumon;
 using Convenience.Models.ViewModels.Shiire;
+using Convenience.Models.ViewModels.ShiireJisseki;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.AspNetCore.Mvc;
+using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
+using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel.DataAreaClass;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
@@ -31,6 +34,11 @@ namespace Convenience.Controllers {
         private readonly ITentoZaikoService tentoZaikoService;
 
         /// <summary>
+        /// CSVファイル作成（ＤＩ用）
+        /// </summary>
+        private readonly IConvertObjectToCsv _convertObjectToCsv;
+
+        /// <summary>
         /// ビュー・モデル
         /// </summary>
         private readonly TentoZaikoViewModel tentoZaikoViewModel;
@@ -44,9 +52,10 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="tentoZaikoService">店頭在庫検索サービスクラスＤＩ注入用</param>
-        public TentoZaikoController(ConvenienceContext context, ITentoZaikoService tentoZaikoService) {
+        public TentoZaikoController(ConvenienceContext context, ITentoZaikoService tentoZaikoService, IConvertObjectToCsv convertObjectToCsv) {
             this._context = context;
             this.tentoZaikoService = tentoZaikoService;
+            this._convertObjectToCsv = convertObjectToCsv;
             this.tentoZaikoViewModel = new TentoZaikoViewModel();
         }
 
@@ -93,6 +102,34 @@ namespace Convenience.Controllers {
                 // TempDataがない場合、初期ページにリダイレクト
                 return RedirectToAction("Index");
             }
+        }
+
+        /// <summary>
+        /// Download
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Downloadファイル</returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> DownLoad(string id) {
+            var keywordArea
+                = ISharedTools.ConvertFromSerial<TentoZaikoViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
+            tentoZaikoViewModel.KeywordArea = keywordArea;
+
+            // 店頭在庫検索
+            TentoZaikoViewModel createdTentoZaikoViewModel = await tentoZaikoService.TentoZaikoRetrival(tentoZaikoViewModel);
+
+            //このコントローラの名前を認識
+            string fileName = _convertObjectToCsv.GetFileName(this.GetType().Name);
+
+            //モデルデータを取り出すし、ＣＳＶに変換
+            IEnumerable<TentoZaIkoLine> modeldatas = createdTentoZaikoViewModel.DataArea.Lines;
+            string filename = _convertObjectToCsv.ConvertToCSV<TentoZaIkoLine, CSVMapping.TentoZaIkoCSV>(modeldatas, fileName);
+
+            //バイトに変換しファイルをhttp出力
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filename);
+
+            return File(fileBytes, "text/csv", fileName);
         }
         /// <summary>
         ///  検索データ作成
