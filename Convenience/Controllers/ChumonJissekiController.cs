@@ -1,9 +1,13 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties;
+using Convenience.Models.Services;
 using Convenience.Models.ViewModels.ChumonJisseki;
 using Convenience.Models.ViewModels.KaikeiJisseki;
+using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
+using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel.DataAreaClass;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
@@ -26,6 +30,11 @@ namespace Convenience.Controllers {
         /// 注文実績検索サービスサービスクラス（ＤＩ用）
         /// </summary>
         private readonly IChumonJissekiService chumonJissekiService;
+        
+        /// <summary>
+        /// CSVファイル作成（ＤＩ用）
+        /// </summary>
+        private readonly IConvertObjectToCsv _convertObjectToCsv;
 
         /// <summary>
         /// ビュー・モデル
@@ -41,10 +50,12 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumonJissekiService">注文実績検索サービスクラスＤＩ注入用</param>
-        public ChumonJissekiController(ConvenienceContext context, IChumonJissekiService chumonJissekiService) {
+        public ChumonJissekiController(ConvenienceContext context, IChumonJissekiService chumonJissekiService, IConvertObjectToCsv convertObjectToCsv) {
             this._context = context;
             this.chumonJissekiService = chumonJissekiService;
+            this._convertObjectToCsv = convertObjectToCsv;
             this.chumonJissekiViewModel = new ChumonJissekiViewModel();
+
         }
 
         /// <summary>
@@ -92,6 +103,34 @@ namespace Convenience.Controllers {
                 // TempDataがない場合、初期ページにリダイレクト
                 return RedirectToAction("Index");
             }
+        }
+
+        /// <summary>
+        /// Download
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Downloadファイル</returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> DownLoad(string id) {
+            var keywordArea
+                = ISharedTools.ConvertFromSerial<ChumonJissekiViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
+            chumonJissekiViewModel.KeywordArea = keywordArea;
+
+            // 注文実績検索
+            ChumonJissekiViewModel createdChumonJissekiViewModel = await chumonJissekiService.ChumonJissekiRetrival(chumonJissekiViewModel);
+
+            //このコントローラの名前を認識
+            string fileName = _convertObjectToCsv.GetFileName(this.GetType().Name);
+
+            //モデルデータを取り出すし、ＣＳＶに変換
+            IEnumerable<ChumonJissekiLineClass> modeldatas = createdChumonJissekiViewModel.DataArea.Lines;
+            string filename = _convertObjectToCsv.ConvertToCSV<ChumonJissekiLineClass, CSVMapping.ChumonJissekiCSV>(modeldatas, fileName);
+
+            //バイトに変換しファイルをhttp出力
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filename);
+
+            return File(fileBytes, "text/csv", fileName);
         }
 
         /// <summary>

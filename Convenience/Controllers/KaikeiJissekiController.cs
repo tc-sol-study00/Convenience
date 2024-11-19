@@ -1,7 +1,12 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties;
+using Convenience.Models.Services;
 using Convenience.Models.ViewModels.KaikeiJisseki;
+using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.AspNetCore.Mvc;
+using static Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel.DataAreaClass;
+using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel.DataAreaClass;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
@@ -26,6 +31,11 @@ namespace Convenience.Controllers {
         private readonly IKaikeiJissekiService kaikeiJissekiService;
 
         /// <summary>
+        /// CSVファイル作成（ＤＩ用）
+        /// </summary>
+        private readonly IConvertObjectToCsv _convertObjectToCsv;
+
+        /// <summary>
         /// ビュー・モデル
         /// </summary>
         private readonly KaikeiJissekiViewModel kaikeiJissekiViewModel;
@@ -39,10 +49,11 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="kaikeiJissekiService">会計実績検索サービスクラスＤＩ注入用</param>
-        public KaikeiJissekiController(ConvenienceContext context, IKaikeiJissekiService kaikeiJissekiService) {
+        public KaikeiJissekiController(ConvenienceContext context, IKaikeiJissekiService kaikeiJissekiService, IConvertObjectToCsv convertObjectToCsv) {
             this._context = context;
             this.kaikeiJissekiService = kaikeiJissekiService;
             this.kaikeiJissekiViewModel = new KaikeiJissekiViewModel();
+            this._convertObjectToCsv = convertObjectToCsv;
         }
 
         /// <summary>
@@ -89,6 +100,34 @@ namespace Convenience.Controllers {
                 // TempDataがない場合、初期ページにリダイレクト
                 return RedirectToAction("Index");
             }
+        }
+
+        /// <summary>
+        /// Download
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Downloadファイル</returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> DownLoad(string id) {
+            var keywordArea
+                = ISharedTools.ConvertFromSerial<KaikeiJissekiViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
+            kaikeiJissekiViewModel.KeywordArea = keywordArea;
+
+            // 会計実績検索
+            KaikeiJissekiViewModel createdKaikeiJissekiViewModel = await kaikeiJissekiService.KaikeiJissekiRetrival(kaikeiJissekiViewModel);
+
+            //このコントローラの名前を認識
+            string fileName = _convertObjectToCsv.GetFileName(this.GetType().Name);
+
+            //モデルデータを取り出すし、ＣＳＶに変換
+            IEnumerable<KaikeiJissekiLineClass> modeldatas = createdKaikeiJissekiViewModel.DataArea.Lines;
+            string filename = _convertObjectToCsv.ConvertToCSV<KaikeiJissekiLineClass, CSVMapping.KaikeiJissekiCSV>(modeldatas, fileName);
+
+            //バイトに変換しファイルをhttp出力
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filename);
+
+            return File(fileBytes, "text/csv", fileName);
         }
 
         /// <summary>

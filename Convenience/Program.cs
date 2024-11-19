@@ -36,6 +36,7 @@ builder.Services.AddScoped<IShiire,Shiire>();
 builder.Services.AddScoped<IZaiko, Zaiko>();
 builder.Services.AddScoped<ITentoHaraidashi, TentoHaraidashi>();
 builder.Services.AddScoped<IKaikei, Kaikei>();
+builder.Services.AddScoped<IConvertObjectToCsv, ConvertObjectToCsv>();
 
 //ServiceでTempDataを使うためのＤＩ
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

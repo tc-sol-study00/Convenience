@@ -1,9 +1,10 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.ShiireJisseki;
-using Convenience.Models.ViewModels.KaikeiJisseki;
+using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 
 namespace Convenience.Controllers {
     /// <summary>
@@ -27,9 +28,14 @@ namespace Convenience.Controllers {
         private readonly IShiireJissekiService shiireJissekiService;
 
         /// <summary>
+        /// CSVファイル作成（ＤＩ用）
+        /// </summary>
+        private readonly IConvertObjectToCsv _convertObjectToCsv;
+
+        /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private readonly ShiireJissekiViewModel shiireJissekiViewModel;
+        private ShiireJissekiViewModel shiireJissekiViewModel;
         /// <summary>
         /// １ページの行数
         /// </summary>
@@ -40,10 +46,11 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="shiireJissekiService">仕入実績サービスクラスＤＩ注入用</param>
-        public ShiireJissekiController(ConvenienceContext context, IShiireJissekiService shiireJissekiService) {
+        public ShiireJissekiController(ConvenienceContext context, IShiireJissekiService shiireJissekiService, IConvertObjectToCsv convertObjectToCsv) {
             this._context = context;
             this.shiireJissekiService = shiireJissekiService;
             this.shiireJissekiViewModel = new ShiireJissekiViewModel();
+            this._convertObjectToCsv = convertObjectToCsv;
         }
 
         /// <summary>
@@ -85,8 +92,7 @@ namespace Convenience.Controllers {
                 shiireJissekiViewModel.KeywordArea = keyArea;
 
                 return await ProcessResult(shiireJissekiViewModel, page, PageSize);
-            }
-            else {
+            } else {
                 // TempDataがない場合、初期ページにリダイレクト
                 return RedirectToAction("Index");
             }
@@ -120,5 +126,31 @@ namespace Convenience.Controllers {
             return View("Index", createdShiireJissekiViewModel);
         }
 
+        /// <summary>
+        /// Download
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Downloadファイル</returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> DownLoad(string id) {
+            shiireJissekiViewModel.KeywordArea
+                = ISharedTools.ConvertFromSerial<ShiireJissekiViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
+
+            // 仕入実績検索
+            ShiireJissekiViewModel createdShiireJissekiViewModel = await shiireJissekiService.ShiireJissekiRetrival(shiireJissekiViewModel);
+
+            //このコントローラの名前を認識
+            string fileName = _convertObjectToCsv.GetFileName(this.GetType().Name);
+
+            //モデルデータを取り出すし、ＣＳＶに変換
+            IEnumerable<ShiireJissekiLineClass> modeldatas = createdShiireJissekiViewModel.DataArea.Lines;
+            string filename=_convertObjectToCsv.ConvertToCSV<ShiireJissekiLineClass, CSVMapping.ShiireJissekiCSV>(modeldatas, fileName);
+
+            //バイトに変換しファイルをhttp出力
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filename);
+
+            return File(fileBytes, "text/csv", fileName);
+        }
     }
 }
