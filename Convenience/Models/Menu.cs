@@ -1,9 +1,11 @@
 ﻿#pragma warning disable CS8618
+using System.Data.SqlTypes;
+
 namespace Convenience.Models {
     /// <summary>
     /// メニューアイテムクラス
     /// </summary>
-    public class MenuItem {
+    public class MenuItem  {
         /// <summary>
         /// メニュー名
         /// </summary>
@@ -17,7 +19,7 @@ namespace Convenience.Models {
         /// </summary>
         public string Description { get; set; }
 
-        public IList<MenuItem>? ChildrenMenus { get; set; }
+        public IList<MenuItem>? ChildrenMenus { get; set; } = new List<MenuItem>();
     }
     /// <summary>
     /// メニュークラス
@@ -29,7 +31,8 @@ namespace Convenience.Models {
         public List<MenuItem> MenuList { get; set; } = new List<MenuItem>
         {
             new (){
-                Name = "ホーム", Url = "/Home/Index", Description="このページに戻ってきます"
+                Name = "ホーム", Url = "/Home/Index", Description="このページに戻ってきます",ChildrenMenus = new List<MenuItem>()
+
             },
             new (){
                Name = "業務メニュー",
