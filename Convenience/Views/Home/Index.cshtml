@@ -5,24 +5,20 @@
     ViewData["Title"] = "Menu Page";
     string? previousClass = null; // 前回のクラスを記録する変数
     bool isFirstRow = true; // 初回の行かどうかを記録
+
+    //メニューリストの作成（親メニューと子メニューをフラットに設定）
+    var list = Model.MenuList.SelectMany(
+            parent => parent.ChildrenMenus?.DefaultIfEmpty()??Enumerable.Empty<MenuItem>(),
+            (parent, child) => new { Parent = parent, Child = child });
 }
 
-@{
-/*
-    @foreach (var menuItem2 in @Model.MenuList.SelectMany(p =>
-    (p.ChildrenMenus != null && p.ChildrenMenus.Any() // 子メニューがある場合
-    ? p.ChildrenMenus
-    : new List<MenuItem>{ null })   
-        */
-}
 <div class="row d-flex flex-wrap">  <!-- Flexbox を使って横並びにし、折り返し可能に -->
-    @foreach (var menuItem2 in @Model.MenuList.SelectMany(p =>
-    p.ChildrenMenus,(p,c)=> new { Parent = p, Child = c }) // 親と子をセットにする
-    )
-    {
+    @foreach (var menuItem2 in list){
+
         string pName = menuItem2.Parent.Name;
         MenuItem menuItem = menuItem2.Child ?? menuItem2.Parent;
 
+        //1文字目が"/"じゃなかった時の措置
         menuItem.Url = menuItem.Url.StartsWith("/") ? menuItem.Url : "/" + menuItem.Url;
 
         // 条件に応じてカスタムクラスを切り替え

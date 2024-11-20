@@ -31,7 +31,7 @@ namespace Convenience.Models {
         public List<MenuItem> MenuList { get; set; } = new List<MenuItem>
         {
             new (){
-                Name = "ホーム", Url = "/Home/Index", Description="このページに戻ってきます",ChildrenMenus = new List<MenuItem>()
+                Name = "ホーム", Url = "/Home/Index", Description="このページに戻ってきます"
 
             },
             new (){
