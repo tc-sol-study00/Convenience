@@ -13,13 +13,34 @@ namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 比較演算子のスキーマー化
     /// </summary>
+    /// <remarks>
+    /// 便宜上、IRetrivalViewModelと同ファイルに同居させてある
+    /// </remarks>
     public enum Comparisons {
-        Equal,              //  ==
-        NotEqual,           //  !=
-        GreaterThanOrEqual, //  >=
-        GreaterThan,        //  >
-        LessThanOrEqual,    //  <=
-        LessThan            //  <
+        /// <summary>
+        /// ＝＝
+        /// </summary>
+        Equal,
+        /// <summary>
+        ///　！＝
+        /// </summary>
+        NotEqual,
+        /// <summary>
+        /// ＞＝
+        /// </summary>
+        GreaterThanOrEqual,
+        /// <summary>
+        /// ＞
+        /// </summary>
+        GreaterThan,
+        /// <summary>
+        /// ＜＝
+        /// </summary>
+        LessThanOrEqual,
+        /// <summary>
+        ///  ＜
+        /// </summary>
+        LessThan
     }
 
     /// <summary>

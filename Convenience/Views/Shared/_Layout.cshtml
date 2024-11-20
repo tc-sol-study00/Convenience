@@ -20,48 +20,56 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index" tabindex="-1">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Chumon" asp-action="KeyInput" tabindex="-1">商品注文</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Shiire" asp-action="ShiireKeyInput" tabindex="-1">商品仕入</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Zaiko" asp-action="Index" tabindex="-1">在庫検索</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="TentoHaraidashi" asp-action="KeyInput" tabindex="-1">店頭払出</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Kaikei" asp-action="KeyInput" tabindex="-1">会計入力</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="TentoZaiko" asp-action="Index" tabindex="-1">店頭在庫検索</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="KaikeiJisseki" asp-action="Index" tabindex="-1">会計実績検索</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ChumonJisseki" asp-action="Index" tabindex="-1">注文実績検索</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ShiireJisseki" asp-action="Index" tabindex="-1">仕入実績検索</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ShohinMaster" asp-action="Index" tabindex="-1">商品マスタメンテナンス</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ShiireMaster" asp-action="Index" tabindex="-1">仕入マスタメンテナンス</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ShiireSakiMaster" asp-action="Index" tabindex="-1">仕入先マスタメンテナンス</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="NaigaiClassMaster" asp-action="Index" tabindex="-1">内外区分マスタメンテナンス</a>
-                        </li>
+                        @{
+                            var menu = new Menu();
+
+                            foreach (var menuitem in menu.MenuList)
+                            {
+                                string cont = string.Empty;
+                                string action = string.Empty;
+
+                                if (menuitem.Url != null)
+                                {
+                                    menuitem.Url = menuitem.Url.StartsWith("/") ? menuitem.Url : "/" + menuitem.Url;
+                                    string[] urls = menuitem.Url.Split('/');
+                                    cont = urls.Length >= 2 ? urls[1] : string.Empty;
+                                    action = urls.Length >= 3 ? urls[2] : string.Empty;
+                                }
+
+                                if (menuitem.ChildrenMenus != null && menuitem.ChildrenMenus.Count > 0)
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropdownMenu-@menuitem.Name.Replace(" ", "")"
+                                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            @menuitem.Name
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu-@menuitem.Name.Replace(" ", "")" style="background: linear-gradient(to right, #001F3F, #005F9E); border: 1px solid #005F9E;">
+                                            @foreach (var menuitem2 in menuitem.ChildrenMenus){
+                                                string cont2 = string.Empty;
+                                                string action2 = string.Empty;
+
+                                                if (menuitem2.Url != null){
+                                                    menuitem2.Url = menuitem2.Url.StartsWith("/") ? menuitem2.Url : "/" + menuitem2.Url;
+                                                    string[] urls2 = menuitem2.Url.Split('/');
+                                                    cont2 = urls2.Length >= 2 ? urls2[1] : string.Empty;
+                                                    action2 = urls2.Length >= 3 ? urls2[2] : string.Empty;
+                                                }
+                                            
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-light" asp-area="" asp-controller="@cont2" asp-action="@action2" tabindex="-1">@menuitem2.Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" asp-area="" asp-controller="@cont" asp-action="@action" tabindex="-1">@menuitem.Name</a>
+                                    </li>
+                                }
+                            }
+                        }
                     </ul>
                 </div>
             </div>

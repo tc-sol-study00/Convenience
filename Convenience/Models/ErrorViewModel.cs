@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
-namespace Convenience.Models
-{
+namespace Convenience.Models {
     /// <summary>
     /// エラーページ用ビューモデル
     /// </summary>
@@ -36,6 +33,5 @@ namespace Convenience.Models
         /// <para>再実行されるリクエストの情報を取得するために使用</para>
         /// </summary>
         public IStatusCodeReExecuteFeature? StatusCodeReExecuteFeature;
-
     }
 }

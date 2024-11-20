@@ -1,8 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.ShiireJisseki;
-using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 
@@ -35,7 +34,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// ビュー・モデル
         /// </summary>
-        private ShiireJissekiViewModel shiireJissekiViewModel;
+        private readonly ShiireJissekiViewModel shiireJissekiViewModel;
         /// <summary>
         /// １ページの行数
         /// </summary>
@@ -133,7 +132,7 @@ namespace Convenience.Controllers {
         /// <returns>Downloadファイル</returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> DownLoad(string id) {
+        public async Task<IActionResult> DownLoad() {
             shiireJissekiViewModel.KeywordArea
                 = ISharedTools.ConvertFromSerial<ShiireJissekiViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
 

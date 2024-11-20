@@ -40,9 +40,9 @@ namespace Convenience.Controllers {
         /// <param name="id">識別子（オプションで使用可能）</param>
         /// <returns>ビューとビューモデル</returns>
         [HttpGet]
-        public async Task<IActionResult> Index(string id) {
+        public async Task<IActionResult> Index() {
             // サービスクラスを利用して新しいビューモデルを生成
-            var viewModel = await shiireMasterService.MakeViewModel();
+            ShiireMasterViewModel viewModel = await shiireMasterService.MakeViewModel();
             // ビューモデルをシリアル化してTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             // 初期フォーカス位置を設定
@@ -62,7 +62,7 @@ namespace Convenience.Controllers {
             ModelState.Clear();
 
             // サービスクラスでDBを更新
-            var viewModel = await shiireMasterService.UpdateMasterData(inShiireMasterViewModel);
+            ShiireMasterViewModel viewModel = await shiireMasterService.UpdateMasterData(inShiireMasterViewModel);
             // 更新済みビューモデルをTempDataに保存
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             return RedirectToAction("Result");      // PRG対応
@@ -74,11 +74,11 @@ namespace Convenience.Controllers {
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> Result() {
+        public Task<IActionResult> Result() {
             ShiireMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(
                TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
            );
-            return View("Index", viewModel);
+            return Task.FromResult<IActionResult>(View("Index", viewModel));
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Convenience.Controllers {
         /// <param name="index">挿入する位置のインデックス</param>
         /// <returns>更新されたビューとビューモデル</returns>
         [HttpGet]
-        public async Task<IActionResult> InsertRow(int index) {
+        public Task<IActionResult> InsertRow(int index) {
             // TempDataからビューモデルを復元
             ShiireMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(
                 TempData[IndexName]?.ToString() ?? throw new Exception("TempDataが存在しません")
@@ -104,7 +104,7 @@ namespace Convenience.Controllers {
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);
             // フォーカス位置を新しい行に設定
             ViewBag.FocusPosition = $"#postMasterDatas_{index + 1}__ShiireSakiId";
-            return View("Index", viewModel); // Indexビューを更新されたビューモデルで再表示
+            return Task.FromResult<IActionResult>(View("Index", viewModel)); // Indexビューを更新されたビューモデルで再表示
         }
     }
 }

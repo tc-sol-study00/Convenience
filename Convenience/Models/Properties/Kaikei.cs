@@ -1,20 +1,17 @@
-﻿using Convenience.Data;
+﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Data;
-using AutoMapper;
-using AutoMapper.Collection;
-using Convenience.Migrations;
-using AutoMapper.EquivalencyExpression;
-using Microsoft.Build.Framework;
+using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
 
     /// <summary>
-    /// 店頭払出クラス
+    /// 会計クラス
     /// </summary>
     public class Kaikei : IKaikei,ISharedTools {
 
@@ -25,7 +22,7 @@ namespace Convenience.Models.Properties {
 
         /// <summary>
         /// <para>プロパティ</para>
-        /// <para>店頭払出ヘッダー</para>
+        /// <para>会計ヘッダー</para>
         /// </summary>
         public KaikeiHeader? KaikeiHeader { get; set; }
 
@@ -41,7 +38,7 @@ namespace Convenience.Models.Properties {
         /// 会計コード発番
         /// </summary>
         /// <param name="argCurrentDateTime">会計日時</param>
-        /// <returns>会計コード(yyyyMMdd-HH-001～999、HHは店頭払出日時の時間部分</returns>
+        /// <returns>会計コード(yyyyMMdd-HH-001～999、HHは会計日時の時間部分</returns>
         private async Task<string> UriageDatetimeIdHatsuban(DateTime argCurrentDateTime) {
             string dateArea = argCurrentDateTime.ToString("yyyyMMdd-HH");
 
@@ -134,7 +131,7 @@ namespace Convenience.Models.Properties {
 
             IMapper mapperShared = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new AutoMapperSharedProfile());
+                cfg.AddProfile(new KaikeiJissekiforSaveAutoMapperProfile());
             }).CreateMapper();
 
             List<KaikeiJisseki> tmpSaveDatas = mapperShared.Map<List<KaikeiJisseki>>(this.KaikeiHeader.KaikeiJissekis);

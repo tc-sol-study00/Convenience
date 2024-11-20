@@ -93,7 +93,9 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                     KeyEventList = new SortEventRec[LineCountForSelectorOfOrder];
 
 
-
+                    /*
+                     * ソートキーのセレクトリストセット
+                     */
                     KeyList = new SelectList(
                         new List<SelectListItem>
                         {
@@ -118,7 +120,9 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                 }
 
             }
-
+            /// <summary>
+            /// キー入力エリア
+            /// </summary>
             public class KeyAreaClass : IKeyAreaClass {
 
                 /// <summary>
@@ -157,6 +161,10 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
                         _ => new SelecteWhereItem()
                     };
                 }
+                /// <summary>
+                /// キー入力エリア管理用クラス
+                /// </summary>
+
                 public KeyAreaClass() {
 
                     /*
@@ -194,6 +202,10 @@ namespace Convenience.Models.ViewModels.KaikeiJisseki {
             }
 
         }
+
+        /// <summary>
+        /// データ表示用クラス
+        /// </summary>
         public class DataAreaClass : IDataAreaClass {
 
             /// <summary>

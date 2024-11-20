@@ -2,12 +2,10 @@
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.ShiireJisseki;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel;
 using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 

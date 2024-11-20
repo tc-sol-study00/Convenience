@@ -3,6 +3,7 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties.Config;
 using Elfie.Serialization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using System.Linq.Expressions;
 namespace Convenience.Models.Properties {
 
     /// <summary>
-    /// * 注文クラス
+    /// 注文クラス
     /// </summary>
     public class Chumon : IChumon, IDbContext {
 
@@ -280,7 +281,12 @@ namespace Convenience.Models.Properties {
             return existedChumonJisseki;
         }
 
-
+        /// <summary>
+        /// PostデータをDTOに反映するときに、AutoMappewrなのか、手作りなのか、インデックス使った方法なのか切り分け用
+        /// </summary>
+        /// <param name="postedChumonJisseki">Postデータ</param>
+        /// <param name="existedChumonJisseki">DTO</param>
+        /// <returns></returns>
         private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki);
         private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
         //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;

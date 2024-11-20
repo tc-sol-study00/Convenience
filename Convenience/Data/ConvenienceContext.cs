@@ -12,6 +12,13 @@ namespace Convenience.Data {
         public ConvenienceContext(DbContextOptions<ConvenienceContext> options)
             : base(options) {
         }
+
+        /// <summary>
+        /// DBを使わないモデル用
+        /// </summary>
+        public ConvenienceContext() {
+
+        }
         /// <summary>
         /// 注文実績明細
         /// </summary>

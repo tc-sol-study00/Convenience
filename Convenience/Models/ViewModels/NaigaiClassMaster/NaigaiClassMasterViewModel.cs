@@ -38,12 +38,15 @@ namespace Convenience.Models.ViewModels.NaigaiClassMaster {
         /// <summary>
         /// デフォルトコンストラクタ（初期化）
         /// </summary>
+
+        /*       
         public NaigaiClassMasterViewModel() {
             PostMasterDatas = new List<PostMasterData>();   // 投稿データの初期化
             IsNormal = default;                             // 処理正常フラグの初期化
             Remark = string.Empty;                          // 処理結果の初期化
             my = this;                                      // インターフェース型の自身を格納
         }
+        */
 
         /// <summary>
         /// 依存性注入に対応したコンストラクタ

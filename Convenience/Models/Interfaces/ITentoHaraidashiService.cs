@@ -1,6 +1,9 @@
 ﻿using Convenience.Models.ViewModels.TentoHaraidashi;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 店頭払出サービス用インターフェース
+    /// </summary>
     public interface ITentoHaraidashiService {
 
         /// <summary>

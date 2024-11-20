@@ -1,10 +1,7 @@
 ﻿using Convenience.Data;
-using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.Shiire;
 using Microsoft.AspNetCore.Mvc;
-using static Convenience.Models.Properties.Message;
 
 namespace Convenience.Controllers {
 
@@ -33,28 +30,33 @@ namespace Convenience.Controllers {
         }
 
         /// <summary>
-        /// 仕入画面１枚目の初期表示
+        /// <para>①仕入画面キー入力初期表示</para>
+        /// <para>③仕入画面キー入力後の仕入明細画面初期表示</para>
         /// </summary>
         /// <returns>ShiireKeysViewModel 仕入キービューモデル</returns>
         /// 
         [HttpGet]
         public async Task<IActionResult> ShiireKeyInput(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
+                //③仕入画面キー入力Post後の明細入力画面初期表示
                 ViewBag.HandlingFlg = "FirstDisplay";
                 shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tempdataなし"));
                 TempData.Keep(IndexName);
                 ViewBag.FocusPosition = "#ShiireJissekis_0__NonyuSu";
+                //④に飛ぶ
                 return View("Shiire", shiireViewModel);
             }
             else {
+                //①仕入画面キー入力初期表示
                 ShiireKeysViewModel keymodel = await shiireService.SetShiireKeysModel();
                 ViewBag.FocusPosition = "#ChumonId";
+                //②に飛ぶ
                 return View(keymodel);
             }
         }
 
         /// <summary>
-        /// 仕入画面１枚目のPost後処理→仕入画面２枚目に遷移
+        /// ②仕入画面キー入力Post後処理
         /// </summary>
         /// <param name="inKeysModel">仕入画面１枚目のpostデータ</param>
         /// <returns></returns>
@@ -63,12 +65,11 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> ShiireKeyInput(ShiireKeysViewModel inKeysModel) {
             shiireViewModel = await shiireService.ShiireSetting(inKeysModel);
             TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
-            //ViewBag.HandlingFlg = "FirstDisplay";
+            //③に飛ぶ
             return RedirectToAction("ShiireKeyInput", new { id = "Result" });
-            //return View("Shiire", shiireViewModel);
         }
         /// <summary>
-        /// 仕入画面２枚目のPost後処理
+        /// ④仕入明細画面Post後処理
         /// </summary>
         /// <param name="inShiireViewModel"></param>
         /// <returns></returns>
@@ -77,15 +78,16 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Shiire(ShiireViewModel inShiireViewModel) {
             ModelState.Clear();
 
-            var shiireViewModel = await shiireService.ShiireCommit(inShiireViewModel);
+            ShiireViewModel shiireViewModel = await shiireService.ShiireCommit(inShiireViewModel);
 
             ViewBag.HandlingFlg = "SecondDisplay";
 
             TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
+            //⑤に飛ぶ
             return RedirectToAction("Shiire", new { id = "Result" });
         }
         /// <summary>
-        /// 仕入画面２枚目の初期表示（仕入画面２枚目のPost後処理よりredirect）
+        /// ⑤仕入明細画面Post後の初期表示
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -95,6 +97,7 @@ namespace Convenience.Controllers {
                 if (TempData.Peek(IndexName) != null) {
                     shiireViewModel = ISharedTools.ConvertFromSerial<ShiireViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tepdataなし"));
                     TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
+                    //④に飛ぶ
                     return View("Shiire", shiireViewModel);
                 }
                 else {

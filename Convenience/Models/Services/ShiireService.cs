@@ -2,13 +2,12 @@
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
-using Convenience.Models.ViewModels.Chumon;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.Shiire;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Data;
-using static Convenience.Models.Properties.Message;
+using static Convenience.Models.Properties.Config.Message;
 using static Convenience.Models.Properties.Shiire;
 
 namespace Convenience.Models.Services {

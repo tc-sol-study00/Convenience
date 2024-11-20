@@ -39,8 +39,8 @@ namespace Convenience.Controllers {
         /// <param name="id">任意の識別子（必要に応じて使用）</param>
         /// <returns>ビューとビューモデルを返す</returns>
         [HttpGet]
-        public async Task<IActionResult> Index(string id) {
-            var viewModel = await naigaiClassMasterService.MakeViewModel(); // サービスで新しいビューモデルを生成
+        public async Task<IActionResult> Index() {
+            NaigaiClassMasterViewModel viewModel = await naigaiClassMasterService.MakeViewModel(); // サービスで新しいビューモデルを生成
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel); // ビューモデルをシリアル化してTempDataに保存
             ViewBag.FocusPosition = $"#postMasterDatas_0__ShiireSakiId"; // 初期フォーカス位置を設定
             return View(viewModel); // ビューにビューモデルを渡して表示
@@ -56,7 +56,7 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Index(NaigaiClassMasterViewModel inNaigaiClassMasterViewModel) {
             ModelState.Clear(); // モデルの状態をクリア（再バリデーションを行う準備）
 
-            var viewModel = await naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);      // POSTデータを基にDBを更新
+            NaigaiClassMasterViewModel viewModel = await naigaiClassMasterService.UpdateMasterData(inNaigaiClassMasterViewModel);      // POSTデータを基にDBを更新
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);                                      // 更新されたビューモデルをTempDataに保存
             return RedirectToAction("Result");                                                                  // PRG対応
         }
@@ -67,11 +67,11 @@ namespace Convenience.Controllers {
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> Result() {
+        public Task<IActionResult> Result() {
             NaigaiClassMasterViewModel viewModel = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(
                TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
            );
-            return View("Index", viewModel);
+            return Task.FromResult<IActionResult>(View("Index", viewModel));
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Convenience.Controllers {
         /// <param name="index">挿入する位置のインデックス</param>
         /// <returns>更新されたビューモデル</returns>
         [HttpGet]
-        public async Task<IActionResult> InsertRow(int index) {
+        public Task<IActionResult> InsertRow(int index) {
             // TempDataからビューモデルを復元
             NaigaiClassMasterViewModel viewModel = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(
                 TempData[IndexName]?.ToString() ?? throw new Exception("TempDataが存在しません")
@@ -94,7 +94,7 @@ namespace Convenience.Controllers {
 
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel);          // 更新後のビューモデルをTempDataに保存
             ViewBag.FocusPosition = $"#postMasterDatas_{index + 1}__ShiireSakiId";  // フォーカス位置を新しい行に設定
-            return View("Index", viewModel);                                        // Indexビューを更新されたビューモデルで再表示
+            return Task.FromResult<IActionResult>(View("Index", viewModel));                                        // Indexビューを更新されたビューモデルで再表示
         }
     }
 }
