@@ -36,26 +36,33 @@ namespace Convenience.Controllers {
         }
 
         /// <summary>
-        /// 商品注文１枚目の初期表示処理
+        /// <para>①キー入力画面の初期表示処理</para>
+        /// <para>③キー入力Post受信結果の初期明細画面表示</para>
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// </remarks>
+        /// <returns>remarks参照</returns>
         [HttpGet]
         public async Task<IActionResult> KeyInput(string id) {
             if ((id??string.Empty).Equals("Result")) {
+                //③キー入力Post受信結果の初期明細画面表示
                 ChumonViewModel chumonViewModel 
                     = ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName]?.ToString()??throw new Exception("tempdataなし"));
                 ViewBag.HandlingFlg = "FirstDisplay";
                 TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
                 ViewBag.FocusPosition = "#ChumonJisseki_ChumonJissekiMeisais_0__ChumonSu";
+                //④に飛ぶ
                 return View("ChumonMeisai",chumonViewModel);
             }
+            //①キー入力画面の初期表示処理
             ChumonKeysViewModel keymodel = await chumonService.SetChumonKeysViewModel();
             ViewBag.FocusPosition = "#ShiireSakiId";
+            //②に飛ぶ
             return View(keymodel);
         }
 
         /// <summary>
-        /// 商品注文１枚目のPost受信後処理
+        /// <para>②商品注文１枚目のPost受信後処理</para>
         /// </summary>
         /// <param name="inChumonKeysViewModel">注文キービューモデル</param>
         /// <returns></returns>
@@ -70,39 +77,13 @@ namespace Convenience.Controllers {
 
             // 注文セッティング
             ChumonViewModel chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel);
-            //ViewBag.HandlingFlg = "FirstDisplay";
-            //return View("ChumonMeisai", chumonViewModel);
             TempData[IndexName]=ISharedTools.ConvertToSerial(chumonViewModel);
+            //③に飛ぶ
             return RedirectToAction("KeyInput", new { id = "Result" });
         }
 
-
         /// <summary>
-        /// 商品注文２枚目の初期表示（表示データは、postを受けたKeyInputメソッドで行う）
-        /// </summary>
-        /// <param name="inChumonViewModel">初期表示する注文明細ビューデータ</param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult ChumonMeisai(string id) {
-            if ((id ?? string.Empty).Equals("Result")) {
-                ViewBag.HandlingFlg = "SecondDisplay";
-                //Redirect前のデータを引き継ぐ
-                if (TempData.Peek(IndexName) != null) {
-                    ChumonViewModel chumonViewModel = 
-                        ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName]?.ToString()
-                        ??throw new Exception("tempdataなし"));
-                    TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
-                    return View("ChumonMeisai", chumonViewModel);
-                }
-                else {
-                    return RedirectToAction("ChumonMeisai");
-                }
-            }
-            return NotFound("処理がありません");
-        }
-
-        /// <summary>
-        ///  商品注文２枚目のPost後の処理
+        ///  ④商品注文明細画面Post後の処理
         /// </summary>
         /// <param name="id"></param>
         /// <param name="inChumonViewModel">注文明細ビューモデル</param>
@@ -124,7 +105,33 @@ namespace Convenience.Controllers {
                 = await chumonService.ChumonCommit(inChumonViewModel);
             //Resultに注文明細ビューモデルを引き渡す
             TempData[IndexName] = ISharedTools.ConvertToSerial(ChumonViewModel);
+            //⑤に飛ぶ
             return RedirectToAction("ChumonMeisai", new { id = "Result"});
+        }
+
+        /// <summary>
+        /// ⑤商品注文明細画面Post後の処理の初期表示
+        /// </summary>
+        /// <param name="inChumonViewModel">初期表示する注文明細ビューデータ</param>
+        /// <returns>商品注文２枚目＋Post後の処理結果</returns>
+        [HttpGet]
+        public IActionResult ChumonMeisai(string id) {
+            if ((id ?? string.Empty).Equals("Result")) {
+                ViewBag.HandlingFlg = "SecondDisplay";
+                //Redirect前のデータを引き継ぐ
+                if (TempData.Peek(IndexName) != null) {
+                    ChumonViewModel chumonViewModel =
+                        ISharedTools.ConvertFromSerial<ChumonViewModel>(TempData[IndexName]?.ToString()
+                        ?? throw new Exception("tempdataなし"));
+                    TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
+                    //④に飛ぶ
+                    return View("ChumonMeisai", chumonViewModel);
+                } else {
+                    //何かおかしい場合は、自分を呼ぶ
+                    return RedirectToAction("ChumonMeisai");
+                }
+            }
+            return NotFound("処理がありません");
         }
     }
 }
