@@ -2,7 +2,7 @@
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.ChumonJisseki;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;

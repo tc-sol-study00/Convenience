@@ -1,15 +1,12 @@
-﻿using Convenience.Data;
+﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Data;
-using AutoMapper;
-using AutoMapper.Collection;
-using Convenience.Migrations;
-using AutoMapper.EquivalencyExpression;
-using Microsoft.Build.Framework;
+using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
 

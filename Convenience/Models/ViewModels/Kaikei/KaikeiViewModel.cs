@@ -116,34 +116,31 @@ namespace Convenience.Models.ViewModels.Kaikei {
         public IEnumerable<SelectListItem> NaigaiClassListItems { get; set; }
 
         /// <summary>
-        /// 共通初期化（売上数・売上金額）
-        /// </summary>
-        private void Initial() {
-            this.UriageSu = 0;
-            this.UriageKingaku = 0;
-            this.NaigaiClass = "0";
-        }
-        /// <summary>
         /// コンストラクタ（基本）
         /// </summary>
         public KaikeiJissekiForAdd() {
             this.NaigaiClassListItems = new List<SelectListItem>();
-            Initial();
+            this.UriageSu = 0;
+            this.UriageKingaku = 0;
+            this.NaigaiClass = "0";
         }
+
         /// <summary>
         /// コンストラクタ（内外区分マスタ検索機能付き）
         /// </summary>
-        /// <param name="context"></param>
-        public KaikeiJissekiForAdd(ConvenienceContext context) {
-            ConvenienceContext _context = context;
-            this.NaigaiClassListItems =
-                _context.NaigaiClassMaster.AsNoTracking().OrderBy(x => x.NaigaiClass)
-                .Select(x => new SelectListItem() { Text = $"{x.NaigaiClass}:{x.NaigaiClassName}", Value = x.NaigaiClass })
+        /// <param name="context">データベースコンテキスト</param>
+        public KaikeiJissekiForAdd(ConvenienceContext context) : this() {
+            this.NaigaiClassListItems = context.NaigaiClassMaster
+                .AsNoTracking()
+                .OrderBy(x => x.NaigaiClass)
+                .Select(x => new SelectListItem {
+                    Text = $"{x.NaigaiClass}:{x.NaigaiClassName}",
+                    Value = x.NaigaiClass
+                })
                 .ToList();
-            Initial();
         }
     }
-    
+
 
     /// <summary>
     /// 店頭払出キー入力に使うリストの内容

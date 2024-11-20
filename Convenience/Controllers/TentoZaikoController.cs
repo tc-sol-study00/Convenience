@@ -1,16 +1,9 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
-using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
-using Convenience.Models.ViewModels.Shiire;
-using Convenience.Models.ViewModels.ShiireJisseki;
-using Convenience.Models.ViewModels.TentoHaraidashi;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.AspNetCore.Mvc;
-using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel.DataAreaClass;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
     /// <summary>
@@ -111,8 +104,8 @@ namespace Convenience.Controllers {
         /// <returns>Downloadファイル</returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> DownLoad(string id) {
-            var keywordArea
+        public async Task<IActionResult> DownLoad() {
+            TentoZaikoViewModel.KeywordAreaClass keywordArea
                 = ISharedTools.ConvertFromSerial<TentoZaikoViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
             tentoZaikoViewModel.KeywordArea = keywordArea;
 

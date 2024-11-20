@@ -3,6 +3,7 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Models.Properties {
@@ -58,7 +59,7 @@ namespace Convenience.Models.Properties {
         public IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis) {
             // AutoMapperの初期設定
 
-            MapperConfiguration config = new MapperConfiguration(cfg => {
+            MapperConfiguration config = new (cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
                 cfg.AddProfile(new ShiirePostToDTOAutoMapperProfile(_context));
             });

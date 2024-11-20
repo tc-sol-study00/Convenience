@@ -1,12 +1,7 @@
-﻿using Convenience.Data;
-using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
-using Convenience.Models.Services;
-using Convenience.Models.ViewModels.ShiireJisseki;
+﻿using Convenience.Models.Interfaces;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.Zaiko;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 
 namespace Convenience.Controllers {
@@ -46,8 +41,8 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ZaikoViewModel inZaikoModel) {
-            var keydata = inZaikoModel.KeyEventList;
-            var selecteWhereItemArray = inZaikoModel.SelecteWhereItemArray;
+            KeyEventRec[] keydata = inZaikoModel.KeyEventList;
+            SelecteWhereItem[] selecteWhereItemArray = inZaikoModel.SelecteWhereItemArray;
 
             ZaikoViewModel zaikoViewModel =
                 await zaikoService.KeyInput(keydata, selecteWhereItemArray);
@@ -58,12 +53,12 @@ namespace Convenience.Controllers {
             return View(zaikoViewModel);
         }
         [HttpGet]
-        public async Task<IActionResult> DownLoad(string id) {
-            var viewmodel
+        public async Task<IActionResult> DownLoad() {
+            ZaikoViewModel viewmodel
                 = ISharedTools.ConvertFromSerial<ZaikoViewModel>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
 
-            var keydata = viewmodel.KeyEventList;
-            var selecteWhereItemArray = viewmodel.SelecteWhereItemArray;
+            KeyEventRec[] keydata = viewmodel.KeyEventList;
+            SelecteWhereItem[] selecteWhereItemArray = viewmodel.SelecteWhereItemArray;
 
             ZaikoViewModel zaikoViewModel =
                 await zaikoService.KeyInput(keydata, selecteWhereItemArray);

@@ -1,9 +1,9 @@
 ﻿using Convenience.Data;
-using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using static Convenience.Models.Properties.Message;
+using static Convenience.Models.Properties.Config.Message;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
@@ -17,6 +17,8 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// データベースコンテキスト
         /// </summary>
+        
+
         public ConvenienceContext _context { get; set; }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace Convenience.Models.Interfaces {
             KeepMasterDatas = MapFromPostDataToKeepMasterData(remainPostMasterData);
 
             // 変更の保存
-            var entities = _context.ChangeTracker.Entries()
+            int entities = _context.ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)
                 .Select(e => e.Entity).Count();
             await _context.SaveChangesAsync();
@@ -119,7 +121,7 @@ namespace Convenience.Models.Interfaces {
         /// <summary>
         /// 削除フラグが立っていないデータをフィルタリング
         /// </summary>
-        private IList<T> DeleteData<T>(IEnumerable<IPostMasterData> indatas) {
+        private static IList<T> DeleteData<T>(IEnumerable<IPostMasterData> indatas) {
             return indatas.Cast<IPostMasterData>()
                 .Where(x => !x.DeleteFlag)
                 .OfType<T>()
