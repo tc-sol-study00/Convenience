@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 namespace Convenience.Models.Properties {
 
     /// <summary>
-    /// * 注文クラス
+    /// 注文クラス
     /// </summary>
     public class Chumon : IChumon, IDbContext {
 
