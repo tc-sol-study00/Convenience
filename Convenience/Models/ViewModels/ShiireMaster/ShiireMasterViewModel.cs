@@ -32,6 +32,9 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
         /// </summary>
         public IList<SelectListItem> ShohinList { get; set; }
 
+        /// <summary>
+        /// このクラスのインスタンス用
+        /// </summary>
         private readonly IMasterRegistrationSelectList my;
 
         /// <summary>
@@ -68,7 +71,16 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
             Remark = string.Empty;                          // 処理結果メッセージの初期化
             my = this;                                      // インターフェース型の自身を保持
         }
-
+        /// <summary>
+        /// <para>以下の一覧を作成</para>
+        /// <para>仕入先一覧</para>
+        /// <para>商品一覧</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>仕入マスタサービスからコールされる</para>
+        /// <para>コンストラクタ内で非同期にできなかったので</para>
+        /// </remarks>
+        /// <returns>このビューモデルのプロパティにそれぞれセット</returns>
         public async Task InitialAsync() {
             ShiireSakiList = await my.SetSelectList<DataModels.ShiireSakiMaster>();   // 仕入先マスタから選択リストを設定
             ShohinList = await my.SetSelectList<DataModels.ShohinMaster>();           // 商品マスタから選択リストを設定
