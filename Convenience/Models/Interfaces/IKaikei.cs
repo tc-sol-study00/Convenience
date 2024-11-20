@@ -3,6 +3,9 @@ using Convenience.Models.ViewModels.Kaikei;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 会計クラス用インターフェース 
+    /// </summary>
     public interface IKaikei {
         /// <summary>
         /// 会計ヘッダープロパティ

@@ -1,6 +1,9 @@
 ﻿using Convenience.Models.ViewModels.Kaikei;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 会計サービス用インターフェース
+    /// </summary>
     public interface IKaikeiService {
 
         /// <summary>

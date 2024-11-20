@@ -13,7 +13,7 @@ namespace Convenience.Models {
         /// </summary>
         public string Url { get; set; }
         /// <summary>
-        /// 説明
+        /// メニュー内容説明
         /// </summary>
         public string Description { get; set; }
 

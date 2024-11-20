@@ -2,6 +2,9 @@
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 店頭払出プロパティ用インターフェース
+    /// </summary>
     public interface ITentoHaraidashi {
         /// <summary>
         /// <para>プロパティ</para>

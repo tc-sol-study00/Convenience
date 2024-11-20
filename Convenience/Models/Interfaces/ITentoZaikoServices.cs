@@ -3,6 +3,9 @@ using Convenience.Models.ViewModels.TentoZaiko;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 店頭在庫サービス用インターフェース
+    /// </summary>
     public interface ITentoZaikoService {
         /// <summary>
         /// 店頭在庫検索

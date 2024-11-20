@@ -2,6 +2,9 @@
 using System.Linq.Dynamic.Core;
 
 namespace Convenience.Models.Interfaces {
+    /// <summary>
+    /// 検索サービス用共通インターフェース
+    /// </summary>
     public interface IRetrivalService : ISharedTools {
 
         /// <summary>

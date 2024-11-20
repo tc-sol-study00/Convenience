@@ -131,7 +131,14 @@ namespace Convenience.Models.Properties {
 
     }
 
+    /// <summary>
+    /// 各CSVフォーマットの詰め合わせ
+    /// </summary>
     public static class CSVMapping {
+
+        /// <summary>
+        /// 仕入実績画面用
+        /// </summary>
         public record ShiireJissekiCSV {
             [Name("注文コード")]
             [Index(1)]
@@ -177,6 +184,10 @@ namespace Convenience.Models.Properties {
             [Index(11)]
             public decimal NonyuSu { get; set; }
         }
+
+        /// <summary>
+        /// 倉庫在庫画面用
+        /// </summary>
         public record SokoZaikoCSV {
             [Name("仕入先コード")]
             [Index(1)]
@@ -206,7 +217,9 @@ namespace Convenience.Models.Properties {
             [Index(9)]
             public DateOnly? LastDeliveryDate { get; set; }
         }
-
+        /// <summary>
+        /// 店頭在庫画面用
+        /// </summary>
         public record TentoZaIkoCSV {
             [Name("商品コード")]
             [Index(1)]
@@ -232,7 +245,9 @@ namespace Convenience.Models.Properties {
             [Index(6)]
             public DateTime? LastUriageDatetime { get; set; }
         }
-
+        /// <summary>
+        /// 会計実績画面用
+        /// </summary>
         public record KaikeiJissekiCSV {
 
             [Name("売上日時")]
@@ -276,7 +291,9 @@ namespace Convenience.Models.Properties {
             public string NaigaiClassName { get; set; }
 
         }
-
+        /// <summary>
+        /// 注文実績画面用
+        /// </summary>
         public record ChumonJissekiCSV {
             [Name("注文コード")]
             [Index(1)]

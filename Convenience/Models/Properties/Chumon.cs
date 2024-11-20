@@ -280,7 +280,12 @@ namespace Convenience.Models.Properties {
             return existedChumonJisseki;
         }
 
-
+        /// <summary>
+        /// PostデータをDTOに反映するときに、AutoMappewrなのか、手作りなのか、インデックス使った方法なのか切り分け用
+        /// </summary>
+        /// <param name="postedChumonJisseki">Postデータ</param>
+        /// <param name="existedChumonJisseki">DTO</param>
+        /// <returns></returns>
         private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki);
         private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
         //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;
