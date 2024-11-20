@@ -41,6 +41,7 @@ namespace Convenience.Models.ViewModels.ShiireSakiMaster {
         /// </summary>
         public ShiireSakiMasterViewModel() {
             // 初期化
+            _context = new ConvenienceContext();
             PostMasterDatas = new List<PostMasterData>();   // データリストを空で初期化
             IsNormal = default;                             // 初期値は null
             Remark = string.Empty;                          // 初期値として空文字列
@@ -51,12 +52,8 @@ namespace Convenience.Models.ViewModels.ShiireSakiMaster {
         /// 依存性注入コンストラクタ（ConvenienceContext を受け取る）
         /// </summary>
         /// <param name="context">コンテキストオブジェクト</param>
-        public ShiireSakiMasterViewModel(ConvenienceContext context) {
+        public ShiireSakiMasterViewModel(ConvenienceContext context) : this() {
             _context = context;                             // コンテキストをインジェクト
-            PostMasterDatas = new List<PostMasterData>();   // データリストを空で初期化
-            IsNormal = default;                             // 初期値は null
-            Remark = string.Empty;                          // 初期値として空文字列
-            my = this;                                      // ビューモデルインスタンスの参照を保持
         }
     }
 }

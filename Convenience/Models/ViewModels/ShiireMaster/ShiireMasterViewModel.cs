@@ -50,6 +50,8 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
         /// <summary>
         /// デフォルトコンストラクタ（初期化）
         /// </summary>
+        /// 
+        /*
         public ShiireMasterViewModel() {
             // プロパティの初期化
             PostMasterDatas = new List<PostMasterData>();   // Postデータリストの初期化
@@ -59,6 +61,7 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
             ShohinList = new List<SelectListItem>();        // 商品リストの初期化
             my = this;                                      // インターフェース型の自身を保持
         }
+        */
 
         /// <summary>
         /// 依存性注入に対応したコンストラクタ（データベースコンテキストを受け取る）
@@ -67,6 +70,8 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
         public ShiireMasterViewModel(ConvenienceContext context) {
             _context = context;                             // データベースコンテキストの初期化
             PostMasterDatas = new List<PostMasterData>();   // Postデータリストの初期化
+            ShiireSakiList = new List<SelectListItem>();    // 初期化
+            ShohinList = new List<SelectListItem>();        // 初期化
             IsNormal = default;                             // 処理正常フラグ（初期状態は null）
             Remark = string.Empty;                          // 処理結果メッセージの初期化
             my = this;                                      // インターフェース型の自身を保持

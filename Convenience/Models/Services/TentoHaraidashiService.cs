@@ -2,11 +2,12 @@
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using static Convenience.Models.Properties.Message;
+using static Convenience.Models.Properties.Config.Message;
 
 namespace Convenience.Models.Services {
     /// <summary>
@@ -172,7 +173,7 @@ namespace Convenience.Models.Services {
             /*
              * Postデータを上書きしてＤＢ更新準備をする
              */
-            settingTentoHaraidashiHearder.TentoHaraidashiJissekis= TentoHaraidashi.TentoHaraidashiUpdate(postedTentoHaraidashiJissekis);
+            settingTentoHaraidashiHearder!.TentoHaraidashiJissekis= TentoHaraidashi.TentoHaraidashiUpdate(postedTentoHaraidashiJissekis);
 
             /*
              * 更新エンティティ数を求める

@@ -1,12 +1,11 @@
-﻿using Convenience.Data;
+﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
+using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
-using Convenience.Models.ViewModels.TentoHaraidashi;
 using System.Linq.Expressions;
-using AutoMapper;
-using AutoMapper.EquivalencyExpression;
-using Microsoft.Build.Framework;
 
 namespace Convenience.Models.Properties {
     /// <summary>

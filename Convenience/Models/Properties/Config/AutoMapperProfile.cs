@@ -10,7 +10,7 @@ using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Convenience.Models.Properties {
+namespace Convenience.Models.Properties.Config {
     /// <summary>
     ///  （会計クラス用）会計ヘッダー＋実績をPostデータからDTOに反映
     /// </summary>

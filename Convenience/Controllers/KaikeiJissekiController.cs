@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.Services;
 using Convenience.Models.ViewModels.KaikeiJisseki;
 using Convenience.Models.ViewModels.TentoZaiko;
@@ -109,8 +110,8 @@ namespace Convenience.Controllers {
         /// <returns>Downloadファイル</returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> DownLoad(string id) {
-            var keywordArea
+        public async Task<IActionResult> DownLoad() {
+            KaikeiJissekiViewModel.KeywordAreaClass keywordArea
                 = ISharedTools.ConvertFromSerial<KaikeiJissekiViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));
             kaikeiJissekiViewModel.KeywordArea = keywordArea;
 

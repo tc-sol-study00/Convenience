@@ -2,6 +2,7 @@
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
+using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.Kaikei;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using static Convenience.Models.Properties.Message;
+using static Convenience.Models.Properties.Config.Message;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.Services {
