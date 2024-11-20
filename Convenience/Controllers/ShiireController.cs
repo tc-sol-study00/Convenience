@@ -81,7 +81,7 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Shiire(ShiireViewModel inShiireViewModel) {
             ModelState.Clear();
 
-            var shiireViewModel = await shiireService.ShiireCommit(inShiireViewModel);
+            ShiireViewModel shiireViewModel = await shiireService.ShiireCommit(inShiireViewModel);
 
             ViewBag.HandlingFlg = "SecondDisplay";
 
