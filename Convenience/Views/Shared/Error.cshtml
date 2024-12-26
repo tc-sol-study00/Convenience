@@ -74,6 +74,10 @@
                 <td><strong>ErrorMassage</strong></td>
                 <td><strong>@Model.ExceptionHandlerPathFeature.Error.Message</strong></td>
             </tr>
+            <tr>
+                <td><strong>Exception Name</strong></td>
+                <td><strong>@Model.ExceptionHandlerPathFeature.Error.GetType().Name</strong></td>
+            </tr>
         }
     }
     @if (Model.StatusCodeReExecuteFeature != null) {
