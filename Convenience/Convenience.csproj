@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\DebugController.cs" />
     <Compile Remove="Models\Interfaces\MasterRegistrationServiceBase.cs" />
     <Compile Remove="Models\Properties\Chumon2.cs" />
     <Compile Remove="Models\Properties\Class.cs" />

@@ -4,6 +4,7 @@ using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 
 namespace Convenience.Controllers {
     public class DebugController : Controller {
@@ -12,12 +13,13 @@ namespace Convenience.Controllers {
         public DebugController(ConvenienceContext context) {
             _context = context;
         }
-        public async Task<IActionResult> Index2() {
+        public async Task<IActionResult> Index() {
             Chumon chumon = new Chumon();
 
             DateOnly thisday = DateOnly.FromDateTime(DateTime.Now);
 
-            string result=await chumon.ChumonIdHatsuban(thisday);
+            //元々、発番はprivateだったので、コメントアウト
+            //string result=await chumon.ChumonIdHatsuban(thisday);
 
             return View();
         }
@@ -46,11 +48,33 @@ namespace Convenience.Controllers {
 
             var result0 = intdatas.FirstOrDefault();
 
-            List<ChumonJisseki> result10 = await _context.ChumonJisseki.Where(x => x.ChumonId == "20241226-001")
+            List<ChumonJisseki> result10 = await _context.ChumonJisseki
+                //.Where(x => x.ChumonId == "20241226-001")
                 .ToListAsync();
 
-            return View();
+
+
+            Response.ContentType = "text/html";
+            return Content(string.Join("<br>",result10.Select(x=> $"{x.ChumonId}:{x.ChumonDate}")));
         }
+
+        /*
+        public async Task<ActionResult> Index20241226No01() {
+            IEnumerable<ChumonJissekiMeisai> postedChumonJisseki 
+                = await _context.ChumonJissekiMeisai.AsNoTracking()
+                .OrderBy(t => t.ChumonId).ThenBy(t => t.ShiireSakiId).ThenBy(p => p.ShiirePrdId)
+                .ToListAsync();
+
+            IList<ChumonJissekiMeisai> existedChumonJisseki 
+                = await _context.ChumonJissekiMeisai
+                .OrderBy(o => o.ChumonId).ThenBy(t => t.ShiireSakiId).ThenBy(p => p.ShiirePrdId)
+                .ToListAsync();
+
+            _ = existedChumonJisseki.Zip(postedChumonJisseki,(ext,pst) => ext.ChumonSu = pst.ChumonSu);
+
+        }
+
+        */
 
     }
 }
