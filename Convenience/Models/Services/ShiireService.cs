@@ -48,7 +48,7 @@ namespace Convenience.Models.Services {
         /// C#コンソールデバッグ用
         /// </summary>
         public ShiireService() {
-            this._context = IDbContext.DbOpen();
+            this._context = ((IDbContext)this).DbOpen();
             this.shiire = new Shiire(_context);
         }
 

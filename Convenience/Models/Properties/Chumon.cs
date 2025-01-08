@@ -42,7 +42,7 @@ namespace Convenience.Models.Properties {
         /// </summary>
         public Chumon()
         {
-            _context = IDbContext.DbOpen();
+            _context = ((IDbContext)this).DbOpen();
         }
 
         /// <summary>

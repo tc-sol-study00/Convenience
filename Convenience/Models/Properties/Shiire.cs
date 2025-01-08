@@ -46,7 +46,7 @@ namespace Convenience.Models.Properties {
         /// 仕入クラスデバッグ用
         /// </summary>
         public Shiire() {
-            _context = IDbContext.DbOpen();
+            _context = ((IDbContext)this).DbOpen();
             this.Shiirejissekis = new List<ShiireJisseki>();
             this.SokoZaikos = new List<SokoZaiko>();
         }

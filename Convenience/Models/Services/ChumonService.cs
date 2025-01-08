@@ -55,7 +55,7 @@ namespace Convenience.Models.Services {
         /// デバッグ用
         /// </summary>
         public ChumonService() {
-            _context = IDbContext.DbOpen();
+            _context = ((IDbContext)this).DbOpen();
             chumon = CreateChumonInstance(_context);
         }
 

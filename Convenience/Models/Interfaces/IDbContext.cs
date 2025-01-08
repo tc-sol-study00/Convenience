@@ -15,7 +15,7 @@ namespace Convenience.Models.Interfaces {
         /// PostgreSQL DBオープン
         /// </summary>
         /// <returns></returns>
-        protected static ConvenienceContext DbOpen() {
+        ConvenienceContext DbOpen() {
             //DBコンテクスト用接続子読み込み
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
