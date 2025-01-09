@@ -73,7 +73,7 @@ namespace Convenience.Models.Services {
             createdShiireJissekis = await shiire.ChumonToShiireJisseki(chumonId, inShiireDate, inSeqByShiireDate);
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
-            shiire.ShiireSokoConnection(createdShiireJissekis, _context.SokoZaiko);
+            shiire.ShiireSokoConnection(createdShiireJissekis, shiire.GetSokoZaiko());
 
             List<ShiireJisseki> listdt = (List<ShiireJisseki>)createdShiireJissekis;
             listdt.Sort((x, y) => {

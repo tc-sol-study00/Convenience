@@ -242,7 +242,7 @@ namespace Convenience.Models.Properties {
             IList<string> shohinIds = shiireJissekiGrp.Select(s => s.ShohinId).ToList();
 
             // 倉庫在庫を一括で取得
-            sokoZaikos = await _context.SokoZaiko
+            sokoZaikos = await GetSokoZaiko() //倉庫在庫
                 .Where(s => shiireSakiIds.Contains(s.ShiireSakiId) &&
                             shiirePrdIds.Contains(s.ShiirePrdId) &&
                             shohinIds.Contains(s.ShohinId))
@@ -391,6 +391,14 @@ namespace Convenience.Models.Properties {
             }
             //倉庫在庫が接続された仕入実績
             return inShiireJissekis;
+        }
+
+        /// <summary>
+        /// 倉庫在庫を取得する（遅延実行）
+        /// </summary>
+        /// <returns>倉庫在庫（遅延実行）IEnumerable<SokoZaiko></returns>
+        public IQueryable<SokoZaiko> GetSokoZaiko() {
+            return _context.SokoZaiko;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.DataModels;
+using Microsoft.EntityFrameworkCore;
 using static Convenience.Models.Properties.Shiire;
 
 namespace Convenience.Models.Interfaces {
@@ -101,6 +102,12 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <returns>注文残のある注文コード一覧</returns>
         public Task<IList<ChumonList>> ZanAriChumonList();
+
+        /// <summary>
+        /// 倉庫在庫を取得する（遅延実行）
+        /// </summary>
+        /// <returns>倉庫在庫（遅延実行）IEnumerable<SokoZaiko></returns>
+        public IQueryable<SokoZaiko> GetSokoZaiko();
 
     }
 }
