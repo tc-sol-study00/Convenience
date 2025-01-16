@@ -37,7 +37,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inShireSakiId">仕入先コード</param>
         /// <param name="inChumonDate">注文日</param>
         /// <returns>既存の注文実績</returns>
-        public Task<ChumonJisseki?> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate);
+        public Task<ChumonJisseki?> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate, bool includeShiireAndShohinMaster = true);
 
         /// <summary>
         /// 注文実績＋注文明細更新
@@ -45,6 +45,15 @@ namespace Convenience.Models.Interfaces {
         /// <param name="postedChumonJisseki">postされた注文実績</param>
         /// <returns>postされた注文実績を上書きされた注文実績</returns>
         public Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki);
+
+
+        /// <summary>
+        /// DB更新
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>注文実績＋注文実績明細を更新する</remarks>
+        /// <exception cref="DbUpdateConcurrencyException"></exception>
+        public Task<int> ChumonSaveChanges();
 
         /// <summary>
         /// 注文可能な仕入先一覧を作成する

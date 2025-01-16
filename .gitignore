@@ -8,3 +8,7 @@
 /Test
 /Convenience/appsettings.json
 /Convenience/wwwroot/tmpfiles
+/Debug/bin/Debug/net7.0
+/Debug/obj
+/MatchingGame/bin/Debug/net7.0
+/MatchingGame/obj

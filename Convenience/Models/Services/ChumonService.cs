@@ -8,18 +8,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using static Convenience.Models.Properties.Config.Message;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Models.Services {
     /// <summary>
     /// 注文サービスクラス
     /// </summary>
-    public partial class ChumonService : IChumonService, IDbContext {
-
-        /// <summary>
-        /// DBコンテクスト
-        /// </summary>
-        private readonly ConvenienceContext _context;
+    public partial class ChumonService : IChumonService {
 
         /// <summary>
         /// 注文オブジェクト用
@@ -46,8 +42,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumon">注文クラスＤＩ注入用</param>
-        public ChumonService(ConvenienceContext context, IChumon chumon) {
-            _context = context;
+        public ChumonService(IChumon chumon) {
             this.chumon = chumon;
             //chumon = CreateChumonInstance(_context);
         }
@@ -55,8 +50,8 @@ namespace Convenience.Models.Services {
         /// デバッグ用
         /// </summary>
         public ChumonService() {
-            _context = ((IDbContext)this).DbOpen();
-            chumon = CreateChumonInstance(_context);
+
+            chumon = CreateChumonInstance(((IDbContext)this).DbOpen());
         }
 
         /// <summary>
@@ -133,18 +128,10 @@ namespace Convenience.Models.Services {
 
             if (IsValid) {
 
-                var entities = _context.ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                .Select(e => e.Entity).Count();
+                //DB更新
 
-                try {
-                    //DB更新
-                    await _context.SaveChangesAsync();
+                int entities = await chumon.ChumonSaveChanges();
 
-                }
-                catch (DbUpdateConcurrencyException ex) {
-                    throw new DbUpdateConcurrencyException(ex.Message);
-                }
                 //再表示用データセット
                 updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate)
                     ?? throw new NoDataFoundException("DB更新後のデータがありません");
