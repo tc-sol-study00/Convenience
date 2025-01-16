@@ -17,7 +17,7 @@ namespace Convenience.Models.Services {
     public class ShiireService : IShiireService, IDbContext {
         
         //DBコンテキスト
-        private readonly ConvenienceContext _context;
+        //private readonly ConvenienceContext _context;
 
         /// <summary>
         /// 仕入クラス用オブジェクト変数
@@ -40,7 +40,7 @@ namespace Convenience.Models.Services {
         /// <param name="context">DBコンテキスト</param>
         /// <param name="shiire">仕入クラスＤＩ注入用</param>
         public ShiireService(ConvenienceContext context, IShiire shiire) {
-            this._context = context;
+            //this._context = context;
             this.shiire = shiire;
         }
 
@@ -48,8 +48,8 @@ namespace Convenience.Models.Services {
         /// C#コンソールデバッグ用
         /// </summary>
         public ShiireService() {
-            this._context = ((IDbContext)this).DbOpen();
-            this.shiire = new Shiire(_context);
+            //this._context = ((IDbContext)this).DbOpen();
+            this.shiire = new Shiire(((IDbContext)this).DbOpen());
         }
 
         /// <summary>
@@ -138,56 +138,19 @@ namespace Convenience.Models.Services {
 
             //初期化
             ShiireUkeireReturnSet? shiirezaikoset = null;   //仕入実績・在庫を管理するオブジェクト 
-            bool isLoopContinue = true;                     //リトライフラグ→DB更新のトライを続けるかフラグ 
-            uint loopCount = 1;                             //リトライ回数を管理する変数
             int entities = 0;                                 //SaveChangeしたエンティティ数
-            const int reTryMaxCount = 10;                   //リトライする回数
-            const int waitTime = 1000;    //1000m秒=1秒     //排他エラー時の再リトライ前の待機時間（単位ミリ秒）
 
-            while (isLoopContinue) {
+            bool IsNeedContinueToDBUpdate;
+            do { //IsNeedContinueToDBUpdate=trueの時は排他制御エラーなので、再チャレンジ   
                 //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
                 //在庫の登録はここで行われる
                 shiirezaikoset = await shiire.ChuumonZanZaikoSuChousei(chumonId, shiireJissekis);
 
-                try {
-                    //ＤＢ保管処理
+                // 仕入実績・注文残・倉庫在庫を更新する
+                (IsNeedContinueToDBUpdate, entities) = await shiire.ShiireSaveChanges();
 
-                    //DB更新見込みのエンティティ数を求める→1以上だとなんらか更新されたという意味
-                    entities = _context.ChangeTracker.Entries()
-                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                    .Select(e => e.Entity).Count();
+            } while (IsNeedContinueToDBUpdate);
 
-                    //DB更新
-                    await _context.SaveChangesAsync();
-
-                    isLoopContinue = false; //ステートメントまで来たら例外なしなので、リトライフラグをfalseにする
-                }
-                //排他制御エラーの場合
-                catch (DbUpdateConcurrencyException ex) {
-                    if (ex.Entries.Count() == 1 && ex.Entries.First().Entity is SokoZaiko) {
-                        if (loopCount++ > reTryMaxCount) throw;  //10回トライしてダメなら例外スロー
-
-                        Thread.Sleep(waitTime); //１秒待つ
-                        //倉庫在庫をデタッチしないと、キャッシュが生きたままなので
-                        //（１）の処理で同じデータを取得してしまう為の処置
-                        foreach (var item in shiire.SokoZaikos) {
-                            _context.Entry(item).State = EntityState.Detached;
-                        }
-                        //注文残の引き戻し
-                        //処理が失敗しているので、注文残を引き戻す
-                        foreach (var item in shiire.Shiirejissekis) {
-                            item.ChumonJissekiMeisaii.ChumonZan =
-                            _context.Entry(item.ChumonJissekiMeisaii).Property(p => p.ChumonZan).OriginalValue;
-                        }
-                        //リトライする
-                        isLoopContinue = true;
-                    }
-                    else {
-                        //その他排他制御の場合は例外をスローする
-                        throw;
-                    }
-                }
-            }
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
             _ = shiirezaikoset ?? throw new Exception("shiirezaikosetがnullです");
             shiire.ShiireSokoConnection(shiirezaikoset.ShiireJissekis, shiirezaikoset.SokoZaikos);

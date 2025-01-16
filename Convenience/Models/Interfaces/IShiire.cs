@@ -93,9 +93,13 @@ namespace Convenience.Models.Interfaces {
         /// <returns>Postされた注仕入実績がオーバライドされた仕入実績プロパティ</returns>
         public IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis);
 
-        /*
-         *  注文残があるものリスト 
-         */
+        /// <summary>
+        /// 仕入実績・注文残・倉庫在庫を更新する
+        /// </summary>
+        /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
+        /// 
+        public Task<(bool, int)> ShiireSaveChanges();
+
 
         /// <summary>
         /// 注文残がある注文のリスト化
