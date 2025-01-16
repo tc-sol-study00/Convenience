@@ -62,7 +62,7 @@ namespace Convenience.Models.Properties {
 
             //仕入先より注文実績データ（親）を生成する(a)
 
-            string chumonId = await ChumonIdHatsuban(inChumonDate) ?? throw new Exception("注文コード発番エラー");
+            string chumonId = await ChumonIdHatsuban(inChumonDate) ?? throw new OrderCodeGenerationException("注文コード発番時");
 
             ChumonJisseki = new ChumonJisseki {
                 ChumonId = chumonId,                                //注文コード発番
@@ -252,7 +252,7 @@ namespace Convenience.Models.Properties {
                 existedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績ベースデータエラー");
 
             if (postedMeisais.Count != existedMeisais.Count)
-                throw new DataCountMismatchException("PostデータエラーとDB側データの件数アンマッチ");
+                throw new DataCountMismatchException("注文明細画面");
 
             for (int i = 0; i < postedMeisais.Count; i++) {
                 ChumonJissekiMeisai src = postedMeisais[i];
@@ -260,7 +260,7 @@ namespace Convenience.Models.Properties {
 
                 if ((src.ChumonId, src.ShiireSakiId, src.ShiirePrdId) !=
                     (dest.ChumonId, dest.ShiireSakiId, dest.ShiirePrdId)) {
-                    throw new DataPositionMismatchException("PostデータエラーとDB側データの位置エラー(ソートされていない可能性）");
+                    throw new DataPositionMismatchException("注文明細画面");
                 }
 
                 decimal lastChumonSu = dest.ChumonSu;

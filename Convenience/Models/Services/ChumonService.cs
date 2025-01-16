@@ -106,7 +106,8 @@ namespace Convenience.Models.Services {
             return ChumonViewModel = new ChumonViewModel() {
                 ChumonJisseki = createdChumonJisseki 
                 ?? existedChumonJisseki 
-                ?? throw new ChumonJissekiSetupException("注文セッティングエラー")   //初期表示用の注文実績データ
+                ?? throw new
+                NoDataFoundException("注文セッティングエラー")   //初期表示用の注文実績データ
             };
         }
 
@@ -134,7 +135,7 @@ namespace Convenience.Models.Services {
 
                 //再表示用データセット
                 updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate)
-                    ?? throw new NoDataFoundException("DB更新後のデータがありません");
+                    ?? throw new NoDataFoundException("DB更新後の注文実績");
 
 
                 //注文ビューモデルセット(正常時）

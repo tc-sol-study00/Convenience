@@ -86,11 +86,11 @@ namespace Convenience.Models.Properties {
              */
 
             //商品コード
-            string shohinId = argKaikeiJisseki.ShohinId ?? throw new ArgumentException("商品マスタがセットされていません");
+            string shohinId = argKaikeiJisseki.ShohinId ?? throw new ArgumentException("商品マスタ");
 
             //売上日時
             argKaikeiJisseki.UriageDatetime = this.KaikeiHeader?.UriageDatetime
-                ?? throw new NoDataFoundException("プロパティに会計ヘッダーがセットされていません");
+                ?? throw new NoDataFoundException("会計ヘッダー");
 
             //会計実績格納用変数
             KaikeiJisseki? kaikeiJisseki = default;

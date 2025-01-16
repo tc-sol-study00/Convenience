@@ -80,7 +80,7 @@ namespace Convenience.Models.Services {
              */
             var kaikeiHeaderList = await SetKeyInputList(-5, CurrentDateTime);
             string defaultsetting = kaikeiHeaderList.Count > 0 ? kaikeiHeaderList[0].Value  //新規分データを初期値設定
-                : throw new NoDataFoundException("選択リスト0件");
+                : throw new NoDataFoundException("選択リスト");
 
             /*
              * ビューモデルの作成
@@ -228,7 +228,7 @@ namespace Convenience.Models.Services {
             KaikeiViewModel reQueryKaikeiViewModel = new(_context) {
                 //ＤＢ更新後の再問合せ
                 KaikeiHeader = await Kaikei.KaikeiToiawase(postedUriageDatetimeId, x => x.KaikeiSeq)
-                ?? throw new NoDataFoundException("更新したデータがＤＢ上で見つかりません"),
+                ?? throw new NoDataFoundException("DB更新した会計実績"),
 
                 //処理結果（とりあえずＯＫ）
                 IsNormal = true,

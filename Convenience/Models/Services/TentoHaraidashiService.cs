@@ -108,7 +108,7 @@ namespace Convenience.Models.Services {
              * 商品マスタリストから店頭払出情報を参照するようにモデル組み換え
              */
             IList<ShohinMaster> shohinmasters = tentoHaraidashiHeader != null ?
-            TransferToDisplayModel(tentoHaraidashiHeader).ToList() : throw new NoDataFoundException(" 店頭払出ヘッダ＋実績のデータがありません");
+            TransferToDisplayModel(tentoHaraidashiHeader).ToList() : throw new NoDataFoundException(" 店頭払出ヘッダ＋実績");
 
             /*
              * キー入力用リスト設定
@@ -149,7 +149,7 @@ namespace Convenience.Models.Services {
                 .Where(x => x.TentoHaraidashiJissekis != null)
                 .SelectMany(x => x.TentoHaraidashiJissekis!)
                 .Min(x => x.TentoHaraidashiId)
-                ?? throw new NoDataFoundException("店頭払出コードがセットされていません");
+                ?? throw new NoDataFoundException("店頭払出コード");
 
             /*
              * 店頭払出ヘッダ＋実績問い合わせ(Postデータ更新用ベース）
@@ -192,7 +192,7 @@ namespace Convenience.Models.Services {
              */
             haraidashiDateTimeAndIdMatching.TentoHaraidashiId = settingTentoHaraidashiHearder.TentoHaraidashiId;
             TentoHaraidashiHeader? queriedTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId)
-                ?? throw new NoDataFoundException("店頭払出実績がありません");
+                ?? throw new NoDataFoundException("店頭払出実績");
             IList<ShohinMaster> shohinmasters = TransferToDisplayModel(queriedTentoHaraidashiHearder).ToList();
             /*
              * キー入力用リスト設定

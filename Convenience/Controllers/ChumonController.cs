@@ -94,11 +94,11 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> ChumonMeisai(ChumonViewModel inChumonViewModel) {
 
             if (!ModelState.IsValid) {
-                throw new PostDataInValidException("Postデータエラー");
+                throw new PostDataInValidException("注文明細画面");
             };
             //ModelState.Clear();
             if (inChumonViewModel.ChumonJisseki.ChumonJissekiMeisais == null) {
-                throw new PostDataInValidException("Postデータなし");
+                throw new PostDataInValidException("注文明細画面");
             }
             //注文データをDBに書き込む
             ChumonViewModel ChumonViewModel
