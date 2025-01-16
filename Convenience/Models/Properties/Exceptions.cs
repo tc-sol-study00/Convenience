@@ -13,21 +13,21 @@
     /// 注文コード発番時のエラー
     /// </summary>
     public class OrderCodeGenerationException : Exception {
-        public OrderCodeGenerationException(string message) : base($"{message}の注文コード発番エラー") { }
+        public OrderCodeGenerationException(string message) : base($"{message}の注文コード発番エラーです") { }
     }
 
     /// <summary>
     /// データ上乗せ時のindex位置エラー
     /// </summary>
     public class DataPositionMismatchException : Exception {
-        public DataPositionMismatchException(string message) : base($"「{message}」のPostデータエラーとDB側データの位置エラー(ソートされていない可能性）") { }
+        public DataPositionMismatchException(string message) : base($"「{message}」のPostデータエラーとDB側データの位置エラーです(ソートされていない可能性）") { }
     }
 
     /// <summary>
     /// ０件データ
     /// </summary>
     public class DataCountMismatchException : Exception {
-        public DataCountMismatchException(string message) : base($"「{message}」のPostデータエラーとDB側データの件数アンマッチ") { }
+        public DataCountMismatchException(string message) : base($"「{message}」のPostデータエラーとDB側データの件数アンマッチです") { }
     }
 
     /// <summary>
@@ -37,7 +37,7 @@
         public PostDataInValidException(string message) : base($"「{message}」のPostデータにエラーがあります") { }
     }
     /// <summary>
-    /// DB更新エラー
+    /// DB更新排他制御エラー
     /// </summary>
     public class DbUpdateTimeOutException : Exception {
 
