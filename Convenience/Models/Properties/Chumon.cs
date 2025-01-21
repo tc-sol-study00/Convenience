@@ -17,7 +17,7 @@ namespace Convenience.Models.Properties {
     /// <summary>
     /// 注文クラス
     /// </summary>
-    public class Chumon : IChumon, IDbContext {
+    public class Chumon : IChumon, ISharedTools {
 
         /// <summary>
         /// 注文実績プロパティ
@@ -344,7 +344,7 @@ namespace Convenience.Models.Properties {
             return entities;
         }
 
-static private bool IsExistCheck<T>(T? checkdata) {
+        static private bool IsExistCheck<T>(T? checkdata) {
             if (checkdata == null) {
                 return false; // null の場合は false を返す
             }
@@ -361,7 +361,10 @@ static private bool IsExistCheck<T>(T? checkdata) {
         /// 注文可能な仕入先一覧を作成する
         /// </summary>
         /// <returns>IEnumerable<ShiireSakiMaster>注文可能な仕入先マスタのリスト（実行前）</returns>
-        public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) =>
-                IsExistCheck(orderExpression) ? _context.ShiireSakiMaster.OrderBy(orderExpression) : _context.ShiireSakiMaster;
+        //public IQueryable<ShiireSakiMaster> ShiireSakiListold<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) =>
+        //        IsExistCheck(orderExpression) ? _context.ShiireSakiMaster.OrderBy(orderExpression) : _context.ShiireSakiMaster;
+
+        public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) => 
+            new SelectList(_context).GenerateList(orderExpression);
     }
 }

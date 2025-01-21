@@ -1,7 +1,12 @@
-﻿using Convenience.Models.DataModels;
+﻿using Convenience.Data;
+using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using System.Data;
+using System.Linq.Expressions;
 
 
 namespace Debug {
@@ -117,6 +122,59 @@ namespace Debug {
         void Hashiru() {
             Console.WriteLine("cls1が走る");            
         }
+    }
+
+    public class Study20250120 {
+
+        Func<int,int> Tashizan = x => x+3;
+        Func<int, int> Tashizan2 = y => y + 3;
+
+        int method1(int a,int b) {
+            return a + b;
+        }
+
+    }
+
+    public class Study20250121 : IDbContext {
+
+        private readonly ConvenienceContext _context;
+        public Study20250121() {
+            _context = ((IDbContext)this).DbOpen();
+        }
+
+        public void MainProc() {
+            Console.WriteLine(DataConv<int,string>(1));
+            Console.WriteLine(DataConv<string,string>("1"));
+        }
+
+        private T2 DataConv<T1,T2>(T1 indata) {
+            int result=default;
+
+            if (typeof(T1) == typeof(string)) {
+                if (int.TryParse(indata as string, out int value)) {
+                    result = value + 10;
+                }
+                else {
+                    return default(T2);
+                }
+            }else if(typeof(T1) == typeof(int)) {
+                result = (int)(object)indata + 10;
+            }
+
+            if(typeof(T2) == typeof(string)) {
+                result.ToString();
+            }
+            result = (int)(object)indata + 10;
+            return (T2)(object)result;
+        }
+
+        private IQueryable<T> GetData<T>(string propertyName, object value) where T : class,ISelectList {
+
+            var result = _context.Set<T>().OrderBy(d => d.Value);
+            return result;
+        }
+
+
     }
 
 }

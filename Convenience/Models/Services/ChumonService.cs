@@ -59,8 +59,9 @@ namespace Convenience.Models.Services {
         /// </summary>
         /// <returns>ChumonKeysViewModel 注文キービューモデル</returns>
         public async Task<ChumonKeysViewModel> SetChumonKeysViewModel() {
+
             var list = await chumon.ShiireSakiList(s => s.ShiireSakiId)
-                .Select(s => new SelectListItem { Value = s.ShiireSakiId, Text = s.ShiireSakiId + " " + s.ShiireSakiKaisya }).ToListAsync();
+                .Select(s => new SelectListItem { Value = s.Value, Text = s.Value + ":" + s.Text  }).ToListAsync();
 
             return ChumonKeysViewModel = new ChumonKeysViewModel() {
                 ShiireSakiId = null,
@@ -107,7 +108,7 @@ namespace Convenience.Models.Services {
                 ChumonJisseki = createdChumonJisseki 
                 ?? existedChumonJisseki 
                 ?? throw new
-                NoDataFoundException("注文セッティングエラー")   //初期表示用の注文実績データ
+                NoDataFoundException("設定する注文実績データ")   //初期表示用の注文実績データ
             };
         }
 

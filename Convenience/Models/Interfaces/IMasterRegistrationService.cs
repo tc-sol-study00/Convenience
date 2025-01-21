@@ -3,6 +3,7 @@ using Convenience.Models.Properties.Config;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using static Convenience.Models.Properties.Config.Message;
 
 namespace Convenience.Models.Interfaces {
@@ -184,11 +185,12 @@ namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 選択リストアイテムのインターフェース
     /// </summary>
-    public interface ISelectList {
-        public string Value { get; }
-        public string Text { get; }
-        public string[] OrderKey { get; }
-    }
+    //public interface ISelectList {
+    //    public string Value { get; }
+    //    public string Text { get; }
+    //    public string[] OrderKey { get; }
+     //}
+
     /// <summary>
     /// マスター登録用ビューモデルのインターフェース
     /// </summary>

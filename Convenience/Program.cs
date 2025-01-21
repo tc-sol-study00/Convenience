@@ -4,6 +4,8 @@ using Convenience.Models.Properties;
 using Convenience.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using NLog;
+using NLog.Web;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ConvenienceContext>(options =>
@@ -13,26 +15,30 @@ builder.Services.AddDbContext<ConvenienceContext>(options =>
 //builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 
+// NLog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+
 //DIコンテナのサービス登録
 //Dependency Injection（依存性の注入）
 //サービス
-builder.Services.AddScoped<IChumonService,ChumonService>();
-builder.Services.AddScoped<IShiireService,ShiireService>();
+builder.Services.AddScoped<IChumonService, ChumonService>();
+builder.Services.AddScoped<IShiireService, ShiireService>();
 builder.Services.AddScoped<IZaikoService, ZaikoService>();
 builder.Services.AddScoped<ITentoHaraidashiService, TentoHaraidashiService>();
 builder.Services.AddScoped<IKaikeiService, KaikeiService>();
-builder.Services.AddScoped<ITentoZaikoService,TentoZaikoService>();
+builder.Services.AddScoped<ITentoZaikoService, TentoZaikoService>();
 builder.Services.AddScoped<IKaikeiJissekiService, KaikeiJissekiService>();
 builder.Services.AddScoped<IChumonJissekiService, ChumonJissekiService>();
 builder.Services.AddScoped<IShiireJissekiService, ShiireJissekiService>();
-builder.Services.AddScoped<INaigaiClassMasterService,NaigaiClassMasterService>();
-builder.Services.AddScoped<IShiireMasterService,ShiireMasterService>();
-builder.Services.AddScoped<IShiireSakiMasterService,ShiireSakiMasterService>();
+builder.Services.AddScoped<INaigaiClassMasterService, NaigaiClassMasterService>();
+builder.Services.AddScoped<IShiireMasterService, ShiireMasterService>();
+builder.Services.AddScoped<IShiireSakiMasterService, ShiireSakiMasterService>();
 builder.Services.AddScoped<IShohinMasterService, ShohinMasterService>();
 
 //プロパティ
 builder.Services.AddScoped<IChumon, Chumon>();
-builder.Services.AddScoped<IShiire,Shiire>();
+builder.Services.AddScoped<IShiire, Shiire>();
 builder.Services.AddScoped<IZaiko, Zaiko>();
 builder.Services.AddScoped<ITentoHaraidashi, TentoHaraidashi>();
 builder.Services.AddScoped<IKaikei, Kaikei>();
