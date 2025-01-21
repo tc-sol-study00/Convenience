@@ -11,7 +11,5 @@ namespace Convenience.Models.Interfaces {
         public string Value { get; }
         public string Text { get; }
         public string[] OrderKey { get; }
-
-
     }
 }

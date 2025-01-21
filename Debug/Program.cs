@@ -120,16 +120,16 @@ namespace Debug {
 
     public class cls1 {
         void Hashiru() {
-            Console.WriteLine("cls1が走る");            
+            Console.WriteLine("cls1が走る");
         }
     }
 
     public class Study20250120 {
 
-        Func<int,int> Tashizan = x => x+3;
+        Func<int, int> Tashizan = x => x + 3;
         Func<int, int> Tashizan2 = y => y + 3;
 
-        int method1(int a,int b) {
+        int method1(int a, int b) {
             return a + b;
         }
 
@@ -143,12 +143,12 @@ namespace Debug {
         }
 
         public void MainProc() {
-            Console.WriteLine(DataConv<int,string>(1));
-            Console.WriteLine(DataConv<string,string>("1"));
+            Console.WriteLine(DataConv<int, string>(1));
+            Console.WriteLine(DataConv<string, int>("1"));
         }
 
-        private T2 DataConv<T1,T2>(T1 indata) {
-            int result=default;
+        private T2 DataConv<T1, T2>(T1 indata) {
+            int result = default;
 
             if (typeof(T1) == typeof(string)) {
                 if (int.TryParse(indata as string, out int value)) {
@@ -157,18 +157,22 @@ namespace Debug {
                 else {
                     return default(T2);
                 }
-            }else if(typeof(T1) == typeof(int)) {
+            }
+            else if (typeof(T1) == typeof(int)) {
                 result = (int)(object)indata + 10;
             }
-
-            if(typeof(T2) == typeof(string)) {
-                result.ToString();
+            else {
+                return default(T2);
             }
-            result = (int)(object)indata + 10;
+
+            if (typeof(T2) == typeof(string)) {
+                return (T2)(object)result.ToString();
+            }
+
             return (T2)(object)result;
         }
 
-        private IQueryable<T> GetData<T>(string propertyName, object value) where T : class,ISelectList {
+        private IQueryable<T> GetData<T>(string propertyName, object value) where T : class, ISelectList {
 
             var result = _context.Set<T>().OrderBy(d => d.Value);
             return result;

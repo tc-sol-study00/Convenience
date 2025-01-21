@@ -148,9 +148,6 @@ namespace Convenience.Models.Interfaces {
         public IList<TPostMasterData> MapFromKeepMasterDataToPostData(IList<TKeepMasterData> argDatas);
 
 
-
-
-
         /// <summary>
         /// 選択リスト作成のためのインターフェース
         /// </summary>
