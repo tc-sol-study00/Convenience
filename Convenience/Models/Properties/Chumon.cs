@@ -42,7 +42,7 @@ namespace Convenience.Models.Properties {
         /// 注文クラスデバッグ用
         /// </summary>
         public Chumon() {
-            _context = ((IDbContext)this).DbOpen();
+            //_context = ((IDbContext)this).DbOpen();
         }
 
         /// <summary>

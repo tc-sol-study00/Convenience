@@ -3,6 +3,7 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System.Data;
@@ -13,9 +14,10 @@ namespace Debug {
     public class Program {
 
         static async Task Main(string[] args) {
-            await new Study20250108().Study01();
-
-            new Study20250109().Valuestudy();
+           
+            //await new Study20250108().Study01();
+            //new Study20250109().Valuestudy();
+            new Study20250123withJoin().LINQStudy();
 
         }
 
@@ -178,6 +180,55 @@ namespace Debug {
             return result;
         }
 
+
+    }
+
+    public class Study20250123 : IDbContext {
+
+        private readonly ConvenienceContext _context;  
+        public Study20250123() {
+            _context = ((IDbContext)this).DbOpen();
+        }
+
+        public IEnumerable<ChumonJisseki> ChumonList() {
+
+            IEnumerable<ChumonJisseki> chumonJissekis = 
+                _context.ChumonJisseki.AsNoTracking()
+                .Include( x => x.ChumonJissekiMeisais)
+                .ThenInclude( x => x.ShiireMaster)
+                .ThenInclude(x => x.ShohinMaster)
+                .Include(x => x.ShiireSakiMaster)
+                .ToList();
+
+            //複写
+
+            IList<ChumonJisseki> cpiedChumonJissekis = new List<ChumonJisseki>();
+
+            foreach(var aChumonJisseki in chumonJissekis) {
+
+                //注文実績編集
+
+                ChumonJisseki editChumonJisseki = new ChumonJisseki();
+                editChumonJisseki.ShiireSakiId = aChumonJisseki.ShiireSakiId;
+                editChumonJisseki.ChumonId = aChumonJisseki.ChumonId;
+                editChumonJisseki.ChumonDate = aChumonJisseki.ChumonDate;
+                editChumonJisseki.ShiireSakiMaster = aChumonJisseki.ShiireSakiMaster;
+
+                IList<ChumonJissekiMeisai> cpiedChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
+
+                foreach ( var aChumonJissekimeisai in aChumonJisseki.ChumonJissekiMeisais) {
+
+                }
+
+            }
+
+
+            return chumonJissekis;
+
+
+
+
+        }
 
     }
 

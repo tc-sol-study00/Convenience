@@ -51,7 +51,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ChumonService() {
 
-            chumon = CreateChumonInstance(((IDbContext)this).DbOpen());
+            chumon = CreateChumonInstance(IDbContext.DbOpen());
         }
 
         /// <summary>

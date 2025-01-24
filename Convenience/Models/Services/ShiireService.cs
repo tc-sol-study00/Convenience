@@ -49,7 +49,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ShiireService() {
             //this._context = ((IDbContext)this).DbOpen();
-            this.shiire = new Shiire(((IDbContext)this).DbOpen());
+            this.shiire = new Shiire(IDbContext.DbOpen());
         }
 
         /// <summary>
