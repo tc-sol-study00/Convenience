@@ -141,7 +141,7 @@ namespace Debug {
 
         private readonly ConvenienceContext _context;
         public Study20250121() {
-            _context = ((IDbContext)this).DbOpen();
+            _context = IDbContext.DbOpen();
         }
 
         public void MainProc() {
@@ -187,7 +187,7 @@ namespace Debug {
 
         private readonly ConvenienceContext _context;  
         public Study20250123() {
-            _context = ((IDbContext)this).DbOpen();
+            _context = IDbContext.DbOpen();
         }
 
         public IEnumerable<ChumonJisseki> ChumonList() {

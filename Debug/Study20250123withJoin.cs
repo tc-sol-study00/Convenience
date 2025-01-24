@@ -13,7 +13,7 @@ namespace Debug {
 
         private readonly ConvenienceContext _context;
         public Study20250123withJoin() {
-            _context = ((IDbContext)this).DbOpen();
+            _context = IDbContext.DbOpen();
         }
 
         public void LINQStudy() {
