@@ -17,7 +17,7 @@ namespace Convenience.Models.Properties {
     /// <summary>
     /// 注文クラス
     /// </summary>
-    public class Chumon : IChumon, ISharedTools {
+    public class Chumon : IChumon,ISharedTools,IDisposable {
 
         /// <summary>
         /// 注文実績プロパティ
@@ -28,6 +28,16 @@ namespace Convenience.Models.Properties {
         /// DBコンテキスト
         /// </summary>
         private readonly ConvenienceContext _context;
+
+        /// <summary>
+        /// 自分でDbcontextを作ったかどうか
+        /// </summary>
+        private readonly bool _selfCreateContextFlg=false;
+
+        /// <summary>
+        /// Disposeを一回でも実施されたかどうか
+        /// </summary>
+        private bool _disposed = false;
 
         /// <summary>
         /// コンストラクタ
@@ -42,7 +52,28 @@ namespace Convenience.Models.Properties {
         /// 注文クラスデバッグ用
         /// </summary>
         public Chumon() {
-            //_context = ((IDbContext)this).DbOpen();
+            _context = IDbContext.DbOpen();
+            _selfCreateContextFlg = true;
+        }
+
+        /// <summary>
+        /// 注文クラスファイナライズ忘れた用（デバッグ用）
+        /// </summary>
+        ~Chumon() {
+            Dispose();
+        }
+        /// <summary>
+        /// ファイナライズ(デバッグ用）
+        /// </summary>
+        public void Dispose() {
+            if (!_disposed)  
+            {
+                if (_selfCreateContextFlg && _context != null) {
+                    _context.Dispose();  
+                }
+                _disposed = true;  
+                GC.SuppressFinalize(this);  // Finalizerを抑制
+            }
         }
 
         /// <summary>
@@ -354,5 +385,6 @@ namespace Convenience.Models.Properties {
 
         public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) => 
             new SelectList(_context).GenerateList(orderExpression);
+
     }
 }

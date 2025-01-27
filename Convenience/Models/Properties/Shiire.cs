@@ -40,6 +40,16 @@ namespace Convenience.Models.Properties {
         private int reTryCount = 0;
 
         /// <summary>
+        /// 自分でDbcontextを作ったかどうか
+        /// </summary>
+        private readonly bool _selfCreateContextFlg = false;
+
+        /// <summary>
+        /// Disposeを一回でも実施されたかどうか
+        /// </summary>
+        private bool _disposed = false;
+
+        /// <summary>
         /// コンストラクタ
         /// 通常の場合はＤＢコンテキストを引き継ぐ
         /// </summary>
@@ -56,6 +66,23 @@ namespace Convenience.Models.Properties {
             _context = IDbContext.DbOpen();
             this.Shiirejissekis = new List<ShiireJisseki>();
             this.SokoZaikos = new List<SokoZaiko>();
+            _selfCreateContextFlg = true;
+        }
+
+        ~Shiire() {
+            Dispose();
+        }
+        /// <summary>
+        /// ファイナライズ(デバッグ用）
+        /// </summary>
+        public void Dispose() {
+            if (!_disposed) {
+                if (_selfCreateContextFlg && _context != null) {
+                    _context.Dispose();
+                }
+                _disposed = true;
+                GC.SuppressFinalize(this);  // Finalizerを抑制
+            }
         }
 
         /// <summary>

@@ -108,6 +108,12 @@ function RendaSolution() {
     $('.custom-disabled').on('blur', function () {
         $(this).prop('readonly', false);
     });
+
+    $('#submit_btn').on('click', function (event) {
+        event.preventDefault(); 
+        $(this).prop("disabled", true);
+        $(this).closest('form').submit();
+    });
 }
 
 // 最初にフォーカスを指定した位置に移動させる関数
