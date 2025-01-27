@@ -44,7 +44,7 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <param name="postedChumonJisseki">postされた注文実績</param>
         /// <returns>postされた注文実績を上書きされた注文実績</returns>
-        public Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki);
+        public Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki, ChumonJisseki? existedChumonJisseki=null);
 
 
         /// <summary>

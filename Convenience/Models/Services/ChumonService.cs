@@ -15,7 +15,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 注文サービスクラス
     /// </summary>
-    public partial class ChumonService : IChumonService {
+    public partial class ChumonService : IChumonService, ISharedTools {
 
         /// <summary>
         /// 注文オブジェクト用
@@ -122,9 +122,21 @@ namespace Convenience.Models.Services {
 
             //注文実績抽出
             ChumonJisseki postedchumonJisseki = inChumonViewModel.ChumonJisseki;
-            //Postされたデータで注文実績と注文実績明細の更新
-            ChumonJisseki updatedChumonJisseki = await _chumon.ChumonUpdate(postedchumonJisseki);
+           
+            //注文実績＋明細を問い合わせる
+            ChumonJisseki? existedChumonJisseki
+                =await _chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate, false);
 
+            //Postされたデータで注文実績と注文実績明細の更新
+            ChumonJisseki updatedChumonJisseki;
+            if (ISharedTools.IsExistCheck(existedChumonJisseki)) {
+                //Postデータ上書き
+                updatedChumonJisseki = await _chumon.ChumonUpdate(postedchumonJisseki, existedChumonJisseki);
+            }
+            else {
+                //Postデータをそのまま追加
+                updatedChumonJisseki = await _chumon.ChumonUpdate(postedchumonJisseki);
+            }
             //Postされた注文実績のデータチェック
             (bool IsValid, ErrDef errCd) = ChumonJissekiIsValid(updatedChumonJisseki);
 

@@ -110,46 +110,29 @@ namespace Convenience.Models.Properties {
         /// <returns>既存の注文実績</returns>
 
         public async Task<ChumonJisseki?> ChumonToiawase(string inShireSakiId, DateOnly inChumonDate, bool includeShiireAndShohinMaster = true) {
-
             /*
              * ①注文実績＋注文実績明細＋仕入マスタ＋商品マスタ検索 
              */
-            //注文実績＋注文実績明細
+            //注文実績＋注文実績明細(Trackingモードで取得）
             ChumonJisseki? chumonJisseki = await _context.ChumonJisseki
                 .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
                 .Include(cm => cm.ChumonJissekiMeisais)
                 .FirstOrDefaultAsync();
 
-            if (includeShiireAndShohinMaster) {
-                if (IsExistCheck(chumonJisseki)) {
-                    if (IsExistCheck(chumonJisseki!.ChumonJissekiMeisais)) {
-
-                        // ShiireMaster と ShohinMaster を AsNoTracking() で取得
-                        foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais!) {
-                            ShiireMaster? shiireMaster = await _context.ShiireMaster
-                                .AsNoTracking()
-                                .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId &&
-                                        sm.ShiirePrdId == meisai.ShiirePrdId &&
-                                        sm.ShohinId == meisai.ShohinId)
-                                .Include(sm => sm.ShohinMaster)
-                                .FirstOrDefaultAsync();
-
-                            // 明示的に ShiireMaster を関連付け（データがなければ null が入る）
-
-                            _context.Entry(meisai).State = EntityState.Detached;    //下の処理で追加したときにAddになるから注文明細をいったんデタッチ
-                            meisai.ShiireMaster = shiireMaster;                     //仕入＋商品マスタをセット、NotrackingなのでDetach状態でセット
-                            _context.Entry(meisai).State = EntityState.Unchanged;   //注文明細を再アタッチする
-                        }
-                    }
+            //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
+            // 仕入マスタと商品マスタを NoTracking モードで取得
+            if (IsExistCheck(chumonJisseki?.ChumonJissekiMeisais)) {
+                foreach (var meisai in chumonJisseki!.ChumonJissekiMeisais!) {
+                    await _context.Entry(meisai)
+                        .Reference(m => m.ShiireMaster)
+                        .Query()
+                        .AsNoTracking()
+                        .Include(sm => sm.ShohinMaster)
+                        .LoadAsync();
                 }
             }
-
-            //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
-
-
             //②戻り値を注文実績＋注文実績明細とする
             //データがない場合はnullで返す
-
             ChumonJisseki = chumonJisseki;
             return (ChumonJisseki);
         }
@@ -287,18 +270,23 @@ namespace Convenience.Models.Properties {
         /// </summary>
         /// <param name="postedChumonJisseki">postされた注文実績</param>
         /// <returns>postされた注文実績を上書きされた注文実績</returns>
+        /// 
+
+
         public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki) {
+            return await ChumonUpdate(postedChumonJisseki, null);
+        }
+
+        /// <summary>
+        /// 注文実績＋注文明細更新
+        /// </summary>
+        /// <param name="postedChumonJisseki">postされた注文実績</param
+        /// <param name="existedChumonJisseki">DBに登録された注文実績(null可)</param>
+        /// <returns>postされた注文実績を上書きされた注文実績</returns>
+        public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki, ChumonJisseki? existedChumonJisseki=null) {
 
             _ = postedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績Postデータエラー");
             _ = postedChumonJisseki?.ChumonId ?? throw new ArgumentException("注文実績Postデータの注文コードエラー");
-
-            //注文実績＋明細を読む
-            ChumonJisseki? existedChumonJisseki = await ChumonToiawase(postedChumonJisseki.ShiireSakiId, postedChumonJisseki.ChumonDate,false);
-
-            //ChumonJisseki? existedChumonJisseki = await _context.ChumonJisseki
-            //    .Include(e => e.ChumonJissekiMeisais!
-            //    .OrderBy(x => x.ShiirePrdId))
-            //    .FirstOrDefaultAsync(e => e.ChumonId == postedChumonJisseki.ChumonId);
 
             if (IsExistCheck(existedChumonJisseki)) {
                 //注文実績がある場合
