@@ -7,11 +7,6 @@ namespace Convenience.Models.Interfaces {
     public interface IShiireService {
 
         /// <summary>
-        /// 仕入クラス用オブジェクト変数
-        /// </summary>
-        public IShiire shiire { get; }
-
-        /// <summary>
         /// 仕入キーモデル設定（仕入画面１枚目用）
         /// </summary>
         /// <returns>ShiireKeysViewModel 仕入キービューモデル</returns>

@@ -11,7 +11,7 @@ namespace Convenience.Controllers {
     public class ShiireController : Controller, ISharedTools {
         private readonly ConvenienceContext _context;
 
-        private readonly IShiireService shiireService;
+        private readonly IShiireService _shiireService;
 
         private static readonly string IndexName = "ShiireViewModel";
 
@@ -24,7 +24,7 @@ namespace Convenience.Controllers {
         /// <param name="shiireService">仕入サービスクラスＤＩ注入用</param>
         public ShiireController(ConvenienceContext context,IShiireService shiireService) {
             this._context = context;
-            this.shiireService = shiireService;
+            this._shiireService = shiireService;
             this.shiireViewModel = new ShiireViewModel();
             //shiireService = new ShiireService(_context);
         }
@@ -48,7 +48,7 @@ namespace Convenience.Controllers {
             }
             else {
                 //①仕入画面キー入力初期表示
-                ShiireKeysViewModel keymodel = await shiireService.SetShiireKeysModel();
+                ShiireKeysViewModel keymodel = await _shiireService.SetShiireKeysModel();
                 ViewBag.FocusPosition = "#ChumonId";
                 //②に飛ぶ
                 return View(keymodel);
@@ -63,7 +63,7 @@ namespace Convenience.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShiireKeyInput(ShiireKeysViewModel inKeysModel) {
-            shiireViewModel = await shiireService.ShiireSetting(inKeysModel);
+            shiireViewModel = await _shiireService.ShiireSetting(inKeysModel);
             TempData[IndexName] = ISharedTools.ConvertToSerial(shiireViewModel);
             //③に飛ぶ
             return RedirectToAction("ShiireKeyInput", new { id = "Result" });
@@ -78,7 +78,7 @@ namespace Convenience.Controllers {
         public async Task<IActionResult> Shiire(ShiireViewModel inShiireViewModel) {
             ModelState.Clear();
 
-            ShiireViewModel shiireViewModel = await shiireService.ShiireCommit(inShiireViewModel);
+            ShiireViewModel shiireViewModel = await _shiireService.ShiireCommit(inShiireViewModel);
 
             ViewBag.HandlingFlg = "SecondDisplay";
 

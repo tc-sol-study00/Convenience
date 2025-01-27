@@ -20,7 +20,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// 注文オブジェクト用
         /// </summary>
-        public IChumon chumon { get; set; }
+        private readonly IChumon _chumon;
 
         /// <summary>
         /// コンストラクタ 注文オブジェクト用記述
@@ -43,7 +43,7 @@ namespace Convenience.Models.Services {
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumon">注文クラスＤＩ注入用</param>
         public ChumonService(IChumon chumon) {
-            this.chumon = chumon;
+            _chumon = chumon;
             //chumon = CreateChumonInstance(_context);
         }
         /// <summary>
@@ -51,7 +51,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ChumonService() {
 
-            chumon = CreateChumonInstance(IDbContext.DbOpen());
+            _chumon = CreateChumonInstance(IDbContext.DbOpen());
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Convenience.Models.Services {
         /// <returns>ChumonKeysViewModel 注文キービューモデル</returns>
         public async Task<ChumonKeysViewModel> SetChumonKeysViewModel() {
 
-            var list = await chumon.ShiireSakiList(s => s.ShiireSakiId)
+            var list = await _chumon.ShiireSakiList(s => s.ShiireSakiId)
                 .Select(s => new SelectListItem { Value = s.Value, Text = s.Value + ":" + s.Text  }).ToListAsync();
 
             return ChumonKeysViewModel = new ChumonKeysViewModel() {
@@ -91,15 +91,15 @@ namespace Convenience.Models.Services {
             if (DateOnly.FromDateTime(new DateTime(1, 1, 1)) == chumonDate) {
                 //注文作成
                 createdChumonJisseki = 
-                    await chumon.ChumonSakusei(shiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
+                    await _chumon.ChumonSakusei(shiireSakiId, DateOnly.FromDateTime(DateTime.Now));   //注文日付が指定なし→注文作成
             }
             else {
                 //注文日付指定あり→注文問い合わせ
-                existedChumonJisseki = await chumon.ChumonToiawase(shiireSakiId, chumonDate);
+                existedChumonJisseki = await _chumon.ChumonToiawase(shiireSakiId, chumonDate);
 
                 if (existedChumonJisseki == null) {
                     //注文問い合わせでデータがない場合は、注文作成
-                    createdChumonJisseki = await chumon.ChumonSakusei(shiireSakiId, chumonDate);
+                    createdChumonJisseki = await _chumon.ChumonSakusei(shiireSakiId, chumonDate);
                 }
             }
 
@@ -123,7 +123,7 @@ namespace Convenience.Models.Services {
             //注文実績抽出
             ChumonJisseki postedchumonJisseki = inChumonViewModel.ChumonJisseki;
             //Postされたデータで注文実績と注文実績明細の更新
-            ChumonJisseki updatedChumonJisseki = await chumon.ChumonUpdate(postedchumonJisseki);
+            ChumonJisseki updatedChumonJisseki = await _chumon.ChumonUpdate(postedchumonJisseki);
 
             //Postされた注文実績のデータチェック
             (bool IsValid, ErrDef errCd) = ChumonJissekiIsValid(updatedChumonJisseki);
@@ -132,10 +132,10 @@ namespace Convenience.Models.Services {
 
                 //DB更新
 
-                int entities = await chumon.ChumonSaveChanges();
+                int entities = await _chumon.ChumonSaveChanges();
 
                 //再表示用データセット
-                updatedChumonJisseki = await chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate)
+                updatedChumonJisseki = await _chumon.ChumonToiawase(postedchumonJisseki.ShiireSakiId, postedchumonJisseki.ChumonDate)
                     ?? throw new NoDataFoundException("DB更新後の注文実績");
 
 

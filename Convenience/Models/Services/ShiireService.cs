@@ -22,7 +22,7 @@ namespace Convenience.Models.Services {
         /// <summary>
         /// 仕入クラス用オブジェクト変数
         /// </summary>
-        public IShiire shiire { get; set; }
+        private readonly IShiire _shiire;
 
         /// <summary>
         /// 仕入キービューモデル（１枚目の画面用）
@@ -41,7 +41,7 @@ namespace Convenience.Models.Services {
         /// <param name="shiire">仕入クラスＤＩ注入用</param>
         public ShiireService(ConvenienceContext context, IShiire shiire) {
             //this._context = context;
-            this.shiire = shiire;
+            _shiire = shiire;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ShiireService() {
             //this._context = ((IDbContext)this).DbOpen();
-            this.shiire = new Shiire(IDbContext.DbOpen());
+            _shiire = new Shiire(IDbContext.DbOpen());
         }
 
         /// <summary>
@@ -67,13 +67,13 @@ namespace Convenience.Models.Services {
             var chumonId = inShiireKeysViewModel.ChumonId??throw new ArgumentException("注文コードがセットされていません");
             DateOnly inShiireDate = DateOnly.FromDateTime(DateTime.Now);
             //仕入SEQ
-            uint inSeqByShiireDate = await shiire.NextSeq(chumonId, inShiireDate);
+            uint inSeqByShiireDate = await _shiire.NextSeq(chumonId, inShiireDate);
             IList<ShiireJisseki> createdShiireJissekis;
             //新規の場合
-            createdShiireJissekis = await shiire.ChumonToShiireJisseki(chumonId, inShiireDate, inSeqByShiireDate);
+            createdShiireJissekis = await _shiire.ChumonToShiireJisseki(chumonId, inShiireDate, inSeqByShiireDate);
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
-            shiire.ShiireSokoConnection(createdShiireJissekis, shiire.GetSokoZaiko());
+            _shiire.ShiireSokoConnection(createdShiireJissekis, _shiire.GetSokoZaiko());
 
             List<ShiireJisseki> listdt = (List<ShiireJisseki>)createdShiireJissekis;
             listdt.Sort((x, y) => {
@@ -118,19 +118,19 @@ namespace Convenience.Models.Services {
             //              ※　出力は仕入クラスの仕入実績プロパティを参照している
 
             //機能（１－１）：仕入実績が存在しているかチェック
-            if (await shiire.ChuumonIdOnShiireJissekiExistingCheck(chumonId, shiireDate, seqByShiireDate)) {
+            if (await _shiire.ChuumonIdOnShiireJissekiExistingCheck(chumonId, shiireDate, seqByShiireDate)) {
                 //機能（１－１－１）：仕入実績がある場合（更新用）
-                shiireJissekis = await shiire.ShiireToShiireJisseki(chumonId, shiireDate, seqByShiireDate);
+                shiireJissekis = await _shiire.ShiireToShiireJisseki(chumonId, shiireDate, seqByShiireDate);
             }
             else {
                 //機能（１－１－２）仕入実績がない場合（新規用）
-                shiireJissekis = await shiire.ChumonToShiireJisseki(chumonId, shiireDate, seqByShiireDate);
+                shiireJissekis = await _shiire.ChumonToShiireJisseki(chumonId, shiireDate, seqByShiireDate);
             }
 
             //機能（２） ：（１）で処理した注文実績プロパティを、ポストデータで更新する
             //　         ：入力：ポストされた仕入実績データと、仕入実績プロパティ
             //　         ：出力：ポストデータで更新された仕入実績
-            shiireJissekis = shiire.ShiireUpdate(inShiireJissekis);
+            shiireJissekis = _shiire.ShiireUpdate(inShiireJissekis);
 
             //機能（３） ：（２）のポストデータが反映された注文実績プロパティをベースに以下の処理を行う
             //  ・ポストデータ反映後のデータを元に注文実績の注文残と倉庫残を調整する
@@ -144,16 +144,16 @@ namespace Convenience.Models.Services {
             do { //IsNeedContinueToDBUpdate=trueの時は排他制御エラーなので、再チャレンジ   
                 //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
                 //在庫の登録はここで行われる
-                shiirezaikoset = await shiire.ChuumonZanZaikoSuChousei(chumonId, shiireJissekis);
+                shiirezaikoset = await _shiire.ChuumonZanZaikoSuChousei(chumonId, shiireJissekis);
 
                 // 仕入実績・注文残・倉庫在庫を更新する
-                (IsNeedContinueToDBUpdate, entities) = await shiire.ShiireSaveChanges();
+                (IsNeedContinueToDBUpdate, entities) = await _shiire.ShiireSaveChanges();
 
             } while (IsNeedContinueToDBUpdate);
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
             _ = shiirezaikoset ?? throw new Exception("shiirezaikosetがnullです");
-            shiire.ShiireSokoConnection(shiirezaikoset.ShiireJissekis, shiirezaikoset.SokoZaikos);
+            _shiire.ShiireSokoConnection(shiirezaikoset.ShiireJissekis, shiirezaikoset.SokoZaikos);
 
             List<ShiireJisseki> listdt = (List<ShiireJisseki>)shiirezaikoset.ShiireJissekis;
             listdt.Sort((x, y) => {
@@ -175,7 +175,7 @@ namespace Convenience.Models.Services {
         public async Task<ShiireKeysViewModel> SetShiireKeysModel() {
             var shiireKeysModel = new ShiireKeysViewModel {
                 ChumonId = null,
-                ChumonIdList = (await shiire.ZanAriChumonList())
+                ChumonIdList = (await _shiire.ZanAriChumonList())
                 .Select(s => new SelectListItem { Value = s.ChumonId, Text = s.ChumonId + ":" + s.ChumonZan.ToString() })
                 .ToList()
             };

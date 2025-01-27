@@ -22,7 +22,7 @@ namespace Convenience.Controllers {
         /// <summary>
         /// 注文サービスクラス（ＤＩ用）
         /// </summary>
-        private readonly IChumonService chumonService;
+        private readonly IChumonService _chumonService;
 
         /// <summary>
         /// コンストラクター
@@ -30,8 +30,8 @@ namespace Convenience.Controllers {
         /// <param name="context">DBコンテキスト</param>
         /// <param name="chumonService">注文サービスクラスＤＩ注入用</param>
         public ChumonController(ConvenienceContext context, IChumonService chumonService) {
-            this._context = context;
-            this.chumonService = chumonService;
+            _context = context;
+            _chumonService = chumonService;
             //chumonService = new ChumonService(_context);
         }
 
@@ -55,7 +55,7 @@ namespace Convenience.Controllers {
                 return View("ChumonMeisai", chumonViewModel);
             }
             //①キー入力画面の初期表示処理
-            ChumonKeysViewModel keymodel = await chumonService.SetChumonKeysViewModel();
+            ChumonKeysViewModel keymodel = await _chumonService.SetChumonKeysViewModel();
             ViewBag.FocusPosition = "#ShiireSakiId";
             //②に飛ぶ
             return View(keymodel);
@@ -76,7 +76,7 @@ namespace Convenience.Controllers {
             }
 
             // 注文セッティング
-            ChumonViewModel chumonViewModel = await chumonService.ChumonSetting(inChumonKeysViewModel);
+            ChumonViewModel chumonViewModel = await _chumonService.ChumonSetting(inChumonKeysViewModel);
             TempData[IndexName] = ISharedTools.ConvertToSerial(chumonViewModel);
             //③に飛ぶ
             return RedirectToAction("KeyInput", new { id = "Result" });
@@ -102,7 +102,7 @@ namespace Convenience.Controllers {
             }
             //注文データをDBに書き込む
             ChumonViewModel ChumonViewModel
-                = await chumonService.ChumonCommit(inChumonViewModel);
+                = await _chumonService.ChumonCommit(inChumonViewModel);
             //Resultに注文明細ビューモデルを引き渡す
             TempData[IndexName] = ISharedTools.ConvertToSerial(ChumonViewModel);
             //⑤に飛ぶ
