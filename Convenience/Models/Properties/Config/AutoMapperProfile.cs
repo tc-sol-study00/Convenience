@@ -190,7 +190,8 @@ namespace Convenience.Models.Properties.Config {
              )
             .BeforeMap((src, dest) => src.LastChumonSu = dest.ChumonSu)
             .ForMember(dest => dest.ChumonZan, opt => opt.MapFrom(src => src.ChumonZan + src.ChumonSu - src.LastChumonSu))
-            .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore());
+            .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore())
+            .ForMember(dest => dest.ShiireMaster, opt => opt.Ignore());
         }
     }
     /// <summary>
