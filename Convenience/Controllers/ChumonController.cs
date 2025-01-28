@@ -138,7 +138,7 @@ namespace Convenience.Controllers {
         [HttpGet]
         public IActionResult Exception(string id) {
             throw new NoDataFoundException("Post");
-            return RedirectToAction("Exception");
+            //return RedirectToAction("Exception");
         }
     }
 }
