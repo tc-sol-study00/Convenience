@@ -37,12 +37,8 @@ namespace Convenience.Controllers {
             //chumonJissekiのChumonIdは？
 
             //藤原さんの質問
-            ChumonJisseki result1=await _context.ChumonJisseki
+            ChumonJisseki? result1=await _context.ChumonJisseki
                 .FirstOrDefaultAsync();
-
-            int i;
-
-            ChumonJisseki chumonJisseki2;
 
             List<int> intdatas = new List<int>();
 

@@ -45,7 +45,7 @@
                         </div>
                     }
                 </div>
-                <hr class="my-2 bg-primary"></hr>
+                <hr class="my-2 bg-primary">
                 <div class="col-md-6 mb-3">
                     <div class="row">
                         <div class="col-2 text-center">
@@ -83,7 +83,7 @@
                     }
                 </div>
             </div>
-            <input type="submit" value="検索" class="btn btn-primary" /></input>
+            <input type="submit" value="検索" class="btn btn-primary" /></>
              @if (Model.ZaikoListLines != null && Model.ZaikoListLines.Count() > 0) {
                 <!-- 「ダウンロード」ボタンのリンク -->
                 <a href="@Url.Action("DownLoad", "Zaiko", new { index = 1 })" class="btn btn-primary">ダウンロード</a>
@@ -91,7 +91,7 @@
         </form>
     </div>
 
-    <hr class="my-2 bg-primary"></hr>
+    <hr class="my-2 bg-primary">
 
     @if (Model.ZaikoListLines != null && Model.ZaikoListLines.Count() > 0) {
         <div class="list-group">
