@@ -4,7 +4,7 @@ namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 仕入サービス用インターフェース
     /// </summary>
-    public interface IShiireService {
+    public interface IShiireService : IDisposable {
 
         /// <summary>
         /// 仕入キーモデル設定（仕入画面１枚目用）

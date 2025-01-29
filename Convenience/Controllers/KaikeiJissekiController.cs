@@ -1,14 +1,9 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Convenience.Models.Properties.Config;
-using Convenience.Models.Services;
 using Convenience.Models.ViewModels.KaikeiJisseki;
-using Convenience.Models.ViewModels.TentoZaiko;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.ViewModels.KaikeiJisseki.KaikeiJissekiViewModel.DataAreaClass;
-using static Convenience.Models.ViewModels.TentoZaiko.TentoZaikoViewModel.DataAreaClass;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Convenience.Controllers {
     /// <summary>

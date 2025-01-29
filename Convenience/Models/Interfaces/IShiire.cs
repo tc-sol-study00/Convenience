@@ -6,7 +6,7 @@ namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 仕入クラスインターフェース
     /// </summary>
-    public interface IShiire {
+    public interface IShiire : IDisposable {
         /*
          * プロパティ
          */

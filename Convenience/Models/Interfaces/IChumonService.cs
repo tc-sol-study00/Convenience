@@ -5,7 +5,7 @@ namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 注文サービスクラス用インターフェース
     /// </summary>
-    public interface IChumonService {
+    public interface IChumonService : IDisposable {
 
         /// <summary>
         /// 注文キービューモデル初期設定

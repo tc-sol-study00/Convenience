@@ -15,7 +15,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 注文サービスクラス
     /// </summary>
-    public partial class ChumonService : IChumonService, ISharedTools {
+    public partial class ChumonService : IChumonService, ISharedTools, IDisposable {
 
         /// <summary>
         /// 注文オブジェクト用
@@ -37,6 +37,9 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ChumonViewModel ChumonViewModel { get; set; } = new ChumonViewModel(); 
 
+        private bool _disposed = false;
+        private bool _createdComposition = false;
+
         /// <summary>
         /// コンストラクター　通常用
         /// </summary>
@@ -50,8 +53,37 @@ namespace Convenience.Models.Services {
         /// デバッグ用
         /// </summary>
         public ChumonService() {
+            _chumon = new Chumon();
+        }
 
-            _chumon = CreateChumonInstance(IDbContext.DbOpen());
+        /// <summary>
+        ///デトラクタ（アンマネージドリソース開放用）
+        /// </summary>
+        ~ChumonService() {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// ファイナライザ
+        /// </summary>
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        /// <summary>
+        /// ファイナライザ（オーバーライド可）
+        /// </summary>
+        protected virtual void Dispose(bool disposing) {
+            if ((!_disposed) && _createdComposition) {
+                if (disposing) {
+                    //マネージドリソース解放を書く
+                    _chumon?.Dispose();
+                }
+                //アンマネージドリソース解放を書く
+
+                //複数回実行しないように
+                _disposed = true;
+            }
         }
 
         /// <summary>

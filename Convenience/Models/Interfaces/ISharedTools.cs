@@ -71,6 +71,17 @@ namespace Convenience.Models.Interfaces {
             return null; // DisplayNameが存在しない場合はnullを返す
         }
 
+        public string PadString(string input, int length, char padchar = ' ') {
+            int byteLength = input.Sum(c => (c > 127 ? 2 : 1)); // 全角文字は2バイト、半角文字は1バイト
+            if (length >= 0) {
+                return input.PadLeft(length - byteLength + input.Length, padchar);
+            }
+            else {
+                length *= -1;
+                return input.PadRight(length - byteLength + input.Length, padchar);
+            }
+        }
+
         //Task<IActionResult> InsertRow(int index);
     }
 }

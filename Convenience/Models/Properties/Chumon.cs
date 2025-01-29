@@ -57,22 +57,32 @@ namespace Convenience.Models.Properties {
         }
 
         /// <summary>
-        /// 注文クラスファイナライズ忘れた用（デバッグ用）
+        ///デトラクタ（アンマネージドリソース開放用）
         /// </summary>
         ~Chumon() {
-            Dispose();
+            Dispose(false);
         }
+
         /// <summary>
-        /// ファイナライズ(デバッグ用）
+        /// ファイナライザ
         /// </summary>
         public void Dispose() {
-            if (!_disposed)  
-            {
-                if (_selfCreateContextFlg && _context != null) {
-                    _context.Dispose();  
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        /// <summary>
+        /// ファイナライザ（オーバーライド可）
+        /// </summary>
+        protected virtual void Dispose(bool disposing) {
+            if ((!_disposed) && _selfCreateContextFlg) {
+                if (disposing) {
+                    //マネージドリソース解放を書く
+                    _context?.Dispose();
                 }
-                _disposed = true;  
-                GC.SuppressFinalize(this);  // Finalizerを抑制
+                //アンマネージドリソース解放を書く
+
+                //複数回実行しないように
+                _disposed = true;
             }
         }
 

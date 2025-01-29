@@ -14,7 +14,7 @@ namespace Convenience.Models.Services {
     /// <summary>
     /// 仕入サービスクラス
     /// </summary>
-    public class ShiireService : IShiireService, IDbContext {
+    public class ShiireService : IShiireService, IDbContext, IDisposable {
         
         //DBコンテキスト
         //private readonly ConvenienceContext _context;
@@ -34,13 +34,15 @@ namespace Convenience.Models.Services {
         /// </summary>
         public ShiireViewModel ShiireViewModel { get; set; } = new ShiireViewModel();
 
+        private bool _disposed = false;
+        private bool _createdComposition = false;
+
         /// <summary>
         /// コンストラクター　通常用
         /// </summary>
         /// <param name="context">DBコンテキスト</param>
         /// <param name="shiire">仕入クラスＤＩ注入用</param>
-        public ShiireService(ConvenienceContext context, IShiire shiire) {
-            //this._context = context;
+        public ShiireService(IShiire shiire) {
             _shiire = shiire;
         }
 
@@ -50,6 +52,36 @@ namespace Convenience.Models.Services {
         public ShiireService() {
             //this._context = ((IDbContext)this).DbOpen();
             _shiire = new Shiire(IDbContext.DbOpen());
+        }
+
+        /// <summary>
+        ///デトラクタ（アンマネージドリソース開放用）
+        /// </summary>
+        ~ShiireService() {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// ファイナライザ
+        /// </summary>
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        /// <summary>
+        /// ファイナライザ（オーバーライド可）
+        /// </summary>
+        protected virtual void Dispose(bool disposing) {
+            if ((!_disposed) && _createdComposition) {
+                if (disposing) {
+                    //マネージドリソース解放を書く
+                    _shiire?.Dispose();
+                }
+                //アンマネージドリソース解放を書く
+
+                //複数回実行しないように
+                _disposed = true;
+            }
         }
 
         /// <summary>

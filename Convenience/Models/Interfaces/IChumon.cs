@@ -6,7 +6,7 @@ namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 注文クラスインターフェース
     /// </summary>
-    public interface IChumon {
+    public interface IChumon : IDisposable {
         /// <summary>
         /// 注文実績プロパティ
         /// </summary>

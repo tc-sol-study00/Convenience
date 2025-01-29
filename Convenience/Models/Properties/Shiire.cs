@@ -3,16 +3,14 @@ using AutoMapper.EquivalencyExpression;
 using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
-using static Convenience.Models.Properties.Config.CSVMapping;
 
 namespace Convenience.Models.Properties {
     /// <summary>
     /// 仕入クラス
     /// </summary>
-    public class Shiire : IShiire, IDbContext,ISharedTools {
+    public class Shiire : IShiire, IDbContext,ISharedTools,IDisposable {
 
         /// <summary>
         /// DBコンテキスト
@@ -62,26 +60,37 @@ namespace Convenience.Models.Properties {
         /// <summary>
         /// 仕入クラスデバッグ用
         /// </summary>
-        public Shiire() {
-            _context = IDbContext.DbOpen();
-            this.Shiirejissekis = new List<ShiireJisseki>();
-            this.SokoZaikos = new List<SokoZaiko>();
+        public Shiire() : this(IDbContext.DbOpen()){
             _selfCreateContextFlg = true;
         }
 
-        ~Shiire() {
-            Dispose();
-        }
         /// <summary>
-        /// ファイナライズ(デバッグ用）
+        ///デトラクタ（アンマネージドリソース開放用）
+        /// </summary>
+        ~Shiire() {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// ファイナライザ
         /// </summary>
         public void Dispose() {
-            if (!_disposed) {
-                if (_selfCreateContextFlg && _context != null) {
-                    _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        /// <summary>
+        /// ファイナライザ（オーバーライド可）
+        /// </summary>
+        protected virtual void Dispose(bool disposing) {
+            if ((!_disposed) && _selfCreateContextFlg) {
+                if (disposing) {
+                    //マネージドリソース解放を書く
+                    _context?.Dispose();
                 }
+                //アンマネージドリソース解放を書く
+
+                //複数回実行しないように
                 _disposed = true;
-                GC.SuppressFinalize(this);  // Finalizerを抑制
             }
         }
 

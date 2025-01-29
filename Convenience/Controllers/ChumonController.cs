@@ -137,6 +137,15 @@ namespace Convenience.Controllers {
 
         [HttpGet]
         public IActionResult Exception(string id) {
+            ViewBag.Data = 1;
+            ViewData["Data"] = 2;
+            TempData["Data"] = 3;
+
+            int i=ViewBag.Data;
+            int j=(int)ViewData["Data"];    
+            int k=(int)TempData["Data"];
+
+
             throw new NoDataFoundException("Post");
             //return RedirectToAction("Exception");
         }
