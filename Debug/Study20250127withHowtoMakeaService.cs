@@ -90,7 +90,8 @@ namespace Debug {
                 };
             }
 
-            var a=Getdata<ChumonJisseki, DateOnly>(new List<Expression<Func<ChumonJisseki, DateOnly>>>() { new { x => x.ChumonDate } }).ToList();
+            var a = Getdata<ChumonJisseki, DateOnly>(x => x.ChumonDate);
+
             return new ChumonViewModel() {
                 ChumonJisseki = chumonJisseki,
                 IsNormal = true,
@@ -98,21 +99,8 @@ namespace Debug {
             };
         }
 
-        public IQueryable<T1> Getdata<T1,T2>(List<Expression<Func<T1,T2>>> lambdas) where T1 : class {
-            IQueryable<T1>? query = default;
-
-            for (int i = 0; i < lambdas.Count; i++) {
-                Expression<Func<T1, T2>> aLambda=lambdas[i];
-                IQueryable<T1> q;
-                if (i == 0) {
-                    query = _context.Set<T1>().OrderBy(aLambda);
-                }
-                else {
-                    query = (query as IOrderedQueryable<T1>)!.ThenBy(aLambda);
-                }
-
-            }
-            return query;
+        public IQueryable<T1> Getdata<T1,T2>(Expression<Func<T1,T2>> lambda) where T1 : class {
+                    return _context.Set<T1>().OrderBy(lambda);
         }
     }
 
