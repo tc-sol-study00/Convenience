@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
-    /// シリアライズ・デシリアライズ化
+    /// 各種ツール的なメソッド集
     /// </summary>
     public interface ISharedTools {
         /// <summary>
