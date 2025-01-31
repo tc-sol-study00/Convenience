@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Microsoft.Extensions.Logging;
 using SelfStudy.ChumonJissekiReception.DTO;
 using SelfStudy.ChumonJissekiReception.Interfaces;
 
@@ -19,8 +20,7 @@ namespace SelfStudy.ChumonJissekiReception {
             _sokoZaikoAccesor = new SokoZaikoAccesor(_context);
             (this as IEnableLegacyTimestampBehavior).SetSwitch();
         }
-        public ChumonJissekiReception() : this(IDbContext.DbOpen()) {
-
+        public ChumonJissekiReception() : this(IDbContext.DbOpen(LogLevel.Warning)) {
         }
 
         public void Dispose() {
@@ -63,6 +63,16 @@ namespace SelfStudy.ChumonJissekiReception {
 
             //注文実績取得
             ChumonJisseki? chumonJisseki = _chumonJissekiAccessor.GetaChumonJisseki(shiireSakiId, chumonId);
+            IDisplay.DisplayData(chumonJisseki);
+            foreach(var meisai in chumonJisseki.ChumonJissekiMeisais) {
+                IDisplay.DisplayData(meisai);
+            }
+
+            foreach (var meisai in chumonJisseki.ChumonJissekiMeisais) {
+                SokoZaiko sokoZaiko=_sokoZaikoAccesor.GetSokoZaiko(chumonJisseki.ShiireSakiId, meisai.ShiirePrdId, meisai.ShohinId);
+                IDisplay.DisplayData(sokoZaiko);
+            }
+
 
             /*
              * 仕入実績処理・倉庫在庫処理
@@ -110,8 +120,24 @@ namespace SelfStudy.ChumonJissekiReception {
              */
 
             var check = _context.ChangeTracker.Entries();
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
+            var chumonJissekiForAfterCheck = _chumonJissekiAccessor.GetaChumonJisseki(shiireSakiId, chumonId);
+            IDisplay.DisplayData(chumonJissekiForAfterCheck);
+            foreach (var meisai in chumonJissekiForAfterCheck.ChumonJissekiMeisais) {
+                IDisplay.DisplayData(meisai);
+            }
+
+
+            foreach (var meisai in chumonJisseki.ChumonJissekiMeisais) {
+                var sokoZaikoForAfterCheck = _sokoZaikoAccesor.GetSokoZaiko(chumonJisseki.ShiireSakiId, meisai.ShiirePrdId, meisai.ShohinId);
+                IDisplay.DisplayData(sokoZaikoForAfterCheck);
+            }
+
+            ShiireJisseki? shiireJissekiForAfterCheck = ((ShiireJissekiAccessor)_shiireJissekiAccessor).GetShiireJisseki(chumonId, shiireDate, seqByShiireDate)
+            if (shiireJissekiForAfterCheck != null) {
+                IDisplay.DisplayData(shiireJissekiForAfterCheck);
+            }
             return 0;
         }
     }

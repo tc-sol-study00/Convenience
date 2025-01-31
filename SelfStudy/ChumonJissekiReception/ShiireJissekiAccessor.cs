@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using SelfStudy.ChumonJissekiReception.Interfaces;
 
 namespace SelfStudy.ChumonJissekiReception {
@@ -31,6 +32,12 @@ namespace SelfStudy.ChumonJissekiReception {
             //もしDBにデータがなかったら0を返却
 
             return maxSeq;
+        }
+
+        public ShiireJisseki? GetShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
+            return _context.ShiireJisseki.AsNoTracking()
+                    .Where(sj => sj.ChumonId == inChumonId && sj.ShiireDate == inShiireDate && sj.SeqByShiireDate == inSeqByShiireDate)
+                    .FirstOrDefault();
         }
         /// <summary>
         /// 仕入実績作成

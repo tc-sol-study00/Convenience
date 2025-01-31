@@ -1,5 +1,6 @@
 ﻿using Convenience.Models.DataModels;
 using SelfStudy.ChumonJissekiReception;
+using SelfStudy.ChumonJissekiReception.Interfaces;
 using SelfStudy.Interfaces;
 using SelfStudy.Propaties;
 
@@ -28,6 +29,10 @@ namespace SelfStudy {
                     using (var chumonJissekiReception = new ChumonJissekiReception.ChumonJissekiReception()) {
                         chumonJissekiReception.ChumonJissekiToShiireJisseki();
                     }
+                    break;
+                case 4:
+                    var chumonJisseki=new ChumonJisseki() { ChumonId = "00000000-001" };
+                    IDisplay.DisplayData(chumonJisseki);
                     break;
             }
         }
