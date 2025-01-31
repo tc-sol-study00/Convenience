@@ -1,6 +1,4 @@
 ﻿using Convenience.Data;
-using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
 using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Models.Interfaces {
@@ -31,7 +29,7 @@ namespace Convenience.Models.Interfaces {
             //DBコンテクスト作成
             var contextOptions = new DbContextOptionsBuilder<ConvenienceContext>()
                 .UseNpgsql(configuration[KeyWordInAppConfig])
-                .LogTo(Console.WriteLine, LogLevel.Warning) 
+                .LogTo(Console.WriteLine, inLogLevel) 
                 .Options;
             return new ConvenienceContext(contextOptions);
         }
