@@ -15,7 +15,13 @@ namespace Convenience.Models.Interfaces {
         /// PostgreSQL DBオープン
         /// </summary>
         /// <returns></returns>
+        /// 
         public static ConvenienceContext DbOpen() {
+            return DbOpen(LogLevel.Information);
+        }
+
+        //実行SQL表示の場合、引数をLogLevel.Informationにする
+        public static ConvenienceContext DbOpen(LogLevel inLogLevel) {
             //DBコンテクスト用接続子読み込み
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -25,7 +31,7 @@ namespace Convenience.Models.Interfaces {
             //DBコンテクスト作成
             var contextOptions = new DbContextOptionsBuilder<ConvenienceContext>()
                 .UseNpgsql(configuration[KeyWordInAppConfig])
-                .LogTo(Console.WriteLine, LogLevel.Information)
+                .LogTo(Console.WriteLine, LogLevel.Warning) 
                 .Options;
             return new ConvenienceContext(contextOptions);
         }
