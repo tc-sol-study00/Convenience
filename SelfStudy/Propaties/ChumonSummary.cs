@@ -1,25 +1,14 @@
 ﻿using Convenience.Data;
-using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
-using CsvHelper.Configuration.Attributes;
-using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using static Convenience.Models.Properties.Shiire;
-using static SelfStudy.Propaties.ChumonSummary;
+
+using _t = Convenience.Models.Interfaces.ISharedTools;
 
 namespace SelfStudy.Propaties {
     public class ChumonSummary : IDisposable, ISharedTools {
 
         private readonly ConvenienceContext _context;
-        private readonly ISharedTools _t;
+        
 
         private bool _disposed = false;
         private bool _myselfcontext = false;
@@ -29,7 +18,6 @@ namespace SelfStudy.Propaties {
         }
         public ChumonSummary(ConvenienceContext context) {
             _context = context;
-            _t = this as ISharedTools;
         }
         ~ChumonSummary() {
             Dispose(false);

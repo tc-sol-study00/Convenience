@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.DataModels;
+using SelfStudy.ChumonJissekiReception;
 using SelfStudy.Interfaces;
 using SelfStudy.Propaties;
 
@@ -6,7 +7,7 @@ namespace SelfStudy {
     internal class Program {
         static async Task Main(string[] args) {
 
-            int x = 2;
+            int x = 3;
             switch (x) {
                 case 1:
                     IObjectCopy objectCopy = new ObjectCopy(1);
@@ -21,6 +22,11 @@ namespace SelfStudy {
                 case 2:
                     using (var chumonSummary = new ChumonSummary()) {
                         chumonSummary.MakeChumonSummary();
+                    }
+                    break;
+                case 3:
+                    using (var chumonJissekiReception = new ChumonJissekiReception.ChumonJissekiReception()) {
+                        chumonJissekiReception.ChumonJissekiToShiireJisseki();
                     }
                     break;
             }

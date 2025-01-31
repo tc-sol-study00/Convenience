@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ChumonJissekiReception\Interfaces\IDisplay.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Convenience\Convenience.csproj" />
   </ItemGroup>
 
