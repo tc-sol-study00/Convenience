@@ -32,7 +32,6 @@ namespace SelfStudy {
                     break;
                 case 4:
                     var chumonJisseki=new ChumonJisseki() { ChumonId = "00000000-001" };
-                    IDisplay.DisplayData(chumonJisseki);
                     break;
             }
         }
