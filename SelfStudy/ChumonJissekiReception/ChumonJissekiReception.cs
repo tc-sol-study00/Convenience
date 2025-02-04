@@ -17,6 +17,9 @@ namespace SelfStudy.ChumonJissekiReception {
         private const string _DisplayBeforeProcess = "Before Process";
         private const string _Result = "Result";
 
+        private Action<ConvenienceContext> _saveChanges= (context) => context.SaveChanges();
+        //private Action<ConvenienceContext> _saveChanges = (context) => Console.WriteLine("DB更新しません");
+
         public ChumonJissekiReception(ConvenienceContext context) {
             _context = context;
             _chumonJissekiAccessor = new ChumonJissekiAccessor(_context);
@@ -39,10 +42,8 @@ namespace SelfStudy.ChumonJissekiReception {
              */
 
             //注文残リスト
-            IList<ChumonListItem>? chumonZanList =
-                _chumonJissekiAccessor.GetChumonZanList() as IList<ChumonListItem>;
-
-
+            IList<ChumonListItem> chumonZanList =
+                (_chumonJissekiAccessor as ChumonJissekiAccessor).GetChumonZanList() as IList<ChumonListItem>;
 
             //注文一覧表示
             for (int i = 0; i < chumonZanList.Count; i++) {
@@ -103,8 +104,6 @@ namespace SelfStudy.ChumonJissekiReception {
 
             //注文実績明細から仕入実績を作る
 
-            uint setseqByShiireDate = default;
-
             foreach (var aMeisai in chumonJisseki.ChumonJissekiMeisais) {
 
                 //仕入実績作成
@@ -142,12 +141,12 @@ namespace SelfStudy.ChumonJissekiReception {
              */
 
             var check = _context.ChangeTracker.Entries();
-            _context.SaveChanges();
+            _saveChanges(_context);
 
             /*
              * 結果表示
              */
-            var chumonJissekiForAfterCheck = _chumonJissekiAccessor.GetaChumonJisseki(shiireSakiId, chumonId) ?? new ChumonJisseki();
+            ChumonJisseki chumonJissekiForAfterCheck = _chumonJissekiAccessor.GetaChumonJisseki(shiireSakiId, chumonId) ?? new ChumonJisseki();
             _displayResult.DisplayData(chumonJissekiForAfterCheck, _Result);
             if (chumonJissekiForAfterCheck?.ChumonJissekiMeisais != null) {
                 _displayResult.DisplayData(chumonJissekiForAfterCheck.ChumonJissekiMeisais, _Result);
@@ -155,13 +154,14 @@ namespace SelfStudy.ChumonJissekiReception {
 
             IList<SokoZaiko> sokoZaikoForAfterChecks = new List<SokoZaiko>();
             foreach (var meisai in chumonJisseki.ChumonJissekiMeisais) {
-                var sokoZaikoForAfterCheck = _sokoZaikoAccesor.GetSokoZaiko(chumonJissekiForAfterCheck!.ShiireSakiId, meisai.ShiirePrdId, meisai.ShohinId) ?? new SokoZaiko();
-                sokoZaikoForAfterChecks.Add(sokoZaikoForAfterCheck);
+                SokoZaiko? sokoZaikoForAfterCheck = _sokoZaikoAccesor.GetSokoZaiko(chumonJissekiForAfterCheck!.ShiireSakiId, meisai.ShiirePrdId, meisai.ShohinId) ?? new SokoZaiko();
+                if (sokoZaikoForAfterCheck != null) 
+                    sokoZaikoForAfterChecks.Add(sokoZaikoForAfterCheck);
             }
             _displayResult.DisplayData(sokoZaikoForAfterChecks, _Result);
 
-            ShiireJisseki? shiireJissekiForAfterCheck = ((ShiireJissekiAccessor)_shiireJissekiAccessor).GetShiireJisseki(chumonId, shiireDate, seqByShiireDate) ?? new ShiireJisseki();
-            _displayResult.DisplayData(shiireJissekiForAfterCheck, _Result);
+            IEnumerable<ShiireJisseki> shiireJissekiForAfterChecks = ((ShiireJissekiAccessor)_shiireJissekiAccessor).GetShiireJisseki(chumonId, shiireDate) ?? new List<ShiireJisseki>();
+            _displayResult.DisplayData(shiireJissekiForAfterChecks, _Result);
 
             return 0;
         }

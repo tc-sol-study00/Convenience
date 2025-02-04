@@ -25,6 +25,7 @@ namespace SelfStudy.ChumonJissekiReception {
          */
         public ChumonJissekiAccessor(ConvenienceContext context) {
             _context = context;
+            ChumonZanList = new List<ChumonListItem>();
         }
         public ChumonJissekiAccessor() : this(IDbContext.DbOpen()) {
         }
@@ -69,6 +70,9 @@ namespace SelfStudy.ChumonJissekiReception {
                 .OrderBy(cl => cl.ShiireSakiId)
                 .ThenBy(cl => cl.ChumonId)
                 .ToList();
+
+            if(ChumonZanList == null)
+                ChumonZanList=new List<ChumonListItem>();
 
             return ChumonZanList;
         }

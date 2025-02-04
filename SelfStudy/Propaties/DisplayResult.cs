@@ -1,166 +1,217 @@
 ﻿using Convenience.Models.Interfaces;
 using System.Reflection;
 
-using t = Convenience.Models.Interfaces.ISharedTools;
-
 namespace SelfStudy.ChumonJissekiReception.Interfaces {
 
-    public class DisplayResult : ISharedTools {
+    public class DisplayResult {
 
+        /// <summary>
+        /// カラム毎の幅数管理用配列
+        /// </summary>
         private int[] lengthArray;
 
+        /// <summary>
+        /// 表示用Delegate
+        /// </summary>
         private static Action<string> wl = value => Console.WriteLine(value);
         private static Action<string> w = value => Console.Write(value);
 
+        /// <summary>
+        /// 初期化
+        /// </summary>
         public DisplayResult() {
             lengthArray = new int[] { };
         }
 
-        //リスト形式のデータを表示する
+        /// <summary>
+        /// リスト形式のデータを表示する
+        /// </summary>
+        /// <param name="inDisplayDatas">表示するオブジェクト(Collection型）</param>
+        /// <param name="inAttribute">表示するオブジェクト名の横に沿える文字列</param>
         public void DisplayData(IEnumerable<object> inDisplayDatas, string inAttribute = "") {
-            foreach (var aDisplayData in inDisplayDatas) {
-                SetDisplayWidth(aDisplayData);
-            }
+
+            /*
+             * 全行を対象に最大横幅を各カラム毎に求める
+             */
+
+            foreach (var aDisplayData in inDisplayDatas) SetDisplayWidth(aDisplayData);
+
+            /*
+             * 上記の最大横幅を元に、プロパティと全行のデータを表示する
+             */
 
             bool isNeedHeader = true;
-            foreach (var aDisplayData in inDisplayDatas) {
-                Display(aDisplayData, isNeedHeader, inAttribute);
-                isNeedHeader = false;
+            foreach (var data in inDisplayDatas) {
+                Display(data, isNeedHeader, inAttribute);
+                isNeedHeader &= false;
             }
         }
 
-        //単体のデータを表示する
+        /// <summary>
+        /// 単体のデータを表示する
+        /// </summary>
+        /// <param name="inDisplayData">表示するオブジェクト</param>
+        /// <param name="inAttribute">表示するオブジェクト名の横に添える文字列</param>
         public void DisplayData(object inDisplayData, string inAttribute = "") {
+
+            /*
+             * 最大横幅を各カラム毎に求める
+             */
+            
             SetDisplayWidth(inDisplayData);
+            
+            /*
+             * 上記の最大横幅を元に、プロパティとデータを表示する
+             */
+            
             Display(inDisplayData, true, inAttribute);
         }
 
-        //データとカラム名から最大の横の長さをカラム毎に求める
+        /// <summary>
+        /// 最大横幅を各カラム毎に求める
+        /// </summary>
+        /// <param name="inDisplayData">対象オブジェクト</param>
 
         private void SetDisplayWidth(object inDisplayData) {
-
-            Action<string> w = value => Console.Write(value);
-            Action<string> wl = value => w(value + "\n");
 
             //引数のオブジェクトのプロパティを求める
             var properties = inDisplayData.GetType().GetProperties();
             //各カラムの文字サイズをセットするための配列を作成
             lengthArray = new int[properties.Length];
 
-            //カラム名文字サイズ調査
+            /*
+             * カラム名・データの文字サイズ調査
+             */
+
             for (int counter = 0; counter < properties.Length; counter++) {
                 PropertyInfo aProperty = properties[counter];
-                if (IsAvairableType(aProperty)) {
-                    lengthArray[counter] = IsAvairableType(properties[counter]) ? properties[counter].Name.Sum(c => (c > 127 ? 2 : 1)) : 1;
-                }
-            }
 
-            //データ文字サイズ調査
-            for (int counter = 0; counter < lengthArray.Length; counter++) {
-                PropertyInfo aProperty = properties[counter];
+                //表示対象のプロパティか？
+                if (!IsAvairableType(aProperty)) continue;
 
-                if (IsAvairableType(aProperty)) {
-                    string strValue = SetAnyDataToString(aProperty, inDisplayData);
-                    int length = strValue.Sum(c => (c > 127 ? 2 : 1));
-                    lengthArray[counter] = (length > lengthArray[counter]) ? length : lengthArray[counter];
-                }
+                /*
+                 * 表示対象のプロパティの文字サイズチェック
+                 */
+
+                // カラム名の文字サイズ
+                lengthArray[counter] = aProperty.Name.Sum(c => (c > 127 ? 2 : 1));
+
+                // データの文字サイズ
+                int length = SetAnyDataToString(aProperty, inDisplayData).Sum(c => (c > 127 ? 2 : 1));
+                lengthArray[counter] = Math.Max(length, lengthArray[counter]);
             }
         }
 
-        //データ表示
-        private void Display(object inDisplayData, bool isNeedHearder = true, string inAttribute = "") {
-
+        /// <summary>
+        /// 最大横幅を元に、プロパティと全行のデータを表示する
+        /// </summary>
+        /// <param name="inDisplayData">対象オブジェクト</param>
+        /// <param name="isNeedHeader">カラム情報を出したい場合はtrue</param>
+        /// <param name="inAttribute">表示するオブジェクト名の横に添える文字列</param>
+        private void Display(object inDisplayData, bool isNeedHeader = true, string inAttribute = "") {
             var properties = inDisplayData.GetType().GetProperties();
-            int allColumQty = lengthArray.Sum(c => c) + lengthArray.Count(x => x > 0) + 1;
+            var validProperties = properties.Where(IsAvairableType).ToArray();
+            int allColumQty = lengthArray.Sum() + validProperties.Length + 1;
 
-            if (isNeedHearder) {
-                //オブジェクト名表示
-                string className = inDisplayData.GetType().Name;
-                string headerName = className + "(" + inAttribute + ")";
+            /*
+             * カラム情報表示
+             */
+            
+            if (isNeedHeader) { //カラム情報を出すかの判断
+                
+                /*
+                 * オブジェクト名表示
+                 */
 
-                int allColumQtyHeader;
-                if (headerName.Length > (allColumQty - 2)) {
-                    allColumQtyHeader = headerName.Length + 2;
-                }
-                else {
-                    allColumQtyHeader = allColumQty;
-                }
-
+                string headerName = $"{inDisplayData.GetType().Name}({inAttribute})";
+                int allColumQtyHeader = Math.Max(headerName.Length + 2, allColumQty);
                 wl(new string('-', allColumQtyHeader));
-                wl("|" + t.PadString(headerName, (allColumQtyHeader - 2) * (-1)) + "|");
+                wl($"|{PadString(headerName, -(allColumQtyHeader - 2))}|");
                 wl(new string('-', allColumQtyHeader));
 
-                //ヘッダー表示
+                /*
+                 * ヘッダー表示
+                 */
 
-                for (int counter = 0; counter < properties.Length; counter++) {
-                    PropertyInfo aProperty = properties[counter];
-                    if (counter == 0) {
-                        Console.Write("|");
-                    }
-                    if (IsAvairableType(aProperty)) {
-                        int flgLeftOrRight = JudgeValueOnLeftOrRight(aProperty);
-                        w(t.PadString(aProperty.Name, lengthArray[counter] * flgLeftOrRight) + "|");
-                    }
+                w("|");
+                foreach (var prop in validProperties) {
+                    w(PadString(prop.Name, lengthArray[Array.IndexOf(properties, prop)] * JudgeValueOnLeftOrRight(prop)) + "|");
                 }
                 w("\n");
                 wl(new string('-', allColumQty));
             }
 
-            for (int counter = 0; counter < properties.Length; counter++) {
+            /*
+             * データ表示
+             */
 
-                PropertyInfo aProperty = properties[counter];
-
-                if (counter == 0) {
-                    w("|");
-                }
-                if (IsAvairableType(aProperty)) {   //表示対象か
-
-                    string strValue = SetAnyDataToString(aProperty, inDisplayData);
-
-                    int flgLeftOrRight = JudgeValueOnLeftOrRight(aProperty);
-                    w(t.PadString(strValue, lengthArray[counter] * flgLeftOrRight) + "|");
-                }
+            w("|");
+            foreach (var prop in validProperties) {
+                w(PadString(SetAnyDataToString(prop, inDisplayData), lengthArray[Array.IndexOf(properties, prop)] * JudgeValueOnLeftOrRight(prop)) + "|");
             }
             w("\n");
             wl(new string('-', allColumQty));
         }
 
+        /// <summary>
+        /// 文字列に変換する
+        /// </summary>
+        /// <param name="aProperty">プロパティ情報</param>
+        /// <param name="inDisplayData">対象オブジェクト</param>
+        /// <returns>文字列に変換されたオブジェクト</returns>
+        private static string SetAnyDataToString(PropertyInfo aProperty, object inDisplayData) =>
+            IsAvairableType(aProperty) ? aProperty.GetValue(inDisplayData)?.ToString() ?? string.Empty : string.Empty;
 
+        /// <summary>
+        /// 数値タイプグループ HashSetは重複不可、データ登録順番の保証なし、だけど高速 
+        /// </summary>
+        private static readonly HashSet<Type> NumericTypes = new()
+        {
+            typeof(int), typeof(uint), typeof(decimal), typeof(long), typeof(ulong),
+            typeof(double), typeof(float)
+        };
 
-        //文字に変換する
-        private static string SetAnyDataToString(PropertyInfo aProperty, object inDisplayData) {
+        /// <summary>
+        /// 表示対象タイプグループ 
+        /// <remark>オブジェクト変数などは対象外</remark>
+        /// </summary>
+        private static readonly HashSet<Type> AvailableTypes = new()
+        {
+            typeof(int), typeof(uint), typeof(decimal), typeof(string),
+            typeof(DateOnly), typeof(DateTime), typeof(long), typeof(ulong),
+            typeof(double), typeof(float), typeof(bool), typeof(Guid),
+            typeof(byte), typeof(char)
+        };
 
-            return IsAvairableType(aProperty) ?
-                aProperty?.GetValue(inDisplayData)?.ToString() ?? string.Empty : string.Empty;
-        }
+        /// <summary>
+        /// 数値型の判断（数値型の場合、1（右寄せ）。それ以外（文字列や日付・時間系）なら-1（左寄せ）
+        /// </summary>
+        /// <param name="aProperty">プロパティ情報</param>
+        /// <returns>数値型ならtrue</returns>
+        private static int JudgeValueOnLeftOrRight(PropertyInfo aProperty) =>
+            NumericTypes.Contains(aProperty.PropertyType) ? 1 : -1;
 
-        //数値型の判断（数値型の場合、1（右寄せ）。それ以外（文字列や日付・時間系）なら-1（左寄せ）
-        private static int JudgeValueOnLeftOrRight(PropertyInfo aProperty) {
-            return aProperty.PropertyType == typeof(int) ||
-                aProperty.PropertyType == typeof(uint) ||
-                aProperty.PropertyType == typeof(decimal) ||
-                aProperty.PropertyType == typeof(long) ||
-                aProperty.PropertyType == typeof(ulong) ||
-                aProperty.PropertyType == typeof(double) ||
-                aProperty.PropertyType == typeof(float) ? 1 : -1;
-        }
+        /// <summary>
+        /// 表示対象タイプの判断
+        /// </summary>
+        /// <param name="aProperty">プロパティ情報</param>
+        /// <returns>表示対象ならtrue</returns>
+        private static bool IsAvairableType(PropertyInfo aProperty) =>
+            AvailableTypes.Contains(aProperty.PropertyType);
 
-        //表示対象タイプの判断
-        private static bool IsAvairableType(PropertyInfo aProperty) {
-            return aProperty.PropertyType == typeof(int) ||
-                aProperty.PropertyType == typeof(uint) ||
-                aProperty.PropertyType == typeof(decimal) ||
-                aProperty.PropertyType == typeof(string) ||
-                aProperty.PropertyType == typeof(DateOnly) ||
-                aProperty.PropertyType == typeof(DateTime) ||
-                aProperty.PropertyType == typeof(long) ||
-                aProperty.PropertyType == typeof(ulong) ||
-                aProperty.PropertyType == typeof(double) ||
-                aProperty.PropertyType == typeof(float) ||
-                aProperty.PropertyType == typeof(bool) ||
-                aProperty.PropertyType == typeof(Guid) ||
-                aProperty.PropertyType == typeof(byte) ||
-                aProperty.PropertyType == typeof(char);
+        /// <summary>
+        /// 右寄せ・左寄せ・パディング処理
+        /// </summary>
+        /// <param name="input">表示用データ</param>
+        /// <param name="length">表示する幅数（英数字系は１、２バイト文字系は2として数える）　左寄せの場合、マイナス数値</param>
+        /// <param name="padchar">パディング用文字</param>
+        /// <returns></returns>
+        public static string PadString(string? input, int length, char padchar = ' ') {
+            input ??= string.Empty;
+            int byteLength = input.Sum(c => (c > 127 ? 2 : 1));
+            return length >= 0
+                ? input.PadLeft(Math.Abs(length) - byteLength + input.Length, padchar)
+                : input.PadRight(Math.Abs(length) - byteLength + input.Length, padchar);
         }
     }
 }

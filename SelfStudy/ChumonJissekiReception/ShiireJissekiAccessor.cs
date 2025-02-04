@@ -34,10 +34,10 @@ namespace SelfStudy.ChumonJissekiReception {
             return maxSeq;
         }
 
-        public ShiireJisseki? GetShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate) {
+        public IEnumerable<ShiireJisseki> GetShiireJisseki(string inChumonId, DateOnly inShiireDate) {
             return _context.ShiireJisseki.AsNoTracking()
-                    .Where(sj => sj.ChumonId == inChumonId && sj.ShiireDate == inShiireDate && sj.SeqByShiireDate == inSeqByShiireDate)
-                    .FirstOrDefault();
+                    .Where(sj => sj.ChumonId == inChumonId && sj.ShiireDate == inShiireDate)
+                    .ToList();
         }
         /// <summary>
         /// 仕入実績作成

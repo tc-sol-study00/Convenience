@@ -5,7 +5,7 @@ namespace SelfStudy.ChumonJissekiReception.Interfaces {
         /// <summary>
         /// 倉庫在庫（追加用・更新用）
         /// </summary>
-        public SokoZaiko SokoZaiko { get; set; }
+        public SokoZaiko? SokoZaiko { get; set; }
         /// <summary>
         /// 倉庫在庫取得
         /// </summary>

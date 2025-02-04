@@ -7,14 +7,14 @@
         /// <summary>
         /// 仕入先コード
         /// </summary>
-        public string ShiireSakiId { get; set; }
+        public required string ShiireSakiId { get; set; }
         /// <summary>
         /// 注文コード
         /// </summary>
-        public string ChumonId { get; set; }
+        public required string ChumonId { get; set; }
         /// <summary>
         /// 注文残
         /// </summary>
-        public decimal ChumonZan { get; set; }
+        public required decimal ChumonZan { get; set; }
     }
 }
