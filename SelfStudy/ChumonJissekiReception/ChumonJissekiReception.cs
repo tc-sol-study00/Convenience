@@ -20,6 +20,7 @@ namespace SelfStudy.ChumonJissekiReception {
         private Action<ConvenienceContext> _saveChanges= (context) => context.SaveChanges();
         //private Action<ConvenienceContext> _saveChanges = (context) => Console.WriteLine("DB更新しません");
 
+
         public ChumonJissekiReception(ConvenienceContext context) {
             _context = context;
             _chumonJissekiAccessor = new ChumonJissekiAccessor(_context);
@@ -31,8 +32,17 @@ namespace SelfStudy.ChumonJissekiReception {
         public ChumonJissekiReception() : this(IDbContext.DbOpen(LogLevel.Warning)) {
         }
 
+        private bool _disposed = false;
         public void Dispose() {
-            _context?.Dispose();
+            if (!_disposed) {
+                //リソースの解放（例：Stream, DB Connection）
+                _context?.Dispose();
+                GC.SuppressFinalize(this);  //GCがメモリ開放の際に、ファイナライザを呼ばなくて良いと指示
+                _disposed = true;
+            }
+        }
+        ~ChumonJissekiReception(){ // ファイナライザー（デストラクタ）
+            Dispose();
         }
 
         public int ChumonJissekiToShiireJisseki() {

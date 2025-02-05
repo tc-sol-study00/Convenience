@@ -1,4 +1,5 @@
 ﻿using Convenience.Models.DataModels;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SelfStudy.ChumonJissekiReception;
 using SelfStudy.ChumonJissekiReception.Interfaces;
 using SelfStudy.Interfaces;
@@ -26,12 +27,22 @@ namespace SelfStudy {
                     }
                     break;
                 case 3:
-                    using (var chumonJissekiReception = new ChumonJissekiReception.ChumonJissekiReception()) {
+                    IChumonJissekiReception chumonJissekiReception 
+                        = new ChumonJissekiReception.ChumonJissekiReception();
+                    try {
                         chumonJissekiReception.ChumonJissekiToShiireJisseki();
                     }
+                    catch (Exception ex) {
+                        Console.WriteLine(ex.Message);
+                        throw;
+                    }
+                    finally {
+                        chumonJissekiReception.Dispose();
+                    }
+
                     break;
                 case 4:
-                    var chumonJisseki=new ChumonJisseki() { ChumonId = "00000000-001" };
+                    var chumonJisseki = new ChumonJisseki() { ChumonId = "00000000-001" };
                     break;
             }
         }

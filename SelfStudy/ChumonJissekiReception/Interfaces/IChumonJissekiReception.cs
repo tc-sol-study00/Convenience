@@ -1,5 +1,5 @@
 ﻿namespace SelfStudy.ChumonJissekiReception.Interfaces {
-    public interface IChumonJissekiReception {
+    public interface IChumonJissekiReception : IDisposable {
 
         /// <summary>
         /// 注文実績を一括仕入れを行うメインメソッド

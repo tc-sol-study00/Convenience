@@ -30,7 +30,6 @@ namespace SelfStudy.ChumonJissekiReception {
         public ChumonJissekiAccessor() : this(IDbContext.DbOpen()) {
         }
 
-
         /// <summary>
         /// 注文実績取得
         /// </summary>

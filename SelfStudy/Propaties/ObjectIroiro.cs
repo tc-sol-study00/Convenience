@@ -55,7 +55,7 @@ namespace SelfStudy.Propaties {
             return new Bird();
         }
 
-         void HanpenSei (Bird animal) {
+         void HanpenSei (Animal animal) {
             Console.WriteLine(animal.Name);
         }
     }
