@@ -14,7 +14,7 @@ namespace SelfStudy.Propaties {
 
 
     }
-    public class Bird : Animal, IAnimal{
+    public class Bird : Animal, IAnimal {
         public decimal TondaKyori { get; set; }
     }
 
@@ -41,11 +41,11 @@ namespace SelfStudy.Propaties {
 
             HanpenSei(new Bird());
 
-            IAnimal admin= new Animal();
-            IAnimal bird= new Bird();
+            IAnimal admin = new Animal();
+            IAnimal bird = new Bird();
 
             HachuRui hachuRui = new HachuRui();
-            var mocho=hachuRui.Mocho;
+            var mocho = hachuRui.Mocho;
 
             IHachuRui hachuRui2 = new HachuRui();
             //Mochoは見えない
@@ -55,8 +55,49 @@ namespace SelfStudy.Propaties {
             return new Bird();
         }
 
-         void HanpenSei (Animal animal) {
+        void HanpenSei(Animal animal) {
             Console.WriteLine(animal.Name);
         }
     }
+
+    /// <summary>
+    /// 移譲（集約）と合成（コンポジット）
+    /// </summary>
+    public class DelegateCompositService {
+
+        Animal animal { get; set; }
+        public DelegateCompositService() {
+            Animal animal = new Animal();
+        }
+
+        public void DelegateCompositServiceExecution() {
+
+            DelegateCompositProperty delegateCompositProperty = new DelegateCompositProperty(animal);
+
+            delegateCompositProperty = null;
+
+            //delegateCompositPropertyのBirdプロパティは親と一緒に消えている
+
+            //移譲で渡したanimalはそのまま生きている
+            var xxx = animal;
+
+        }
+    }
+
+    public class DelegateCompositProperty {
+
+        Animal Animal { get; set; }
+        Bird Bird { get; set; }
+        public DelegateCompositProperty(Animal inAnimal) {
+            this.Animal = inAnimal; //移譲
+            this.Bird = new Bird(); //合成
+        }
+
+        ~DelegateCompositProperty() {
+            Console.WriteLine("I named DelegateCompositProperty has been dead !");
+        }
+
+    }
+
 }
+
