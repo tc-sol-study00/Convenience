@@ -64,17 +64,23 @@ namespace Convenience.Models.ViewModels.ShiireMaster {
         */
 
         /// <summary>
-        /// 依存性注入に対応したコンストラクタ（データベースコンテキストを受け取る）
+        /// 依存性注入に対応したコンストラクタ
         /// </summary>
         /// <param name="context">データベースコンテキスト</param>
-        public ShiireMasterViewModel(ConvenienceContext context) {
-            _context = context;                             // データベースコンテキストの初期化
+        public ShiireMasterViewModel() {
             PostMasterDatas = new List<PostMasterData>();   // Postデータリストの初期化
             ShiireSakiList = new List<SelectListItem>();    // 初期化
             ShohinList = new List<SelectListItem>();        // 初期化
             IsNormal = default;                             // 処理正常フラグ（初期状態は null）
             Remark = string.Empty;                          // 処理結果メッセージの初期化
             my = this;                                      // インターフェース型の自身を保持
+        }
+        /// <summary>
+        /// 依存性注入に対応したコンストラクタ（データベースコンテキストを受け取る）
+        /// </summary>
+        /// <param name="context">データベースコンテキスト</param>
+        public ShiireMasterViewModel(ConvenienceContext context) :this() {
+            _context = context;
         }
         /// <summary>
         /// <para>以下の一覧を作成</para>
