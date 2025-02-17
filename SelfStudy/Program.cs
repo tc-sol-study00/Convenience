@@ -9,7 +9,7 @@ namespace SelfStudy {
     internal class Program {
         static async Task Main(string[] args) {
 
-            int x = 3;
+            int x = 5;
             switch (x) {
                 case 1:
                     IObjectCopy objectCopy = new ObjectCopy(1);
@@ -27,21 +27,46 @@ namespace SelfStudy {
                     }
                     break;
                 case 3:
-                    IChumonJissekiReception chumonJissekiReception 
+                    using (IChumonJissekiReception chumonJissekiReception
+                        = new ChumonJissekiReception.ChumonJissekiReception()) {
+                        try {
+                            chumonJissekiReception.ChumonJissekiToShiireJisseki();
+                        }
+                        catch (Exception ex) {
+                            Console.WriteLine(ex.Message);
+                            throw;
+                        }
+                    }
+                    GC.Collect(); // ガベージコレクションを強制実行
+                    //GC.WaitForPendingFinalizers(); // 保留中のデストラクタを実行
+                    break;
+
+                case 4: {
+                        using IChumonJissekiReception chumonJissekiReception
+                            = new ChumonJissekiReception.ChumonJissekiReception();
+                        try {
+                            chumonJissekiReception.ChumonJissekiToShiireJisseki();
+                        }
+                        catch (Exception ex) {
+                            Console.WriteLine(ex.Message);
+                            throw;
+                        }
+                    }
+                    break;
+
+                case 5:
+                    IChumonJissekiReception chumonJissekiReception2
                         = new ChumonJissekiReception.ChumonJissekiReception();
                     try {
-                        chumonJissekiReception.ChumonJissekiToShiireJisseki();
+                        chumonJissekiReception2.ChumonJissekiToShiireJisseki();
                     }
                     catch (Exception ex) {
                         Console.WriteLine(ex.Message);
                         throw;
                     }
-                    finally {
-                        chumonJissekiReception.Dispose();
-                    }
-
+                    chumonJissekiReception2.Dispose();
                     break;
-                case 4:
+                case 6:
                     var chumonJisseki = new ChumonJisseki() { ChumonId = "00000000-001" };
                     break;
             }
