@@ -17,9 +17,8 @@ namespace SelfStudy.ChumonJissekiReception {
         private const string _DisplayBeforeProcess = "Before Process";
         private const string _Result = "Result";
 
-        private Action<ConvenienceContext> _saveChanges= (context) => context.SaveChanges();
-        //private Action<ConvenienceContext> _saveChanges = (context) => Console.WriteLine("DB更新しません");
-
+        //private Action<ConvenienceContext> _saveChanges= (context) => context.SaveChanges();
+        private Action<ConvenienceContext> _saveChanges = (context) => Console.WriteLine("DB更新しません");
 
         public ChumonJissekiReception(ConvenienceContext context) {
             _context = context;
@@ -33,16 +32,27 @@ namespace SelfStudy.ChumonJissekiReception {
         }
 
         private bool _disposed = false;
+
+        /// <summary>
+        /// オブジェジェクト開放のときに呼んでもらう
+        /// </summary>
         public void Dispose() {
             if (!_disposed) {
                 //リソースの解放（例：Stream, DB Connection）
                 _context?.Dispose();
                 GC.SuppressFinalize(this);  //GCがメモリ開放の際に、ファイナライザを呼ばなくて良いと指示
                 _disposed = true;
+                Console.WriteLine("Disposed!!");
             }
         }
-        ~ChumonJissekiReception(){ // ファイナライザー（デストラクタ）
+        //Disposeしたら、すぐはメモリ開放しないが、早く
+
+        // ファイナライザー（デストラクタ）
+        // ガベージコレクタが回収を始めるときに実行される
+        // Dispose忘れ用
+        ~ChumonJissekiReception(){ 
             Dispose();
+            Console.WriteLine("Finalized!!");
         }
 
         public int ChumonJissekiToShiireJisseki() {
@@ -79,6 +89,7 @@ namespace SelfStudy.ChumonJissekiReception {
              */
 
             //注文実績取得
+
             ChumonJisseki? chumonJisseki = _chumonJissekiAccessor.GetaChumonJisseki(shiireSakiId, chumonId);
             if (chumonJisseki == null) {
                 throw new Exception("注文実績エラー");
