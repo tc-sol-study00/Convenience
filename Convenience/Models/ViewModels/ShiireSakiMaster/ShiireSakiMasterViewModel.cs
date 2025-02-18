@@ -41,7 +41,6 @@ namespace Convenience.Models.ViewModels.ShiireSakiMaster {
         /// </summary>
         public ShiireSakiMasterViewModel() {
             // 初期化
-            _context = new ConvenienceContext();
             PostMasterDatas = new List<PostMasterData>();   // データリストを空で初期化
             IsNormal = default;                             // 初期値は null
             Remark = string.Empty;                          // 初期値として空文字列
