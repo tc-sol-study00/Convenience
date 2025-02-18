@@ -47,8 +47,8 @@ namespace Convenience.Models.DataModels {
         [DisplayName("注文数")]
         [Precision(10, 2)]
 
-        [RegularExpression(@"^-?\d+(\.\d+)?$", ErrorMessage = "{0}は数値で入力してください")]
-        [Range(0, 999, ErrorMessage = "{0}は、{1}～{2}の範囲で入力してください")]
+        [RegularExpression(@"^-?\d+(\.\d{1,2})?$", ErrorMessage = "{0}は数値（小数点以下2桁まで）で入力してください")]
+        [Range(0, 999.99, ErrorMessage = "{0}は、{1}～{2}の範囲で入力してください")]
         [Required(ErrorMessage = "{0}は、必須入力項目です")]
         public decimal ChumonSu { get; set; }
 
