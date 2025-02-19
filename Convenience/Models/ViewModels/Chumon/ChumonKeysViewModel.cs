@@ -12,11 +12,12 @@ namespace Convenience.Models.ViewModels.Chumon {
         [Column("shiire_saki_code")]
         [DisplayName("仕入先コード")]
         [MaxLength(10)]
-        [Required]
+        [Required(ErrorMessage = "仕入先は必須です")]
         public string? ShiireSakiId { get; set; }
 
         [Column("chumon_date")]
         [DisplayName("注文日")]
+        [Required(ErrorMessage = "{0}は必須です")]
         public DateOnly ChumonDate { get; set; }
 
         /// <summary>
