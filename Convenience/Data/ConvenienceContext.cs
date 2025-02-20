@@ -26,7 +26,7 @@ namespace Convenience.Data {
         /// <summary>
         /// 注文実績
         /// </summary>
-        public DbSet<Convenience.Models.DataModels.ChumonJisseki> ChumonJisseki { get; set; } = default!;
+        public virtual DbSet<Convenience.Models.DataModels.ChumonJisseki> ChumonJisseki { get; set; } = default!;
         /// <summary>
         /// 仕入実績
         /// </summary>
