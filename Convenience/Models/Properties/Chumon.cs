@@ -101,15 +101,28 @@ namespace Convenience.Models.Properties {
         /// <exception cref="Exception"></exception>
         public async Task<ChumonJisseki> ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
 
+            //引数チェック
+            
+            if (IsNotExistCheck(inShireSakiId)) {
+                throw new ArgumentException("仕入先コード引数エラー");
+            } else if(inChumonDate <= new DateOnly(1, 1, 1)) {
+                throw new ArgumentException("注文日引数エラー");
+            }
+
             //仕入先より注文実績データ（親）を生成する(a)
 
             string chumonId = await ChumonIdHatsuban(inChumonDate) ?? throw new OrderCodeGenerationException("注文コード発番時");
 
-            ChumonJisseki = new ChumonJisseki {
-                ChumonId = chumonId,                                //注文コード発番
-                ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
-                ChumonDate = inChumonDate                           //注文日付
-            };
+            if (IsExistCheck(chumonId)) {
+                ChumonJisseki = new ChumonJisseki {
+                    ChumonId = chumonId,                                //注文コード発番
+                    ShiireSakiId = inShireSakiId,                       //仕入先コード（引数より）
+                    ChumonDate = inChumonDate                           //注文日付
+                };
+            }
+            else {
+                throw new ArgumentException("注文コード発番エラー");
+            }
 
             //注文実績明細データ（子）を作るために仕入マスタを読み込む(b)
 
@@ -123,17 +136,25 @@ namespace Convenience.Models.Properties {
                 throw new NoDataFoundException(nameof(ShiireMaster));
             }
 
-            //(b)のデータから注文実績明細を作成する
+            //商品マスタチェック
+            if (shiireMasters!.Any(sm => IsExistCheck(sm.ShohinMaster))) {
 
-            IMapper mapper = new MapperConfiguration(cfg => {
-                cfg.AddProfile(new ChumonCreateChumonJissekiToDTOAutoMapperProfile());
-            }).CreateMapper();
+                //(b)のデータから注文実績明細を作成する
 
-            ChumonJisseki.ChumonJissekiMeisais  //注文実績明細
-                = mapper.Map<IEnumerable<ShiireMaster>, IList<ChumonJissekiMeisai>>(shiireMasters, opt => {
-                    opt.Items["ChumonId"] = ChumonJisseki.ChumonId;
-                    opt.Items["ShiireSakiId"] = ChumonJisseki.ShiireSakiId;
-                });
+                IMapper mapper = new MapperConfiguration(cfg => {
+                    cfg.AddProfile(new ChumonCreateChumonJissekiToDTOAutoMapperProfile());
+                }).CreateMapper();
+
+                ChumonJisseki.ChumonJissekiMeisais  //注文実績明細
+                    = mapper.Map<IEnumerable<ShiireMaster>, IList<ChumonJissekiMeisai>>(shiireMasters, opt => {
+                        opt.Items["ChumonId"] = ChumonJisseki.ChumonId;
+                        opt.Items["ShiireSakiId"] = ChumonJisseki.ShiireSakiId;
+                    });
+            }
+            else {
+                //商品マスタがないと以降の処理で困るから例外ではじく
+                throw new NoDataFoundException(nameof(ShohinMaster));
+            }
 
             //注文実績（プラス注文実績明細）を戻り値とする
             return ChumonJisseki;
@@ -397,6 +418,9 @@ namespace Convenience.Models.Properties {
             }
 
             return true; // リストでない場合は true を返す（存在している）
+        }
+        static private bool IsNotExistCheck<T>(T? checkdata) {
+            return !IsExistCheck(checkdata); // リストでない場合は true を返す（存在していない）
         }
 
         /// <summary>
