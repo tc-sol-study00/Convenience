@@ -435,4 +435,3 @@ namespace Convenience.Models.Properties {
 
     }
 }
-
