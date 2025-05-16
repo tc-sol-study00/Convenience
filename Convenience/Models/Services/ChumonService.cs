@@ -90,6 +90,7 @@ namespace Convenience.Models.Services {
         /// 注文キービューモデル初期設定
         /// </summary>
         /// <returns>ChumonKeysViewModel 注文キービューモデル</returns>
+
         public async Task<ChumonKeysViewModel> SetChumonKeysViewModel() {
 
             var list = await _chumon.ShiireSakiList(s => s.ShiireSakiId)
@@ -109,12 +110,22 @@ namespace Convenience.Models.Services {
         /// <returns>注文明細ビューモデル</returns>
         public async Task<ChumonViewModel> ChumonSetting(ChumonKeysViewModel inChumonKeysViewModel) {
 
+            /*
+             * cccccccccccccccccccccc
+             * sdfsdfsdf
+             * sdfsadf
+             * 
+             */
+
             //仕入先コード抽出
+            //ffdfgdfgdfg
             string shiireSakiId = inChumonKeysViewModel?.ShiireSakiId??throw new ArgumentException("仕入先がセットされていません");
+            
+            
             //注文日付抽出
             DateOnly chumonDate = 
                 inChumonKeysViewModel.ChumonDate == DateOnly.FromDateTime(new DateTime(1, 1, 1))
-                    ?DateOnly.FromDateTime(DateTime.Now)
+                    ?DateOnly.FromDateTime(DateTime.Now)    //fdgdfgsdfgdfgdfg
                     :inChumonKeysViewModel.ChumonDate;
 
             //注文実績モデル変数定義
@@ -238,7 +249,9 @@ namespace Convenience.Models.Services {
             }
             return (true, ErrDef.DataValid);
         }
+    }
 
+    public partial class ChumonService {
         [GeneratedRegex("^[0-9]{8}-[0-9]{3}$")]
         private static partial Regex ChumonRegex();
     }
