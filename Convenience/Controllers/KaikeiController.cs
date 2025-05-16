@@ -1,11 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
-using Convenience.Models.Services;
 using Convenience.Models.ViewModels.Kaikei;
-using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 
 namespace Convenience.Controllers {
     /// <summary>

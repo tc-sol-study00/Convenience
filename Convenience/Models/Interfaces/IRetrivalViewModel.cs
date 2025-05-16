@@ -1,11 +1,7 @@
-﻿using Convenience.Models.DataModels;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
-using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
 
 
 namespace Convenience.Models.Interfaces {

@@ -1,9 +1,5 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Properties;
-using Convenience.Models.Services;
-using Convenience.Models.ViewModels.Chumon;
-using Convenience.Models.ViewModels.Shiire;
 using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Mvc;
 

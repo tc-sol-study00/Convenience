@@ -1,5 +1,4 @@
 ﻿using Convenience.Models.DataModels;
-using Convenience.Models.Services;
 using Convenience.Models.ViewModels.NaigaiClassMaster;
 using static Convenience.Models.Services.NaigaiClassMasterService;
 

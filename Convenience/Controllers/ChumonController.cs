@@ -44,6 +44,7 @@ namespace Convenience.Controllers {
         /// <returns>remarks参照</returns>
         [HttpGet]
         public async Task<IActionResult> KeyInput(string id) {
+            
             if ((id ?? string.Empty).Equals("Result")) {
                 //③キー入力Post受信結果の初期明細画面表示
                 ChumonViewModel chumonViewModel

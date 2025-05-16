@@ -1,7 +1,4 @@
-﻿using Convenience.Models.DataModels;
-using Convenience.Models.ViewModels.KaikeiJisseki;
-using Convenience.Models.ViewModels.TentoZaiko;
-using System.Linq.Expressions;
+﻿using Convenience.Models.ViewModels.KaikeiJisseki;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>

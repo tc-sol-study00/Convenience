@@ -1,6 +1,5 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
-using Convenience.Models.Services;
 using Convenience.Models.ViewModels.NaigaiClassMaster;
 using Microsoft.AspNetCore.Mvc;
 

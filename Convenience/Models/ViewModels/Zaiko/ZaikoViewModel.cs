@@ -136,7 +136,7 @@ namespace Convenience.Models.ViewModels.Zaiko {
 #pragma warning restore CS8618
 
         /// <summary>
-        /// 倉庫在庫・注文実績明細変策用レコードのリスト（検索結果がここに入る）
+        /// 倉庫在庫・注文実績明細検索用用レコードのリスト（検索結果がここに入る）
         /// </summary>
         public IList<ZaikoListLine> ZaikoListLines { get; set; } = new List<ZaikoListLine>();
 

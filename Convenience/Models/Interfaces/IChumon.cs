@@ -1,5 +1,4 @@
-﻿using Convenience.Data;
-using Convenience.Models.DataModels;
+﻿using Convenience.Models.DataModels;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces {

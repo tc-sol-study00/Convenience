@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq.Expressions;
 
 #pragma warning disable CS8618
 
@@ -14,7 +13,7 @@ namespace Convenience.Models.DataModels {
     /// 主キー：仕入先コード
     /// </Remarks>
     [Table("shiire_saki_master")]
-    public class ShiireSakiMaster : ISelectList {
+    public class ShiireSakiMaster  : ISelectList { 
 
         [Column("shiire_saki_code")]
         [DisplayName("仕入先コード")]

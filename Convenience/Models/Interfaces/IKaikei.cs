@@ -1,5 +1,4 @@
 ﻿using Convenience.Models.DataModels;
-using Convenience.Models.ViewModels.Kaikei;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Interfaces {

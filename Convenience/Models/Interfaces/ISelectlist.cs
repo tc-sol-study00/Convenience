@@ -1,9 +1,4 @@
-﻿using Convenience.Data;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-
-namespace Convenience.Models.Interfaces {
+﻿namespace Convenience.Models.Interfaces {
     /// <summary>
     /// 選択リストアイテムのインターフェース
     /// </summary>

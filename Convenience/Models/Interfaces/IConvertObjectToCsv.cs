@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using CsvHelper;
-using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using CsvHelper.Configuration;
 using System.Text;
 
 namespace Convenience.Models.Interfaces {

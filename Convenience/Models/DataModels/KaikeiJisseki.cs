@@ -1,5 +1,4 @@
 ﻿using Convenience.Models.Interfaces;
-using Convenience.Models.ViewModels.Kaikei;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

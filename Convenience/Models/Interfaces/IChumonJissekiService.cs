@@ -1,8 +1,4 @@
-﻿using Convenience.Models.DataModels;
-using Convenience.Models.ViewModels.ChumonJisseki;
-using Convenience.Models.ViewModels.TentoZaiko;
-using System.Linq.Expressions;
-using static Convenience.Models.ViewModels.ChumonJisseki.ChumonJissekiViewModel.DataAreaClass;
+﻿using Convenience.Models.ViewModels.ChumonJisseki;
 
 namespace Convenience.Models.Interfaces {
     /// <summary>
