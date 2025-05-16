@@ -6,18 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
     /// <summary>
-    /// 注文コントローラ
+    /// 注文３コントローラ（PRG対応を抜いたやつ）
     /// </summary>
     public class Chumon3Controller : Controller {
         /// <summary>
         /// DBコンテキスト
         /// </summary>
         private readonly ConvenienceContext _context;
-
-        /// <summary>
-        /// サービスクラス引継ぎ用キーワード
-        /// </summary>
-        private static readonly string IndexName = "ChumonViewModel";
 
         /// <summary>
         /// 注文サービスクラス（ＤＩ用）
@@ -32,7 +27,7 @@ namespace Convenience.Controllers {
         public Chumon3Controller(ConvenienceContext context, IChumonService chumonService) {
             _context = context;
             _chumonService = chumonService;
-            //chumonService = new ChumonService(_context);
+            //_chumonService = new ChumonService();
         }
 
         /// <summary>
@@ -86,7 +81,7 @@ namespace Convenience.Controllers {
             if (!ModelState.IsValid) {
                 throw new PostDataInValidException("注文明細画面");
             };
-            //ModelState.Clear();
+
             if (inChumonViewModel.ChumonJisseki.ChumonJissekiMeisais == null) {
                 throw new PostDataInValidException("注文明細画面");
             }
