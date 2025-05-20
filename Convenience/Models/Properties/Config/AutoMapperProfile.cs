@@ -177,7 +177,7 @@ namespace Convenience.Models.Properties.Config {
     /// </summary>
     public class ChumonChumonJissekiToDTOAutoMapperProfile : Profile {
 
-        public ChumonChumonJissekiToDTOAutoMapperProfile() {
+        public ChumonChumonJissekiToDTOAutoMapperProfile(ConvenienceContext _context) {
             CreateMap<ChumonJisseki, ChumonJisseki>()
             .EqualityComparison((odto, o) => odto.ChumonId == o.ChumonId);
 
@@ -191,7 +191,10 @@ namespace Convenience.Models.Properties.Config {
             .BeforeMap((src, dest) => src.LastChumonSu = dest.ChumonSu)
             .ForMember(dest => dest.ChumonZan, opt => opt.MapFrom(src => src.ChumonZan + src.ChumonSu - src.LastChumonSu))
             .ForMember(dest => dest.ChumonJisseki, opt => opt.Ignore())
-            .ForMember(dest => dest.ShiireMaster, opt => opt.Ignore());
+            .ForMember(dest => dest.ShiireMaster, opt => opt.Ignore())
+            .AfterMap((src, dest) => {
+                _context.Entry(dest).Property(v => v.Version).OriginalValue = src.Version;
+            });
         }
     }
     /// <summary>

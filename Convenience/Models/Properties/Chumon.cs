@@ -5,6 +5,7 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
+using NLog.Targets;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
@@ -249,11 +250,11 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
-        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
+        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki,ConvenienceContext context) {
             //引数で渡された注文実績データを現プロパティに反映する
             IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
-                cfg.AddProfile(new ChumonChumonJissekiToDTOAutoMapperProfile());
+                cfg.AddProfile(new ChumonChumonJissekiToDTOAutoMapperProfile(context));
             }).CreateMapper();
 
             mapper!.Map<ChumonJisseki, ChumonJisseki>(postedChumonJisseki, existedChumonJisseki);
@@ -270,7 +271,7 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
-        private static ChumonJisseki ChumonUpdateWithHandMade(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
+        private static ChumonJisseki ChumonUpdateWithHandMade(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki, ConvenienceContext _context) {
 
             _ = postedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績Postデータエラー");
             _ = existedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績ベースデータエラー");
@@ -285,6 +286,9 @@ namespace Convenience.Models.Properties {
                 decimal lastChumonSu = target.ChumonSu;
                 target.ChumonZan += posted.ChumonSu - target.ChumonSu;
                 target.ChumonSu = posted.ChumonSu;
+                //楽天的排他制御用
+                target.Version = posted.Version;
+                _context.Entry(target).Property(v => v.Version).OriginalValue = posted.Version;
             }
             return existedChumonJisseki;
         }
@@ -299,7 +303,7 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
-        private static ChumonJisseki ChumonUpdateWithIndex(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki) {
+        private static ChumonJisseki ChumonUpdateWithIndex(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki, ConvenienceContext _context) {
             IList<ChumonJissekiMeisai> postedMeisais =
                 postedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績Postデータエラー");
             IList<ChumonJissekiMeisai> existedMeisais =
@@ -320,6 +324,10 @@ namespace Convenience.Models.Properties {
                 decimal lastChumonSu = dest.ChumonSu;
                 dest.ChumonSu = src.ChumonSu;
                 dest.ChumonZan = src.ChumonZan + src.ChumonSu - lastChumonSu;
+
+                //楽天的排他制御用
+                dest.Version = src.Version;
+                _context.Entry(dest).Property(v => v.Version).OriginalValue = src.Version;
             }
 
             return existedChumonJisseki;
@@ -331,9 +339,9 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">Postデータ</param>
         /// <param name="existedChumonJisseki">DTO</param>
         /// <returns></returns>
-        private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki);
+        private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki, ConvenienceContext context);
         private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
-        //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;
+        //rivate readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;
         //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithIndex;
 
         /// <summary>
@@ -358,7 +366,7 @@ namespace Convenience.Models.Properties {
                 //注文実績がある場合
                 //AutoMapper利用か、ハンドメイドなのか選択されている
                 var a = _context.ChangeTracker.Entries();
-                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki!);
+                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki!,_context);
                 var b = _context.ChangeTracker.Entries();
                 ChumonJisseki = existedChumonJisseki;
             }
