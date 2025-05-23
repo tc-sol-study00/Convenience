@@ -10,15 +10,21 @@ using System.Data;
 using System.Linq.Expressions;
 
 
-namespace Debug {
+namespace Debug 
+    {
     public class Program {
 
+        private readonly ListTypeStudy listTypeStudy;
         static async Task Main(string[] args) {
-           
+
             //await new Study20250108().Study01();
             //new Study20250109().Valuestudy();
-            new Study20250123withJoin().LINQStudy();
+            //new Study20250123withJoin().LINQStudy();
 
+            ListTypeStudy listTypeStudy = new ListTypeStudy();
+            
+            IEnumerable<ChumonJissekiMeisai> data= listTypeStudy.QueryChumonJissekiMeisai();
+            IList<DistictChumon> distictChumons=listTypeStudy.SummaryGroupByChumonId(data);
         }
 
 
