@@ -6,11 +6,11 @@ using System.ComponentModel;
 namespace Convenience.Models.ViewModels.TentoHaraidashi {
 
     /// <summary>
-    /// 注文明細ビューモデル
+    /// 店頭払出ビューモデル
     /// </summary>
     public class TentoHaraidashiViewModel {
         /// <summary>
-        /// 店頭払出実績
+        /// 店頭払出ビュー・モデル
         /// </summary>
         /// 
         [DisplayName("店頭払出日時＋コード")]
