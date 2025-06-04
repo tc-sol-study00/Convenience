@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ShiireMaster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -38,6 +39,7 @@ namespace Convenience.Controllers {
         /// <param name="id">識別子（オプションで使用可能）</param>
         /// <returns>ビューとビューモデル</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index() {
             // サービスクラスを利用して新しいビューモデルを生成
             ShiireMasterViewModel viewModel = await shiireMasterService.MakeViewModel();
@@ -72,6 +74,7 @@ namespace Convenience.Controllers {
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> Result() {
             ShiireMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(
                TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
@@ -85,6 +88,7 @@ namespace Convenience.Controllers {
         /// <param name="index">挿入する位置のインデックス</param>
         /// <returns>更新されたビューとビューモデル</returns>
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> InsertRow(int index) {
             // TempDataからビューモデルを復元
             ShiireMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShiireMasterViewModel>(

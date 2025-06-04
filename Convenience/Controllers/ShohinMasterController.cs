@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.ShohinMaster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -38,6 +39,7 @@ namespace Convenience.Controllers {
         /// <param name="id">識別子（必要に応じて使用）</param>
         /// <returns>ビューとビューモデル</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index() {
             // サービスクラスから新しいビューモデルを作成
             ShohinMasterViewModel viewModel = await shohinMasterService.MakeViewModel();
@@ -72,6 +74,7 @@ namespace Convenience.Controllers {
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> Result() {
             ShohinMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShohinMasterViewModel>(
                TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
@@ -85,6 +88,7 @@ namespace Convenience.Controllers {
         /// <param name="index">挿入する行のインデックス</param>
         /// <returns>更新されたビューとビューモデル</returns>
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> InsertRow(int index) {
             // TempDataからビューモデルを復元
             ShohinMasterViewModel viewModel = ISharedTools.ConvertFromSerial<ShohinMasterViewModel>(

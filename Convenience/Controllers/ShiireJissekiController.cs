@@ -2,6 +2,7 @@
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.ShiireJisseki;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.ViewModels.ShiireJisseki.ShiireJissekiViewModel.DataAreaClass;
 
@@ -58,6 +59,7 @@ namespace Convenience.Controllers {
         /// <returns>仕入実績ビューモデル（初期表示）</returns>
         /// 
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> Index() {
             ViewBag.HandlingFlg = "FirstDisplay";
             //最初のカーソル位置
@@ -85,6 +87,7 @@ namespace Convenience.Controllers {
         /// <param name="page">ページ番号</param>
         /// <returns>仕入実績ビューモデル</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Result(int page) {
             if (TempData.Peek(IndexName) is string tempDataStr) {
                 ShiireJissekiViewModel.KeywordAreaClass keyArea = ISharedTools.ConvertFromSerial<ShiireJissekiViewModel.KeywordAreaClass>(tempDataStr);
@@ -132,6 +135,7 @@ namespace Convenience.Controllers {
         /// <returns>Downloadファイル</returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DownLoad() {
             shiireJissekiViewModel.KeywordArea
                 = ISharedTools.ConvertFromSerial<ShiireJissekiViewModel.KeywordAreaClass>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));

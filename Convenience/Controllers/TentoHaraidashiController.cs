@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.TentoHaraidashi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -48,6 +49,7 @@ namespace Convenience.Controllers {
         /// 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> KeyInput(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "FirstDisplay";
@@ -104,6 +106,7 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         public IActionResult TentoHaraidashi(string id) {
 
             if ((id ?? string.Empty).Equals("Result")) {

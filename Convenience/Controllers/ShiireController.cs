@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.Shiire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -36,6 +37,7 @@ namespace Convenience.Controllers {
         /// <returns>ShiireKeysViewModel 仕入キービューモデル</returns>
         /// 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> ShiireKeyInput(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 //③仕入画面キー入力Post後の明細入力画面初期表示
@@ -91,6 +93,7 @@ namespace Convenience.Controllers {
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         public IActionResult Shiire(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "SecondDisplay";

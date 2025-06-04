@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.NaigaiClassMaster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -38,6 +39,7 @@ namespace Convenience.Controllers {
         /// <param name="id">任意の識別子（必要に応じて使用）</param>
         /// <returns>ビューとビューモデルを返す</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index() {
             NaigaiClassMasterViewModel viewModel = await naigaiClassMasterService.MakeViewModel(); // サービスで新しいビューモデルを生成
             TempData[IndexName] = ISharedTools.ConvertToSerial(viewModel); // ビューモデルをシリアル化してTempDataに保存
@@ -66,6 +68,7 @@ namespace Convenience.Controllers {
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> Result() {
             NaigaiClassMasterViewModel viewModel = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(
                TempData.Peek(IndexName)?.ToString() ?? throw new Exception("TempDataが存在しません")
@@ -79,6 +82,7 @@ namespace Convenience.Controllers {
         /// <param name="index">挿入する位置のインデックス</param>
         /// <returns>更新されたビューモデル</returns>
         [HttpGet]
+        [Authorize]
         public Task<IActionResult> InsertRow(int index) {
             // TempDataからビューモデルを復元
             NaigaiClassMasterViewModel viewModel = ISharedTools.ConvertFromSerial<NaigaiClassMasterViewModel>(

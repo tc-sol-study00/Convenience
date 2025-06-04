@@ -1,6 +1,7 @@
 ﻿using Convenience.Models.Interfaces;
 using Convenience.Models.Properties.Config;
 using Convenience.Models.ViewModels.Zaiko;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Convenience.Models.ViewModels.Zaiko.ZaikoViewModel;
 
@@ -33,6 +34,7 @@ namespace Convenience.Controllers {
             this._convertObjectToCsv = convertObjectToCsv;
         }
 
+        [Authorize]
         public IActionResult Index() {
             ZaikoViewModel zaikoViewModel = new();
             return View(zaikoViewModel);
@@ -53,6 +55,7 @@ namespace Convenience.Controllers {
             return View(zaikoViewModel);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DownLoad() {
             ZaikoViewModel viewmodel
                 = ISharedTools.ConvertFromSerial<ZaikoViewModel>(TempData.Peek(IndexName)?.ToString() ?? throw new Exception("tempdataなし"));

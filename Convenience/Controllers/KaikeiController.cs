@@ -1,6 +1,7 @@
 ﻿using Convenience.Data;
 using Convenience.Models.Interfaces;
 using Convenience.Models.ViewModels.Kaikei;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -45,6 +46,7 @@ namespace Convenience.Controllers {
         /// 商品注文１枚目の初期表示処理
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public async Task<IActionResult> KeyInput() {
 
             /*
@@ -133,6 +135,7 @@ namespace Convenience.Controllers {
         /// <param name="id">getされるデータ（どこから来たかキーワード）</param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         public IActionResult Result(string id) {
 
             if (id.CompareTo(TempData["id"]?.ToString())<0) {
