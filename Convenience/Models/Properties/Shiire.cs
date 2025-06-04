@@ -222,7 +222,6 @@ namespace Convenience.Models.Properties {
             //現在時間
             DateTime nowTime = DateTime.Now;
 
-
             //注文明細 to 仕入実績（Ａ）　複数のレコード
 
             //AutoMapperの処理
