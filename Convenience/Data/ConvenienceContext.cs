@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Convenience.Data {
     /// <summary>
     /// DBコンテキスト
     /// </summary>
-    public class ConvenienceContext : DbContext {
+    public class ConvenienceContext : IdentityDbContext {
         /// <summary>
         /// コンストラクタ
         /// </summary>

@@ -2,6 +2,7 @@
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties;
 using Convenience.Models.ViewModels.Chumon;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Convenience.Controllers {
@@ -43,6 +44,7 @@ namespace Convenience.Controllers {
         /// </remarks>
         /// <returns>remarks参照</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> KeyInput(string id) {
             
             if ((id ?? string.Empty).Equals("Result")) {
@@ -116,6 +118,7 @@ namespace Convenience.Controllers {
         /// <param name="inChumonViewModel">初期表示する注文明細ビューデータ</param>
         /// <returns>商品注文２枚目＋Post後の処理結果</returns>
         [HttpGet]
+        [Authorize]
         public IActionResult ChumonMeisai(string id) {
             if ((id ?? string.Empty).Equals("Result")) {
                 ViewBag.HandlingFlg = "SecondDisplay";

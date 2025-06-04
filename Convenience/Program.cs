@@ -6,10 +6,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using NLog;
 using NLog.Web;
+using Microsoft.AspNetCore.Identity;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ConvenienceContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConvenienceContext") ?? throw new InvalidOperationException("Connection string 'ConvenienceContext' not found.")));
+
+//
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+//認証機能
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ConvenienceContext>();
 
 // Add services to the container.
 //builder.Services.AddControllersWithViews();
@@ -47,8 +55,7 @@ builder.Services.AddScoped<IConvertObjectToCsv, ConvertObjectToCsv>();
 //ServiceでTempDataを使うためのＤＩ
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-//builder.Services.AddRazorPages()
-//                    .AddSessionStateTempDataProvider();
+builder.Services.AddRazorPages();
 
 builder.Services.AddSession();
 
@@ -78,5 +85,8 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 app.MapControllerRoute(
 name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//認証画面用
+app.MapRazorPages();
 
 app.Run();
