@@ -69,5 +69,8 @@ namespace Convenience.Models.DataModels {
         [ForeignKey(nameof(TentoHaraidashiId))]
         public virtual TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
 
+        [Timestamp]
+        public uint Version { get; set; }
+
     }
 }

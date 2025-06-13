@@ -47,5 +47,8 @@ namespace Convenience.Models.DataModels {
 
         [ForeignKey(nameof(ShohinId))]
         public virtual ShohinMaster? ShohinMaster { get; set; }
+
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }

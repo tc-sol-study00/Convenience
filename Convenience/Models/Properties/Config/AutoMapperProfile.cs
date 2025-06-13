@@ -88,7 +88,7 @@ namespace Convenience.Models.Properties.Config {
     /// （店頭払出クラス用）PostデータをDTOに反映
     /// </summary>
     public class TentoHaraidashiPostToDTOAutoMapperProfile : Profile {
-        public TentoHaraidashiPostToDTOAutoMapperProfile() {
+        public TentoHaraidashiPostToDTOAutoMapperProfile(ConvenienceContext _context) {
 
             decimal shiirePcsPerUnit = default;
             decimal defHaraidashiCaseSu = default;
@@ -126,7 +126,17 @@ namespace Convenience.Models.Properties.Config {
             .ForPath(dest => dest.ShiireMaster!.ShohinMaster!.TentoZaiko!.ZaikoSu,
                 opt => opt.MapFrom(src => beforeTentoZaikoSu + defHaraidashiCaseSu * shiirePcsPerUnit)
              )
-            ;
+            .AfterMap((src, dest) => {
+                _context.Entry(dest).Property(v => v.Version).OriginalValue = src.Version;
+                /*
+                _context.Entry(dest.ShiireMaster!.SokoZaiko!).Property(v => v.Version).OriginalValue 
+                                                                = src.ShiireMaster!.SokoZaiko!.Version;
+                _context.Entry(dest.ShiireMaster!.ShohinMaster!.TentoZaiko!).Property(v => v.Version).OriginalValue
+                                                                = src.ShiireMaster!.ShohinMaster!.TentoZaiko!.Version;
+                */
+                }
+
+            );
         }
     }
     /// <summary>

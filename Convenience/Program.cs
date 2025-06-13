@@ -21,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 // Add services to the container.
 //builder.Services.AddControllersWithViews();
+//TempDataでは必須
 builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
 
 // NLog: Setup NLog for Dependency injection

@@ -6,6 +6,7 @@ using Convenience.Models.Interfaces;
 using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static Convenience.Models.Properties.Config.CSVMapping;
 
 namespace Convenience.Models.Properties {
     /// <summary>
@@ -23,6 +24,16 @@ namespace Convenience.Models.Properties {
         /// <para>店頭払出ヘッダー</para>
         /// </summary>
         public TentoHaraidashiHeader? TentoHaraidashiHeader { get; set; }
+
+        /// <summary>
+        /// 倉庫在庫プロパティ
+        /// </summary>
+        public IList<SokoZaiko> SokoZaikos { get; set; }
+
+        /// <summary>
+        /// 排他制御用カウンタ
+        /// </summary>
+        private int reTryCount = 0;
 
         /// <summary>
         /// コンストラクタ
@@ -183,14 +194,13 @@ namespace Convenience.Models.Properties {
 
             IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers(); // コレクションマッパーを追加
-                cfg.AddProfile(new TentoHaraidashiPostToDTOAutoMapperProfile());
+                cfg.AddProfile(new TentoHaraidashiPostToDTOAutoMapperProfile(_context));
             }).CreateMapper();
 
             mapper.Map(argTentoHaraidashiJissekis, settingTentoHaraidashiJissekis);
 
             return this.TentoHaraidashiHeader.TentoHaraidashiJissekis = settingTentoHaraidashiJissekis;
         }
-
 
         /// <summary>
         /// 店頭払出ヘッダーのリストを条件より作成
@@ -199,6 +209,66 @@ namespace Convenience.Models.Properties {
         /// <returns>IQueryable<TentoHaraidashiHeader> 店頭払出ヘッダーリスト（遅延実行）</returns>
         public IQueryable<TentoHaraidashiHeader> TentoHaraidashiHeaderList(Expression<Func<TentoHaraidashiHeader, bool>> whereExpression) =>
         whereExpression is null ? _context.TentoHaraidashiHearder : _context.TentoHaraidashiHearder.Where(whereExpression);
+
+
+        /// <summary>
+        /// SaveChangesを発行
+        /// もし、倉庫在庫で排他制御エラーが発生したら、falseを返却する
+        /// </summary>
+        /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
+        /// 
+        public async Task<(bool, int)> TentoHaraidashiSaveChanges() {
+
+            //初期化
+            bool IsNeedContinueToDBUpdate;
+            int entities = 0;                                 //SaveChangeしたエンティティ数
+            const int reTryMaxCount = 10;                   //リトライする回数
+            const int waitTime = 1000;    //1000m秒=1秒     //排他エラー時の再リトライ前の待機時間（単位ミリ秒）
+
+            try {
+                //ＤＢ保管処理
+
+                //DB更新見込みのエンティティ数を求める→1以上だとなんらか更新されたという意味
+                entities = _context.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                .Select(e => e.Entity).Count();
+
+                //DB更新
+                await _context.SaveChangesAsync();
+
+                IsNeedContinueToDBUpdate = false;
+
+            }
+            //排他制御エラーの場合
+            catch (DbUpdateConcurrencyException ex) {
+                if (ex.Entries.Count() == 1 && ex.Entries.First().Entity is SokoZaiko) {
+                    reTryCount++;
+                    if (reTryCount >= reTryMaxCount) {
+                        reTryCount = 0;
+                        throw new DbUpdateTimeOutException("倉庫在庫");  //10回トライしてダメなら例外スロー
+                    }
+
+                    Thread.Sleep(waitTime); //１秒待つ
+                                            
+                    //キャッシュクリア
+
+                    var entries = _context.ChangeTracker.Entries().ToList();
+                    foreach (var entry in entries) {
+                        entry.State = EntityState.Detached;
+                    }
+
+                    IsNeedContinueToDBUpdate = true;
+                }
+                else {
+                    //その他排他制御の場合は例外をスローする
+                    throw;
+                }
+            }
+
+            return (IsNeedContinueToDBUpdate, entities);
+        }
+
+
 
     }
 }

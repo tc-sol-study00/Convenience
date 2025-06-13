@@ -48,5 +48,12 @@ namespace Convenience.Models.Interfaces {
         /// <param name="whereExpression">条件式</param>
         /// <returns>IQueryable<TentoHaraidashiHeader> 店頭払出ヘッダーリスト（遅延実行）</returns>
         public IQueryable<TentoHaraidashiHeader> TentoHaraidashiHeaderList(Expression<Func<TentoHaraidashiHeader, bool>> whereExpression);
+
+        /// <summary>
+        /// SaveChangesを発行
+        /// もし、倉庫在庫で排他制御エラーが発生したら、falseを返却する
+        /// </summary>
+        /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
+        public Task<(bool, int)> TentoHaraidashiSaveChanges();
     }
 }

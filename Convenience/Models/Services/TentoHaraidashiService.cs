@@ -7,6 +7,7 @@ using Convenience.Models.ViewModels.TentoHaraidashi;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using static Convenience.Models.Properties.Config.CSVMapping;
 using static Convenience.Models.Properties.Config.Message;
 
 namespace Convenience.Models.Services {
@@ -80,8 +81,8 @@ namespace Convenience.Models.Services {
                 ?? throw new InvalidDataException("店頭払出日時コードがセットされていません");
 
             //店頭払出日時            
-            DateTime postedHaraidashiDateTime = 
-                haraidashiDateTimeAndIdMatching.HaraidashiDateTime > DateTime.MinValue ? 
+            DateTime postedHaraidashiDateTime =
+                haraidashiDateTimeAndIdMatching.HaraidashiDateTime > DateTime.MinValue ?
                 haraidashiDateTimeAndIdMatching.HaraidashiDateTime : throw new InvalidDataException("払出日時がセットされていません");
             //店頭払出コード(新規の時はnull)
             string? postedTentoHaraidashiId = haraidashiDateTimeAndIdMatching.TentoHaraidashiId;
@@ -151,34 +152,45 @@ namespace Convenience.Models.Services {
                 .Min(x => x.TentoHaraidashiId)
                 ?? throw new NoDataFoundException("店頭払出コード");
 
-            /*
-             * 店頭払出ヘッダ＋実績問い合わせ(Postデータ更新用ベース）
-             */
-            TentoHaraidashiHeader? settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
+            TentoHaraidashiHeader? settingTentoHaraidashiHearder;
+            bool IsNeedContinueToDBUpdate;
+            int entities;
 
-            /*
-             * 店頭払出ヘッダ＋実績作成(Postデータ更新用ベース）
-             */
+            do { //IsNeedContinueToDBUpdate=trueの時は排他制御エラーなので、再チャレンジ 
+                /*
+                 * 店頭払出ヘッダ＋実績問い合わせ(Postデータ更新用ベース）
+                 */
+                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiToiawase(tentoHaraidashiId);
 
-            if (ISharedTools.IsNotExistCheck(settingTentoHaraidashiHearder)) {
-                settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
-            }
-            /*
-             * Postデータから店頭払出実績を抽出する
-             */
+                /*
+                 * 店頭払出ヘッダ＋実績作成(Postデータ更新用ベース）
+                 */
 
-            List<TentoHaraidashiJisseki> postedTentoHaraidashiJissekis
-                = argTentoHaraidashiViewModel.ShohinMasters.SelectMany(sm => sm.ShiireMasters!.SelectMany(sim => sim.TentoHaraidashiJissekis!)).ToList();
+                if (ISharedTools.IsNotExistCheck(settingTentoHaraidashiHearder)) {
+                    settingTentoHaraidashiHearder = await TentoHaraidashi.TentoHaraidashiSakusei(postedHaraidashiDateTime);
+                }
+                /*
+                 * Postデータから店頭払出実績を抽出する
+                 */
 
-            /*
-             * Postデータを上書きしてＤＢ更新準備をする
-             */
-            settingTentoHaraidashiHearder!.TentoHaraidashiJissekis= TentoHaraidashi.TentoHaraidashiUpdate(postedTentoHaraidashiJissekis);
+                List<TentoHaraidashiJisseki> postedTentoHaraidashiJissekis
+                    = argTentoHaraidashiViewModel.ShohinMasters.SelectMany(sm => sm.ShiireMasters!.SelectMany(sim => sim.TentoHaraidashiJissekis!)).ToList();
+
+
+                /*
+                 * Postデータを上書きしてＤＢ更新準備をする
+                 */
+                settingTentoHaraidashiHearder!.TentoHaraidashiJissekis = TentoHaraidashi.TentoHaraidashiUpdate(postedTentoHaraidashiJissekis);
+
+                // 仕入実績・注文残・倉庫在庫を更新する
+                (IsNeedContinueToDBUpdate, entities) = await TentoHaraidashi.TentoHaraidashiSaveChanges();
+
+            } while (IsNeedContinueToDBUpdate);
 
             /*
              * 更新エンティティ数を求める
              */
-            int entities = _context.ChangeTracker.Entries()
+            entities = _context.ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
             .Select(e => e.Entity).Count();
 
@@ -208,12 +220,12 @@ namespace Convenience.Models.Services {
              */
             (bool IsValid, ErrDef errCd) = (true, ErrDef.NormalUpdate);
 
-            return this.TentoHaraidashiViewModel = new () {
+            return this.TentoHaraidashiViewModel = new() {
                 HaraidashiDateAndId = argTentoHaraidashiViewModel.HaraidashiDateAndId,
                 ShohinMasters = shohinmasters,
                 TentoHaraidashiIdList = selectListItems,
                 IsNormal = IsValid,
-                Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText??string.Empty : null
+                Remark = errCd == ErrDef.DataValid && entities > 0 || errCd != ErrDef.DataValid ? new Message().SetMessage(ErrDef.NormalUpdate)?.MessageText ?? string.Empty : null
             };
         }
         /// <summary>
