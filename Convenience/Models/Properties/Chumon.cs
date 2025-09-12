@@ -9,11 +9,26 @@ using NLog.Targets;
 using System.Linq.Expressions;
 
 namespace Convenience.Models.Properties {
-
     /// <summary>
     /// 注文クラス
     /// </summary>
-    public class Chumon : IChumon,ISharedTools,IDisposable {
+    public class Chumon : IChumon, ISharedTools, IDisposable {
+        /// <summary>
+        /// マッピング処理をどの形式でやるか
+        /// </summary>
+        private enum EnumChoiseProcess {
+            AutoMapper, //Automapper版
+            HandMade,   //手書き版
+            Index       //手書き版でも精度が高い版
+        }
+        /// <summary>
+        /// マッピング処理の選別をセット
+        /// </summary>
+        /// <remarks>
+        /// 実行前に選択すること
+        /// </remarks>
+        private static readonly EnumChoiseProcess ChoiseProcess
+            = EnumChoiseProcess.AutoMapper;
 
         /// <summary>
         /// 注文実績プロパティ
@@ -28,7 +43,7 @@ namespace Convenience.Models.Properties {
         /// <summary>
         /// 自分でDbcontextを作ったかどうか
         /// </summary>
-        private readonly bool _selfCreateContextFlg=false;
+        private readonly bool _selfCreateContextFlg = false;
 
         /// <summary>
         /// Disposeを一回でも実施されたかどうか
@@ -98,10 +113,11 @@ namespace Convenience.Models.Properties {
         public async Task<ChumonJisseki> ChumonSakusei(string inShireSakiId, DateOnly inChumonDate) {
 
             //引数チェック
-            
+
             if (IsNotExistCheck(inShireSakiId)) {
                 throw new ArgumentException("仕入先コード引数エラー");
-            } else if(inChumonDate <= new DateOnly(1, 1, 1)) {
+            }
+            else if (inChumonDate <= new DateOnly(1, 1, 1)) {
                 throw new ArgumentException("注文日引数エラー");
             }
 
@@ -129,27 +145,53 @@ namespace Convenience.Models.Properties {
                 .OrderBy(s => s.ShiirePrdId).ToListAsync();
 
             if (!shiireMasters.Any()) {   //仕入マスタがない場合は例外
+
                 throw new NoDataFoundException(nameof(ShiireMaster));
             }
 
             //商品マスタチェック
-            if (shiireMasters!.Any(sm => IsExistCheck(sm.ShohinMaster))) {
-
-                //(b)のデータから注文実績明細を作成する
-
-                IMapper mapper = new MapperConfiguration(cfg => {
-                    cfg.AddProfile(new ChumonCreateChumonJissekiToDTOAutoMapperProfile());
-                }).CreateMapper();
-
-                ChumonJisseki.ChumonJissekiMeisais  //注文実績明細
-                    = mapper.Map<IEnumerable<ShiireMaster>, IList<ChumonJissekiMeisai>>(shiireMasters, opt => {
-                        opt.Items["ChumonId"] = ChumonJisseki.ChumonId;
-                        opt.Items["ShiireSakiId"] = ChumonJisseki.ShiireSakiId;
-                    });
-            }
-            else {
+            if (shiireMasters!.Any(sm => IsNotExistCheck(sm.ShohinMaster))) {
                 //商品マスタがないと以降の処理で困るから例外ではじく
                 throw new NoDataFoundException(nameof(ShohinMaster));
+            }
+
+            //(b)のデータから注文実績明細を作成する
+
+            switch (ChoiseProcess) {
+
+                case EnumChoiseProcess.AutoMapper:
+
+                    IMapper mapper = new MapperConfiguration(cfg => {
+                        cfg.AddProfile(new ChumonCreateChumonJissekiToDTOAutoMapperProfile());
+                    }).CreateMapper();
+
+                    ChumonJisseki.ChumonJissekiMeisais  //注文実績明細
+                        = mapper.Map<IEnumerable<ShiireMaster>, IList<ChumonJissekiMeisai>>(shiireMasters, opt => {
+                            opt.Items["ChumonId"] = ChumonJisseki.ChumonId;
+                            opt.Items["ShiireSakiId"] = ChumonJisseki.ShiireSakiId;
+                        });
+                    break;
+
+                case EnumChoiseProcess.HandMade or EnumChoiseProcess.Index:
+
+                    ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
+
+                    foreach (ShiireMaster aShiireMaster in shiireMasters){
+                        ChumonJissekiMeisai chumonJissekiMeisai = new ChumonJissekiMeisai() {
+                            ChumonId = ChumonJisseki.ChumonId,
+                            ShiireSakiId = ChumonJisseki.ShiireSakiId,
+                            ShiirePrdId = aShiireMaster.ShiirePrdId,
+                            ShohinId = aShiireMaster.ShohinId,
+                            ChumonSu = 0,
+                            ChumonZan = 0,
+                            ShiireMaster = aShiireMaster //仕入マスタに対するリレーション情報のセット
+                        };
+                        ChumonJisseki.ChumonJissekiMeisais.Add(chumonJissekiMeisai);
+                    }
+                    break;
+
+                default:
+                    throw new InvalidOperationException("不正な処理が指定されました");
             }
 
             //注文実績（プラス注文実績明細）を戻り値とする
@@ -250,7 +292,7 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">注文実績＋明細のPostデータ</param>
         /// <param name="existedChumonJisseki">注文実績＋明細のDBデータ</param>
         /// <returns>上乗せされた注文実績＋明細データ</returns>
-        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki,ConvenienceContext context) {
+        private static ChumonJisseki ChumonUpdateWithAutoMapper(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki, ConvenienceContext context) {
             //引数で渡された注文実績データを現プロパティに反映する
             IMapper mapper = new MapperConfiguration(cfg => {
                 cfg.AddCollectionMappers();
@@ -340,9 +382,12 @@ namespace Convenience.Models.Properties {
         /// <param name="existedChumonJisseki">DTO</param>
         /// <returns></returns>
         private delegate ChumonJisseki DelegateOverrideProc(ChumonJisseki postedChumonJisseki, ChumonJisseki existedChumonJisseki, ConvenienceContext context);
-        private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithAutoMapper;
-        //rivate readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithHandMade;
-        //private readonly DelegateOverrideProc OverrideProc = ChumonUpdateWithIndex;
+        private readonly DelegateOverrideProc OverrideProc = ChoiseProcess switch {
+            EnumChoiseProcess.AutoMapper => ChumonUpdateWithAutoMapper,
+            EnumChoiseProcess.HandMade => ChumonUpdateWithHandMade,
+            EnumChoiseProcess.Index => ChumonUpdateWithIndex,
+            _ => throw new InvalidOperationException("不正な処理が指定されました")
+        };
 
         /// <summary>
         /// 注文実績＋注文明細更新
@@ -357,7 +402,7 @@ namespace Convenience.Models.Properties {
         /// <param name="postedChumonJisseki">postされた注文実績</param
         /// <param name="existedChumonJisseki">DBに登録された注文実績(null可)</param>
         /// <returns>postされた注文実績を上書きされた注文実績</returns>
-        public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki, ChumonJisseki? existedChumonJisseki=null) {
+        public async Task<ChumonJisseki> ChumonUpdate(ChumonJisseki postedChumonJisseki, ChumonJisseki? existedChumonJisseki = null) {
 
             _ = postedChumonJisseki?.ChumonJissekiMeisais ?? throw new ArgumentException("注文実績Postデータエラー");
             _ = postedChumonJisseki?.ChumonId ?? throw new ArgumentException("注文実績Postデータの注文コードエラー");
@@ -366,7 +411,7 @@ namespace Convenience.Models.Properties {
                 //注文実績がある場合
                 //AutoMapper利用か、ハンドメイドなのか選択されている
                 var a = _context.ChangeTracker.Entries();
-                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki!,_context);
+                existedChumonJisseki = OverrideProc(postedChumonJisseki, existedChumonJisseki!, _context);
                 var b = _context.ChangeTracker.Entries();
                 ChumonJisseki = existedChumonJisseki;
             }
@@ -400,7 +445,6 @@ namespace Convenience.Models.Properties {
             try {
                 //DB更新
                 await _context.SaveChangesAsync();
-
             }
             catch (DbUpdateConcurrencyException ex) {
                 //排他制御エラー
@@ -433,7 +477,7 @@ namespace Convenience.Models.Properties {
         //public IQueryable<ShiireSakiMaster> ShiireSakiListold<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) =>
         //        IsExistCheck(orderExpression) ? _context.ShiireSakiMaster.OrderBy(orderExpression) : _context.ShiireSakiMaster;
 
-        public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) => 
+        public IQueryable<ShiireSakiMaster> ShiireSakiList<T>(Expression<Func<ShiireSakiMaster, T>> orderExpression) =>
             new SelectList(_context).GenerateList(orderExpression);
 
     }
