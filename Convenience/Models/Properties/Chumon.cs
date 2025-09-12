@@ -28,7 +28,7 @@ namespace Convenience.Models.Properties {
         /// 実行前に選択すること
         /// </remarks>
         private static readonly EnumChoiseProcess ChoiseProcess
-            = EnumChoiseProcess.AutoMapper;
+            = EnumChoiseProcess.HandMade;
 
         /// <summary>
         /// 注文実績プロパティ
@@ -176,7 +176,7 @@ namespace Convenience.Models.Properties {
 
                     ChumonJisseki.ChumonJissekiMeisais = new List<ChumonJissekiMeisai>();
 
-                    foreach (ShiireMaster aShiireMaster in shiireMasters){
+                    foreach (ShiireMaster aShiireMaster in shiireMasters) {
                         ChumonJissekiMeisai chumonJissekiMeisai = new ChumonJissekiMeisai() {
                             ChumonId = ChumonJisseki.ChumonId,
                             ShiireSakiId = ChumonJisseki.ShiireSakiId,
@@ -214,36 +214,14 @@ namespace Convenience.Models.Properties {
              * ①注文実績＋注文実績明細＋仕入マスタ＋商品マスタ検索 
              */
             //注文実績＋注文実績明細(Trackingモードで取得）
+
             ChumonJisseki? chumonJisseki = await _context.ChumonJisseki
                 .Where(c => c.ShiireSakiId == inShireSakiId && c.ChumonDate == inChumonDate)
                 .Include(cj => cj.ChumonJissekiMeisais)
+                .ThenInclude(sim => sim.ShiireMaster)
+                .ThenInclude(shm => shm.ShohinMaster)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
-
-            var yyy = _context.ChangeTracker.Entries();
-
-            //注文実績＋注文実績明細にプラスして、仕入マスタ＋商品マスタ
-            // 仕入マスタと商品マスタを NoTracking モードで取得
-            if (IsExistCheck(chumonJisseki)) {
-                if (IsExistCheck(chumonJisseki!.ChumonJissekiMeisais)) {
-                    foreach (ChumonJissekiMeisai meisai in chumonJisseki.ChumonJissekiMeisais!) {
-                        ShiireMaster? shiireMaster = await _context.ShiireMaster
-                            .AsNoTracking()
-                            .Where(sm => sm.ShiireSakiId == meisai.ShiireSakiId &&
-                                    sm.ShiirePrdId == meisai.ShiirePrdId &&
-                                    sm.ShohinId == meisai.ShohinId)
-                            .Include(sm => sm.ShohinMaster)
-                            .FirstOrDefaultAsync();
-
-                        // 明示的に ShiireMaster を関連付け（データがなければ null が入る）
-
-                        _context.Entry(meisai).State = EntityState.Detached;
-                        meisai.ShiireMaster = shiireMaster;                     //仕入＋商品マスタをセット、NotrackingなのでDetach状態でセット
-                        _context.Entry(meisai).State = EntityState.Unchanged;
-                    }
-                }
-            }
-
-            var xxx = _context.ChangeTracker.Entries();
 
             //②戻り値を注文実績＋注文実績明細とする
             //データがない場合はnullで返す
@@ -408,6 +386,12 @@ namespace Convenience.Models.Properties {
             _ = postedChumonJisseki?.ChumonId ?? throw new ArgumentException("注文実績Postデータの注文コードエラー");
 
             if (IsExistCheck(existedChumonJisseki)) {
+
+                //データを更新するためトラッキング開始
+                _context.ChangeTracker.Clear();
+                _context.Entry(existedChumonJisseki).State = EntityState.Unchanged;
+                existedChumonJisseki.ChumonJissekiMeisais.ToList().ForEach(x => _context.Entry(x).State = EntityState.Unchanged);
+                
                 //注文実績がある場合
                 //AutoMapper利用か、ハンドメイドなのか選択されている
                 var a = _context.ChangeTracker.Entries();
@@ -424,6 +408,7 @@ namespace Convenience.Models.Properties {
                 await _context.ChumonJisseki.AddAsync(postedChumonJisseki);
                 ChumonJisseki = postedChumonJisseki;
             }
+
             return ChumonJisseki;
         }
 
