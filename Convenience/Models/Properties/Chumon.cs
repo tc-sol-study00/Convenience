@@ -388,10 +388,14 @@ namespace Convenience.Models.Properties {
             if (IsExistCheck(existedChumonJisseki)) {
 
                 //データを更新するためトラッキング開始
-                _context.ChangeTracker.Clear();
+                //_context.ChangeTracker.Clear();
+                _context.Entry(existedChumonJisseki).State = EntityState.Detached;
                 _context.Entry(existedChumonJisseki).State = EntityState.Unchanged;
-                existedChumonJisseki.ChumonJissekiMeisais.ToList().ForEach(x => _context.Entry(x).State = EntityState.Unchanged);
-                
+
+                foreach (var detail in existedChumonJisseki.ChumonJissekiMeisais) {
+                    _context.Entry(detail).State = EntityState.Unchanged;
+                }
+
                 //注文実績がある場合
                 //AutoMapper利用か、ハンドメイドなのか選択されている
                 var a = _context.ChangeTracker.Entries();
