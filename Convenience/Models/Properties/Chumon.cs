@@ -138,7 +138,8 @@ namespace Convenience.Models.Properties {
 
             //注文実績明細データ（子）を作るために仕入マスタを読み込む(b)
 
-            IEnumerable<ShiireMaster> shiireMasters = await _context.ShiireMaster.AsNoTracking()
+            IEnumerable<ShiireMaster> shiireMasters = await _context.ShiireMaster
+                .AsNoTrackingWithIdentityResolution()
                 .Where(s => s.ShiireSakiId == inShireSakiId)
                 .Include(s => s.ShiireSakiMaster)
                 .Include(s => s.ShohinMaster)
@@ -220,7 +221,7 @@ namespace Convenience.Models.Properties {
                 .Include(cj => cj.ChumonJissekiMeisais)
                 .ThenInclude(sim => sim.ShiireMaster)
                 .ThenInclude(shm => shm.ShohinMaster)
-                .AsNoTracking()
+                .AsNoTrackingWithIdentityResolution()
                 .FirstOrDefaultAsync();
 
             //②戻り値を注文実績＋注文実績明細とする
