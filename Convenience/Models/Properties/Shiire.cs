@@ -158,7 +158,7 @@ namespace Convenience.Models.Properties {
         /// <param name="inChumonId">注文コード</param>
         /// <param name="inShiireJissekis">仕入実績（注文実績がインクルードされていること）</param>
         /// <returns>注文残・倉庫在庫が調整された注文残・倉庫在庫調整用モデル</returns>
-        public async Task<(IList<ShiireJisseki>, IList<SokoZaiko>)> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
+        public async Task<IList<ShiireJisseki>> ChumonZanChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
 
             //注文残を設定・注文実績明細にセット
 
@@ -171,12 +171,9 @@ namespace Convenience.Models.Properties {
 
             //仕入実績を元に倉庫在庫セット
 
-            IList<SokoZaiko> sokoZaikos = await ZaikoSet(inShiireJissekis);
+            //IList<SokoZaiko> sokoZaikos = await ZaikoSet(inShiireJissekis);
 
-            return (
-                this.Shiirejissekis = inShiireJissekis,
-                this.SokoZaikos = sokoZaikos
-            );
+            return this.Shiirejissekis = inShiireJissekis;
         }
         /// <summary>
         /// 仕入実績から仕入実績プロパティに反映
@@ -256,7 +253,7 @@ namespace Convenience.Models.Properties {
         /// <param name="shiireJissekis">Postされたデータでオーバーライドされた仕入実績</param>
         /// <returns>仕入実績から仕入差を使って在庫数を調整された倉庫在庫</returns>
 
-        private async Task<IList<SokoZaiko>> ZaikoSet(IEnumerable<ShiireJisseki> shiireJissekis) {
+        public async Task<IList<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis) {
 
             //仕入実績より倉庫在庫主キー単位にレコードを起こす（倉庫在庫と粒度をあわせるため）
             //主キー   ：仕入先、仕入商品コード、商品コード
@@ -441,11 +438,11 @@ namespace Convenience.Models.Properties {
         /// </summary>
         /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
         /// 
-        public async Task<(int,bool)> ShiireSaveChanges() {
+        public async Task<(int,IList<SokoZaiko>?)> ShiireSaveChanges() {
 
             //初期化
             int entities = 0;                                 //SaveChangeしたエンティティ数
-            bool isRetryAtSaveDB;
+            IList<SokoZaiko>? sokoZaikos=null;
             const int reTryMaxCount = 10;                   //リトライする回数
             const int waitTime = 1000;    //1000m秒=1秒     //排他エラー時の再リトライ前の待機時間（単位ミリ秒）
 
@@ -461,14 +458,12 @@ namespace Convenience.Models.Properties {
                     //DB更新
                     await _context.SaveChangesAsync();
 
-                    isRetryAtSaveDB = false;
                     break; //正常終了
 
                 }
                 //排他制御エラーの場合
                 catch (DbUpdateConcurrencyException ex) {
                     if (ex.Entries.Count() == 1 && ex.Entries.First().Entity is SokoZaiko) {
-                        isRetryAtSaveDB = true;
                         reTryCount++;
                         if (reTryCount >= reTryMaxCount) {
                             reTryCount = 0;
@@ -483,7 +478,7 @@ namespace Convenience.Models.Properties {
                         }
 
                         //倉庫在庫の再取得と仕入数量分の数量調整
-                        await ZaikoSet(this.Shiirejissekis);
+                        sokoZaikos = await ZaikoSuChousei(this.Shiirejissekis);
 
                     }
                     else {
@@ -493,7 +488,7 @@ namespace Convenience.Models.Properties {
                 }
             } while (true);
 
-            return (entities, isRetryAtSaveDB);
+            return (entities, sokoZaikos);
         }
 
         /// <summary>

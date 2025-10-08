@@ -172,21 +172,26 @@ namespace Convenience.Models.Services {
             //ShiireUkeireReturnSet? shiirezaikoset = null;   //仕入実績・在庫を管理するオブジェクト 
             int entities = 0;                                 //SaveChangeしたエンティティ数
 
-            //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
+            //プロパティの内容から、上記で反映した内容で、注文実績の注文残を調整する
             //在庫の登録はここで行われる
             IList<ShiireJisseki> adjustedShiireJissekis;
-            IList<SokoZaiko> adjustedSokoZaiko;
+            IList<SokoZaiko> adjustedSokoZaikos;
 
-            (adjustedShiireJissekis, adjustedSokoZaiko) =await _shiire.ChuumonZanZaikoSuChousei(chumonId, shiireJissekis);
+            adjustedShiireJissekis =await _shiire.ChumonZanChousei(chumonId, shiireJissekis);
+
+            //倉庫残を調整する
+
+            adjustedSokoZaikos = await _shiire.ZaikoSuChousei(shiireJissekis);
 
             // 仕入実績・注文残・倉庫在庫を更新する
-            (entities,bool isRetryAtSaveDB) = await _shiire.ShiireSaveChanges();
+            //もし、排他制御エラーでSokoZaiko再取得・再計算の場合はreAdjustedSokoZaikosにその結果が入る
+            (entities, IList<SokoZaiko>? reAdjustedSokoZaikos) = await _shiire.ShiireSaveChanges();
 
-            //savechange時、リトライがあったら倉庫在庫を再更新しているので、再セット
-            if(isRetryAtSaveDB) adjustedSokoZaiko = _shiire.SokoZaikos;
+            //savechange時、リトライがあったら（＝reAdjustedSokoZaikosnい値があれば）倉庫在庫を再更新しているので、再セット
+            if (reAdjustedSokoZaikos!=null) adjustedSokoZaikos = reAdjustedSokoZaikos;
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
-            _shiire.ShiireSokoConnection(adjustedShiireJissekis, adjustedSokoZaiko);
+            _shiire.ShiireSokoConnection(adjustedShiireJissekis, adjustedSokoZaikos);
             
             List<ShiireJisseki> listdt = (List<ShiireJisseki>)adjustedShiireJissekis;
             listdt.Sort((x, y) => {
