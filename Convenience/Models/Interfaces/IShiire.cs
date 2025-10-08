@@ -80,7 +80,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inChumonId">注文コード</param>
         /// <param name="inShiireJissekis">仕入実績（注文実績がインクルードされていること）</param>
         /// <returns>注文残・倉庫在庫が調整された注文残・倉庫在庫調整用モデル</returns>
-        public Task<ShiireUkeireReturnSet> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis);
+        public Task<(IList<ShiireJisseki>, IList<SokoZaiko>)> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis);
 
         /*
          *  Post後で利用想定
@@ -98,7 +98,7 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
         /// 
-        public Task<(bool, int)> ShiireSaveChanges();
+        public Task<(int,bool)> ShiireSaveChanges();
 
 
         /// <summary>

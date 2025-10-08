@@ -5,6 +5,7 @@ using Convenience.Models.DataModels;
 using Convenience.Models.Interfaces;
 using Convenience.Models.Properties.Config;
 using Microsoft.EntityFrameworkCore;
+using static Convenience.Models.Properties.Config.CSVMapping;
 
 namespace Convenience.Models.Properties {
     /// <summary>
@@ -157,7 +158,7 @@ namespace Convenience.Models.Properties {
         /// <param name="inChumonId">注文コード</param>
         /// <param name="inShiireJissekis">仕入実績（注文実績がインクルードされていること）</param>
         /// <returns>注文残・倉庫在庫が調整された注文残・倉庫在庫調整用モデル</returns>
-        public async Task<ShiireUkeireReturnSet> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
+        public async Task<(IList<ShiireJisseki>, IList<SokoZaiko>)> ChuumonZanZaikoSuChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis) {
 
             //注文残を設定・注文実績明細にセット
 
@@ -172,10 +173,10 @@ namespace Convenience.Models.Properties {
 
             IList<SokoZaiko> sokoZaikos = await ZaikoSet(inShiireJissekis);
 
-            return (new ShiireUkeireReturnSet {
-                ShiireJissekis = inShiireJissekis,
-                SokoZaikos = sokoZaikos
-            });
+            return (
+                this.Shiirejissekis = inShiireJissekis,
+                this.SokoZaikos = sokoZaikos
+            );
         }
         /// <summary>
         /// 仕入実績から仕入実績プロパティに反映
@@ -334,13 +335,13 @@ namespace Convenience.Models.Properties {
             if (sokoZaikos.Count == 0) {
                 //新規倉庫在庫登録
                 await _context.SokoZaiko.AddRangeAsync(result);
+                SokoZaikos = result;
             }
             else {
                 //既に倉庫在庫がある場合は上書き
                 _mapper.Map<IList<SokoZaiko>, IList<SokoZaiko>>(result, sokoZaikos);
+                SokoZaikos = sokoZaikos;
             }
-
-            SokoZaikos = sokoZaikos;
 
             return (SokoZaikos);
         }
@@ -440,59 +441,59 @@ namespace Convenience.Models.Properties {
         /// </summary>
         /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
         /// 
-        public async Task<(bool,int)> ShiireSaveChanges() {
+        public async Task<(int,bool)> ShiireSaveChanges() {
 
             //初期化
-            bool IsNeedContinueToDBUpdate;
             int entities = 0;                                 //SaveChangeしたエンティティ数
+            bool isRetryAtSaveDB;
             const int reTryMaxCount = 10;                   //リトライする回数
             const int waitTime = 1000;    //1000m秒=1秒     //排他エラー時の再リトライ前の待機時間（単位ミリ秒）
 
-            try {
-                //ＤＢ保管処理
+            do {
+                try {
+                    //ＤＢ保管処理
 
-                //DB更新見込みのエンティティ数を求める→1以上だとなんらか更新されたという意味
-                entities = _context.ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                .Select(e => e.Entity).Count();
+                    //DB更新見込みのエンティティ数を求める→1以上だとなんらか更新されたという意味
+                    entities = _context.ChangeTracker.Entries()
+                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                    .Select(e => e.Entity).Count();
 
-                //DB更新
-                await _context.SaveChangesAsync();
+                    //DB更新
+                    await _context.SaveChangesAsync();
 
-                IsNeedContinueToDBUpdate = false;
+                    isRetryAtSaveDB = false;
+                    break; //正常終了
 
-            }
-            //排他制御エラーの場合
-            catch (DbUpdateConcurrencyException ex) {
-                if (ex.Entries.Count() == 1 && ex.Entries.First().Entity is SokoZaiko) {
-                    reTryCount++;
-                    if (reTryCount >= reTryMaxCount) {
-                        reTryCount = 0;
-                        throw new DbUpdateTimeOutException("仕入実績・倉庫在庫・注文実績");  //10回トライしてダメなら例外スロー
-                    }
-
-                    Thread.Sleep(waitTime); //１秒待つ
-                                            //倉庫在庫をデタッチしないと、キャッシュが生きたままなので
-                                            //（１）の処理で同じデータを取得してしまう為の処置
-                    foreach (var item in SokoZaikos) {
-                        _context.Entry(item).State = EntityState.Detached;
-                    }
-                    //注文残の引き戻し
-                    //処理が失敗しているので、注文残を引き戻す
-                    foreach (var item in Shiirejissekis) {
-                        item.ChumonJissekiMeisaii.ChumonZan =
-                        _context.Entry(item.ChumonJissekiMeisaii).Property(p => p.ChumonZan).OriginalValue;
-                    }
-
-                    IsNeedContinueToDBUpdate = true;
                 }
-                else {
-                    //その他排他制御の場合は例外をスローする
-                    throw;
-                }
-            }
+                //排他制御エラーの場合
+                catch (DbUpdateConcurrencyException ex) {
+                    if (ex.Entries.Count() == 1 && ex.Entries.First().Entity is SokoZaiko) {
+                        isRetryAtSaveDB = true;
+                        reTryCount++;
+                        if (reTryCount >= reTryMaxCount) {
+                            reTryCount = 0;
+                            throw new DbUpdateTimeOutException("仕入実績・倉庫在庫・注文実績");  //10回トライしてダメなら例外スロー
+                        }
 
-            return (IsNeedContinueToDBUpdate, entities);
+                        Thread.Sleep(waitTime); //１秒待つ
+                                                //倉庫在庫をデタッチしないと、キャッシュが生きたままなので
+                                                //（１）の処理で同じデータを取得してしまう為の処置
+                        foreach (var item in this.SokoZaikos) {
+                            _context.Entry(item).State = EntityState.Detached;
+                        }
+
+                        //倉庫在庫の再取得と仕入数量分の数量調整
+                        await ZaikoSet(this.Shiirejissekis);
+
+                    }
+                    else {
+                        //その他排他制御の場合は例外をスローする
+                        throw;
+                    }
+                }
+            } while (true);
+
+            return (entities, isRetryAtSaveDB);
         }
 
         /// <summary>

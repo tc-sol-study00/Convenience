@@ -169,25 +169,26 @@ namespace Convenience.Models.Services {
             //　・DBに保存する
 
             //初期化
-            ShiireUkeireReturnSet? shiirezaikoset = null;   //仕入実績・在庫を管理するオブジェクト 
+            //ShiireUkeireReturnSet? shiirezaikoset = null;   //仕入実績・在庫を管理するオブジェクト 
             int entities = 0;                                 //SaveChangeしたエンティティ数
 
-            bool IsNeedContinueToDBUpdate;
-            do { //IsNeedContinueToDBUpdate=trueの時は排他制御エラーなので、再チャレンジ   
-                //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
-                //在庫の登録はここで行われる
-                shiirezaikoset = await _shiire.ChuumonZanZaikoSuChousei(chumonId, shiireJissekis);
+            //プロパティの内容から、上記で反映した内容で、注文実績の注文残と倉庫残を調整する
+            //在庫の登録はここで行われる
+            IList<ShiireJisseki> adjustedShiireJissekis;
+            IList<SokoZaiko> adjustedSokoZaiko;
 
-                // 仕入実績・注文残・倉庫在庫を更新する
-                (IsNeedContinueToDBUpdate, entities) = await _shiire.ShiireSaveChanges();
+            (adjustedShiireJissekis, adjustedSokoZaiko) =await _shiire.ChuumonZanZaikoSuChousei(chumonId, shiireJissekis);
 
-            } while (IsNeedContinueToDBUpdate);
+            // 仕入実績・注文残・倉庫在庫を更新する
+            (entities,bool isRetryAtSaveDB) = await _shiire.ShiireSaveChanges();
+
+            //savechange時、リトライがあったら倉庫在庫を再更新しているので、再セット
+            if(isRetryAtSaveDB) adjustedSokoZaiko = _shiire.SokoZaikos;
 
             //shiireJissekiのSokoZaikoに、実際の倉庫在庫を接続（表示用）
-            _ = shiirezaikoset ?? throw new Exception("shiirezaikosetがnullです");
-            _shiire.ShiireSokoConnection(shiirezaikoset.ShiireJissekis, shiirezaikoset.SokoZaikos);
-
-            List<ShiireJisseki> listdt = (List<ShiireJisseki>)shiirezaikoset.ShiireJissekis;
+            _shiire.ShiireSokoConnection(adjustedShiireJissekis, adjustedSokoZaiko);
+            
+            List<ShiireJisseki> listdt = (List<ShiireJisseki>)adjustedShiireJissekis;
             listdt.Sort((x, y) => {
                 int result = (x.ShiireSakiId != y.ShiireSakiId) ? x.ShiireSakiId.CompareTo(y.ShiireSakiId) :
                               (x.ShiirePrdId != y.ShiirePrdId) ? x.ShiirePrdId.CompareTo(y.ShiirePrdId) :
