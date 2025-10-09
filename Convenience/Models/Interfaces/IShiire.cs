@@ -54,7 +54,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inShiireDate">仕入日付（仕入実績にセットされる）</param>
         /// <param name="inSeqByShiireDate">仕入日付内のシーケンス（仕入実績にセットされる）</param>
         /// <returns>注文実績から新規作成された仕入実績</returns>
-        public Task<IList<ShiireJisseki>> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate);
+        public Task<IEnumerable<ShiireJisseki>> ChumonToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate);
 
         /// <summary>
         /// 注文実績から仕入実績プロパティに反映
@@ -63,7 +63,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inShiireDate">仕入日付</param>
         /// <param name="inSeqByShiireDate">仕入SEQ</param>
         /// <returns></returns>
-        public Task<IList<ShiireJisseki>> ShiireToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate);
+        public Task<IEnumerable<ShiireJisseki>> ShiireToShiireJisseki(string inChumonId, DateOnly inShiireDate, uint inSeqByShiireDate);
 
         /// <summary>
         /// 倉庫在庫を仕入データに接続する（表示前に利用する）　
@@ -72,7 +72,7 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inShiireJissekis">仕入実績</param>
         /// <param name="indata">仕入実績に結合する倉庫在庫</param>
         /// <return>倉庫在庫が接続された仕入実績</return>
-        public IList<ShiireJisseki> ShiireSokoConnection(IList<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> indata);
+        public IEnumerable<ShiireJisseki> ShiireSokoConnection(IEnumerable<ShiireJisseki> inShiireJissekis, IEnumerable<SokoZaiko> indata);
 
         /// <summary>
         /// 注文残・在庫数量調整
@@ -80,14 +80,14 @@ namespace Convenience.Models.Interfaces {
         /// <param name="inChumonId">注文コード</param>
         /// <param name="inShiireJissekis">仕入実績（注文実績がインクルードされていること）</param>
         /// <returns>注文残・倉庫在庫が調整された注文残・倉庫在庫調整用モデル</returns>
-        public Task<IList<ShiireJisseki>> ChumonZanChousei(string inChumonId, IList<ShiireJisseki> inShiireJissekis);
+        public Task<IEnumerable<ShiireJisseki>> ChumonZanChousei(string inChumonId, IEnumerable<ShiireJisseki> inShiireJissekis);
 
         // <summary>
         /// 倉庫在庫登録
         /// </summary>
         /// <param name="shiireJissekis">Postされたデータでオーバーライドされた仕入実績</param>
         /// <returns>仕入実績から仕入差を使って在庫数を調整された倉庫在庫</returns>
-        public Task<IList<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis);
+        public Task<IEnumerable<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis);
         
         /*
          *  Post後で利用想定
@@ -98,27 +98,28 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <param name="inShiireJissekis">Postされた仕入実績</param>
         /// <returns>Postされた注仕入実績がオーバライドされた仕入実績プロパティ</returns>
-        public IList<ShiireJisseki> ShiireUpdate(IList<ShiireJisseki> inShiireJissekis);
+        public IEnumerable<ShiireJisseki> ShiireUpdate(IEnumerable<ShiireJisseki> inShiireJissekis);
 
         /// <summary>
         /// 仕入実績・注文残・倉庫在庫を更新する
         /// </summary>
         /// <returns>正常:true、排他制御エラーfalse、DB更新したエンティティ数/returns>
         /// 
-        public Task<(int, IList<SokoZaiko>?)> ShiireSaveChanges();
+        public Task<int> ShiireSaveChanges();
 
 
         /// <summary>
         /// 注文残がある注文のリスト化
         /// </summary>
         /// <returns>注文残のある注文コード一覧</returns>
-        public Task<IList<ChumonList>> ZanAriChumonList();
+        public IEnumerable<ChumonList> ZanAriChumonList();
 
         /// <summary>
-        /// 倉庫在庫を取得する（遅延実行）
+        /// 仕入実績にある仕入商品をキーに倉庫在庫を取得する
         /// </summary>
-        /// <returns>倉庫在庫（遅延実行）IEnumerable<SokoZaiko></returns>
-        public IQueryable<SokoZaiko> GetSokoZaiko();
+        /// <param name="argShiireJisseki">仕入実績</param>
+        /// <returns>倉庫在庫</returns>
+        public Task<IEnumerable<SokoZaiko>> GetSokoZaiko(IEnumerable<ShiireJisseki> argShiireJisseki);
 
     }
 }
