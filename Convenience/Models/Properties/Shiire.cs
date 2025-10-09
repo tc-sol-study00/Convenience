@@ -231,7 +231,7 @@ namespace Convenience.Models.Properties {
         /// <param name="shiireJissekis">Postされたデータでオーバーライドされた仕入実績</param>
         /// <returns>仕入実績から仕入差を使って在庫数を調整された倉庫在庫</returns>
 
-        public async Task<IEnumerable<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis) {
+        public async Task<IEnumerable<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis,IEnumerable<SokoZaiko> sokoZaikos) {
 
             //仕入実績より倉庫在庫主キー単位にレコードを起こす（倉庫在庫と粒度をあわせるため）
             //主キー   ：仕入先、仕入商品コード、商品コード
@@ -254,8 +254,6 @@ namespace Convenience.Models.Properties {
                 ;
 
             //現在の倉庫在庫を読み込む準備
-
-            IList<SokoZaiko> sokoZaikos = this.SokoZaikos;
 
             IList<SokoZaiko> result = shiireJissekiGrp.GroupJoin(
             sokoZaikos,
@@ -306,7 +304,7 @@ namespace Convenience.Models.Properties {
             else {
                 //既に倉庫在庫がある場合は上書き
                 _mapper.Map(result, sokoZaikos);
-                SokoZaikos = sokoZaikos;
+                SokoZaikos = sokoZaikos.ToList();
             }
 
             return (SokoZaikos);

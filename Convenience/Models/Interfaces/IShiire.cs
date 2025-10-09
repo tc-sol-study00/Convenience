@@ -87,7 +87,7 @@ namespace Convenience.Models.Interfaces {
         /// </summary>
         /// <param name="shiireJissekis">Postされたデータでオーバーライドされた仕入実績</param>
         /// <returns>仕入実績から仕入差を使って在庫数を調整された倉庫在庫</returns>
-        public Task<IEnumerable<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis);
+        public Task<IEnumerable<SokoZaiko>> ZaikoSuChousei(IEnumerable<ShiireJisseki> shiireJissekis, IEnumerable<SokoZaiko> sokoZaikos );
         
         /*
          *  Post後で利用想定

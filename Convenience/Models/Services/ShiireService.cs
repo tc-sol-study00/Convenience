@@ -178,8 +178,6 @@ namespace Convenience.Models.Services {
 
             adjustedShiireJissekis = await _shiire.ChumonZanChousei(chumonId, shiireJissekis);
 
-
-
             // 仕入実績・注文残・倉庫在庫を更新する
             //もし、排他制御エラーでSokoZaiko再取得・再計算の場合はreAdjustedSokoZaikosにその結果が入る
             int reTryCount = 0;
@@ -194,7 +192,7 @@ namespace Convenience.Models.Services {
 
                 //倉庫残を調整する
 
-                adjustedSokoZaikos = await _shiire.ZaikoSuChousei(shiireJissekis);
+                adjustedSokoZaikos = await _shiire.ZaikoSuChousei(shiireJissekis, gotShiireJissekis);
 
                 try {
                     entities = await _shiire.ShiireSaveChanges();
